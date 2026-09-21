@@ -397,6 +397,7 @@
               <li>під час інтерпретації враховують склад і охоплення вибірки.</li>
             </ul>
             <div class="sample-note"><strong>Мінімальна кількість відповідей.</strong> Для відображення результатів працівників у робочому середовищі потрібно щонайменше 20 валідних анкет. Для керівників результат не показується, якщо отримано менше 5 відповідей; за 5–9 відповідей доступний лише узагальнений результат модуля без деталізації окремих тверджень.</div>
+            <div class="sample-note"><strong>Як рахувати запрошених.</strong> До кількості запрошених до анкети працівників включайте всіх, хто отримав об’єднану форму E / L, зокрема керівників. Кількість керівників, запрошених до блоку L, у локальному порталі вказується окремо.</div>
           </article>
         </div>
         <div class="subsection" id="sources">
@@ -445,7 +446,7 @@
 <div class="card workflow-card">
 <div>
 <h4>Один файл для одного робочого середовища</h4>
-<p>Експортуйте результати у форматі XLSX або CSV. Один рядок має відповідати одному респондентові, одна колонка одному твердженню. Файл містить E і L, розділяти його вручну не потрібно.</p>
+<p>Експортуйте результати у форматі XLSX або CSV. Один рядок має відповідати одному респондентові, одна колонка одному твердженню. Файл містить E і L, розділяти його вручну не потрібно. Для XLSX портал зчитує перший аркуш; CSV має бути збережений у кодуванні UTF-8.</p>
 <p>У локальному порталі спочатку відкрийте потрібне робоче середовище, а потім завантажте його файл. Портал перевірить структуру, коди, допустимі відповіді та кількість записів до розрахунку.</p>
 </div>
 <div class="rule-box">
@@ -462,12 +463,12 @@
 <p>Власник дослідження перевіряє факти, узгоджує оцінку з відповідальними ролями й вносить одну відповідь від компанії. Після кожного модуля можна зафіксувати підтвердження або прогалини.</p>
 <p>Для практики, яка потрібна лише за певних обставин, оцінюйте готовність компанії: чи визначено порядок дій, відповідальних, ресурси та спосіб перевірки готовності.</p>
 <div aria-label="Варіанти оцінювання" class="checkup-options">
-<span>Реалізовано повністю</span><span>Частково або нерівномірно</span><span>Не реалізовано</span>
+<span>Реалізовано повністю</span><span>Частково або нерівномірно</span><span>Не реалізовано</span><span>Недостатньо підтверджених даних</span>
 </div>
 </div>
 <div class="rule-box">
 <strong>Організаційний чекап проходять у локальному порталі</strong>
-<p>Його не заповнюють у публічному порталі та не надсилають через зовнішню форму.</p>
+<p>Його не заповнюють у публічному порталі та не надсилають через зовнішню форму. Статус «Ясно» можливий, лише коли всі шість практик модуля реалізовано повністю. «Буря» означає одну нереалізовану критичну практику або щонайменше дві нереалізовані практики. Критичні практики: P04, P13, P15, P16, P21, P28, P31, P36, P38 і P42. Якщо умова «Бурі» не спрацювала, три або більше оцінок «недостатньо підтверджених даних» дають статус «Туман»; в інших випадках результат — «Хмарно». Для P40 відповідь «не реалізовано» є критичним сигналом лише за підтвердженого актуального ризику з боку третіх осіб.</p>
 </div>
 </div>
 </div>
@@ -496,11 +497,12 @@
         <div class="subsection" id="weather">
           <div class="subhead"><h3>Статуси організаційної погоди</h3></div>
           <div class="weather-grid">
-            <article class="card weather-card"><span class="weather-symbol" aria-hidden="true">☀</span><h4>Ясно</h4><p>Сприятливий результат за достатньої якості даних.</p></article>
-            <article class="card weather-card cloudy"><span class="weather-symbol" aria-hidden="true">☁</span><h4>Хмарно</h4><p>Змішаний результат. Є аспекти, які потребують уваги.</p></article>
-            <article class="card weather-card storm"><span class="weather-symbol" aria-hidden="true">☁︎</span><h4>Буря</h4><p>Несприятливий сигнал. Потрібні перевірка причин та організаційні дії.</p></article>
+            <article class="card weather-card"><span class="weather-symbol" aria-hidden="true">☀</span><h4>Ясно</h4><p>Щонайменше 75% сприятливих і менше 15% несприятливих відповідей за достатньої якості даних.</p></article>
+            <article class="card weather-card cloudy"><span class="weather-symbol" aria-hidden="true">☁</span><h4>Хмарно</h4><p>Результат між порогами «Ясно» і «Буря». Є аспекти, які потребують уваги.</p></article>
+            <article class="card weather-card storm"><span class="weather-symbol" aria-hidden="true">🌧</span><h4>Буря</h4><p>Менше 55% сприятливих або щонайменше 30% несприятливих відповідей. Потрібні перевірка причин та організаційні дії.</p></article>
             <article class="card weather-card fog"><span class="weather-symbol" aria-hidden="true">≋</span><h4>Туман</h4><p>Недостатньо даних для інтерпретації. Це не означає ані сприятливого, ані несприятливого стану.</p></article>
           </div>
+          <div class="sample-note"><strong>Важливо.</strong> Пороги застосовуються до неокруглених значень. Якщо середній результат модуля відповідає «Ясно», але хоча б одне достатньо заповнене твердження має умови «Бурі», статус модуля обмежується до «Хмарно», щоб не замаскувати локальний ризик. Відсотки — це частки відповідей, а не загальний бал. У невеликих групах керівників одна відповідь може помітно змінити відсоток, тому портал позначає статуси біля межі й показує точніше значення.</div>
         </div>
 
         <div class="subsection" id="matrix">
@@ -576,6 +578,8 @@
 <article class="principle"><h4>Циклічність оцінювання</h4><p>Після змін результат перевіряють повторно і за потреби коригують дії.</p></article>
 <article class="principle"><h4>Роль керівників</h4><p>Керівники організовують роботу, підтримують безпечну взаємодію і передають питання на відповідний рівень.</p></article>
 <article class="principle"><h4>Моніторинг ефективності</h4><p>Оцінюють не лише факт виконання дії, а й те, чи зменшився підтверджений ризик.</p></article>
+<article class="principle"><h4>Обмеження анкети</h4><p>Усі твердження сформульовані в одному напрямі, а портал не визначає неуважне або одноманітне заповнення на рівні окремої людини. Тому висновки роблять лише для групи, з урахуванням участі, контексту та інших джерел.</p></article>
+<article class="principle"><h4>Складені практики</h4><p>Якщо опис практики містить кілька суттєвих складових, «реалізовано повністю» означає, що підтверджено кожну з них. Інакше обирають часткову реалізацію або фіксують, яких саме підтверджень бракує.</p></article>
 </div>
 <div class="subsection" id="references">
 <div class="subhead"><h3>Використані стандарти, настанови й дослідження</h3></div>
@@ -618,16 +622,14 @@
       <div class="wrap">
         <h2>Безпека <span class="accent">даних</span></h2>
         <div class="security">
-          
-<h3>Безпека даних</h3>
 <p class="section-intro">Публічний портал не отримує і не приймає дані дослідження. Робота з даними відбувається в локальному порталі на пристрої компанії.</p>
 <div class="safety-grid">
 <article class="safety-card"><h4>Локальна обробка</h4><p>Файли XLSX або CSV обробляються безпосередньо у браузері на комп’ютері користувача. Дані не передаються через інтернет для розрахунку результатів.</p></article>
 <article class="safety-card"><h4>Сирі дані</h4><p>Сирі дані залишаються у системі збору даних компанії. Під час імпорту вони використовуються для розрахунку і не зберігаються у резервній копії дослідження.</p></article>
-<article class="safety-card"><h4>Узагальнені результати</h4><p>Барометр працює з агрегованими результатами, результатами організаційного чекапу та Планом організаційних змін.</p></article>
+<article class="safety-card"><h4>Узагальнені результати</h4><p>Барометр працює з агрегованими результатами, результатами організаційного чекапу та Планом організаційних змін. Деталізація тверджень керівників не зберігається, якщо отримано менше 10 відповідей.</p></article>
 <article class="safety-card"><h4>Відповідальність компанії</h4><p>Компанія сама визначає місце зберігання файлів, правила доступу, налаштування форми, збір електронних адрес і порядок створення резервної копії.</p></article>
 </div>
-<div class="security-note">Доступ до файлів контролює компанія. Зберігайте їх у захищеному місці відповідно до внутрішніх правил інформаційної безпеки й конфіденційності.</div>
+<div class="security-note">Дані локального порталу зберігаються у сховищі профілю браузера і не шифруються самим Барометром. На спільному пристрої до них можуть мати доступ інші користувачі того самого профілю браузера або встановлені розширення. Використовуйте окремий захищений профіль, регулярно створюйте резервні копії, зберігайте їх як чутливі файли та видаляйте дослідження з порталу після завершення строку зберігання, визначеного компанією.</div>
 
         </div>
       </div>
@@ -691,7 +693,7 @@
       });
       renderSteps(0);
 
-      const statusIcon = status => ({'Ясно':'☀','Хмарно':'☁','Буря':'☂','Туман':'≋'})[status];
+      const statusIcon = status => ({'Ясно':'☀','Хмарно':'☁','Буря':'🌧','Туман':'≋'})[status];
       const statusClass = status => ({'Ясно':'clear','Хмарно':'cloudy','Буря':'storm','Туман':'fog'})[status];
       function exampleScenario(e,l,p){
         const severity = {'Ясно':0,'Хмарно':1,'Буря':2,'Туман':null};
@@ -712,7 +714,7 @@
 
         if(e==='Ясно' && l==='Ясно' && p==='Ясно'){
           return {
-            interpretation:'Три джерела узгоджуються на сприятливому рівні: працівники описують сприятливий досвід, керівники мають достатні умови, ресурси й можливості для виконання управлінської ролі, а організаційні практики оцінені позитивно.',
+            interpretation:'Три джерела узгоджуються на сприятливому рівні: працівники описують сприятливий досвід, керівники мають достатні умови, ресурси й можливості для виконання управлінської ролі, а організаційний чекап показує сприятливий стан практик.',
             aspectTitle:'Що перевіряти далі',
             aspect:'Стійкість практик: чи збережеться сприятливий результат при зміні відповідальної особи, керівника, структури, навантаження або робочих процесів.',
             actionTitle:'Приклад рекомендованої дії',
@@ -741,8 +743,8 @@
         if(l==='Буря') parts.push('Керівники дають виражений сигнал про обмеження в умовах, ресурсах або можливостях виконання управлінської ролі.');
         if(l==='Туман') parts.push('За відповідями керівників недостатньо даних для надійного висновку.');
 
-        if(p==='Ясно') parts.push('Організаційні практики оцінені сприятливо.');
-        if(p==='Хмарно') parts.push('Організаційні практики реалізовані частково або нерівномірно.');
+        if(p==='Ясно') parts.push('Організаційний чекап показує сприятливий стан практик.');
+        if(p==='Хмарно') parts.push('Організаційний чекап показує, що практики реалізовані частково або нерівномірно.');
         if(p==='Буря') parts.push('Організаційний чекап показує суттєві прогалини в практиках цього модуля.');
         if(p==='Туман') parts.push('Для організаційного чекапу недостатньо підтверджень, щоб надійно оцінити стан практик.');
 
@@ -753,7 +755,7 @@
         let action='Уточніть конкретний проблемний аспект і обирайте організаційну дію, безпосередньо пов’язану з підтвердженою причиною.';
 
         if(p==='Ясно' && (e==='Хмарно'||e==='Буря'||l==='Хмарно'||l==='Буря')){
-          interpretation+=' Є розрив між сприятливою оцінкою організаційних практик і менш сприятливим досвідом людей або можливостями керівників.';
+          interpretation+=' Є розрив між сприятливим результатом організаційного чекапу і менш сприятливим досвідом людей або можливостями керівників.';
           if((l==='Буря' || l==='Хмарно') && severity[l] > (severity[e] ?? -1)){
             aspect='Перевірте, чи мають керівники достатньо часу, ресурсів, інформації та повноважень для стабільного застосування наявних практик.';
             action='Перевірте, де саме керівникам бракує часу, ресурсів, інформації чи повноважень, і усуньте ці обмеження. Спочатку з’ясуйте, як працює наявна практика в цьому робочому середовищі, перш ніж додавати нову.';
@@ -762,7 +764,7 @@
             action='Перевірте фактичне охоплення, доступність і послідовність застосування наявної практики. Після цього усувайте конкретний підтверджений розрив.';
           }
         } else if((p==='Хмарно'||p==='Буря') && (e==='Ясно'||e==='Хмарно') && (l==='Ясно'||l==='Хмарно') && severity[p] >= Math.max(severity[e]??-1,severity[l]??-1)){
-          interpretation+=' Організаційні практики оцінені слабше, ніж досвід працівників і керівників, тому сприятливий досвід може залежати від локальних домовленостей або додаткових зусиль окремих людей.';
+          interpretation+=' Організаційний чекап показує слабший стан практик, ніж досвід працівників і керівників, тому сприятливий досвід може залежати від локальних домовленостей або додаткових зусиль окремих людей.';
           aspect='Перевірте, які неформальні або локальні способи роботи зараз компенсують прогалини в організаційних практиках і чи буде результат стійким при кадрових або організаційних змінах.';
           action='Закріпіть дієві способи роботи на організаційному рівні там, де це потрібно, і перевірте їхню стійкість до змін.';
         } else if((l==='Хмарно'||l==='Буря') && severity[l] > (severity[e]??-1)){
@@ -821,12 +823,31 @@
 
       const pageButtons=[...document.querySelectorAll('.portal-nav-btn')];
       const pages=[...document.querySelectorAll('.portal-page')];
+      pageButtons.forEach((btn,index)=>{
+        btn.id=`portal-tab-${btn.dataset.page}`;
+        btn.setAttribute('aria-controls',btn.dataset.page);
+        btn.tabIndex=index===0?0:-1;
+      });
+      pages.forEach(page=>{
+        page.setAttribute('role','tabpanel');
+        page.setAttribute('aria-labelledby',`portal-tab-${page.id}`);
+      });
       function showPage(id,scroll=true){
-        pages.forEach(page=>page.classList.toggle('is-active',page.id===id));
-        pageButtons.forEach(btn=>btn.setAttribute('aria-selected',String(btn.dataset.page===id)));
+        pages.forEach(page=>{const active=page.id===id;page.classList.toggle('is-active',active);page.hidden=!active});
+        pageButtons.forEach(btn=>{const active=btn.dataset.page===id;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1});
         if(scroll) document.querySelector('.portal-nav-shell').scrollIntoView({behavior:'smooth',block:'start'});
       }
       pageButtons.forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
+      pageButtons.forEach((btn,index)=>btn.addEventListener('keydown',event=>{
+        let next=null;
+        if(event.key==='ArrowRight')next=(index+1)%pageButtons.length;
+        if(event.key==='ArrowLeft')next=(index-1+pageButtons.length)%pageButtons.length;
+        if(event.key==='Home')next=0;
+        if(event.key==='End')next=pageButtons.length-1;
+        if(next==null)return;
+        event.preventDefault();pageButtons[next].focus();showPage(pageButtons[next].dataset.page,false)
+      }));
+      showPage('meta',false);
       document.querySelectorAll('.hero-hit').forEach(link=>link.addEventListener('click',event=>{
         const id=link.getAttribute('href').replace('#','');
         if(['meta','protocol','interpretation','evidence','security'].includes(id)){
@@ -837,18 +858,37 @@
 
       const protoGroups={owner:['owner-sample'],sources:['sources','codes'],form:['forms'],import:['import'],checkup:['checkup'],journey:['journey']};
       function setGroup(buttonSelector,attr,groups,name){
-        document.querySelectorAll(buttonSelector).forEach(btn=>btn.setAttribute('aria-selected',String(btn.getAttribute(attr)===name)));
+        document.querySelectorAll(buttonSelector).forEach(btn=>{const active=btn.getAttribute(attr)===name;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1});
         const allIds=[...new Set(Object.values(groups).flat())];
-        allIds.forEach(id=>{const el=document.getElementById(id);if(el) el.classList.toggle('pane-hidden',!groups[name].includes(id));});
+        allIds.forEach(id=>{const el=document.getElementById(id);if(el){const active=groups[name].includes(id);el.classList.toggle('pane-hidden',!active);el.hidden=!active}});
       }
+      function prepareGroupTabs(buttonSelector,attr,groups,prefix){
+        const buttons=[...document.querySelectorAll(buttonSelector)];
+        buttons.forEach((btn,index)=>{
+          const name=btn.getAttribute(attr);btn.setAttribute('role','tab');btn.id=`${prefix}-tab-${name}`;btn.setAttribute('aria-controls',groups[name].join(' '));btn.tabIndex=index===0?0:-1;
+          groups[name].forEach(id=>{const panel=document.getElementById(id);if(panel){panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',btn.id)}});
+          btn.addEventListener('keydown',event=>{
+            let next=null;
+            if(event.key==='ArrowRight')next=(index+1)%buttons.length;
+            if(event.key==='ArrowLeft')next=(index-1+buttons.length)%buttons.length;
+            if(event.key==='Home')next=0;
+            if(event.key==='End')next=buttons.length-1;
+            if(next==null)return;
+            event.preventDefault();buttons[next].focus();buttons[next].click()
+          })
+        })
+      }
+      prepareGroupTabs('[data-proto-group]','data-proto-group',protoGroups,'protocol');
       document.querySelectorAll('[data-proto-group]').forEach(btn=>btn.addEventListener('click',()=>setGroup('[data-proto-group]','data-proto-group',protoGroups,btn.dataset.protoGroup)));
       setGroup('[data-proto-group]','data-proto-group',protoGroups,'owner');
 
       const interpGroups={weather:['weather'],matrix:['matrix'],outputs:['library-actions'],example:['example']};
+      prepareGroupTabs('[data-interp-group]','data-interp-group',interpGroups,'interpretation');
       document.querySelectorAll('[data-interp-group]').forEach(btn=>btn.addEventListener('click',()=>setGroup('[data-interp-group]','data-interp-group',interpGroups,btn.dataset.interpGroup)));
       setGroup('[data-interp-group]','data-interp-group',interpGroups,'weather');
 
       const evidenceGroups={principles:['evidence-principles'],references:['references']};
+      prepareGroupTabs('[data-evidence-group]','data-evidence-group',evidenceGroups,'evidence');
       document.querySelectorAll('[data-evidence-group]').forEach(btn=>btn.addEventListener('click',()=>setGroup('[data-evidence-group]','data-evidence-group',evidenceGroups,btn.dataset.evidenceGroup)));
       setGroup('[data-evidence-group]','data-evidence-group',evidenceGroups,'principles');
 
