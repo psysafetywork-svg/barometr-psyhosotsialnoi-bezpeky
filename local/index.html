@@ -2276,13 +2276,20 @@ function barometerFinalDataNotes(semantic){
   return (semantic.dataNotes||[]).filter(t=>!String(t).toLowerCase().includes('біля межі')).map(t=>barometerVisibleTextCleanup(String(t))).filter(Boolean)
 }
 function barometerFinalView(row,semantic,analysis){
+  const alignmentSeen=new Set();
+  const alignment=(semantic.clusters||[]).map(cluster=>{
+    const title=barometerFinalClusterCopy(row.m,cluster).title,text=barometerFinalClusterAlignment(cluster,row.m,analysis.input);
+    return {title,text,standalone:!text.startsWith(title+': ')}
+  }).filter(item=>{
+    const key=String(item.text||'').replace(/\s+/g,' ').trim();
+    if(!key||alignmentSeen.has(key))return false;
+    alignmentSeen.add(key);
+    return true
+  });
   return {
     lead:barometerFinalModuleSynthesis(row,semantic),
     attention:barometerFinalAttention(row,semantic,analysis),
-    alignment:(semantic.clusters||[]).map(cluster=>{
-      const title=barometerFinalClusterCopy(row.m,cluster).title,text=barometerFinalClusterAlignment(cluster,row.m,analysis.input);
-      return {title,text,standalone:!text.startsWith(title+': ')}
-    }),
+    alignment,
     clarifications:barometerFinalClarifications(semantic),
     actions:(semantic.actions||[]).map(barometerFinalAction),
     dataNotes:barometerFinalDataNotes(semantic),
