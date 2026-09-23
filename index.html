@@ -80,7 +80,7 @@
     h3{font-size:clamp(25px,3vw,36px)}
     h4{font-size:20px;letter-spacing:-.01em}
     p{margin:0 0 16px}
-    .lead{max-width:940px;font-size:clamp(21px,2.35vw,30px);line-height:1.42;color:#29445f;margin-bottom:42px}
+    .lead{max-width:940px;font-size:clamp(19px,2.05vw,26px);line-height:1.46;color:#29445f;margin-bottom:42px}
     .section-intro{max-width:840px;color:var(--muted);margin:0 0 38px;font-size:19px}
     .subsection{margin-top:76px;scroll-margin-top:30px}
     .subhead{display:flex;align-items:center;gap:15px;margin-bottom:26px}
@@ -102,7 +102,7 @@
     .scope-card:nth-child(2) .scope-icon{background:var(--teal-soft);color:var(--teal)}
     .scope-card:nth-child(3) .scope-icon{background:var(--fog-soft);color:#667578}
     .boundary{margin:28px 0 0;padding:25px 28px;border-left:5px solid var(--gold);border-radius:0 18px 18px 0;background:linear-gradient(90deg,#fff8eb,#fbfaf6);font-size:19px;color:#2e475f}
-    .module-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:24px;padding:0;list-style:none;counter-reset:modules}
+    .module-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px;margin-top:24px;padding:0;list-style:none;counter-reset:modules}
     .module-list li{counter-increment:modules;display:flex;align-items:center;gap:13px;padding:15px 17px;border:1px solid var(--line);border-radius:14px;background:#fff}
     .module-list li:before{content:counter(modules);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--paper-2);color:var(--gold);font-weight:700;flex:0 0 auto}
     .module-detail{flex:1;min-width:0}.module-detail summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:14px}.module-detail summary::-webkit-details-marker{display:none}.module-detail summary:after{content:'+';font-size:22px;font-weight:400;color:var(--gold)}.module-detail[open] summary:after{content:'−'}.module-detail p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.48}.sample-note{margin-top:16px;padding:16px 18px;border-radius:14px;background:#f7f1e7;border-left:4px solid var(--gold);color:#3d5368}.sample-note strong{color:var(--ink)}
@@ -220,6 +220,17 @@
     .section-switcher button{border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);padding:10px 13px;font-weight:700;cursor:pointer}
     .section-switcher button:hover{background:#fff;color:var(--ink)}
     .section-switcher button[aria-selected="true"]{background:#fff;border-color:#d7c4a6;color:var(--ink);box-shadow:0 4px 14px rgba(30,48,65,.04)}
+    .section-switcher button.is-visited:not([aria-selected="true"]){background:#eef2ef;color:#4f6762}
+    .section-switcher button.is-visited:not([aria-selected="true"])::after{content:"✓";margin-left:8px;color:var(--teal);font-weight:700}
+    @media(min-width:1100px){
+      .wrap.has-subnav{width:min(1320px,100%);padding-right:285px}
+      .portal-page.is-active .section-switcher{position:fixed;top:78px;right:max(24px,calc((100vw - 1320px)/2 + 28px));z-index:70;width:250px;max-height:calc(100vh - 98px);overflow:auto;display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;margin:0;padding:10px}
+      .portal-page.is-active .section-switcher button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal}
+    }
+    @media(min-width:761px) and (max-width:1099px){
+      .section-switcher{position:sticky;top:64px;z-index:70;overflow-x:auto;flex-wrap:nowrap;box-shadow:0 8px 20px rgba(30,48,65,.05)}
+      .section-switcher button{white-space:nowrap}
+    }
     .pane-hidden{display:none!important}
     .local-output-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
     .local-output-card{border:1px solid var(--line);border-radius:20px;background:#fff;padding:25px;box-shadow:0 9px 26px rgba(30,48,65,.04)}
@@ -232,7 +243,7 @@
     .section-nav-bottom{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
     .section-nav-bottom button{border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);padding:10px 14px;font-weight:700;cursor:pointer}
     .section-nav-bottom button:hover{border-color:#cda970;background:#fffaf2}
-    @media(max-width:760px){.portal-nav{padding-left:16px;padding-right:16px}.local-output-grid{grid-template-columns:1fr}.section-switcher{overflow-x:auto;flex-wrap:nowrap}.section-switcher button{white-space:nowrap}}
+    @media(max-width:760px){.portal-nav{padding-left:16px;padding-right:16px}.local-output-grid{grid-template-columns:1fr}.section-switcher{position:sticky;top:64px;z-index:70;overflow-x:auto;flex-wrap:nowrap;box-shadow:0 8px 20px rgba(30,48,65,.05)}.section-switcher button{white-space:nowrap}}
 
     @media(max-width:980px){
       .scope-grid,.source-grid,.principles-grid{grid-template-columns:1fr 1fr}
@@ -244,7 +255,7 @@
       body{font-size:16px}.hero-viewport{overflow-x:auto}.hero-stage{width:860px}
       .hero-guide{font-size:12px;border-radius:7px}.guide-arrow{font-size:14px}.hero-card strong{font-size:12px}.hero-card-copy>span{font-size:9.5px}.hero-card-icon{width:36px;height:36px}
       .section{padding:72px 20px}.scope-grid,.portal-grid,.source-grid,.owner-grid,.principles-grid,.safety-grid,.matrix-grid,.example-controls,.example-detail{grid-template-columns:1fr}
-      .module-list{grid-template-columns:1fr}.step-tabs{grid-template-columns:1fr}.security{padding:30px 22px}
+      .module-list{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}.step-tabs{grid-template-columns:1fr}.security{padding:30px 22px}
       .code-table{font-size:14px}.code-table th,.code-table td{padding:13px 12px}
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
@@ -357,29 +368,29 @@
             <li><details class="module-detail"><summary>Справедливість і рівні можливості</summary><p>Оцінює зрозумілість критеріїв рішень, можливість отримати пояснення, доступність умов і захист від дискримінації.</p></details></li>
             <li><details class="module-detail"><summary>Автономія та вплив</summary><p>Оцінює межі самостійності у роботі, можливість впливати на рішення та участь працівників і команд у змінах.</p></details></li>
             <li><details class="module-detail"><summary>Здоров’я й відновлення</summary><p>Оцінює робоче навантаження, можливості відпочинку й відновлення, доступ до підтримки та безпечне повернення до роботи.</p></details></li>
-            <li><details class="module-detail"><summary>Умови роботи та безпечне середовище</summary><p>Оцінює фізичні умови роботи, інтеграцію психосоціальних ризиків у систему БЗР та готовність до небезпечних і надзвичайних ситуацій.</p></details></li>
+            <li><details class="module-detail"><summary>Умови роботи та безпечне середовище</summary><p>Оцінює фізичні умови роботи, інтеграцію психосоціальних ризиків у систему безпеки і здоров’я на роботі (БЗР) та готовність до небезпечних і надзвичайних ситуацій.</p></details></li>
           </ul>
         </div>
       </div>
     </section>
 
     <section class="section portal-page" id="protocol">
-      <div class="wrap">
+      <div class="wrap has-subnav">
         <h2>Протокол <span class="accent">дослідження</span></h2>
-        <p class="lead">Спочатку визначають відповідальність, формують вибірку та межі робочих середовищ. Далі готують джерела даних і форму, імпортують результати, проходять Організаційний чекап, а потім використовують узагальнений маршрут дослідження як контроль послідовності всіх етапів.</p>
+        <p class="lead">Дослідження проходить послідовно: визначення вибірки та робочих середовищ, збір даних із трьох джерел, аналіз результатів і розроблення плану організаційних дій.</p>
         <div class="section-switcher" data-switcher="protocol" role="tablist" aria-label="Протокол дослідження">
           <button type="button" aria-selected="true" data-proto-group="owner">Власник і вибірка</button>
           <button type="button" aria-selected="false" data-proto-group="sources">Джерела даних</button>
-          <button type="button" aria-selected="false" data-proto-group="form">Форма опитування</button>
-          <button type="button" aria-selected="false" data-proto-group="import">Імпорт даних</button>
-          <button type="button" aria-selected="false" data-proto-group="checkup">Організаційний чекап</button>
           <button type="button" aria-selected="false" data-proto-group="journey">Маршрут дослідження</button>
+          <button type="button" aria-selected="false" data-proto-group="form">Форма опитування</button>
+          <button type="button" aria-selected="false" data-proto-group="checkup">Організаційний чекап</button>
+          <button type="button" aria-selected="false" data-proto-group="import">Імпорт даних</button>
         </div>
 
         <div class="owner-grid" id="owner-sample">
           <article class="card">
             <h3>Хто такий власник дослідження</h3>
-            <p>Це людина, яка координує Барометр у компанії, перевіряє факти, узгоджує відповіді організаційного чекапу та забезпечує послідовність усіх етапів.</p>
+            <p>Це людина, яка координує Барометр у компанії, перевіряє факти, узгоджує відповіді організаційного чекапу та забезпечує послідовність усіх етапів:</p>
             <ul>
               <li>визначає робочі середовища та період дослідження;</li>
               <li>організовує підготовку форм і збір даних;</li>
@@ -396,7 +407,7 @@
               <li>групи не об’єднують лише для отримання зручнішого результату;</li>
               <li>під час інтерпретації враховують склад і охоплення вибірки.</li>
             </ul>
-            <div class="sample-note"><strong>Мінімальна кількість відповідей.</strong> Для відображення результатів працівників у робочому середовищі потрібно щонайменше 20 валідних анкет. Для керівників результат не показується, якщо отримано менше 5 відповідей; за 5–9 відповідей доступний лише узагальнений результат модуля без деталізації окремих тверджень.</div>
+            <div class="sample-note"><strong>Мінімальна кількість відповідей.</strong> Для окремого аналізу цього робочого середовища потрібно щонайменше 20 валідних анкет працівників і 10 валідних анкет керівників. Якщо таку кількість неможливо отримати в межах цього середовища, перегляньте його межі або об’єднайте порівнювані робочі середовища.</div>
             <div class="sample-note"><strong>Як рахувати запрошених.</strong> До кількості запрошених до анкети працівників включайте всіх, хто отримав об’єднану форму E / L, зокрема керівників. Кількість керівників, запрошених до блоку L, у локальному порталі вказується окремо.</div>
           </article>
         </div>
@@ -417,7 +428,7 @@
 <thead><tr><th>Код</th><th>Що позначає</th><th>Де використовується</th></tr></thead>
 <tbody>
 <tr><td><code>E01–E35</code></td><td>Твердження для всіх працівників</td><td>Об’єднана анкета працівників і керівників</td></tr>
-<tr><td><code>L01–L21</code></td><td>Додатковий блок для керівників із прямими підлеглими</td><td>Та сама об’єднана анкета після рольового запитання</td></tr>
+<tr><td><code>L01–L21</code></td><td>Блок питань в об’єднаній анкеті працівників і керівників, який відкривається лише керівникам із прямими підлеглими</td><td>Та сама об’єднана анкета після рольового запитання</td></tr>
 <tr><td><code>P01–P42</code></td><td>Організаційні практики</td><td>Організаційний чекап у локальному порталі</td></tr>
 </tbody>
 </table>
@@ -439,6 +450,7 @@
 <strong>Не змінюйте:</strong>
 <p>тексти тверджень, коди, шкалу відповідей, порядок запитань, рольове запитання, обов’язковість і логіку переходів між блоками.</p>
 </div>
+<div class="sample-note"><strong>Шкала E / L.</strong> 1 — Зовсім не погоджуюся; 2 — Скоріше не погоджуюся; 3 — Частково погоджуюся, частково ні; 4 — Скоріше погоджуюся; 5 — Цілком погоджуюся; 6 — Не стосується моєї роботи. «Частково погоджуюся, частково ні» обирайте, якщо твердження лише частково відповідає вашому досвіду або ситуація відрізняється залежно від обставин. Якщо твердження стосується знання певного порядку дій, правила або каналу підтримки, оцінюйте саме свою обізнаність. Якщо ви про нього не знаєте, обирайте варіант незгоди, а не «Не стосується моєї роботи».</div>
 </div>
 </div>
         <div class="subsection" id="import">
@@ -484,7 +496,7 @@
     </section>
 
     <section class="section portal-page" id="interpretation">
-      <div class="wrap">
+      <div class="wrap has-subnav">
         <h2 class="long-title">Інтерпретація результатів та <span class="accent">рекомендовані організаційні дії</span></h2>
         <p class="lead">Барометр не зводить три джерела до одного середнього результату. Для кожного модуля окремо зіставляються статуси працівників, керівників і організаційного чекапу, визначаються проблемні аспекти та розбіжності, а рекомендовані дії добираються до конкретних сигналів, які підтверджують дані.</p>
         <div class="section-switcher" data-switcher="interpretation" role="tablist" aria-label="Інтерпретація результатів">
@@ -500,7 +512,7 @@
             <article class="card weather-card"><span class="weather-symbol" aria-hidden="true">☀</span><h4>Ясно</h4><p>Щонайменше 75% сприятливих і менше 15% несприятливих відповідей за достатньої якості даних.</p></article>
             <article class="card weather-card cloudy"><span class="weather-symbol" aria-hidden="true">☁</span><h4>Хмарно</h4><p>Результат між порогами «Ясно» і «Буря». Є аспекти, які потребують уваги.</p></article>
             <article class="card weather-card storm"><span class="weather-symbol" aria-hidden="true">🌧</span><h4>Буря</h4><p>Менше 55% сприятливих або щонайменше 30% несприятливих відповідей. Потрібні перевірка причин та організаційні дії.</p></article>
-            <article class="card weather-card fog"><span class="weather-symbol" aria-hidden="true">≋</span><h4>Туман</h4><p>Недостатньо даних для інтерпретації. Це не означає ані сприятливого, ані несприятливого стану.</p></article>
+            <article class="card weather-card fog"><span class="weather-symbol" aria-hidden="true">≋</span><h4>Туман</h4><p>Недостатньо застосовних або підтверджених даних для інтерпретації за достатньої мінімальної вибірки. Це не означає ані сприятливого, ані несприятливого стану.</p></article>
           </div>
           <div class="sample-note"><strong>Важливо.</strong> Пороги застосовуються до неокруглених значень. Якщо середній результат модуля відповідає «Ясно», але хоча б одне достатньо заповнене твердження має умови «Бурі», статус модуля обмежується до «Хмарно», щоб не замаскувати локальний ризик. Відсотки — це частки відповідей, а не загальний бал. У невеликих групах керівників одна відповідь може помітно змінити відсоток, тому портал позначає статуси біля межі й показує точніше значення.</div>
         </div>
@@ -562,7 +574,7 @@
     </section>
 
     <section class="section portal-page" id="evidence">
-<div class="wrap">
+<div class="wrap has-subnav">
 <h2>Доказова <span class="accent">основа</span></h2>
 <p class="lead">Барометр спирається на міжнародні стандарти, настанови та дослідження з управління психосоціальними ризиками, організації роботи, психологічної безпеки та профілактики шкоди.</p>
 <div aria-label="Доказова основа" class="section-switcher" data-switcher="evidence" role="tablist">
@@ -626,7 +638,7 @@
 <div class="safety-grid">
 <article class="safety-card"><h4>Локальна обробка</h4><p>Файли XLSX або CSV обробляються безпосередньо у браузері на комп’ютері користувача. Дані не передаються через інтернет для розрахунку результатів.</p></article>
 <article class="safety-card"><h4>Сирі дані</h4><p>Сирі дані залишаються у системі збору даних компанії. Під час імпорту вони використовуються для розрахунку і не зберігаються у резервній копії дослідження.</p></article>
-<article class="safety-card"><h4>Узагальнені результати</h4><p>Барометр працює з агрегованими результатами, результатами організаційного чекапу та Планом організаційних змін. Деталізація тверджень керівників не зберігається, якщо отримано менше 10 відповідей.</p></article>
+<article class="safety-card"><h4>Узагальнені результати</h4><p>Барометр працює з агрегованими результатами, результатами організаційного чекапу та Планом організаційних змін. Для аналізу відповідей керівників потрібно щонайменше 10 валідних анкет; за меншої кількості аналіз не виконується.</p></article>
 <article class="safety-card"><h4>Відповідальність компанії</h4><p>Компанія сама визначає місце зберігання файлів, правила доступу, налаштування форми, збір електронних адрес і порядок створення резервної копії.</p></article>
 </div>
 <div class="security-note">Дані локального порталу зберігаються у сховищі профілю браузера і не шифруються самим Барометром. На спільному пристрої до них можуть мати доступ інші користувачі того самого профілю браузера або встановлені розширення. Використовуйте окремий захищений профіль, регулярно створюйте резервні копії, зберігайте їх як чутливі файли та видаляйте дослідження з порталу після завершення строку зберігання, визначеного компанією.</div>
@@ -858,7 +870,7 @@
 
       const protoGroups={owner:['owner-sample'],sources:['sources','codes'],form:['forms'],import:['import'],checkup:['checkup'],journey:['journey']};
       function setGroup(buttonSelector,attr,groups,name){
-        document.querySelectorAll(buttonSelector).forEach(btn=>{const active=btn.getAttribute(attr)===name;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1});
+        document.querySelectorAll(buttonSelector).forEach(btn=>{const active=btn.getAttribute(attr)===name;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1;if(active)btn.classList.add('is-visited')});
         const allIds=[...new Set(Object.values(groups).flat())];
         allIds.forEach(id=>{const el=document.getElementById(id);if(el){const active=groups[name].includes(id);el.classList.toggle('pane-hidden',!active);el.hidden=!active}});
       }
