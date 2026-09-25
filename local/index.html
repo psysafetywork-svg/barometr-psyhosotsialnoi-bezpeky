@@ -2563,12 +2563,54 @@ function barometerV2AspectState(input,a){
   const active=e==='S'||l==='S'||p==='G'||e==='T'||l==='T'||p==='T'||special.length>0||p40Pending;
   return {...a,eCodes,lCodes,pCodes,e,l,p,eAdditional,lAdditional,pAdditional,special,p40Pending,active};
 }
-function barometerV2SourceSentence(source,state,a){
+const BAROMETER_V2_VISIBLE_SIGNAL_COPY={
+  P08:'час, інформація, повноваження, ресурси та порядок передавання питання на відповідний рівень',
+  P09:'конкретна підготовка керівників до типових складних робочих ситуацій',
+  P10:'межі ролі керівника та порядок залучення відповідного фахівця',
+  P12:'перевірка того, як керівники фактично застосовують визначені способи роботи з командою',
+  P16:'неупереджений розгляд, інформування заявника та необхідна допомога після звернення',
+  P24:'аналіз суттєвих відмінностей між порівнюваними групами або рішеннями',
+  L17:'дії керівника, коли працівникові може бути потрібна спеціалізована психологічна, медична, кризова або інша професійна допомога',
+  P33:'доступна спеціалізована допомога працівникам та інформація про спосіб звернення',
+  P34:'перевірка обізнаності про спеціалізовану допомогу, її доступності та бар’єрів звернення'
+};
+function barometerV2SignalCopy(code){
+  const raw=BAROMETER_V2_VISIBLE_SIGNAL_COPY[code]||BAROMETER_ALGORITHM_SPEC.signals[code]?.label||'';
+  if(!raw)return '';
+  return raw.charAt(0).toLocaleLowerCase('uk-UA')+raw.slice(1);
+}
+function barometerV2CodeList(codes){
+  return barometerUnique((codes||[]).map(barometerV2SignalCopy).filter(Boolean)).join('; ');
+}
+function barometerV2SourceSentence(source,state,a,input){
   if(state==='M'||state==='X')return '';
-  const title=a.title.toLocaleLowerCase('uk-UA');
-  if(source==='E'){if(state==='S')return `Працівники повідомляють про труднощі в аспекті «${title}».`;if(state==='N')return `Працівники загалом не повідомляють про виражені труднощі в аспекті «${title}».`;if(state==='T')return `За відповідями працівників недостатньо застосовних даних, щоб надійно оцінити аспект «${title}».`;}
-  if(source==='L'){if(state==='S')return `Керівники вказують на труднощі в аспекті «${title}».`;if(state==='N')return `Керівники загалом не вказують на виражені труднощі в аспекті «${title}».`;if(state==='T')return `За відповідями керівників недостатньо застосовних даних, щоб надійно оцінити аспект «${title}».`;}
-  if(source==='P'){if(state==='G')return `Організаційний чекап показує прогалину в аспекті «${title}».`;if(state==='N')return `Організаційний чекап не показує прогалини в аспекті «${title}».`;if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних, щоб надійно оцінити аспект «${title}».`;}
+  const codes=source==='E'?a.eCodes:source==='L'?a.lCodes:a.pCodes;
+  const problem=source==='P'?state==='G':state==='S';
+  const selected=problem?barometerV2ActiveCodes(input,codes):codes;
+  const detail=barometerV2CodeList(selected.length?selected:codes)||a.title.toLocaleLowerCase('uk-UA');
+  if(source==='E'){
+    if(state==='S')return `Працівники повідомляють про труднощі щодо таких складових: ${detail}.`;
+    if(state==='N')return `За відповідями працівників виражених проблемних ознак щодо таких складових не виявлено: ${detail}.`;
+    if(state==='T')return `За відповідями працівників недостатньо застосовних даних, щоб надійно оцінити такі складові: ${detail}.`;
+  }
+  if(source==='L'){
+    if(state==='S')return `Керівники вказують на труднощі щодо таких складових: ${detail}.`;
+    if(state==='N')return `За відповідями керівників виражених проблемних ознак щодо таких складових не виявлено: ${detail}.`;
+    if(state==='T')return `За відповідями керівників недостатньо застосовних даних, щоб надійно оцінити такі складові: ${detail}.`;
+  }
+  if(source==='P'){
+    if(state==='G')return `Організаційний чекап показує прогалину щодо таких складових: ${detail}.`;
+    if(state==='N')return `Організаційний чекап не показує прогалин щодо таких складових: ${detail}.`;
+    if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних, щоб надійно оцінити такі складові: ${detail}.`;
+  }
+  return '';
+}
+function barometerV2AdditionalSentence(source,codes,input){
+  const active=barometerV2ActiveCodes(input,codes),detail=barometerV2CodeList(active);
+  if(!detail)return '';
+  if(source==='E')return `Додатково відповіді працівників вказують на труднощі щодо таких складових: ${detail}.`;
+  if(source==='L')return `Додатково керівники вказують на труднощі щодо таких складових: ${detail}.`;
+  if(source==='P')return `Додатково організаційний чекап показує прогалину щодо таких складових: ${detail}.`;
   return '';
 }
 function barometerV2Alignment(a,input){
@@ -2576,11 +2618,12 @@ function barometerV2Alignment(a,input){
   const onlyE31=a.id==='M7-C2'&&e31&&a.p!=='G'&&!a.lAdditional.length;
   if(onlyE31)return BAROMETER_V2_E31_TEXT;
   if(a.p40Pending)return 'Організаційний чекап містить сигнал щодо захисту від агресії або насильства з боку третіх осіб, але актуальність такого ризику для цього робочого середовища ще не підтверджена. Це дає підстави перевірити, чи передбачає робота цього середовища взаємодію з третіми особами, під час якої може виникати ризик агресії або насильства.';
-  const parts=[barometerV2SourceSentence('E',a.e,a),barometerV2SourceSentence('L',a.l,a),barometerV2SourceSentence('P',a.p,a)].filter(Boolean);
+  const parts=[barometerV2SourceSentence('E',a.e,a,input),barometerV2SourceSentence('L',a.l,a,input),barometerV2SourceSentence('P',a.p,a,input)].filter(Boolean);
   if(e31&&a.id==='M7-C2')parts.push(BAROMETER_V2_E31_TEXT);
-  if(a.eAdditional.length)parts.push('Додатково відповіді працівників вказують на пов’язаний сигнал у цьому аспекті.');
-  if(a.lAdditional.length)parts.push('Додатково керівники вказують на пов’язаний сигнал у цьому аспекті.');
-  if(a.pAdditional.length)parts.push('Додатково організаційний чекап показує пов’язану прогалину в цьому аспекті.');
+  const eExtra=barometerV2AdditionalSentence('E',a.ea,input),lExtra=barometerV2AdditionalSentence('L',a.la,input),pExtra=barometerV2AdditionalSentence('P',a.pa,input);
+  if(eExtra)parts.push(eExtra);
+  if(lExtra)parts.push(lExtra);
+  if(pExtra)parts.push(pExtra);
   if(a.e==='S'&&a.p==='N')parts.push('Досвід працівників відрізняється від результату організаційного чекапу. Це дає підстави перевірити фактичне застосування, охоплення, доступність і послідовність відповідної організаційної практики в цьому робочому середовищі.');
   else if(a.p==='G'&&a.e==='N'&&(a.l==='N'||a.l==='M'||a.l==='X'))parts.push('Це превентивна організаційна прогалина: опитувальні дані не показують вираженої проблеми у повсякденному досвіді, але результат організаційного чекапу дає підстави усунути прогалину до того, як вона проявиться для працівників.');
   else if([a.e,a.l,a.p].filter(x=>x==='S'||x==='G').length>=2)parts.push('Разом ці результати можуть бути пов’язані з одним і тим самим організаційним механізмом і потребують спільної перевірки.');
