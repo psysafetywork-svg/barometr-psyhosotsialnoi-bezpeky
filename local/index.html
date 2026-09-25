@@ -2610,17 +2610,17 @@ function barometerV2SourceSentence(source,state,a,input){
   const problem=source==='P'?state==='G':state==='S';
   const selected=problem?barometerV2ActiveCodes(input,codes):codes;
   const detail=barometerV2NaturalSignalList(selected.length?selected:codes)||a.title.toLocaleLowerCase('uk-UA');
-  if(source==='E'){if(state==='S')return `Працівники повідомляють про труднощі стосовно ${detail}.`;if(state==='N')return `Відповіді працівників не вказують на виражені проблеми стосовно ${detail}.`;if(state==='T')return `За відповідями працівників недостатньо застосовних даних, щоб надійно оцінити ${detail}.`;}
-  if(source==='L'){if(state==='S')return `Керівники вказують на труднощі стосовно ${detail}.`;if(state==='N')return `Відповіді керівників не вказують на виражені проблеми стосовно ${detail}.`;if(state==='T')return `За відповідями керівників недостатньо застосовних даних, щоб надійно оцінити ${detail}.`;}
-  if(source==='P'){if(state==='G')return `Організаційний чекап показує прогалину стосовно ${detail}.`;if(state==='N')return `Організаційний чекап не показує прогалин стосовно ${detail}.`;if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних, щоб надійно оцінити ${detail}.`;}
+  if(source==='E'){if(state==='S')return `Відповіді працівників вказують на труднощі в таких питаннях, як ${detail}.`;if(state==='N')return `Відповіді працівників не вказують на виражені проблеми в таких питаннях, як ${detail}.`;if(state==='T')return `За відповідями працівників недостатньо застосовних даних для надійної оцінки таких питань, як ${detail}.`;}
+  if(source==='L'){if(state==='S')return `Відповіді керівників вказують на труднощі в таких питаннях, як ${detail}.`;if(state==='N')return `Відповіді керівників не вказують на виражені проблеми в таких питаннях, як ${detail}.`;if(state==='T')return `За відповідями керівників недостатньо застосовних даних для надійної оцінки таких питань, як ${detail}.`;}
+  if(source==='P'){if(state==='G')return `Організаційний чекап показує прогалини в таких питаннях, як ${detail}.`;if(state==='N')return `Організаційний чекап не показує виражених прогалин у таких питаннях, як ${detail}.`;if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних для надійної оцінки таких питань, як ${detail}.`;}
   return '';
 }
 function barometerV2AdditionalSentence(source,codes,input){
   const active=barometerV2ActiveCodes(input,codes),detail=barometerV2NaturalSignalList(active);
   if(!detail)return '';
-  if(source==='E')return `Додатково відповіді працівників вказують на труднощі стосовно ${detail}.`;
-  if(source==='L')return `Додатково відповіді керівників вказують на труднощі стосовно ${detail}.`;
-  if(source==='P')return `Додатково організаційний чекап показує прогалину стосовно ${detail}.`;
+  if(source==='E')return `Додатково відповіді працівників вказують на труднощі в таких питаннях, як ${detail}.`;
+  if(source==='L')return `Додатково відповіді керівників вказують на труднощі в таких питаннях, як ${detail}.`;
+  if(source==='P')return `Додатково організаційний чекап показує прогалини в таких питаннях, як ${detail}.`;
   return '';
 }
 function barometerV2Alignment(a,input){
