@@ -155,6 +155,22 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:400;letter-spacing:-.03em;margin:0
 
 
 </style>
+<style id="semantic-aspect-ux-v2">
+.semantic-aspects{margin-top:18px}
+.semantic-aspects-heading{margin:0 0 12px;font-size:16px;color:var(--ink)}
+.semantic-aspects-list{display:grid;gap:10px}
+.semantic-aspect-card{border:1px solid var(--line);border-radius:14px;background:var(--white);overflow:hidden}
+.semantic-aspect-card summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:16px 18px}
+.semantic-aspect-card summary::-webkit-details-marker{display:none}
+.semantic-aspect-card summary::after{content:'+';font-size:22px;line-height:1;color:var(--muted);font-weight:400}
+.semantic-aspect-card[open] summary::after{content:'−'}
+.semantic-aspect-title{font-size:18px;line-height:1.35;font-weight:700;color:var(--storm)}
+.semantic-aspect-body{padding:2px 18px 18px;border-top:1px solid var(--line)}
+.semantic-aspect-section{margin-top:16px}
+.semantic-aspect-section h5{margin:0 0 7px;font-size:14px;line-height:1.4;font-weight:700;color:var(--ink)}
+.semantic-aspect-section p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+@media(max-width:760px){.semantic-aspect-card summary{padding:15px 16px}.semantic-aspect-body{padding:2px 16px 16px}.semantic-aspect-title{font-size:17px}}
+</style>
 </head>
 <body>
 <div id="app">
@@ -2582,35 +2598,29 @@ function barometerV2SignalCopy(code){
 function barometerV2CodeList(codes){
   return barometerUnique((codes||[]).map(barometerV2SignalCopy).filter(Boolean)).join('; ');
 }
+function barometerV2NaturalSignalList(codes){
+  const labels=barometerUnique((codes||[]).map(barometerV2SignalCopy).filter(Boolean));
+  if(labels.length<2)return labels[0]||'';
+  if(labels.length===2)return labels[0]+' та '+labels[1];
+  return labels.slice(0,-1).join(', ')+' та '+labels[labels.length-1];
+}
 function barometerV2SourceSentence(source,state,a,input){
   if(state==='M'||state==='X')return '';
   const codes=source==='E'?a.eCodes:source==='L'?a.lCodes:a.pCodes;
   const problem=source==='P'?state==='G':state==='S';
   const selected=problem?barometerV2ActiveCodes(input,codes):codes;
-  const detail=barometerV2CodeList(selected.length?selected:codes)||a.title.toLocaleLowerCase('uk-UA');
-  if(source==='E'){
-    if(state==='S')return `Працівники повідомляють про труднощі щодо таких складових: ${detail}.`;
-    if(state==='N')return `За відповідями працівників виражених проблемних ознак щодо таких складових не виявлено: ${detail}.`;
-    if(state==='T')return `За відповідями працівників недостатньо застосовних даних, щоб надійно оцінити такі складові: ${detail}.`;
-  }
-  if(source==='L'){
-    if(state==='S')return `Керівники вказують на труднощі щодо таких складових: ${detail}.`;
-    if(state==='N')return `За відповідями керівників виражених проблемних ознак щодо таких складових не виявлено: ${detail}.`;
-    if(state==='T')return `За відповідями керівників недостатньо застосовних даних, щоб надійно оцінити такі складові: ${detail}.`;
-  }
-  if(source==='P'){
-    if(state==='G')return `Організаційний чекап показує прогалину щодо таких складових: ${detail}.`;
-    if(state==='N')return `Організаційний чекап не показує прогалин щодо таких складових: ${detail}.`;
-    if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних, щоб надійно оцінити такі складові: ${detail}.`;
-  }
+  const detail=barometerV2NaturalSignalList(selected.length?selected:codes)||a.title.toLocaleLowerCase('uk-UA');
+  if(source==='E'){if(state==='S')return `Працівники повідомляють про труднощі стосовно ${detail}.`;if(state==='N')return `Відповіді працівників не вказують на виражені проблеми стосовно ${detail}.`;if(state==='T')return `За відповідями працівників недостатньо застосовних даних, щоб надійно оцінити ${detail}.`;}
+  if(source==='L'){if(state==='S')return `Керівники вказують на труднощі стосовно ${detail}.`;if(state==='N')return `Відповіді керівників не вказують на виражені проблеми стосовно ${detail}.`;if(state==='T')return `За відповідями керівників недостатньо застосовних даних, щоб надійно оцінити ${detail}.`;}
+  if(source==='P'){if(state==='G')return `Організаційний чекап показує прогалину стосовно ${detail}.`;if(state==='N')return `Організаційний чекап не показує прогалин стосовно ${detail}.`;if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних, щоб надійно оцінити ${detail}.`;}
   return '';
 }
 function barometerV2AdditionalSentence(source,codes,input){
-  const active=barometerV2ActiveCodes(input,codes),detail=barometerV2CodeList(active);
+  const active=barometerV2ActiveCodes(input,codes),detail=barometerV2NaturalSignalList(active);
   if(!detail)return '';
-  if(source==='E')return `Додатково відповіді працівників вказують на труднощі щодо таких складових: ${detail}.`;
-  if(source==='L')return `Додатково керівники вказують на труднощі щодо таких складових: ${detail}.`;
-  if(source==='P')return `Додатково організаційний чекап показує прогалину щодо таких складових: ${detail}.`;
+  if(source==='E')return `Додатково відповіді працівників вказують на труднощі стосовно ${detail}.`;
+  if(source==='L')return `Додатково відповіді керівників вказують на труднощі стосовно ${detail}.`;
+  if(source==='P')return `Додатково організаційний чекап показує прогалину стосовно ${detail}.`;
   return '';
 }
 function barometerV2Alignment(a,input){
@@ -2693,10 +2703,13 @@ barometerFinalView=function(row,semantic){return {lead:semantic.lead,aspects:sem
 
 function barometerV2ActionMarkup(action,existing,moduleId){return `<article class="evidence-action" data-final-action-id="${h(action.final_action_id)}"><div class="evidence-action-head"><h4>${h(action.title)}</h4></div><div class="evidence-col"><strong>Що зробити</strong><ul>${(action.steps||[]).map(t=>`<li>${h(t)}</li>`).join('')}</ul></div><div class="evidence-col"><strong>Як перевірити результат</strong><p>${h(action.check)}</p></div><div class="card-actions">${existing?`<span class="data-quality">Ця дія вже є у Плані організаційних дій</span><button class="btn ghost small" data-a="open-plan-action" data-id="${h(existing.id)}">Відкрити у Плані</button>`:`<button class="btn primary small" data-a="add-routed-action" data-m="${moduleId}" data-target="${h(action.final_action_id)}">Додати до Плану організаційних дій</button>`}</div></article>`}
 barometerSemanticActionCards=function(moduleId,actions){return (actions||[]).map(action=>barometerV2ActionMarkup(action,planAction(action.final_action_id),moduleId)).join('')};
-function barometerV2AspectsMarkup(aspects){return (aspects||[]).map(a=>`<section class="matrix-block evidence-aspect" data-aspect-id="${h(a.id)}"><h4>${h(a.title)}</h4><div><strong>Як узгоджуються джерела</strong><p>${h(a.alignment)}</p></div><div><strong>На що звернути увагу</strong><p>${h(a.attention)}</p></div></section>`).join('')}
+function barometerV2AspectsMarkup(aspects){
+  const items=(aspects||[]).map(a=>`<details class="semantic-aspect-card" data-aspect-id="${h(a.id)}"><summary><span class="semantic-aspect-title">${h(a.title)}</span></summary><div class="semantic-aspect-body"><div class="semantic-aspect-section"><h5>Як узгоджуються джерела</h5><p>${h(a.alignment)}</p></div><div class="semantic-aspect-section"><h5>На що звернути увагу</h5><p>${h(a.attention)}</p></div></div></details>`).join('');
+  return items?`<section class="semantic-aspects"><h4 class="semantic-aspects-heading">Аспекти, що потребують уваги</h4><div class="semantic-aspects-list">${items}</div></section>`:'';
+}
 barometerSemanticModuleMarkup=function(row){
   const analysis=barometerSemanticInterpretation(),semantic=analysis.modules[row.m];if(!semantic)return '';
-  const notes=semantic.dataNotes.length?`<div class="data-quality">${semantic.dataNotes.map(h).join('<br>')}</div>`:'',aspects=semantic.aspects.length?`<div class="matrix-detail-grid">${barometerV2AspectsMarkup(semantic.aspects)}</div>`:'',empty=semantic.crossRefs.length?'Окрема дубльована дія тут не створюється, оскільки відповідна дія щодо організаційних змін уже сформована в модулі 1.':'За доступними даними окрема організаційна дія для цього модуля не формується.';
+  const notes=semantic.dataNotes.length?`<div class="data-quality">${semantic.dataNotes.map(h).join('<br>')}</div>`:'',aspects=semantic.aspects.length?barometerV2AspectsMarkup(semantic.aspects):'',empty=semantic.crossRefs.length?'Окрема дубльована дія тут не створюється, оскільки відповідна дія щодо організаційних змін уже сформована в модулі 1.':'За доступними даними окрема організаційна дія для цього модуля не формується.';
   const actions=semantic.actions.length?`<h4 style="margin-top:18px">Рекомендовані організаційні дії</h4><div class="rec-inline-grid evidence">${barometerSemanticActionCards(row.m,semantic.actions)}</div><div class="data-quality">${h(BAROMETER_FINAL_PRIMARY_PREVENTION)}</div>`:`<div class="recommendation-empty"><h4>Рекомендовані організаційні дії</h4><p>${h(empty)}</p></div>`;
   return `<article class="module-card matrix" id="matrix-${row.m}"><div class="matrix-row"><div class="matrix-title"><h3>${row.m}. ${h(M[row.m-1])}</h3><p class="muted">${h(semantic.lead)}</p></div><div class="matrix-top-statuses">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><div class="matrix-actions"><button class="btn ghost small" data-a="toggle-detail" data-m="${row.m}">Переглянути інтерпретацію</button></div><div class="matrix-detail" id="matrix-detail-${row.m}">${aspects}${notes}<div class="rec-inline">${actions}</div></div></article>`;
 };
