@@ -39,7 +39,8 @@ function loadLocalPortal(){
       SURVEY_ITEMS,ROLE_QUESTION,P_LIST,P,M,COMBO64,FINE_ITEMS,ACTION_LIB,THEMATIC_LIB,P38_TEXT,SITUATIONAL_HYPOTHESIS,
       parseCSV,validateTableRows,aggregateSource,calculatePResults,
       fmtPct,weatherStatus,mapStatusBadge,weatherMapHtml,managementSignal,comboTemplate,hasWeakSituationalPractice,selectedActions,attentionAspects,actualResultModel,buildReportHtml,planXlsxBytes,
-      normalizeResearch,safeResearchClone,validateBackupResearch,refreshParticipationMetadata,currentPlan,planRows,count,
+      normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,
+      barometerRuntimeInput,barometerSemanticInterpretation,
       validateEnvironmentValues,validatePeriodDates,
       setState(value){S=value},getState(){return S},render,
     };
@@ -77,6 +78,27 @@ function setSurveyIssueScenario(code,{checkupOverrides={}}={}){
   r.periods[0].checkup.results=portal.api.calculatePResults(r.periods[0].checkup);
   portal.api.setState({screen:'dash',r,env:environment.id,module:1,modal:null,demo:false,returnResearch:null});
   return {r,environment};
+}
+
+function surveyRows(source,count,{answer=5,overrides={}}={}){
+  const answers=Object.fromEntries(portal.api.SURVEY_ITEMS
+    .filter(item=>item.source===source)
+    .map(item=>[item.code,overrides[item.code]??answer]));
+  return Array.from({length:count},()=>({answers}));
+}
+
+function setRuntimeScenario({eCount=20,lCount=10,eAnswer=5,lAnswer=5,eOverrides={},lOverrides={},pOverrides={}}={}){
+  const eResult=portal.api.aggregateSource(surveyRows('E',eCount,{answer:eAnswer,overrides:eOverrides}),'E');
+  const lResult=portal.api.aggregateSource(surveyRows('L',lCount,{answer:lAnswer,overrides:lOverrides}),'L');
+  const checkupAnswers={...Object.fromEntries(portal.api.P_LIST.map(item=>[item.code,'full'])),...pOverrides};
+  const environment={id:'env-runtime',name:'Синтетичне середовище',emp:eCount,man:lCount,invE:eCount,invL:lCount,
+    survey:{ok:true,e:eCount,l:lCount,results:{e:eResult,l:lResult}}};
+  const r=research();
+  r.periods[0].envs=[environment];
+  r.periods[0].checkup={answers:checkupAnswers,notes:{},done:true,asOfDate:'2026-01-31',schemaVersion:'checkup-2026-09-20-final'};
+  r.periods[0].checkup.results=portal.api.calculatePResults(r.periods[0].checkup);
+  portal.api.setState({screen:'dash',r,env:environment.id,module:1,modal:null,demo:false,returnResearch:null});
+  return {eResult,lResult,environment};
 }
 
 test('all executable scripts parse',()=>{
@@ -124,13 +146,22 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   assert.ok(results.every(item=>item.e==='Ясно'&&item.l==='Ясно'&&item.p==='Ясно'));
   const report=portal.api.buildReportHtml(environment);
   assert.match(report,/Ключові результати за модулями/);
-  assert.match(report,/Опис дії|План організаційних змін/);
+  assert.match(report,/Як узгоджуються джерела/);
+  assert.match(report,/Усі три джерела узгоджено показують сприятливу ситуацію/);
   assert.match(report,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(report,/<th>Організаційні практики<\/th>/);
   const xlsx=portal.api.planXlsxBytes(portal.api.planRows());
   assert.equal(xlsx[0],0x50);
   assert.equal(xlsx[1],0x4b);
   assert.ok(xlsx.length>1000);
+});
+
+test('report uses final semantic action wording when E and P support an action',()=>{
+  const {environment}=setRuntimeScenario({eOverrides:{E16:1},pOverrides:{P19:'partial'}});
+  const report=portal.api.buildReportHtml(environment);
+  assert.match(report,/<strong>Як узгоджуються джерела<\/strong>/);
+  assert.match(report,/<b>Що саме зробити:<\/b>/);
+  assert.match(report,/Зробити значущі рішення щодо роботи, оцінювання й винагороди зрозумілими та обґрунтованими/);
 });
 
 test('P40 follow-up renders immediately after selecting not implemented',()=>{
@@ -151,7 +182,7 @@ test('survey thresholds use unrounded values and display one decimal near a boun
   assert.match(badge,/54,5% спр\./);
   assert.match(badge,/статус розраховано за неокругленими значеннями/);
   const map=portal.api.weatherMapHtml([{m:1,e:'Ясно',l:'Буря',p:'Ясно'}],{survey:{results:{e:{modules:{}},l:{totalResponses:11,detailAllowed:true,modules:{1:{favorable:54.545,borderline:'Буря біля межі з Хмарно'}}}}}});
-  assert.match(map,/одна відповідь змінює частку приблизно на 9,1%/);
+  assert.match(map,/Буря біля межі з Хмарно; статус розраховано за неокругленими значеннями/);
   assert.match(map,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(map,/<th>Організаційні практики<\/th>/);
 });
@@ -275,12 +306,99 @@ test('manager detail is never retained below ten responses',()=>{
   assert.equal(r.periods[0].envs[0].survey.results.l.problems.length,0);
 });
 
-test('zero manager responses no longer block the dashboard source count',()=>{
+test('E=19 has no status or problem items, while E=20 gets a weather status',()=>{
+  const below=portal.api.aggregateSource(surveyRows('E',19,{answer:1}),'E');
+  assert.equal(below.eligible,false);
+  assert.equal(below.detailAllowed,false);
+  assert.equal(below.items,null);
+  assert.equal(below.problems.length,0);
+  assert.ok(Object.values(below.modules).every(module=>module.status===null));
+  const atThreshold=portal.api.aggregateSource(surveyRows('E',20),'E');
+  assert.equal(atThreshold.eligible,true);
+  assert.ok(atThreshold.items);
+  assert.ok(Object.values(atThreshold.modules).every(module=>module.status==='Ясно'));
+});
+
+test('L=9 has no status or problem items, while L=10 gets a weather status',()=>{
+  const below=portal.api.aggregateSource(surveyRows('L',9,{answer:1}),'L');
+  assert.equal(below.eligible,false);
+  assert.equal(below.detailAllowed,false);
+  assert.equal(below.items,null);
+  assert.equal(below.problems.length,0);
+  assert.ok(Object.values(below.modules).every(module=>module.status===null));
+  const atThreshold=portal.api.aggregateSource(surveyRows('L',10),'L');
+  assert.equal(atThreshold.eligible,true);
+  assert.ok(atThreshold.items);
+  assert.ok(Object.values(atThreshold.modules).every(module=>module.status==='Ясно'));
+});
+
+test('eligible E and L with too few applicable answers receive Туман, not a sample warning',()=>{
+  const {eResult,lResult}=setRuntimeScenario({eAnswer:'NA',lAnswer:'NA'});
+  for(const result of [eResult,lResult]){
+    assert.equal(result.eligible,true);
+    assert.equal(result.problems.length,0);
+    assert.ok(Object.values(result.modules).every(module=>module.status==='Туман'));
+  }
+  const row=portal.api.actualResultModel()[0];
+  assert.equal(row.e,'Туман');
+  assert.equal(row.l,'Туман');
+  const input=portal.api.barometerRuntimeInput();
+  assert.equal(input.E.states.E01,'T');
+  assert.equal(input.L.states.L01,'T');
+});
+
+test('E=19 is excluded from final comparison while valid L and P still produce analysis',()=>{
+  const {environment}=setRuntimeScenario({eCount:19,eAnswer:1,lOverrides:{L01:1},pOverrides:{P01:'no'}});
+  const rows=portal.api.actualResultModel();
+  assert.ok(rows.every(row=>row.e==='Недостатня вибірка'));
+  assert.equal(rows[0].l,'Буря');
+  assert.equal(rows[0].p,'Хмарно');
+  assert.match(portal.api.mapStatusBadge(rows[0].e,'E',1,environment.survey.results),/Статус не розраховується/);
+  assert.doesNotMatch(portal.api.mapStatusBadge(rows[0].e,'E',1,environment.survey.results),/Туман/);
+  const analysis=portal.api.barometerSemanticInterpretation();
+  assert.equal(analysis.input.E.eligible,false);
+  assert.equal(analysis.input.E.states.E01,'X');
+  assert.equal(analysis.input.L.states.L01,'S');
+  assert.equal(analysis.input.P.states.P01,'G');
+  const cluster=analysis.modules[1].clusters.find(item=>item.eCodes.includes('E01'));
+  assert.equal(cluster.e,'X');
+  assert.equal(cluster.l,'S');
+  assert.equal(cluster.p,'G');
+  assert.ok(!analysis.modules[1].problemCodes.includes('E01'));
+  assert.ok(analysis.modules[1].problemCodes.includes('L01'));
+  assert.ok(analysis.modules[1].problemCodes.includes('P01'));
+  assert.ok(analysis.modules[1].actions.length>0);
+  assert.match(analysis.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);
+});
+
+test('L=9 is excluded from final comparison while valid E and P still produce analysis',()=>{
+  setRuntimeScenario({lCount:9,lAnswer:1,eOverrides:{E01:1},pOverrides:{P01:'no'}});
+  const rows=portal.api.actualResultModel();
+  assert.ok(rows.every(row=>row.l==='Недостатня вибірка'));
+  assert.equal(rows[0].e,'Хмарно');
+  assert.equal(rows[0].p,'Хмарно');
+  const analysis=portal.api.barometerSemanticInterpretation();
+  assert.equal(analysis.input.L.eligible,false);
+  assert.equal(analysis.input.L.states.L01,'X');
+  assert.equal(analysis.input.E.states.E01,'S');
+  assert.equal(analysis.input.P.states.P01,'G');
+  const cluster=analysis.modules[1].clusters.find(item=>item.lCodes.includes('L01'));
+  assert.equal(cluster.l,'X');
+  assert.equal(cluster.e,'S');
+  assert.equal(cluster.p,'G');
+  assert.ok(!analysis.modules[1].problemCodes.includes('L01'));
+  assert.ok(analysis.modules[1].problemCodes.includes('E01'));
+  assert.ok(analysis.modules[1].problemCodes.includes('P01'));
+  assert.ok(analysis.modules[1].actions.length>0);
+  assert.match(analysis.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/);
+});
+
+test('zero manager responses no longer block the final dashboard availability',()=>{
   const r=research();
   const environment={id:'env-1',name:'Середовище',emp:30,man:2,survey:{results:{e:{totalResponses:30},l:{totalResponses:0}}}};
   r.periods[0].envs=[environment];r.periods[0].checkup.done=true;
   portal.api.setState({screen:'home',r,env:null,module:1,modal:null,demo:false,returnResearch:null});
-  assert.equal(portal.api.count(environment),3);
+  assert.equal(portal.api.canDashboard(environment),true);
 });
 
 test('plan is isolated by period and export contains action description',()=>{
@@ -304,25 +422,6 @@ test('legacy plan actions are assigned to the period that owns their environment
   const r=research({periods:[p1,p2],plan:[{id:'a1',envId:'e2'}]});
   portal.api.normalizeResearch(r);
   assert.equal(r.plan[0].periodId,'p2');
-});
-
-test('editing invitation counts refreshes participation metadata',()=>{
-  const result={totalResponses:20,modules:{1:{status:'Ясно',quality:'З обмеженнями',qualityReasons:['частка участі нижча за бажану для впевненої інтерпретації']}}};
-  portal.api.refreshParticipationMetadata(result,20,'E');
-  assert.equal(result.participationRate,100);
-  assert.equal(result.participationError,false);
-  assert.equal(result.modules[1].quality,'Достатня');
-  assert.equal(result.modules[1].qualityReasons.length,0);
-});
-
-test('an explicit zero invited managers is distinguished from a missing value',()=>{
-  const managerAnswers=Object.fromEntries(portal.api.SURVEY_ITEMS.filter(item=>item.source==='L').map(item=>[item.code,5]));
-  const result=portal.api.aggregateSource(Array.from({length:5},()=>({answers:managerAnswers})),'L',0);
-  assert.equal(result.participationError,true);
-  assert.ok(result.modules[1].qualityReasons.some(message=>message.includes('кількість запрошених вказана як 0')));
-  portal.api.refreshParticipationMetadata(result,5,'L');
-  assert.equal(result.participationError,false);
-  assert.ok(result.modules[1].qualityReasons.every(message=>!message.includes('кількість запрошених вказана як 0')));
 });
 
 test('backup validation rejects inconsistent structures before replacement',()=>{
@@ -349,16 +448,16 @@ test('report sentences start with capitals',()=>{
 });
 
 test('environment and period validation rejects inconsistent values',()=>{
-  assert.match(portal.api.validateEnvironmentValues('Офіс',10,11,10,11),/не може перевищувати/);
-  assert.match(portal.api.validateEnvironmentValues('Офіс',10,2,11,2),/від 1 до чисельності/);
+  assert.match(portal.api.validateEnvironmentValues(''),/Вкажіть назву робочого середовища/);
+  assert.equal(portal.api.validateEnvironmentValues('Офіс'),'');
   assert.match(portal.api.validatePeriodDates('2026-02-02','2026-02-01'),/не може бути раніше/);
 });
 
 test('public portal documents the previously hidden rules and four checkup answers',()=>{
-  assert.match(publicHtml,/Недостатньо підтверджених даних<\/span>/);
+  assert.match(publicHtml,/Недостатньо підтверджених даних<\/strong>/);
   assert.match(publicHtml,/75% сприятливих і менше 15% несприятливих/i);
-  assert.match(publicHtml,/одну нереалізовану критичну практику/);
-  assert.match(publicHtml,/CSV має бути збережений у кодуванні UTF-8/);
+  assert.match(publicHtml,/Якщо мінімальної кількості валідних анкет не досягнуто, статус для відповідного опитувального джерела не формується/);
+  assert.match(publicHtml,/Для CSV використовуйте формат UTF-8/);
   assert.match(publicHtml,/не шифруються самим Барометром/);
   assert.match(publicHtml,/Організаційний чекап показує сприятливий стан практик/);
   assert.doesNotMatch(publicHtml,/Організаційні практики оцінені слабше/);
