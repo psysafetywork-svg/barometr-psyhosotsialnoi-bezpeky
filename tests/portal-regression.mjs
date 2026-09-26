@@ -667,6 +667,80 @@ test('semantic v2 visible interpretation avoids banned technical wording',()=>{c
 test('semantic v2 L-only problem is retained',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/Відповіді керівників вказують/)});
 test('semantic v2 P-only gap is preventive',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P01:'G'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/превентивна організаційна прогалина/)});
 test('semantic v2 E problem plus favorable P describes discrepancy',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},p:{P01:'N',P06:'N'}}));assert.match(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Досвід працівників відрізняється від результату організаційного чекапу/)});
+test('P gap A: problematic E remains actionable with favorable L and corporate P',()=>{
+  setRuntimeScenario({eOverrides:{E01:1}});
+  const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
+  const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
+  assert.equal(row.e,'Хмарно');assert.equal(row.l,'Ясно');assert.equal(row.p,'Ясно');
+  assert.ok(aspect);assert.match(aspect.alignment,/Досвід працівників відрізняється від результату організаційного чекапу/);
+  assert.match(aspect.alignment,/охоплює це середовище/);assert.match(aspect.alignment,/працівники знають про неї/);
+  assert.match(aspect.alignment,/мають реальний доступ/);assert.match(aspect.alignment,/дає очікуваний результат/);
+  assert.ok(analysis.modules[1].actions.some(action=>action.basis_codes.includes('E01')));
+});
+test('P gap B: problematic L is retained and manager access is checked despite favorable E and P',()=>{
+  setRuntimeScenario({lOverrides:{L01:1}});
+  const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
+  const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
+  assert.equal(row.e,'Ясно');assert.equal(row.l,'Буря');assert.equal(row.p,'Ясно');
+  assert.ok(aspect);assert.match(aspect.alignment,/Можливості керівників відрізняються від сприятливого результату організаційного чекапу/);
+  for(const term of ['час','інформацію','ресурси','повноваження','доступ до потрібного рішення або фахівця'])assert.ok(aspect.alignment.includes(term));
+  assert.ok(analysis.modules[1].actions.some(action=>action.basis_codes.includes('L01')));
+});
+test('P gap C: problematic E and L give a stronger local signal without claiming a proved cause',()=>{
+  setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L01:1}});
+  const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
+  const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
+  assert.equal(row.e,'Хмарно');assert.equal(row.l,'Буря');assert.equal(row.p,'Ясно');
+  assert.ok(aspect);assert.match(aspect.alignment,/Досвід працівників відрізняється/);
+  assert.match(aspect.alignment,/Можливості керівників відрізняються/);
+  assert.match(aspect.alignment,/сильним сигналом можливого розриву/);
+  assert.match(aspect.alignment,/механізм потрібно перевірити додатково/);
+  assert.doesNotMatch(aspect.alignment,/практика існує лише формально|доведено, що практика/);
+  assert.ok(analysis.modules[1].actions.some(action=>['E01','L01'].every(code=>action.basis_codes.includes(code))));
+});
+test('P gap D: one checkup serves two environments and only the weaker environment shows a local gap',()=>{
+  setRuntimeScenario();
+  const state=portal.api.getState(),checkup=state.r.periods[0].checkup;
+  const second={id:'env-second',name:'Друге середовище',emp:20,man:10,invE:20,invL:10,
+    survey:{ok:true,e:20,l:10,results:{
+      e:portal.api.aggregateSource(surveyRows('E',20,{overrides:{E01:1}}),'E'),
+      l:portal.api.aggregateSource(surveyRows('L',10,{overrides:{L01:1}}),'L'),
+    }}};
+  state.r.periods[0].envs.push(second);
+  const firstRow=portal.api.actualResultModel()[0],first=portal.api.barometerSemanticInterpretation();
+  portal.api.setState({...state,env:second.id});
+  const secondRow=portal.api.actualResultModel()[0],other=portal.api.barometerSemanticInterpretation();
+  assert.strictEqual(state.r.periods[0].checkup,checkup);
+  assert.equal(firstRow.p,'Ясно');assert.equal(secondRow.p,'Ясно');
+  assert.equal(firstRow.e,'Ясно');assert.equal(firstRow.l,'Ясно');
+  assert.equal(secondRow.e,'Хмарно');assert.equal(secondRow.l,'Буря');
+  assert.equal(JSON.stringify(first.input.P.states),JSON.stringify(other.input.P.states));
+  assert.equal(first.modules[1].aspects.length,0);
+  assert.match(other.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/сильним сигналом можливого розриву/);
+});
+test('P gap at module level: diffuse cloudy E and L remain visible even without a problem item',()=>{
+  setRuntimeScenario();
+  const state=portal.api.getState(),environment=state.r.periods[0].envs[0];
+  for(const [source,count] of [['E',20],['L',10]]){
+    const codes=portal.api.SURVEY_ITEMS.filter(item=>item.source===source&&item.module===1).map(item=>item.code);
+    const rows=surveyRows(source,count);
+    for(let i=0;i<rows.length;i++)if(i>=Math.ceil(count*0.7))rows[i].answers={...rows[i].answers,...Object.fromEntries(codes.map(code=>[code,3]))};
+    environment.survey.results[source.toLowerCase()]=portal.api.aggregateSource(rows,source);
+  }
+  const row=portal.api.actualResultModel()[0],semantic=portal.api.barometerSemanticInterpretation().modules[1];
+  assert.equal(row.e,'Хмарно');assert.equal(row.l,'Хмарно');assert.equal(row.p,'Ясно');
+  assert.equal(semantic.aspects.length,0);
+  assert.match(semantic.lead,/сильний сигнал можливого розриву/);
+  assert.match(semantic.lead,/перевір/);
+  assert.doesNotMatch(semantic.lead,/якість даних обмежує висновок/);
+  const cloudyE=environment.survey.results.e,cloudyL=environment.survey.results.l;
+  environment.survey.results.l=portal.api.aggregateSource(surveyRows('L',10),'L');
+  assert.match(portal.api.barometerSemanticInterpretation().modules[1].lead,/Результат працівників менш сприятливий/);
+  environment.survey.results.e=portal.api.aggregateSource(surveyRows('E',20),'E');
+  environment.survey.results.l=cloudyL;
+  assert.match(portal.api.barometerSemanticInterpretation().modules[1].lead,/Результат керівників менш сприятливий/);
+  environment.survey.results.e=cloudyE;
+});
 test('semantic v2 fog does not close active issue',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'T'},l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/недостатньо застосовних даних/);assert.match(x.alignment,/Відповіді керівників вказують/)});
 test('semantic v2 insufficient E sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({eEligible:false,l:{L01:'S'},p:{P01:'G'}}));assert.match(a.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);const x=a.modules[1].clusters.find(x=>x.eCodes.includes('E01'));assert.equal(x.e,'X');assert.doesNotMatch(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Туман/)});
 test('semantic v2 insufficient L sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({lEligible:false,e:{E01:'S'}}));assert.match(a.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/)});
