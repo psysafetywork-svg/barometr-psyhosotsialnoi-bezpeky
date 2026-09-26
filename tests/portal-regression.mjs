@@ -741,6 +741,16 @@ test('P gap at module level: diffuse cloudy E and L remain visible even without 
   assert.match(portal.api.barometerSemanticInterpretation().modules[1].lead,/Результат керівників менш сприятливий/);
   environment.survey.results.e=cloudyE;
 });
+test('P gap across different aspects: E and L together warrant a module check, not an assumed shared cause',()=>{
+  setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L02:1}});
+  const row=portal.api.actualResultModel()[0],module=portal.api.barometerSemanticInterpretation().modules[1];
+  assert.equal(row.e,'Хмарно');assert.equal(row.l,'Буря');assert.equal(row.p,'Ясно');
+  assert.ok(module.aspects.some(x=>x.id==='M1-C1'&&x.e==='S'&&x.l==='N'));
+  assert.ok(module.aspects.some(x=>x.id==='M1-C2'&&x.e==='N'&&x.l==='S'));
+  assert.match(module.lead,/сильний сигнал можливого розриву/);
+  assert.match(module.lead,/кожного аспекту окремо/);
+  assert.doesNotMatch(module.lead,/спільну причину встановлено/);
+});
 test('semantic v2 fog does not close active issue',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'T'},l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/недостатньо застосовних даних/);assert.match(x.alignment,/Відповіді керівників вказують/)});
 test('semantic v2 insufficient E sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({eEligible:false,l:{L01:'S'},p:{P01:'G'}}));assert.match(a.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);const x=a.modules[1].clusters.find(x=>x.eCodes.includes('E01'));assert.equal(x.e,'X');assert.doesNotMatch(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Туман/)});
 test('semantic v2 insufficient L sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({lEligible:false,e:{E01:'S'}}));assert.match(a.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/)});
