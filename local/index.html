@@ -665,17 +665,20 @@ function surveyStatusMetric(status,mr){
   return ''
 }
 function mapStatusBadge(status,source,moduleId,sr){
+  if(source==='P'){
+    const reasons={'Ясно':'усі практики реалізовані','Хмарно':'є окремі прогалини','Буря':'є суттєва прогалина','Туман':'недостатньо даних'};
+    return `<span class="weather-badge ${statusClass(status)}">${statusIcon(status)} ${status}${reasons[status]?` (${reasons[status]})`:''}</span>`;
+  }
   let extra='';
   const mr=source==='E'?sr?.e?.modules?.[moduleId]:source==='L'?sr?.l?.modules?.[moduleId]:null;
   if(source==='E'&&mr)extra=surveyStatusMetric(status,mr);
   if(source==='L'&&mr&&sr?.l?.detailAllowed)extra=surveyStatusMetric(status,mr);
-  const boundary=mr?.borderline?`<span class="boundary-flag">${h(mr.borderline)}; статус розраховано за неокругленими значеннями</span>`:'';
-  return `<span class="weather-badge ${statusClass(status)}">${statusIcon(status)} ${status}${extra}</span>${boundary}`;
+  return `<span class="weather-badge ${statusClass(status)}">${statusIcon(status)} ${status}${extra}</span>`;
 }
 function weatherMapHtml(rows,eobj,report=false){
-  const sr=getSurveyResults(eobj),lN=sr?.l?.totalResponses??eobj?.survey?.l??0;
+  const sr=getSurveyResults(eobj);
   const body=rows.map(r=>`<tr><td class="weather-module">${r.m}. ${h(M[r.m-1])}</td><td>${mapStatusBadge(r.e,'E',r.m,sr)}</td><td>${mapStatusBadge(r.l,'L',r.m,sr)}</td><td>${mapStatusBadge(r.p,'P',r.m,sr)}</td></tr>`).join('');
-  return `<div class="weather-map"><h3>Карта погодних статусів</h3><p>Зведена картина за сімома модулями. Джерела показані окремо і не усереднюються.</p><table class="weather-table"><thead><tr><th>Модуль</th><th>Працівники</th><th>Керівники</th><th>Організаційний чекап</th></tr></thead><tbody>${body}</tbody></table><p class="weather-map-note">Показник у дужках пояснює статус опитувального джерела: для «Ясно» показано частку сприятливих відповідей; для «Буря» — частку несприятливих; для «Хмарно» — частку несприятливих, якщо їх від 15% до менш ніж 30%, або нейтральних, якщо несприятливих менше 15%; якщо формально «Ясно» обмежено через окремий проблемний аспект, показано «є проблемний аспект». «Ясно»: щонайменше 75% сприятливих і менше 15% несприятливих; «Буря»: щонайменше 30% несприятливих. «Туман» означає недостатньо застосовних даних. Статус визначається за неокругленими значеннями.</p>${lN>=10&&lN<20?`<p class="weather-map-note">Якщо показник має позначку «біля межі», невелика зміна у відповідях може змінити статус. Тому звертайте увагу насамперед на статус і загальну картину результатів, а не на один округлений відсоток.</p>`:''}</div>`;
+  return `<div class="weather-map"><h3>Карта погодних статусів</h3><p>Зведена картина за сімома модулями. Джерела показані окремо і не усереднюються.</p><table class="weather-table"><thead><tr><th>Модуль</th><th>Працівники</th><th>Керівники</th><th>Організаційний чекап</th></tr></thead><tbody>${body}</tbody></table><p class="weather-map-note">У дужках показано показник, який пояснює статус опитувального джерела: для «Ясно» - частку сприятливих відповідей, для «Хмарно» - частку нейтральних або несприятливих відповідей, для «Буря» - частку несприятливих відповідей. «Туман» означає, що для надійного висновку недостатньо застосовних даних.</p><p class="weather-map-note">«Ясно»: щонайменше 75% сприятливих і менше 15% несприятливих відповідей. «Буря»: щонайменше 30% несприятливих відповідей. «Хмарно»: змішаний профіль відповідей або наявність окремого проблемного аспекту.</p></div>`;
 }
 
 
@@ -805,9 +808,9 @@ function participationText(eobj,sr){
   return `Працівники: ${eN} валідних анкет. Керівники: ${lN} валідних анкет.`;
 }
 function reportMapHtml(rows,eobj){
-  const sr=getSurveyResults(eobj),lN=sr?.l?.totalResponses||0;
+  const sr=getSurveyResults(eobj);
   const rowHtml=rows.map(r=>`<tr><td><b>${r.m}. ${h(M[r.m-1])}</b></td><td>${mapStatusBadge(r.e,'E',r.m,sr)}</td><td>${mapStatusBadge(r.l,'L',r.m,sr)}</td><td>${mapStatusBadge(r.p,'P',r.m,sr)}</td></tr>`).join('');
-  return `<section class="summary-card"><h2>Карта погодних статусів</h2><table class="summary-table"><thead><tr><th>Модуль</th><th>Працівники</th><th>Керівники</th><th>Організаційний чекап</th></tr></thead><tbody>${rowHtml}</tbody></table><p class="small-note">Показник у дужках пояснює статус E/L: для «Ясно» показано частку сприятливих відповідей, для «Буря» — несприятливих, для «Хмарно» — несприятливих або нейтральних залежно від профілю, для «Туман» — «недостатньо даних». Статус визначається за неокругленими значеннями.</p>${lN>=10&&lN<20?`<p class="small-note">Якщо показник має позначку «біля межі», невелика зміна у відповідях може змінити статус. Тому звертайте увагу насамперед на статус і загальну картину результатів, а не на один округлений відсоток.</p>`:''}</section>`;
+  return `<section class="summary-card"><h2>Карта погодних статусів</h2><table class="summary-table"><thead><tr><th>Модуль</th><th>Працівники</th><th>Керівники</th><th>Організаційний чекап</th></tr></thead><tbody>${rowHtml}</tbody></table><p class="small-note">У дужках показано показник, який пояснює статус опитувального джерела: для «Ясно» - частку сприятливих відповідей, для «Хмарно» - частку нейтральних або несприятливих відповідей, для «Буря» - частку несприятливих відповідей. «Туман» означає, що для надійного висновку недостатньо застосовних даних.</p><p class="small-note">«Ясно»: щонайменше 75% сприятливих і менше 15% несприятливих відповідей. «Буря»: щонайменше 30% несприятливих відповідей. «Хмарно»: змішаний профіль відповідей або наявність окремого проблемного аспекту.</p></section>`;
 }
 function reportQualityNotes(moduleId,sr){
   const pr=period()?.checkup?.results||calculatePResults(period().checkup),notes=[];
@@ -840,7 +843,7 @@ body{font-family:Arial,sans-serif;color:#394649;background:#fff;margin:0;padding
 <div class="meta-grid"><div class="meta-box"><span>Компанія</span><b>${esc(S.r.company)}</b></div><div class="meta-box"><span>Період</span><b>${esc(period().label)}</b></div><div class="meta-box"><span>Робоче середовище</span><b>${esc(eobj.name)}</b></div></div>
 <p><strong>Дослідження веде:</strong> ${esc(S.r.owner)}<br><strong>Період дослідження:</strong> з ${esc(fmtDate(period().start))} до ${esc(fmtDate(period().end))}</p>
 ${reportMapHtml(rows,eobj)}
-<div class="legend"><b>Як читати статуси.</b> Для опитувань «Ясно» означає щонайменше 75% сприятливих і менше 15% несприятливих відповідей; «Буря» — щонайменше 30% несприятливих; «Хмарно» — середній результат не досягає умов «Ясно» при частці несприятливих нижче 30% або формально «Ясно» обмежено через окремий проблемний аспект. Окреме твердження вважається проблемним, якщо сприятливих відповідей менше 55% або несприятливих щонайменше 30%. Розрахунок виконується за неокругленими значеннями. Для аналізу результатів потрібно щонайменше 20 валідних анкет працівників і 10 валідних анкет керівників. Якщо мінімальну вибірку не досягнуто, погодний статус для цього джерела не формується — це не статус «Туман». За достатньої мінімальної вибірки «Туман» в опитувальному джерелі означає, що в модулі недостатньо застосовних відповідей для надійної інтерпретації. Для організаційних практик «Буря» означає одну нереалізовану критичну практику (P04, P13, P15, P16, P21, P28, P31, P36, P38 або P42) або щонайменше дві нереалізовані практики; «Туман» — щонайменше три оцінки «недостатньо даних», якщо умова «Бурі» не спрацювала; «Ясно» — усі шість практик реалізовано повністю. P40 є критичним лише за підтвердженого актуального ризику з боку третіх осіб. Статуси трьох джерел не усереднюються.</div>
+<div class="legend"><b>Як читати статуси.</b> Для опитувань «Ясно» означає щонайменше 75% сприятливих і менше 15% несприятливих відповідей; «Буря» — щонайменше 30% несприятливих; «Хмарно» — середній результат не досягає умов «Ясно» при частці несприятливих нижче 30% або формально «Ясно» обмежено через окремий проблемний аспект. Окреме твердження вважається проблемним, якщо сприятливих відповідей менше 55% або несприятливих щонайменше 30%. Для аналізу результатів потрібно щонайменше 20 валідних анкет працівників і 10 валідних анкет керівників. Якщо мінімальну вибірку не досягнуто, погодний статус для цього джерела не формується — це не статус «Туман». За достатньої мінімальної вибірки «Туман» в опитувальному джерелі означає, що в модулі недостатньо застосовних відповідей для надійної інтерпретації. Для організаційних практик «Буря» означає одну нереалізовану критичну практику (P04, P13, P15, P16, P21, P28, P31, P36, P38 або P42) або щонайменше дві нереалізовані практики; «Туман» — щонайменше три оцінки «недостатньо даних», якщо умова «Бурі» не спрацювала; «Ясно» — усі шість практик реалізовано повністю. P40 є критичним лише за підтвердженого актуального ризику з боку третіх осіб. Статуси трьох джерел не усереднюються.</div>
 <h2>Дані дослідження</h2><p>${esc(participationText(eobj,sr))} Організаційний чекап: завершено${period().checkup.asOfDate?` станом на ${esc(fmtDate(period().checkup.asOfDate))}`:''}.</p>
 <h2>Ключові результати за модулями</h2>${moduleHtml}
 <p class="muted">Звіт містить узагальнені результати та рекомендовані організаційні дії. Сирі індивідуальні відповіді працівників і керівників до звіту не включаються. План організаційних дій завантажується окремо у редагованому форматі.</p>
@@ -1176,7 +1179,7 @@ function boundaryFlag(status,f,u,hasProblemItem=false){
   return null
 }
 function aggregateSource(rows,source){
-  let items=SURVEY_ITEMS.filter(x=>x.source===source),n=rows.length,minN=source==='E'?20:10,itemMin=Math.max(source==='E'?10:5,Math.ceil(n*.5)),minItems=source==='E'?4:2,fullItems=source==='E'?5:3,itemResults={},eligible=n>=minN;
+  let items=SURVEY_ITEMS.filter(x=>x.source===source),n=rows.length,minN=source==='E'?20:10,itemMin=Math.max(source==='E'?10:5,Math.ceil(n*.5)),fullItems=source==='E'?5:3,minimumProfileItems=source==='E'?3:2,moduleProfileMin=Math.max(source==='E'?10:5,Math.ceil(n*.5)),itemResults={},eligible=n>=minN;
   for(let it of items){
     let vals=rows.map(r=>r.answers[it.code]).filter(v=>v!==null&&v!==undefined&&v!=='NA'),na=n-vals.length,fav=vals.filter(v=>v>=4).length,neu=vals.filter(v=>v===3).length,unf=vals.filter(v=>v<=2).length,den=vals.length;
     let f=den?fav/den*100:null,u=den?unf/den*100:null;
@@ -1184,7 +1187,7 @@ function aggregateSource(rows,source){
   }
   let modules={};
   for(let mid=1;mid<=7;mid++){
-    let list=items.filter(x=>x.module===mid).map(x=>itemResults[x.code]),usable=list.filter(x=>x.adequate);
+    let moduleItems=items.filter(x=>x.module===mid),list=moduleItems.map(x=>itemResults[x.code]),usable=list.filter(x=>x.adequate);
     if(n===0){
       modules[mid]={status:null,quality:'Недостатня',qualityReasons:['немає відповідей для цього джерела'],favorable:null,neutral:null,unfavorable:null,usableItems:0,totalItems:fullItems,borderline:null,masked:false};
       continue
@@ -1193,14 +1196,25 @@ function aggregateSource(rows,source){
       modules[mid]={status:null,quality:'Недостатня',qualityReasons:[`для окремого аналізу потрібно щонайменше ${minN} валідних анкет; отримано ${n}`],favorable:null,neutral:null,unfavorable:null,usableItems:usable.length,totalItems:fullItems,borderline:null,masked:false};
       continue
     }
-    if(usable.length<minItems){
-      modules[mid]={status:'Туман',quality:'Недостатня',qualityReasons:['для частини тверджень недостатньо застосовних відповідей'],favorable:null,neutral:null,unfavorable:null,usableItems:usable.length,totalItems:fullItems,borderline:null,masked:false};
+    const profiles=rows.map(row=>{
+      const applicable=moduleItems.map(item=>row.answers[item.code]).filter(value=>Number.isInteger(value)&&value>=1&&value<=5);
+      if(applicable.length<minimumProfileItems)return null;
+      const total=applicable.length;
+      return {
+        favorable:applicable.filter(value=>value>=4).length/total*100,
+        neutral:applicable.filter(value=>value===3).length/total*100,
+        unfavorable:applicable.filter(value=>value<=2).length/total*100
+      }
+    }).filter(Boolean);
+    if(profiles.length<moduleProfileMin){
+      modules[mid]={status:'Туман',quality:'Недостатня',qualityReasons:['недостатньо застосовних даних для надійної інтерпретації модуля'],favorable:null,neutral:null,unfavorable:null,usableItems:usable.length,totalItems:fullItems,borderline:null,masked:false};
       continue
     }
-    let f=usable.reduce((a,x)=>a+x.favorable,0)/usable.length,neu=usable.reduce((a,x)=>a+x.neutral,0)/usable.length,u=usable.reduce((a,x)=>a+x.unfavorable,0)/usable.length,status=weatherStatus(f,u),problemItem=usable.some(isProblemSurveyItem),masked=false;
+    let f=profiles.reduce((a,x)=>a+x.favorable,0)/profiles.length,neu=profiles.reduce((a,x)=>a+x.neutral,0)/profiles.length,u=profiles.reduce((a,x)=>a+x.unfavorable,0)/profiles.length,status=weatherStatus(f,u),problemItem=usable.some(isProblemSurveyItem),masked=false;
     if(status==='Ясно'&&problemItem){status='Хмарно';masked=true}
     let qualityReasons=[];
-    if(usable.length<fullItems)qualityReasons.push('не всі твердження модуля мають достатньо застосовних відповідей');
+    if(profiles.length<n)qualityReasons.push('не всі респонденти мають достатньо застосовних відповідей у цьому модулі');
+    if(usable.length<fullItems)qualityReasons.push('не всі твердження модуля мають достатньо застосовних відповідей для окремого аналізу');
     if(usable.some(x=>x.naRate>=25))qualityReasons.push('для окремих тверджень значна частка респондентів обрала «Не стосується моєї роботи»');
     let quality=qualityReasons.length?'З обмеженнями':'Достатня';
     modules[mid]={status,quality,qualityReasons,favorable:f,neutral:neu,unfavorable:u,usableItems:usable.length,totalItems:fullItems,borderline:boundaryFlag(status,f,u,problemItem),masked}
@@ -1305,7 +1319,7 @@ function modal(){
         resultHtml='<div class="success-box"><strong>Файл пройшов перевірку.</strong><br>Працівники: '+m.calc.e.totalResponses+'; керівники: '+m.calc.l.totalResponses+'.</div>';
         if(!eOk)resultHtml+='<div class="warning-box"><strong>Недостатньо відповідей працівників</strong><p>Аналіз відповідей працівників для цього робочого середовища поки неможливий: отримано '+m.calc.e.totalResponses+' валідних анкет із необхідних 20. Потрібно отримати ще щонайменше '+m.calc.e.missingResponses+' валідних відповідей.</p></div>';
         if(!lOk)resultHtml+='<div class="warning-box"><strong>Недостатньо відповідей керівників</strong><p>Аналіз відповідей керівників для цього робочого середовища поки неможливий: отримано '+m.calc.l.totalResponses+' валідних анкет із необхідних 10. Потрібно отримати ще щонайменше '+m.calc.l.missingResponses+' валідних відповідей.</p></div>';
-        if(eOk&&lOk)resultHtml+='<div class="notice">Статуси розраховано за неокругленими значеннями; відсотки показуються з точністю, достатньою для перевірки порогів.</div><div class="calc-preview">'+preview+'</div>';
+        if(eOk&&lOk)resultHtml+='<div class="calc-preview">'+preview+'</div>';
         if(m.replace)resultHtml+='<div class="notice">Для цього робочого середовища вже є результати. Завантажте актуальний повний файл із усіма відповідями, отриманими на цей момент. Прийняття нового файлу повністю замінить попередній розрахунок для цього робочого середовища; дані не додаються до попереднього імпорту.</div>';
       }
       body='<div class="validation-summary"><div><strong>'+m.v.total+'</strong><span>анкет у файлі</span></div><div><strong>'+m.v.managers+'</strong><span>анкет керівників</span></div><div><strong>'+m.v.errors.length+'</strong><span>повідомлень про помилки</span></div></div>'+warningHtml+resultHtml

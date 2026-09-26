@@ -87,6 +87,13 @@ function surveyRows(source,count,{answer=5,overrides={}}={}){
   return Array.from({length:count},()=>({answers}));
 }
 
+function moduleRows(source,count,moduleId,answerAt){
+  const codes=portal.api.SURVEY_ITEMS.filter(item=>item.source===source&&item.module===moduleId).map(item=>item.code);
+  return Array.from({length:count},(_,respondent)=>({
+    answers:Object.fromEntries(codes.map((code,index)=>[code,answerAt(respondent,index)]))
+  }));
+}
+
 function setRuntimeScenario({eCount=20,lCount=10,eAnswer=5,lAnswer=5,eOverrides={},lOverrides={},pOverrides={}}={}){
   const eResult=portal.api.aggregateSource(surveyRows('E',eCount,{answer:eAnswer,overrides:eOverrides}),'E');
   const lResult=portal.api.aggregateSource(surveyRows('L',lCount,{answer:lAnswer,overrides:lOverrides}),'L');
@@ -156,6 +163,86 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   assert.ok(xlsx.length>1000);
 });
 
+test('respondent-based E profiles give every valid person equal weight',()=>{
+  const rows=moduleRows('E',20,1,(respondent,index)=>respondent<15?5:index<3?1:'NA');
+  const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
+  assert.equal(module.favorable,75);
+  assert.equal(module.neutral,0);
+  assert.equal(module.unfavorable,25);
+  assert.equal(module.status,'Хмарно');
+  assert.equal(module.masked,false);
+  assert.equal(result.items.E04.favorable,100);
+  assert.equal(result.items.E01.favorable,75);
+});
+
+test('E needs three applicable answers per person and L needs two',()=>{
+  for(const [source,count,validItems,insufficientItems] of [['E',20,3,2],['L',10,2,1]]){
+    const enough=portal.api.aggregateSource(moduleRows(source,count,1,(_,index)=>index<validItems?5:'NA'),source);
+    assert.equal(enough.modules[1].status,'Ясно');
+    const tooFew=portal.api.aggregateSource(moduleRows(source,count,1,(_,index)=>index<insufficientItems?5:'NA'),source);
+    assert.equal(tooFew.modules[1].status,'Туман');
+    assert.match(tooFew.modules[1].qualityReasons.join(' '),/недостатньо застосовних даних для надійної інтерпретації модуля/);
+  }
+});
+
+test('module profile minimum is half the E or L respondents, subject to the floor',()=>{
+  for(const [source,total,minimum] of [['E',30,15],['E',20,10],['L',15,8],['L',10,5]]){
+    const make=valid=>portal.api.aggregateSource(moduleRows(source,total,1,(respondent)=>respondent<valid?5:'NA'),source);
+    assert.equal(make(minimum).modules[1].status,'Ясно');
+    const below=make(minimum-1);
+    assert.equal(below.eligible,true);
+    assert.equal(below.modules[1].status,'Туман');
+    assert.equal(below.modules[1].favorable,null);
+  }
+});
+
+test('module status can use respondent profiles even when no item meets its separate minimum',()=>{
+  const rows=moduleRows('E',30,1,(respondent,index)=>
+    respondent<15&&[respondent%5,(respondent+1)%5,(respondent+2)%5].includes(index)?5:'NA');
+  const result=portal.api.aggregateSource(rows,'E');
+  assert.equal(result.modules[1].status,'Ясно');
+  assert.equal(result.modules[1].usableItems,0);
+  assert.equal(result.items.E01.adequate,false);
+  assert.equal(result.items.E01.applicable,9);
+  assert.equal(result.problems.length,0);
+});
+
+test('scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно',()=>{
+  const rows=moduleRows('E',30,1,(respondent)=>respondent<24?5:respondent<27?3:1);
+  const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
+  assert.equal(module.favorable,80);
+  assert.equal(module.neutral,10);
+  assert.equal(module.unfavorable,10);
+  assert.equal(module.status,'Ясно');
+  assert.equal(module.masked,false);
+});
+
+test('scenario B: a sufficiently answered problem item masks nominal Ясно',()=>{
+  const rows=moduleRows('E',30,1,(respondent,index)=>index<4?5:respondent<15?1:'NA');
+  const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1],item=result.items.E05;
+  assert.equal(module.favorable,90);
+  assert.equal(module.neutral,0);
+  assert.equal(module.unfavorable,10);
+  assert.equal(item.applicable,15);
+  assert.equal(item.adequate,true);
+  assert.equal(item.favorable,0);
+  assert.equal(item.unfavorable,100);
+  assert.equal(module.status,'Хмарно');
+  assert.equal(module.masked,true);
+  assert.match(portal.api.mapStatusBadge(module.status,'E',1,{e:result}),/☁ Хмарно \(є проблемний аспект\)/);
+});
+
+test('scenario C: two half-applicable problem items give 80/0/20 and Хмарно',()=>{
+  const rows=moduleRows('E',30,1,(respondent,index)=>index<3?5:respondent<15?1:'NA');
+  const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
+  assert.equal(module.favorable,80);
+  assert.equal(module.neutral,0);
+  assert.equal(module.unfavorable,20);
+  assert.equal(module.status,'Хмарно');
+  assert.equal(module.masked,false);
+  assert.deepEqual(Array.from(result.problems,item=>item.code).sort(),['E04','E05']);
+});
+
 test('report uses final semantic action wording when E and P support an action',()=>{
   const {environment}=setRuntimeScenario({eOverrides:{E16:1},pOverrides:{P19:'partial'}});
   const report=portal.api.buildReportHtml(environment);
@@ -189,6 +276,12 @@ test('survey weather thresholds, badges and problem-item safeguard follow final 
     [45,30,'Буря'],
   ];
   for(const [favorable,unfavorable,status] of scenarios)assert.equal(portal.api.weatherStatus(favorable,unfavorable),status);
+  for(const [favorable,neutral,unfavorable,status] of [
+    [85,2,13,'Ясно'],[82,2,16,'Хмарно'],[75,10,15,'Хмарно'],
+    [74,12,14,'Хмарно'],[68,24,8,'Хмарно'],[60,10,30,'Буря'],
+    [60,20,20,'Хмарно'],[55,25,20,'Хмарно'],[54,26,20,'Хмарно'],
+    [50,40,10,'Хмарно'],[45,25,30,'Буря']
+  ]){assert.equal(favorable+neutral+unfavorable,100);assert.equal(portal.api.weatherStatus(favorable,unfavorable),status)}
   assert.equal(portal.api.weatherStatus(0,0),'Хмарно');
   assert.equal(portal.api.fmtPct(54.545),'54,5%');
   assert.equal(portal.api.weatherStatus(75,14.999),'Ясно');
@@ -217,7 +310,7 @@ test('survey weather thresholds, badges and problem-item safeguard follow final 
   assert.match(cloudyUnfBadge,/Хмарно \(16% неспр\. відп\.\)/);
   assert.match(cloudyNeutralBadge,/Хмарно \(24% нейтр\.\)/);
   assert.match(stormBadge,/Буря \(30% неспр\. відп\.\)/);
-  assert.doesNotMatch(stormBadge,/сприятл|спр\./);
+  assert.doesNotMatch(stormBadge,/\(\d+(?:[,.]\d+)?% сприятл\.\)/);
   assert.match(maskedBadge,/Хмарно \(є проблемний аспект\)/);
   assert.match(fogBadge,/Туман \(недостатньо даних\)/);
 
@@ -237,22 +330,27 @@ test('survey weather thresholds, badges and problem-item safeguard follow final 
     l:{totalResponses:11,detailAllowed:true,modules:{1:{favorable:60,neutral:10,unfavorable:30,masked:false,borderline:'Буря біля межі з Хмарно'}}}
   }}});
   assert.match(map,/Буря \(30% неспр\. відп\.\)/);
-  assert.match(map,/Буря біля межі з Хмарно; статус розраховано за неокругленими значеннями/);
+  assert.doesNotMatch(map,/біля межі|неокругленими значеннями/);
   assert.match(map,/«Буря»: щонайменше 30% несприятливих/);
   assert.doesNotMatch(map,/«Буря»: менше 55% сприятливих/);
   assert.match(map,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(map,/<th>Організаційні практики<\/th>/);
+  assert.match(map,/У дужках показано показник, який пояснює статус опитувального джерела/);
+  assert.match(map,/«Хмарно»: змішаний профіль відповідей або наявність окремого проблемного аспекту/);
 });
 
 test('checkup status rules remain reproducible, including conditional P40',()=>{
   const allFull=Object.fromEntries(portal.api.P_LIST.map(item=>[item.code,'full']));
   assert.ok(Object.values(portal.api.calculatePResults({answers:allFull}).modules).every(module=>module.status==='Ясно'));
 
-  const critical={...allFull,P04:'no'};
-  assert.equal(portal.api.calculatePResults({answers:critical}).modules[1].status,'Буря');
+  for(const code of ['P04','P13','P15','P16','P21','P28','P31','P36','P38','P42']){
+    const module=portal.api.P_LIST.find(item=>item.code===code).module;
+    assert.equal(portal.api.calculatePResults({answers:{...allFull,[code]:'no'}}).modules[module].status,'Буря',code);
+  }
 
   const oneOrdinary={...allFull,P01:'no'};
   assert.equal(portal.api.calculatePResults({answers:oneOrdinary}).modules[1].status,'Хмарно');
+  assert.equal(portal.api.calculatePResults({answers:{...oneOrdinary,P02:'no'}}).modules[1].status,'Буря');
 
   const fog={...allFull,P01:'insufficient',P02:'insufficient',P03:'insufficient'};
   assert.equal(portal.api.calculatePResults({answers:fog}).modules[1].status,'Туман');
@@ -260,6 +358,44 @@ test('checkup status rules remain reproducible, including conditional P40',()=>{
   const p40={...allFull,P40:'no'};
   assert.equal(portal.api.calculatePResults({answers:p40,p40Risk:'confirmed'}).modules[7].status,'Буря');
   assert.equal(portal.api.calculatePResults({answers:p40,p40Risk:'not_confirmed'}).modules[7].status,'Хмарно');
+});
+
+test('P badges explain practices and never show a numerical percentage',()=>{
+  for(const [status,expected] of [
+    ['Ясно','☀ Ясно (усі практики реалізовані)'],
+    ['Хмарно','☁ Хмарно (є окремі прогалини)'],
+    ['Буря','🌧 Буря (є суттєва прогалина)'],
+    ['Туман','≋ Туман (недостатньо даних)']
+  ]){
+    const badge=portal.api.mapStatusBadge(status,'P',1);
+    assert.ok(badge.includes(expected));
+    assert.doesNotMatch(badge,/%|boundary-flag/);
+  }
+});
+
+test('weather map and report omit visible boundary messages',()=>{
+  const {environment}=setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L01:1}});
+  const rows=portal.api.actualResultModel();
+  const map=portal.api.weatherMapHtml(rows,environment);
+  const report=portal.api.buildReportHtml(environment);
+  for(const markup of [map,report]){
+    assert.doesNotMatch(markup,/Ясно біля межі|Хмарно біля межі|Буря біля межі|неокругленими значеннями/);
+    assert.doesNotMatch(markup,/<span class="boundary-flag"/);
+    assert.match(markup,/☀ Ясно \(усі практики реалізовані\)/);
+  }
+});
+
+test('public methodology describes respondent profiles, separate problem items and categorical P',()=>{
+  assert.match(publicHtml,/Результат модуля формується на основі відповідей окремих респондентів/);
+  assert.match(publicHtml,/Кожен респондент має однакову вагу/);
+  assert.match(publicHtml,/3 із 5 застосовних відповідей/);
+  assert.match(publicHtml,/2 із 3/);
+  assert.match(publicHtml,/щонайменше половина респондентів/);
+  assert.match(publicHtml,/не менше 10 працівників або 5 керівників/);
+  assert.match(publicHtml,/менше 55% або несприятливих щонайменше 30%/);
+  assert.match(publicHtml,/Числовий відсоток не розраховується/);
+  assert.doesNotMatch(publicHtml,/Менше 55% сприятливих або щонайменше 30% несприятливих відповідей/);
+  assert.doesNotMatch(publicHtml,/портал позначає статуси біля межі/);
 });
 
 test('all 64 interpretation combinations remain available and recommendations stay capped at three',()=>{
@@ -513,7 +649,7 @@ test('environment and period validation rejects inconsistent values',()=>{
 test('public portal documents the previously hidden rules and four checkup answers',()=>{
   assert.match(publicHtml,/Недостатньо підтверджених даних<\/strong>/);
   assert.match(publicHtml,/75% сприятливих і менше 15% несприятливих/i);
-  assert.match(publicHtml,/Якщо мінімальної кількості валідних анкет не досягнуто, статус для відповідного опитувального джерела не формується/);
+  assert.match(publicHtml,/Якщо мінімальної вибірки не досягнуто, статус джерела не розраховується/);
   assert.match(publicHtml,/Для CSV використовуйте кодування UTF-8/);
   assert.match(publicHtml,/не шифруються самим Барометром/);
   assert.match(publicHtml,/Організаційний чекап показує сприятливий стан практик/);
@@ -557,4 +693,4 @@ test('semantic UX renders independent accordion cards for 1, 2 and 5 active aspe
 test('semantic v2 visible wording contains no складов and no mechanical colon lists',()=>{const fixtures=[semanticFixture({e:{E01:'S'}}),semanticFixture({l:{L01:'S'}}),semanticFixture({p:{P01:'G'}}),semanticFixture({e:{E09:'S'},l:{L06:'S'},p:{P31:'G'}}),semanticFixture({e:{E31:'S'}}),semanticFixture({e:{E20:'S'}})];const visible=fixtures.flatMap(f=>Object.values(portal.api.barometerSemanticInterpretation(f).modules).flatMap(m=>m.aspects)).map(x=>x.alignment+' '+x.attention).join(' ');assert.doesNotMatch(visible,/складов/i);assert.doesNotMatch(visible,/щодо таких\s+[^.]*:/i);assert.doesNotMatch(visible,/за такими\s+[^.]*:/i);assert.doesNotMatch(visible,/\b(DIRECT|SUPPORT|ROUTE|NOT_MEASURED|AVAILABLE|semantic layer|active code|trigger|source combination)\b/i);});
 test('semantic v2 dynamic signal wording is grammatically integrated',()=>{const mixed=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},l:{L01:'N'},p:{P01:'N',P06:'N'}})).modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(mixed);assert.match(mixed.alignment,/Відповіді працівників вказують на труднощі в таких питаннях, як /);assert.match(mixed.alignment,/Відповіді керівників не вказують на виражені проблеми в таких питаннях, як /);const fog=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L21:'N'},p:{P37:'T'}})).modules[7].aspects.find(x=>x.id==='M7-C2');assert.ok(fog);assert.match(fog.alignment,/недостатньо підтверджених даних для надійної оцінки таких питань, як інтеграція психосоціальних ризиків/i);assert.doesNotMatch(fog.alignment,/оцінити інтеграція/i);});
 test('public interactive example shows E L P plus exactly one aspect and one recommended action',()=>{const start=publicHtml.indexOf('<div class="subsection" id="example">'),end=publicHtml.indexOf('<section class="section portal-page" id="evidence">',start),example=publicHtml.slice(start,end);assert.match(example,/id="statusE"/);assert.match(example,/id="statusL"/);assert.match(example,/id="statusP"/);assert.match(example,/короткий висновок, один демонстраційний аспект та одну рекомендовану дію/);assert.equal((publicHtml.match(/class="example-aspect-card"/g)||[]).length,1);assert.equal((publicHtml.match(/class="example-action-card"/g)||[]).length,1);assert.match(publicHtml,/Аспект, що потребує уваги/);assert.match(publicHtml,/Як узгоджуються джерела/);assert.match(publicHtml,/На що звернути увагу/);assert.doesNotMatch(example,/складов/i);});
-test('embedded local portal is byte-for-byte synchronized after base64 decoding',()=>{const match=publicHtml.match(/const embeddedLocalPortal = '([A-Za-z0-9+/=]+)';/);assert.ok(match);const binary=atob(match[1]),bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));assert.equal(new TextDecoder('utf-8').decode(bytes),localHtml);});
+test('embedded local portal is byte-for-byte synchronized after base64 decoding',()=>{const match=publicHtml.match(/const embeddedLocalPortal = '([A-Za-z0-9+/=]+)';/);assert.ok(match);const decoded=Buffer.from(match[1],'base64'),localBytes=fs.readFileSync(new URL('../local/index.html',import.meta.url));assert.equal(Buffer.compare(decoded,localBytes),0);});
