@@ -38,7 +38,7 @@ function loadLocalPortal(){
     globalThis.__portal={
       SURVEY_ITEMS,ROLE_QUESTION,P_LIST,P,M,COMBO64,FINE_ITEMS,ACTION_LIB,THEMATIC_LIB,P38_TEXT,SITUATIONAL_HYPOTHESIS,
       parseCSV,validateTableRows,aggregateSource,calculatePResults,
-      fmtPct,weatherStatus,mapStatusBadge,weatherMapHtml,managementSignal,comboTemplate,hasWeakSituationalPractice,selectedActions,attentionAspects,actualResultModel,buildReportHtml,planXlsxBytes,
+      fmtPct,weatherStatus,boundaryFlag,mapStatusBadge,weatherMapHtml,managementSignal,comboTemplate,hasWeakSituationalPractice,selectedActions,attentionAspects,actualResultModel,buildReportHtml,planXlsxBytes,
       normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
@@ -173,16 +173,73 @@ test('P40 follow-up renders immediately after selecting not implemented',()=>{
   assert.match(portal.app.innerHTML,/Так, ризик виявлено/);
 });
 
-test('survey thresholds use unrounded values and display one decimal near a boundary',()=>{
-  assert.equal(portal.api.weatherStatus(54.545,10),'Буря');
+test('survey weather thresholds, badges and problem-item safeguard follow final E/L rules',()=>{
+  const scenarios=[
+    [85,13,'Ясно'],
+    [82,16,'Хмарно'],
+    [75,15,'Хмарно'],
+    [74,14,'Хмарно'],
+    [68,8,'Хмарно'],
+    [60,30,'Буря'],
+    [60,20,'Хмарно'],
+    [55,20,'Хмарно'],
+    [54,20,'Хмарно'],
+    [52,18,'Хмарно'],
+    [50,10,'Хмарно'],
+    [45,30,'Буря'],
+  ];
+  for(const [favorable,unfavorable,status] of scenarios)assert.equal(portal.api.weatherStatus(favorable,unfavorable),status);
+  assert.equal(portal.api.weatherStatus(0,0),'Хмарно');
   assert.equal(portal.api.fmtPct(54.545),'54,5%');
   assert.equal(portal.api.weatherStatus(75,14.999),'Ясно');
   assert.equal(portal.api.weatherStatus(75,15),'Хмарно');
-  const badge=portal.api.mapStatusBadge('Буря','E',1,{e:{modules:{1:{favorable:54.545,borderline:'Буря біля межі з Хмарно'}}}});
-  assert.match(badge,/54,5% спр\./);
-  assert.match(badge,/статус розраховано за неокругленими значеннями/);
-  const map=portal.api.weatherMapHtml([{m:1,e:'Ясно',l:'Буря',p:'Ясно'}],{survey:{results:{e:{modules:{}},l:{totalResponses:11,detailAllowed:true,modules:{1:{favorable:54.545,borderline:'Буря біля межі з Хмарно'}}}}}});
+
+  assert.equal(portal.api.boundaryFlag('Буря',60,30,false),'Буря біля межі з Хмарно');
+  assert.equal(portal.api.boundaryFlag('Хмарно',54,20,false),null);
+  assert.equal(portal.api.boundaryFlag('Хмарно',60,26,false),'Хмарно біля межі з Бурею');
+  assert.equal(portal.api.boundaryFlag('Хмарно',74,14,false),'Хмарно біля межі з Ясно');
+
+  const sr={e:{modules:{
+    1:{favorable:85,neutral:2,unfavorable:13,masked:false,borderline:null},
+    2:{favorable:82,neutral:2,unfavorable:16,masked:false,borderline:null},
+    3:{favorable:68,neutral:24,unfavorable:8,masked:false,borderline:null},
+    4:{favorable:60,neutral:10,unfavorable:30,masked:false,borderline:'Буря біля межі з Хмарно'},
+    5:{favorable:90,neutral:5,unfavorable:5,masked:true,borderline:null},
+    6:{favorable:null,neutral:null,unfavorable:null,masked:false,borderline:null},
+  }}};
+  const clearBadge=portal.api.mapStatusBadge('Ясно','E',1,sr);
+  const cloudyUnfBadge=portal.api.mapStatusBadge('Хмарно','E',2,sr);
+  const cloudyNeutralBadge=portal.api.mapStatusBadge('Хмарно','E',3,sr);
+  const stormBadge=portal.api.mapStatusBadge('Буря','E',4,sr);
+  const maskedBadge=portal.api.mapStatusBadge('Хмарно','E',5,sr);
+  const fogBadge=portal.api.mapStatusBadge('Туман','E',6,sr);
+  assert.match(clearBadge,/Ясно \(85% сприятл\.\)/);
+  assert.match(cloudyUnfBadge,/Хмарно \(16% неспр\. відп\.\)/);
+  assert.match(cloudyNeutralBadge,/Хмарно \(24% нейтр\.\)/);
+  assert.match(stormBadge,/Буря \(30% неспр\. відп\.\)/);
+  assert.doesNotMatch(stormBadge,/сприятл|спр\./);
+  assert.match(maskedBadge,/Хмарно \(є проблемний аспект\)/);
+  assert.match(fogBadge,/Туман \(недостатньо даних\)/);
+
+  const answers=()=>Object.fromEntries(portal.api.SURVEY_ITEMS.filter(item=>item.source==='E').map(item=>[item.code,5]));
+  const rows=Array.from({length:20},()=>({isManager:false,answers:answers()}));
+  for(let index=0;index<10;index++)rows[index].answers.E01=3;
+  const result=portal.api.aggregateSource(rows,'E');
+  assert.equal(result.items.E01.favorable,50);
+  assert.equal(result.items.E01.unfavorable,0);
+  assert.equal(result.items.E01.status,'Хмарно');
+  assert.ok(result.problems.some(item=>item.code==='E01'));
+  assert.equal(result.modules[1].status,'Хмарно');
+  assert.equal(result.modules[1].masked,true);
+
+  const map=portal.api.weatherMapHtml([{m:1,e:'Ясно',l:'Буря',p:'Ясно'}],{survey:{results:{
+    e:{modules:{1:{favorable:85,neutral:2,unfavorable:13,masked:false,borderline:null}}},
+    l:{totalResponses:11,detailAllowed:true,modules:{1:{favorable:60,neutral:10,unfavorable:30,masked:false,borderline:'Буря біля межі з Хмарно'}}}
+  }}});
+  assert.match(map,/Буря \(30% неспр\. відп\.\)/);
   assert.match(map,/Буря біля межі з Хмарно; статус розраховано за неокругленими значеннями/);
+  assert.match(map,/«Буря»: щонайменше 30% несприятливих/);
+  assert.doesNotMatch(map,/«Буря»: менше 55% сприятливих/);
   assert.match(map,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(map,/<th>Організаційні практики<\/th>/);
 });
