@@ -150,6 +150,9 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:400;letter-spacing:-.03em;margin:0
 .scale-content{border-top:1px solid var(--line);padding:13px 16px 5px}
 .scale-content p{margin:0 0 10px;line-height:1.5}
 .checkup-intro p,.p40-risk p{margin:7px 0 0}
+.p40-environments{margin-top:16px}
+.p40-environment{border:1px solid var(--line);border-radius:10px;margin:12px 0 0;padding:12px}
+.p40-environment legend{font-weight:700;padding:0 5px}
 .checkup-date-field{max-width:340px;margin-top:12px}
 @media(max-width:800px){.module-guide-card{grid-template-columns:1fr}}
 
@@ -227,6 +230,15 @@ function normalizeResearch(r){
       if(!e.survey||typeof e.survey!=='object')e.survey={};
       sanitizeSurveyDetails(e.survey.results);
     });
+    if(p.checkup&&typeof p.checkup==='object'){
+      const ids=new Set(p.envs.map(e=>e.id)),saved=p.checkup.p40ApplicabilityByEnvironment;
+      p.checkup.p40ApplicabilityByEnvironment=Object.fromEntries(
+        saved&&typeof saved==='object'&&!Array.isArray(saved)
+          ?Object.entries(saved).filter(([id,value])=>ids.has(id)&&['confirmed','not_confirmed','needs_check'].includes(value))
+          :[]
+      );
+      if(p.checkup.answers?.P40!=='no'||p.checkup.p40Risk!=='confirmed')p.checkup.p40ApplicabilityByEnvironment={};
+    }
   });
   if(!r.periods.some(p=>p.id===r.current))r.current=r.periods[0]?.id||null;
   if(!Array.isArray(r.plan))r.plan=[];
@@ -499,6 +511,11 @@ function checkup(){
           ['not_confirmed','Ні, ризик не виявлено'],
           ['needs_check','Це ще не визначено']
         ].map(x=>`<label class="choice"><input type="radio" name="p40Risk" value="${x[0]}" ${cp.p40Risk===x[0]?'checked':''}>${x[1]}</label>`).join('')}</div>
+        ${cp.p40Risk==='confirmed'&&period().envs.length?`<div class="p40-environments"><strong>Актуальність ризику для кожного робочого середовища</strong><p>Позначте, чи актуальний ризик саме для цього середовища. Якщо це ще не з’ясовано, оберіть «Потрібно перевірити».</p>
+          ${period().envs.map(environment=>`<fieldset class="p40-environment"><legend>${h(environment.name)}</legend><div class="choices">${[
+            ['confirmed','Так, ризик актуальний'],['not_confirmed','Ні, ризик не підтверджено'],['needs_check','Потрібно перевірити']
+          ].map(option=>`<label class="choice"><input type="radio" name="p40Environment-${h(environment.id)}" data-p40-env="${h(environment.id)}" value="${option[0]}" ${cp.p40ApplicabilityByEnvironment?.[environment.id]===option[0]?'checked':''}>${option[1]}</label>`).join('')}</div></fieldset>`).join('')}
+        </div>`:''}
       </div>`:''}
 
 
@@ -1417,13 +1434,26 @@ document.addEventListener('change',e=>{
     period().checkup.asOfDate=e.target.value;save()
   }
   if(e.target.type==='radio'&&S.screen==='checkup'){
-    if(e.target.name==='p40Risk')period().checkup.p40Risk=e.target.value;
+    if(e.target.dataset.p40Env){
+      const environmentId=e.target.dataset.p40Env;
+      if(period().envs.some(item=>item.id===environmentId)&&['confirmed','not_confirmed','needs_check'].includes(e.target.value)){
+        period().checkup.p40ApplicabilityByEnvironment=period().checkup.p40ApplicabilityByEnvironment||{};
+        period().checkup.p40ApplicabilityByEnvironment[environmentId]=e.target.value;
+      }
+    }
+    else if(e.target.name==='p40Risk'){
+      period().checkup.p40Risk=e.target.value;
+      if(e.target.value!=='confirmed')period().checkup.p40ApplicabilityByEnvironment={};
+    }
     else if(/^P\d{2}$/.test(e.target.name)){
       period().checkup.answers[e.target.name]=e.target.value;
-      if(e.target.name==='P40'&&e.target.value!=='no')period().checkup.p40Risk=null;
+      if(e.target.name==='P40'&&e.target.value!=='no'){
+        period().checkup.p40Risk=null;
+        period().checkup.p40ApplicabilityByEnvironment={};
+      }
     }
     period().checkup.results=calculatePResults(period().checkup);save();
-    if(e.target.name==='P40'){render();return}
+    if(e.target.name==='P40'||e.target.name==='p40Risk'){render();return}
   }
   updatePlanField(e)
 });
@@ -1690,6 +1720,9 @@ function barometerMetricDetail(item){
 }
 function barometerRuntimeInput(){
   const eobj=env(S.env),sr=getSurveyResults(eobj)||{},cp=period()?.checkup||{answers:{}},answers=cp.answers||{};
+  const p40EnvironmentRisk=cp.p40Risk==='confirmed'&&answers.P40==='no'
+    ?cp.p40ApplicabilityByEnvironment?.[eobj?.id]
+    :cp.p40Risk==='not_confirmed'?'not_confirmed':null;
   const makeSurvey=source=>{
     const result=sr[source.toLowerCase()]||{},minimum=source==='E'?20:10,total=Number(result.totalResponses||0);
     const eligible=result.eligible===false?false:(result.eligible===true||total>=minimum),states={},metrics={};
@@ -1713,7 +1746,7 @@ function barometerRuntimeInput(){
   return {
     E:makeSurvey('E'),
     L:makeSurvey('L'),
-    P:{states:pStates,p40Applicable:cp.p40Risk==='confirmed',p40Known:cp.p40Risk==='confirmed'||cp.p40Risk==='not_confirmed'},
+    P:{states:pStates,p40Applicable:p40EnvironmentRisk==='confirmed',p40Known:p40EnvironmentRisk==='confirmed'||p40EnvironmentRisk==='not_confirmed'},
     criticalNow:cp.criticalNow===true,
     environmentId:eobj?.id||S.env||null,
   }
@@ -2601,7 +2634,7 @@ function barometerV2AspectState(input,a){
   const eCodes=a.e,lCodes=a.l,pCodes=a.p;
   let e=barometerV2StateForCodes(input,'E',eCodes),l=barometerV2StateForCodes(input,'L',lCodes),p=barometerV2StateForCodes(input,'P',pCodes);
   const eAdditional=barometerV2ActiveCodes(input,a.ea),lAdditional=barometerV2ActiveCodes(input,a.la),pAdditional=barometerV2ActiveCodes(input,a.pa),special=barometerV2ActiveCodes(input,a.special);
-  const p40Pending=!!a.p40&&input.P.states.P40==='G'&&!input.P.p40Applicable;
+  const p40Pending=!!a.p40&&input.P.states.P40==='G'&&!input.P.p40Known;
   if(a.p40&&!input.P.p40Applicable)p=BAROMETER_V2_NOT_MEASURED;
   const active=e==='S'||l==='S'||p==='G'||e==='T'||l==='T'||p==='T'||special.length>0||p40Pending;
   return {...a,eCodes,lCodes,pCodes,e,l,p,eAdditional,lAdditional,pAdditional,special,p40Pending,active};
@@ -2707,6 +2740,9 @@ function barometerV2BuildActions(input){
 }
 function barometerV2Join(labels){if(labels.length===1)return labels[0];if(labels.length===2)return labels[0]+' та '+labels[1];return labels.slice(0,-1).join(', ')+', а також '+labels.at(-1)}
 function barometerV2Lead(row,input,active){
+  if(!active.length&&row.m===7&&input.P.states.P40==='G'&&input.P.p40Known&&!input.P.p40Applicable){
+    return 'Організаційний чекап показує прогалину в практиці захисту від агресії або насильства з боку третіх осіб на рівні компанії. Для цього робочого середовища актуальність такого ризику не підтверджено, тому конкретна локальна дія тут не формується.';
+  }
   if(!active.length&&row.p==='Ясно'){
     const eWeak=input.E.eligible&&(row.e==='Хмарно'||row.e==='Буря'),lWeak=input.L.eligible&&(row.l==='Хмарно'||row.l==='Буря');
     if(eWeak&&lWeak)return 'Працівники й керівники оцінюють умови цього модуля менш сприятливо, ніж показує організаційний чекап на рівні компанії. Це сильний сигнал можливого розриву між корпоративною практикою та її фактичним застосуванням у цьому робочому середовищі; перевірте охоплення, фактичну роботу практики та можливості керівників, перш ніж робити висновок про причину.';
@@ -2724,14 +2760,24 @@ function barometerV2DataNotes(input){
   if(!input.L.eligible){const missing=Math.max(0,10-Number(input.L.total||0));out.push(`Керівники: отримано ${Number(input.L.total||0)} валідних анкет. Для окремого аналізу цього середовища потрібно щонайменше 10. Потрібно ще ${missing}. Дані керівників не використовуються для формування висновків за цим середовищем.`);}
   return out;
 }
+function barometerV2FogOnlyLead(aspects){
+  const names=aspects.map(a=>`«${a.title}»`),survey=[];
+  if(aspects.some(a=>a.e==='T'))survey.push('працівників');
+  if(aspects.some(a=>a.l==='T'))survey.push('керівників');
+  const checks=[];
+  if(survey.length)checks.push(`отримайте достатньо застосовних відповідей ${barometerV2Join(survey)}`);
+  if(aspects.some(a=>a.p==='T'))checks.push('перевірте та підтвердіть дані організаційного чекапу');
+  return `Недостатньо даних, щоб надійно оцінити ${names.length===1?'аспект':'аспекти'} ${barometerV2Join(names)}. Для уточнення ${checks.join(' і ')}. «Туман» не означає ані сприятливого, ані несприятливого результату.`;
+}
 function barometerV2BuildSemanticAnalysis(rawInput){
   const input=rawInput?.E?.states&&rawInput?.P?.states?barometerNormaliseFixture(rawInput):barometerRuntimeInput(),allAspects=BAROMETER_V2_ASPECTS.map(a=>barometerV2AspectState(input,a)),actions=barometerV2BuildActions(input),modules={},rows=typeof actualResultModel==='function'&&!rawInput?actualResultModel():[];
   for(let moduleId=1;moduleId<=7;moduleId++){
     const moduleAll=allAspects.filter(a=>a.m===moduleId),active=moduleAll.filter(a=>a.active),row=rows.find(r=>r.m===moduleId)||{m:moduleId,e:input.E.eligible?'Ясно':'Недостатня вибірка',l:input.L.eligible?'Ясно':'Недостатня вибірка',p:'Ясно'},crossRefs=[];
     if(moduleId===5&&actions.some(a=>a.id==='C01'))crossRefs.push({id:'C01',final_action_id:'C01',text:'Дія щодо організаційних змін сформована один раз у модулі 1 і охоплює також завчасне залучення працівників до змін.'});
-    const visible=active.map(a=>({id:a.id,title:(a.id==='M7-C2'&&input.E.eligible&&input.E.states.E31==='S'&&a.p!=='G'&&!a.lAdditional.length)?'Неприйнятне ставлення - сигнал для уточнення':a.title,alignment:barometerV2Alignment(a,input),attention:barometerV2Attention(a,input),e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
+    const fogOnly=active.length>0&&active.every(a=>a.e!=='S'&&a.l!=='S'&&a.p!=='G'&&!a.eAdditional.length&&!a.lAdditional.length&&!a.pAdditional.length&&!a.special.length&&!a.p40Pending);
+    const visible=(fogOnly?[]:active).map(a=>({id:a.id,title:(a.id==='M7-C2'&&input.E.eligible&&input.E.states.E31==='S'&&a.p!=='G'&&!a.lAdditional.length)?'Неприйнятне ставлення - сигнал для уточнення':a.title,alignment:barometerV2Alignment(a,input),attention:barometerV2Attention(a,input),e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
     const compatibilityClusters=moduleAll.map(a=>({id:a.id,name:a.title,e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
-    modules[moduleId]={module:moduleId,aspects:visible,clusters:compatibilityClusters,actions:actions.filter(a=>a.module===moduleId),dataNotes:barometerV2DataNotes(input),crossRefs,lead:barometerV2Lead(row,input,active),problemCodes:barometerUnique(active.flatMap(a=>[...barometerV2ActiveCodes(input,a.eCodes),...barometerV2ActiveCodes(input,a.lCodes),...barometerV2ActiveCodes(input,a.pCodes),...barometerV2ActiveCodes(input,a.special)]))};
+    modules[moduleId]={module:moduleId,aspects:visible,clusters:compatibilityClusters,actions:actions.filter(a=>a.module===moduleId),dataNotes:barometerV2DataNotes(input),crossRefs,lead:fogOnly?barometerV2FogOnlyLead(active):barometerV2Lead(row,input,active),problemCodes:barometerUnique(active.flatMap(a=>[...barometerV2ActiveCodes(input,a.eCodes),...barometerV2ActiveCodes(input,a.lCodes),...barometerV2ActiveCodes(input,a.pCodes),...barometerV2ActiveCodes(input,a.special)]))};
   }
   return {version:'2.0-2026-09-25',input,modules,actions,aspects:allAspects};
 }
