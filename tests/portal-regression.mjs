@@ -385,15 +385,23 @@ test('weather map and report omit visible boundary messages',()=>{
   }
 });
 
-test('public methodology describes respondent profiles, separate problem items and categorical P',()=>{
-  assert.match(publicHtml,/Результат модуля формується на основі відповідей окремих респондентів/);
-  assert.match(publicHtml,/Кожен респондент має однакову вагу/);
-  assert.match(publicHtml,/3 із 5 застосовних відповідей/);
-  assert.match(publicHtml,/2 із 3/);
+test('public methodology describes weather statuses, E/L calculation, problem items and categorical P',()=>{
+  assert.match(publicHtml,/<h4>Ясно<\/h4><p>Щонайменше 75% сприятливих і менше 15% несприятливих відповідей<\/p>/);
+  assert.match(publicHtml,/<h4>Хмарно<\/h4><p>Є сигнали, що потребують уваги, але немає підстав для статусу «Буря»<\/p>/);
+  assert.match(publicHtml,/<h4>Буря<\/h4><p>Щонайменше 30% несприятливих відповідей<\/p>/);
+  assert.match(publicHtml,/<h4>Туман<\/h4><p>За достатньої вибірки недостатньо відповідей E\/L, які можна включити до розрахунку, або підтверджених даних P для надійного висновку<\/p>/);
+  const calculation=publicHtml.match(/<p><strong>Розрахунок E\/L\.<\/strong> ([^<]+)<\/p>/)?.[1];
+  assert.ok(calculation);
+  assert.match(calculation,/Барометр розраховує результати працівників і керівників окремо/);
+  assert.match(calculation,/Відповідь «Не стосується моєї роботи» не включається до розрахунку/);
+  assert.match(calculation,/У такому разі Барометр показує статус «Туман»/);
+  assert.doesNotMatch(calculation,/застосовні відповіді|3 із 5|2 із 3/);
   assert.match(publicHtml,/щонайменше половина респондентів/);
   assert.match(publicHtml,/не менше 10 працівників або 5 керівників/);
   assert.match(publicHtml,/менше 55% або несприятливих щонайменше 30%/);
   assert.match(publicHtml,/Числовий відсоток не розраховується/);
+  assert.match(publicHtml,/title:'Форма опитування',text:'Для кожного робочого середовища створіть окрему копію форми об’єднаної анкети[^\n]+additionalParagraph:'Перед початком опитування протестуйте створену форму на тестових відповідях/);
+  assert.match(publicHtml,/Повідомлення про недостатню вибірку під час такого тестування є нормальним/);
   assert.doesNotMatch(publicHtml,/Менше 55% сприятливих або щонайменше 30% несприятливих відповідей/);
   assert.doesNotMatch(publicHtml,/портал позначає статуси біля межі/);
 });
