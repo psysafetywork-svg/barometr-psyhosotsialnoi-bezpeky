@@ -1,0 +1,15 @@
+name: Exact HEAD regression QA
+on:
+  push:
+    branches:
+      - qa-exact-head-20260927
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run portal regression suite
+        run: node tests/portal-regression.mjs
