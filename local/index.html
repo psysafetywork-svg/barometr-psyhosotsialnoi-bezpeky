@@ -305,9 +305,12 @@ function validateEnvironmentValues(name){
 }
 function statusIcon(s){return s==='Ясно'?'☀':s==='Хмарно'?'☁':s==='Буря'?'🌧':'≋'}
 function statusClass(s){return s==='Ясно'?'clear':s==='Хмарно'?'cloudy':s==='Буря'?'storm':'fog'}
-function weatherStatus(f,u){if(f>=75&&u<15)return 'Ясно';if(u>=30)return 'Буря';return 'Хмарно'}
+// Tolerance in percentage points only absorbs floating-point accumulation noise.
+// It does not round displayed or stored percentages or change methodology thresholds.
+function compareSurveyPercent(value,boundary){const delta=value-boundary;return Math.abs(delta)<=1e-9?0:delta<0?-1:1}
+function weatherStatus(f,u){if(compareSurveyPercent(f,75)>=0&&compareSurveyPercent(u,15)<0)return 'Ясно';if(compareSurveyPercent(u,30)>=0)return 'Буря';return 'Хмарно'}
 function itemWeather(f,u){return weatherStatus(f,u)}
-function isProblemSurveyItem(x){return !!x&&x.adequate&&(x.favorable<55||x.unfavorable>=30)}
+function isProblemSurveyItem(x){return !!x&&x.adequate&&(compareSurveyPercent(x.favorable,55)<0||compareSurveyPercent(x.unfavorable,30)>=0)}
 function qualityLabel(q){return q||'Недостатня'}
 function qualityDisplay(m){
   if(!m?.quality)return '';
@@ -676,7 +679,7 @@ function surveyStatusMetric(status,mr){
   if(status==='Ясно'&&Number.isFinite(mr.favorable))return ` (${fmtPct(mr.favorable)} сприятл.)`;
   if(status==='Буря'&&Number.isFinite(mr.unfavorable))return ` (${fmtPct(mr.unfavorable)} неспр. відп.)`;
   if(status==='Хмарно'){
-    if(Number.isFinite(mr.unfavorable)&&mr.unfavorable>=15)return ` (${fmtPct(mr.unfavorable)} неспр. відп.)`;
+    if(Number.isFinite(mr.unfavorable)&&compareSurveyPercent(mr.unfavorable,15)>=0)return ` (${fmtPct(mr.unfavorable)} неспр. відп.)`;
     if(Number.isFinite(mr.neutral))return ` (${fmtPct(mr.neutral)} нейтр.)`;
   }
   return ''
@@ -1137,7 +1140,7 @@ const ITEM_BY_CODE=Object.fromEntries(SURVEY_ITEMS.map(x=>[x.code,x]));
 const ITEM_BY_TEXT=new Map(SURVEY_ITEMS.map(x=>[canon(x.text),x.code]));
 function matchItemHeader(v){let code=headerCode(v);if(code&&ITEM_BY_CODE[code])return code;let t=canon(stripHeaderCode(v));return ITEM_BY_TEXT.get(t)||ITEM_BY_TEXT.get(canon(v))||null}
 function isRoleHeader(v){let c=canon(v),r=canon(ROLE_QUESTION);return c===r||c.includes('хоча б один працівник')&&c.includes('безпосередн')&&c.includes('керівник')}
-function parseResponseValue(v){let k=normalizeText(v);if(!k)return null;if(/^[1-5]$/.test(k))return Number(k);if(k==='6')return 'NA';let map=new Map(RESPONSE_SCALE.slice(0,5).map((x,i)=>[canon(x),i+1]));map.set(canon(RESPONSE_SCALE[5]),'NA');[['Цілком не погоджуюся',1],['Цілком не погоджуюсь',1],['Не погоджуюся',2],['Важко відповісти',3],['Погоджуюся',4],['Цілком погоджуюсь',5]].forEach(([label,value])=>map.set(canon(label),value));return map.has(canon(k))?map.get(canon(k)):undefined}
+function parseResponseValue(v){let k=normalizeText(v);if(!k)return null;if(/^[1-5]$/.test(k))return Number(k);if(k==='6')return 'NA';let map=new Map(RESPONSE_SCALE.slice(0,5).map((x,i)=>[canon(x),i+1]));map.set(canon(RESPONSE_SCALE[5]),'NA');return map.has(canon(k))?map.get(canon(k)):undefined}
 function parseRoleValue(v){let k=canon(v);if(k==='так'||k==='yes')return true;if(k==='ні'||k==='нi'||k==='no')return false;return undefined}
 function parseCSV(text){
   text=String(text||'').replace(/^\uFEFF/,'');
@@ -1179,7 +1182,7 @@ function validateTableRows(table,fileName){
   if(best.role<0)errors.push('Не знайдено рольове запитання про наявність прямих підлеглих.');
   let piiPatterns=[/e-?mail|електронн.*пошт/i,/піб|прізвищ|ім['’]?я/i,/employee\s*id|табельн|корпоративн.*логін/i,/телефон|phone/i];let pii=(best.headers||[]).filter(x=>piiPatterns.some(q=>q.test(x)));if(pii.length)warnings.push('Файл містить потенційні персональні дані у службових колонках. Вони не зберігатимуться після розрахунку.');
   let parsed=[],managers=0,invalid=0,rows=table.slice(best.row+1).filter(row=>row.some(x=>normalizeText(x)));
-  rows.forEach((row,k)=>{let rowNo=best.row+k+2,role=best.role>=0?parseRoleValue(row[best.role]):undefined;if(role===undefined){if(invalid<20)errors.push(`Рядок ${rowNo}: недопустима або відсутня відповідь на рольове запитання.`);invalid++}let answers={},isManager=role===true;if(isManager)managers++;for(let it of SURVEY_ITEMS){let idx=best.map[it.code];if(idx==null)continue;let val=parseResponseValue(row[idx]),required=it.source==='E'||isManager;if(val===undefined||(required&&val===null)){if(invalid<20)errors.push(`Рядок ${rowNo}, ${it.code}: неправильне або відсутнє значення відповіді.`);invalid++}else if(!required&&val!==null){if(invalid<20)errors.push(`Рядок ${rowNo}: для працівника без прямих підлеглих блок L має бути порожнім.`);invalid++}else answers[it.code]=val}parsed.push({isManager,answers})});
+  rows.forEach((row,k)=>{let rowNo=best.row+k+2,role=best.role>=0?parseRoleValue(row[best.role]):undefined;if(role===undefined){if(invalid<20)errors.push(`Рядок ${rowNo}: недопустима або відсутня відповідь на рольове запитання.`);invalid++}let answers={},isManager=role===true;if(isManager)managers++;for(let it of SURVEY_ITEMS){let idx=best.map[it.code];if(idx==null)continue;let val=parseResponseValue(row[idx]),required=it.source==='E'||isManager;if(val===undefined||(required&&val===null)){if(invalid<20)errors.push(val===undefined?`Рядок ${rowNo}, ${it.code}: категорія «${normalizeText(row[idx])}» не відповідає чинній шкалі Барометра v1.0. Файл містить іншу або нерозпізнану шкалу; відповідь не перекодовано. Перевірте вихідну форму та файл відповідей.`:`Рядок ${rowNo}, ${it.code}: відсутнє значення відповіді.`);invalid++}else if(!required&&val!==null){if(invalid<20)errors.push(`Рядок ${rowNo}: для працівника без прямих підлеглих блок L має бути порожнім.`);invalid++}else answers[it.code]=val}parsed.push({isManager,answers})});
   if(invalid>20)errors.push(`Є ще ${invalid-20} помилок у значеннях.`);
   if(parsed.length===0)errors.push('Файл не містить відповідей респондентів.');
   const eCodes=SURVEY_ITEMS.filter(x=>x.source==='E').map(x=>x.code);
@@ -1731,7 +1734,7 @@ function barometerRuntimeInput(){
       if(!eligible){states[code]='X';continue}
       const item=result.items?.[code];metrics[code]=barometerMetricDetail(item);
       if(!item||item.adequate===false){states[code]='T';continue}
-      states[code]=(item.favorable<55||item.unfavorable>=30)?'S':'N';
+      states[code]=isProblemSurveyItem({...item,adequate:true})?'S':'N';
     }
     const nearModules={};
     for(let moduleId=1;moduleId<=7;moduleId++)nearModules[moduleId]=!!result.modules?.[moduleId]?.borderline;
@@ -2541,10 +2544,10 @@ const BAROMETER_V2_ASPECTS=[
  {m:1,id:'M1-C2',title:'Очікуваний результат і пріоритети',e:['E02','E03'],l:['L02'],p:['P03'],ea:[],la:[],pa:['P02'],attention:'Перевірте, чи зрозумілі працівникам очікуваний результат, критерії якості, строки та пріоритети і що відбувається, коли вимоги суперечать одна одній.'},
  {m:1,id:'M1-C3',title:'Суперечливі вимоги',e:['E04'],l:['L03'],p:['P04'],ea:[],la:[],pa:[],attention:'Перевірте, як у реальних робочих ситуаціях діють, коли вимоги суперечать одна одній, є нереалістичними або можуть створювати загрозу безпеці: чи зрозуміло, коли роботу потрібно призупинити або не розпочинати, до кого звернутися, хто приймає рішення і як працівник отримує остаточну відповідь.'},
  {m:1,id:'M1-C4',title:'Ясність під час змін',e:['E05'],l:[],p:['P05','P03'],ea:[],la:[],pa:['P06'],attention:'Перевірте, чи достатньо завчасно працівники дізнаються, що саме змінюється у їхній роботі і як це вплине на завдання, ролі та пріоритети.'},
- {m:2,id:'M2-C1',title:'Повсякденна взаємодія з керівником',e:['E06','E07'],l:[],p:['P07','P11'],ea:[],la:['L04'],pa:['P12'],attention:'Перевірте, чи мають керівники достатньо часу для змістовної взаємодії з працівниками і чи завершуються важливі робочі розмови зрозумілою домовленістю.'},
+ {m:2,id:'M2-C1',title:'Повсякденна взаємодія з керівником',e:['E06','E07'],l:[],p:['P07','P11'],ea:[],la:['L04'],pa:['P12'],special:['L04'],attention:'Перевірте, чи мають керівники достатньо часу для змістовної взаємодії з працівниками і чи завершуються важливі робочі розмови зрозумілою домовленістю.'},
  {m:2,id:'M2-C2',title:'Допомога у вирішенні робочих перешкод',e:['E08'],l:['L05'],p:['P08'],ea:[],la:['L06'],pa:[],special:['L06'],attention:'Перевірте, на якому етапі найчастіше затримуються питання, які керівник не може вирішити самостійно.'},
  {m:2,id:'M2-C3',title:'Управління навантаженням у повсякденній роботі',e:['E09'],l:[],p:['P07','P11','P31'],ea:[],la:['L04','L06'],pa:['P08'],attention:'Перевірте кілька періодів високого навантаження і з’ясуйте, чи мав керівник реальну можливість змінити обсяг роботи, строки, пріоритети або ресурси.'},
- {m:2,id:'M2-C4',title:'Умови для безпечного керівництва',e:[],l:[],p:['P09','P10','P12'],ea:['E10'],la:[],pa:['P37','P39'],attention:'Перевірте, чого саме бракує керівникам для безпечної роботи з командою: часу, повноважень, ресурсів, зрозумілих меж ролі, консультації відповідного фахівця чи конкретної підготовки.'},
+ {m:2,id:'M2-C4',title:'Умови для безпечного керівництва',e:[],l:[],p:['P09','P10','P12'],ea:['E10'],la:[],pa:['P37','P39'],special:['E10'],attention:'Перевірте, чого саме бракує керівникам для безпечної роботи з командою: часу, повноважень, ресурсів, зрозумілих меж ролі, консультації відповідного фахівця чи конкретної підготовки.'},
  {m:3,id:'M3-C1',title:'Можливість говорити про проблеми, ставити запитання і просити допомоги',e:['E11','E13'],l:['L09'],p:['P14'],ea:['E14'],la:[],pa:['P13'],special:['E14'],attention:'Перевірте не лише можливість висловитися, а й те, що відбувається після того, як працівник поставив складне запитання, попросив допомоги або висловив незгоду.'},
  {m:3,id:'M3-C2',title:'Помилки та організаційне навчання',e:['E12'],l:['L07'],p:['P17','P14'],ea:[],la:[],pa:['P18'],attention:'Перевірте, чи після помилки організація аналізує не лише дії людини, а й робочі умови та причини, що могли сприяти ситуації.'},
  {m:3,id:'M3-C3',title:'Безпечне повідомлення про неприйнятну поведінку',e:['E15'],l:['L08'],p:['P13','P15','P16'],ea:[],la:[],pa:['P18'],attention:'Перевірте, чи працівники знають, куди можна звернутися, наскільки довіряють конфіденційності та що відбувається після повідомлення.'},
@@ -2585,7 +2588,7 @@ const BAROMETER_V2_STEPS={
  'M6-A1':[[['E26','P31'],'Визначити ознаки повторюваного надмірного навантаження.'],[['E26','P31'],'Переглянути обсяг роботи, строки, чисельність, пріоритети та доступні ресурси.'],[['E26','P31'],'Передбачити можливість своєчасно змінювати пріоритети, строки або розподіл завдань.'],[['L16','P31'],'Визначити, хто приймає рішення, якщо керівник не може скоригувати ситуацію самостійно.'],[['E27','P32'],'Усунути організаційні причини регулярних пропущених перерв.'],[['E28','P32'],'Визначити правила робочих контактів поза звичайним робочим часом і не вимагати постійної доступності, крім обґрунтованих чергувань або екстрених ситуацій.']],
  'M6-A2':[[['E29','P33'],'Чітко описати доступну психологічну, медичну, кризову або іншу професійну допомогу.'],[['E29','E30','P33','P34'],'Пояснити працівникам, як звернутися і які правила конфіденційності діють.'],[['E30','P34'],'Чітко визначити, яку інформацію про звернення компанія може або не може отримувати.'],[['L17','L18'],'Дати керівникам простий порядок дій у ситуаціях, коли працівникові може бути потрібна спеціалізована допомога.'],[['L17','L18'],'Наголосити, що керівник не діагностує і не замінює фахівця.']],
  'M6-A3':[[['P35'],'Конфіденційно обговорювати робочі потреби працівника після тривалої відсутності.'],[['P35'],'За потреби погоджувати тимчасові зміни графіка, навантаження, завдань або умов роботи.'],[['P35'],'Визначати дату повторного перегляду домовленостей.'],[['P36'],'Після потенційно травматичної події спочатку забезпечити фізичну безпеку, практичну допомогу і можливість відпочинку.'],[['P36'],'Спеціалізовану психологічну допомогу пропонувати добровільно і не вимагати групового детального обговорення пережитого.'],[['P36'],'Перевіряти робочі обставини події та потребу в подальших змінах.']],
- 'M7-A1':[[['E32','E33','L19','P41'],'Визначити конкретну небезпечну умову або перешкоду.'],[['E32','E33','L19','P41'],'Оцінити її практичне значення для безпеки і виконання роботи.'],[['L19','P41'],'Визначити відповідального та строк усунення.'],[['L19','P41'],'Якщо усунення потребує часу, передбачити тимчасовий безпечний спосіб роботи.'],[['P41'],'Після зміни повторно перевірити ту саму робочу ситуацію.'],[['P21'],'Для індивідуальної потреби визначити конфіденційний порядок адаптації робочого середовища.']],
+ 'M7-A1':[[['E33'],'Перевірити, чи правила безпеки визначені для конкретної роботи, доступні працівникам і зрозуміло сформульовані.'],[['E33'],'Перевірити проведений інструктаж або підготовку та на практичних прикладах з’ясувати, чи працівники можуть застосувати правила у своїй роботі.'],[['E32','L19','P41'],'Визначити конкретну небезпечну умову або перешкоду.'],[['E32','L19','P41'],'Оцінити її практичне значення для безпеки і виконання роботи.'],[['L19','P41'],'Визначити відповідального та строк усунення.'],[['L19','P41'],'Якщо усунення потребує часу, передбачити тимчасовий безпечний спосіб роботи.'],[['P41'],'Після зміни повторно перевірити ту саму робочу ситуацію.'],[['P21'],'Для індивідуальної потреби визначити конфіденційний порядок адаптації робочого середовища.']],
  'M7-A2':[[['P37','P38'],'Регулярно виявляти психосоціальні небезпеки та визначати робочі причини ризику.'],[['P39'],'Обирати насамперед організаційні заходи, спрямовані на джерело проблеми.'],[['P37','P38'],'Для кожного заходу визначати відповідального, строк і необхідні ресурси.'],[['P37','P38'],'Залучати працівників до визначення ризиків і оцінювання практичності заходів.'],[['P38'],'Після впровадження перевіряти результат і за потреби повторно оцінювати ризик.'],[['L21'],'Під час суттєвих змін залучати керівників до виявлення ризиків для роботи команди та повідомляти, як їхні зауваження були враховані.']],
  'M7-A3':[[['E34','E35','L20','P42'],'Визначити порядок оповіщення, укриття або евакуації.'],[['P42'],'Передбачити допомогу людям, яким вона може бути потрібна під час евакуації або укриття.'],[['P42'],'Забезпечити резервний спосіб зв’язку.'],[['L20','P42'],'Визначити, хто приймає рішення про зупинку та безпечне відновлення роботи.'],[['P42'],'Регулярно проводити сценарні перевірки та усувати виявлені недоліки.'],[['P40'],'Визначити типові ситуації підвищеного ризику агресії або насильства з боку третіх осіб.'],[['P40'],'По можливості змінити організацію роботи так, щоб зменшити ймовірність небезпечного контакту.'],[['P40'],'Забезпечити можливість швидко викликати допомогу або припинити небезпечну взаємодію.'],[['P40'],'Переглянути правила роботи наодинці там, де ризик підвищений.'],[['P40'],'Визначити порядок повідомлення про інцидент, його аналізу та необхідної допомоги працівникові після події.']],
  'C01':[[['E05','P05','E24','L14','P29'],'Завчасно пояснити причину, зміст і очікуваний вплив зміни.'],[['E24','L15','P29'],'До остаточного рішення визначити питання, на які працівники ще можуть вплинути.'],[['E24','P29'],'Провести консультацію до затвердження зміни.'],[['E25','P30'],'Після рішення повідомити, що було враховано і чому.'],[['P03','P06','E05','P05'],'Оновити ролі, відповідальність, завдання і пріоритети там, де вони змінилися.'],[['P06','P30'],'Після впровадження перевірити, чи нові домовленості зрозумілі та реально працюють.']]
@@ -2617,6 +2620,93 @@ const BAROMETER_V2_ACTION_META={
 };
 const BAROMETER_V2_ACTION_MODULE={'M1-A1':1,'M1-A2':1,'M1-A3':1,'M2-A1':2,'M2-A2':2,'M2-A3':2,'M3-A1':3,'M3-A2':3,'M3-A3':3,'M4-A1':4,'M4-A2':4,'M4-A3':4,'M5-A1':5,'M5-A2':5,'M5-A3':5,'M6-A1':6,'M6-A2':6,'M6-A3':6,'M7-A1':7,'M7-A2':7,'M7-A3':7,'C01':1};
 
+// Narrow follow-up routes for signals without an existing organizational action.
+const BAROMETER_V2_DIAGNOSTICS=[
+  [
+    "M2-D1",
+    2,
+    [
+      "E09"
+    ],
+    "Перевірити врахування навантаження під час постановки нових завдань",
+    [
+      "Розглянути кілька реальних випадків постановки нових завдань і з’ясувати, чи враховувалося фактичне поточне навантаження.",
+      "Перевірити, чи можна було змінити строк, пріоритет, обсяг або розподіл роботи; зафіксувати виявлені перешкоди без припущення про системне перевантаження."
+    ],
+    "Для розглянутих випадків визначено, як враховували навантаження, які рішення були доступні та що потрібно змінити."
+  ],
+  [
+    "M2-D2",
+    2,
+    [
+      "E10"
+    ],
+    "Уточнити, як у рішеннях керівництва враховується безпечність роботи",
+    [
+      "Розглянути кілька управлінських рішень, що вплинули на безпечність роботи, і з’ясувати, яка інформація про ризики була доступна до їх прийняття.",
+      "Уточнити у працівників і керівників, як врахували цю інформацію, хто приймав рішення та чи можна було повідомити про небезпеку і скоригувати рішення."
+    ],
+    "На конкретних прикладах з’ясовано порядок прийняття рішень та визначено, чи потрібні зміни; причину не встановлюють лише за відповіддю E10."
+  ],
+  [
+    "M3-D1",
+    3,
+    [
+      "E14"
+    ],
+    "Уточнити перешкоди для висловлення позиції та внеску в роботу команди",
+    [
+      "У конфіденційних розмовах або короткому анонімному опитуванні уточнити, у яких робочих ситуаціях людям складно висловлювати свою позицію або робити внесок.",
+      "З’ясувати, що саме у взаємодії чи організації роботи це ускладнює, і лише після цього визначити відповідну зміну."
+    ],
+    "Визначено конкретні ситуації та перешкоди без автоматичного висновку про загальну небезпечність обговорень."
+  ],
+  [
+    "M2-D3",
+    2,
+    [
+      "L04"
+    ],
+    "Перевірити час і навантаження керівника для роботи з командою",
+    [
+      "Зіставити кількість прямих підлеглих, управлінське навантаження та час, реально доступний для змістовної взаємодії з працівниками.",
+      "Перевірити, які інші робочі обов’язки витісняють роботу з командою, і визначити можливі зміни розподілу обов’язків або часу."
+    ],
+    "Встановлено конкретні обмеження часу керівника; сигнал не трактується автоматично як погане лідерство."
+  ],
+  [
+    "M2-D4",
+    2,
+    [
+      "L06"
+    ],
+    "Уточнити конкретний дефіцит ресурсів керівника",
+    [
+      "З’ясувати, чого саме бракує: часу, людей, інформації, бюджету, обладнання, повноважень або доступу до рішення іншого рівня.",
+      "На прикладах невирішених робочих питань визначити, хто може усунути цей дефіцит, і погодити відповідну організаційну дію."
+    ],
+    "Названо конкретний дефіцит, відповідального за рішення та наступний крок."
+  ],
+  [
+    "M6-D1",
+    6,
+    [
+      "L17",
+      "L18"
+    ],
+    "Уточнити межі ролі керівника та порядок перенаправлення до допомоги",
+    [
+      "Визначити доступний керівнику порядок консультації та конкретного фахівця або сервіс, до якого можна перенаправити працівника.",
+      "Уточнити межі ролі керівника: він не діагностує і не надає професійну психологічну чи медичну допомогу.",
+      "Перевірити на типовому прикладі, чи керівник знає, як запропонувати допомогу з дотриманням конфіденційності."
+    ],
+    "Керівник може назвати доступний контакт, порядок консультації та перенаправлення і пояснити межі своєї ролі."
+  ]
+];
+for(const [id,module,codes,title,steps,check] of BAROMETER_V2_DIAGNOSTICS){
+  BAROMETER_V2_ACTION_MODULE[id]=module;BAROMETER_V2_ACTION_META[id]=[title,check];BAROMETER_V2_STEPS[id]=steps.map(text=>[codes,text]);
+}
+
 function barometerV2StateForCodes(input,source,codes){
   const relevant=(codes||[]).filter(code=>barometerSourceOf(code)===source);
   if(!relevant.length)return BAROMETER_V2_NOT_MEASURED;
@@ -2636,8 +2726,9 @@ function barometerV2AspectState(input,a){
   const eAdditional=barometerV2ActiveCodes(input,a.ea),lAdditional=barometerV2ActiveCodes(input,a.la),pAdditional=barometerV2ActiveCodes(input,a.pa),special=barometerV2ActiveCodes(input,a.special);
   const p40Pending=!!a.p40&&input.P.states.P40==='G'&&!input.P.p40Known;
   if(a.p40&&!input.P.p40Applicable)p=BAROMETER_V2_NOT_MEASURED;
-  const active=e==='S'||l==='S'||p==='G'||e==='T'||l==='T'||p==='T'||special.length>0||p40Pending;
-  return {...a,eCodes,lCodes,pCodes,e,l,p,eAdditional,lAdditional,pAdditional,special,p40Pending,active};
+  const partial=['E','L'].some(source=>input[source].eligible&&[eCodes,lCodes][source==='E'?0:1].some(code=>(input[source].states[code]||'T')==='T')&&[eCodes,lCodes][source==='E'?0:1].some(code=>['N','S'].includes(input[source].states[code])));
+  const active=partial||e==='S'||l==='S'||p==='G'||e==='T'||l==='T'||p==='T'||special.length>0||p40Pending;
+  return {...a,eCodes,lCodes,pCodes,e,l,p,eAdditional,lAdditional,pAdditional,special,p40Pending,partial,active};
 }
 const BAROMETER_V2_VISIBLE_SIGNAL_COPY={
   P08:'час, інформація, повноваження, ресурси та порядок передавання питання на відповідний рівень',
@@ -2667,13 +2758,22 @@ function barometerV2NaturalSignalList(codes){
 function barometerV2SourceSentence(source,state,a,input){
   if(state==='M'||state==='X')return '';
   const codes=source==='E'?a.eCodes:source==='L'?a.lCodes:a.pCodes;
-  const problem=source==='P'?state==='G':state==='S';
-  const selected=problem?barometerV2ActiveCodes(input,codes):codes;
-  const detail=barometerV2NaturalSignalList(selected.length?selected:codes)||a.title.toLocaleLowerCase('uk-UA');
-  if(source==='E'){if(state==='S')return `Відповіді працівників вказують на труднощі в таких питаннях, як ${detail}.`;if(state==='N')return `Відповіді працівників не вказують на виражені проблеми в таких питаннях, як ${detail}.`;if(state==='T')return `За відповідями працівників недостатньо застосовних даних для надійної оцінки таких питань, як ${detail}.`;}
-  if(source==='L'){if(state==='S')return `Відповіді керівників вказують на труднощі в таких питаннях, як ${detail}.`;if(state==='N')return `Відповіді керівників не вказують на виражені проблеми в таких питаннях, як ${detail}.`;if(state==='T')return `За відповідями керівників недостатньо застосовних даних для надійної оцінки таких питань, як ${detail}.`;}
-  if(source==='P'){if(state==='G')return `Організаційний чекап показує прогалини в таких питаннях, як ${detail}.`;if(state==='N')return `Організаційний чекап не показує виражених прогалин у таких питаннях, як ${detail}.`;if(state==='T')return `За організаційним чекапом недостатньо підтверджених даних для надійної оцінки таких питань, як ${detail}.`;}
-  return '';
+  const who=source==='E'?'працівників':'керівників',parts=[];
+  for(const group of (source==='P'?['G','N','T']:['S','N','T'])){
+    const selected=codes.filter(code=>(input[source].states[code]||'T')===group);
+    if(!selected.length)continue;
+    const detail=barometerV2NaturalSignalList(selected);
+    if(source==='P'){
+      if(group==='G')parts.push(`Організаційний чекап показує прогалини в таких питаннях, як ${detail}.`);
+      if(group==='N')parts.push(`Організаційний чекап не показує виражених прогалин у таких питаннях, як ${detail}.`);
+      if(group==='T')parts.push(`За організаційним чекапом недостатньо підтверджених даних для надійної оцінки таких питань, як ${detail}.`);
+    }else{
+      if(group==='S')parts.push(`Відповіді ${who} вказують на труднощі в таких питаннях, як ${detail}.`);
+      if(group==='N')parts.push(`Відповіді ${who} не вказують на виражені проблеми в таких питаннях, як ${detail}.`);
+      if(group==='T')parts.push(`За відповідями ${who} недостатньо застосовних даних для надійної оцінки таких питань, як ${detail}.`);
+    }
+  }
+  return parts.join(' ');
 }
 function barometerV2AdditionalSentence(source,codes,input){
   const active=barometerV2ActiveCodes(input,codes),detail=barometerV2NaturalSignalList(active);
@@ -2699,13 +2799,14 @@ function barometerV2Alignment(a,input){
     if(a.l==='S')parts.push('Можливості керівників відрізняються від сприятливого результату організаційного чекапу: перевірте, чи мають вони час, інформацію, ресурси, повноваження і доступ до потрібного рішення або фахівця, щоб реально застосувати практику в цьому середовищі.');
     if(a.e==='S'&&a.l==='S')parts.push('Разом ці результати є сильним сигналом можливого розриву між корпоративною практикою та її впровадженням у цьому середовищі; конкретний механізм потрібно перевірити додатково.');
   }
-  else if(a.p==='G'&&a.e==='N'&&(a.l==='N'||a.l==='M'||a.l==='X'))parts.push('Це превентивна організаційна прогалина: опитувальні дані не показують вираженої проблеми у повсякденному досвіді, але результат організаційного чекапу дає підстави усунути прогалину до того, як вона проявиться для працівників.');
+  else if(a.p==='G'&&a.e==='N'&&(a.l==='N'||a.l==='M'||a.l==='X'))parts.push('Це превентивна організаційна прогалина: за достатньо виміряними питаннями опитувальні дані не показують вираженої проблеми у повсякденному досвіді, але результат організаційного чекапу дає підстави усунути прогалину до того, як вона проявиться для працівників.');
   else if([a.e,a.l,a.p].filter(x=>x==='S'||x==='G').length>=2)parts.push('Разом ці результати можуть бути пов’язані з одним і тим самим організаційним механізмом і потребують спільної перевірки.');
   else if(a.e==='S'||a.l==='S'||a.p==='G')parts.push('Цей результат дає підстави перевірити, як саме відповідний організаційний механізм працює у повсякденній роботі.');
   if((a.e==='T'||a.l==='T'||a.p==='T')&&(a.e==='S'||a.l==='S'||a.p==='G'))parts.push('Недостатність даних в одному з джерел не підтверджує і не спростовує проблемний сигнал з іншого джерела.');
   return parts.join(' ');
 }
 function barometerV2Attention(a,input){
+  if(a.id==='M7-C1'&&barometerV2CodeActive(input,'E33')&&!barometerV2ActiveCodes(input,['E32','L19','P41']).length)return 'Перевірте наявність, доступність і зрозумілість правил безпеки для конкретної роботи, проведений інструктаж та здатність застосувати правила на практиці. Сам цей сигнал не доводить небезпечності фізичних умов.';
   if(a.id==='M7-C2'&&input.E.eligible&&input.E.states.E31==='S')return 'Проведіть коротке анонімне цільове пульс-опитування, щоб уточнити характер неприйнятної поведінки, її повторюваність, обставини, знання безпечного способу звернення та довіру до конфіденційності.';
   if(a.id==='M4-C5'&&input.E.eligible&&input.E.states.E20==='S')return 'Уточніть у короткому анонімному цільовому опитуванні, у яких саме робочих ситуаціях або управлінських діях виникає досвід нерівного ставлення; сам цей сигнал не є доказом дискримінації.';
   if(a.id==='M2-C2'&&input.L.eligible&&input.L.states.L06==='S'&&a.e!=='S'&&a.l!=='S'&&a.p!=='G')return 'Уточніть, яких саме ресурсів бракує керівникам: часу, інформації, повноважень, людей, доступу до іншої функції або іншої конкретної можливості вирішити робочу проблему.';
@@ -2718,6 +2819,7 @@ function barometerV2MakeAction(id,basis,input,variant=''){
   if(id==='M1-A1'&&variant==='onboarding'){title='Забезпечити якісне введення в роль при наймі або переведенні';forced=['Під час найму або переведення чітко пояснювати роль, основні обов’язки, відповідальність і межі самостійних рішень.'];}
   if(id==='M6-A1'&&variant==='L16'){title='Забезпечити керівникам можливість реагувати на надмірне навантаження';check='У ситуації надмірного навантаження керівник знає, що може змінити самостійно, хто приймає рішення за межами його повноважень і як швидко отримати таке рішення.';forced=['Визначити, що керівник може змінити самостійно, коли навантаження, темп або графік не залишають часу для відновлення.','Визначити, хто приймає рішення за межами повноважень керівника.','Встановити зрозумілий порядок отримання такого рішення.'];}
   if(id==='M7-A2'&&variant==='L21'){title='Залучати керівників до оцінювання ризиків під час суттєвих змін';check='Перед суттєвою зміною керівники повідомляють про ризики для роботи команди, суттєві зауваження фіксуються, а після рішення зрозуміло, як їх було враховано.';forced=['Перед суттєвою зміною запитувати керівників про ризики для роботи команди.','Фіксувати суттєві зауваження керівників.','Повідомляти, як ці зауваження були враховані у рішенні.'];}
+  if(id==='M7-A1'&&basisSet.has('E33')&&!['E32','L19','P41'].some(code=>basisSet.has(code))){title='Перевірити знання правил безпеки та їх практичне застосування';check='Працівники можуть знайти правила для своєї роботи, пояснити їх і правильно застосувати у типових робочих ситуаціях.';}
   const hasP40=basisSet.has('P40'),hasEmergency=['E34','E35','L20','P42'].some(code=>basisSet.has(code));
   if(id==='M7-A3'&&hasP40&&!hasEmergency){title='Зменшити ризик агресії та насильства з боку третіх осіб';check='Працівники знають, як діяти в небезпечній ситуації, а повторювані інциденти аналізуються і приводять до змін в організації роботи.';}else if(id==='M7-A3'&&hasP40&&hasEmergency)title='Перевірити практичну готовність до прямої загрози та зменшити ризик агресії з боку третіх осіб';
   let steps=forced||BAROMETER_V2_STEPS[id].filter(([codes])=>codes.some(code=>basisSet.has(code))).map(([,t])=>t);if(id==='M1-A2'&&basisSet.has('P04')){steps=steps.filter(t=>t!=='Встановити зрозумілий порядок дій, коли одночасні вимоги неможливо виконати разом.');check='У реальних робочих ситуаціях працівники можуть пояснити, що робити, якщо вимоги суперечать одна одній, є нереалістичними або можуть створювати загрозу безпеці: коли роботу потрібно призупинити або не розпочинати, до кого звернутися, хто приймає рішення і як отримати остаточну відповідь.';}steps=barometerUnique(steps);if(!steps.length)steps=[BAROMETER_V2_STEPS[id][0][1]];
@@ -2736,10 +2838,15 @@ function barometerV2BuildActions(input){
   const l16=barometerV2Basis(input,['L16']);if(overload.length)actions.push(barometerV2MakeAction('M6-A1',[...overload,...l16,...barometerV2Basis(input,['E09','E22'])],input));else if(l16.length)actions.push(barometerV2MakeAction('M6-A1',l16,input,'L16'));const m6a2=barometerV2Basis(input,['E29','E30','P33','P34']);if(m6a2.length)actions.push(barometerV2MakeAction('M6-A2',[...m6a2,...barometerV2Basis(input,['L17','L18'])],input));const m6a3=barometerV2Basis(input,['P35','P36']);if(m6a3.length)actions.push(barometerV2MakeAction('M6-A3',[...m6a3,...barometerV2Basis(input,['L17','L18'])],input));
   const m7a1=barometerV2Basis(input,['E32','E33','L19','P41']);if(m7a1.length)actions.push(barometerV2MakeAction('M7-A1',[...m7a1,...barometerV2Basis(input,['P21'])],input));const l21=barometerV2Basis(input,['L21']);if(riskSystem.length)actions.push(barometerV2MakeAction('M7-A2',[...riskSystem,...l21],input));else if(l21.length)actions.push(barometerV2MakeAction('M7-A2',l21,input,'L21'));const emergency=barometerV2Basis(input,['E34','E35','L20','P42']),p40=input.P.p40Applicable?barometerV2Basis(input,['P40']):[];if(emergency.length||p40.length)actions.push(barometerV2MakeAction('M7-A3',[...emergency,...p40],input));
   const a1=actions.find(a=>a.id==='M1-A3'),a5=actions.find(a=>a.id==='M5-A3');if(a1&&a5){const basis=barometerUnique([...a1.basis_codes,...a5.basis_codes,...barometerV2Basis(input,['P03','P06'])]);actions.splice(Math.max(actions.indexOf(a1),actions.indexOf(a5)),1);actions.splice(Math.min(actions.indexOf(a1),actions.indexOf(a5)),1);actions.push(barometerV2MakeAction('C01',basis,input));}
+  for(const [id,,codes] of BAROMETER_V2_DIAGNOSTICS){
+    const basis=barometerV2Basis(input,codes);
+    if(basis.length&&!actions.some(action=>basis.every(code=>action.basis_codes.includes(code))))actions.push(barometerV2MakeAction(id,basis,input,'diagnostic'));
+  }
   return actions;
 }
 function barometerV2Join(labels){if(labels.length===1)return labels[0];if(labels.length===2)return labels[0]+' та '+labels[1];return labels.slice(0,-1).join(', ')+', а також '+labels.at(-1)}
 function barometerV2Lead(row,input,active){
+  if(active.some(a=>a.partial)&&!active.some(a=>a.e==='S'||a.l==='S'||a.p==='G'||a.special.length))return 'За достатньо виміряними питаннями виражених проблемних ознак не виявлено. Частина питань не має достатніх застосовних даних; висновок не поширюється на них. Межі висновку наведено в описі аспектів.';
   if(!active.length&&row.m===7&&input.P.states.P40==='G'&&input.P.p40Known&&!input.P.p40Applicable){
     return 'Організаційний чекап показує прогалину в практиці захисту від агресії або насильства з боку третіх осіб на рівні компанії. Для цього робочого середовища актуальність такого ризику не підтверджено, тому конкретна локальна дія тут не формується.';
   }
@@ -2774,7 +2881,7 @@ function barometerV2BuildSemanticAnalysis(rawInput){
   for(let moduleId=1;moduleId<=7;moduleId++){
     const moduleAll=allAspects.filter(a=>a.m===moduleId),active=moduleAll.filter(a=>a.active),row=rows.find(r=>r.m===moduleId)||{m:moduleId,e:input.E.eligible?'Ясно':'Недостатня вибірка',l:input.L.eligible?'Ясно':'Недостатня вибірка',p:'Ясно'},crossRefs=[];
     if(moduleId===5&&actions.some(a=>a.id==='C01'))crossRefs.push({id:'C01',final_action_id:'C01',text:'Дія щодо організаційних змін сформована один раз у модулі 1 і охоплює також завчасне залучення працівників до змін.'});
-    const fogOnly=active.length>0&&active.every(a=>a.e!=='S'&&a.l!=='S'&&a.p!=='G'&&!a.eAdditional.length&&!a.lAdditional.length&&!a.pAdditional.length&&!a.special.length&&!a.p40Pending);
+    const fogOnly=active.length>0&&active.every(a=>!a.partial&&a.e!=='S'&&a.l!=='S'&&a.p!=='G'&&!a.eAdditional.length&&!a.lAdditional.length&&!a.pAdditional.length&&!a.special.length&&!a.p40Pending);
     const visible=(fogOnly?[]:active).map(a=>({id:a.id,title:(a.id==='M7-C2'&&input.E.eligible&&input.E.states.E31==='S'&&a.p!=='G'&&!a.lAdditional.length)?'Неприйнятне ставлення - сигнал для уточнення':a.title,alignment:barometerV2Alignment(a,input),attention:barometerV2Attention(a,input),e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
     const compatibilityClusters=moduleAll.map(a=>({id:a.id,name:a.title,e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
     modules[moduleId]={module:moduleId,aspects:visible,clusters:compatibilityClusters,actions:actions.filter(a=>a.module===moduleId),dataNotes:barometerV2DataNotes(input),crossRefs,lead:fogOnly?barometerV2FogOnlyLead(active):barometerV2Lead(row,input,active),problemCodes:barometerUnique(active.flatMap(a=>[...barometerV2ActiveCodes(input,a.eCodes),...barometerV2ActiveCodes(input,a.lCodes),...barometerV2ActiveCodes(input,a.pCodes),...barometerV2ActiveCodes(input,a.special)]))};

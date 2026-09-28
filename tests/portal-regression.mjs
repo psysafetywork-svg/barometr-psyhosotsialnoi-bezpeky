@@ -37,16 +37,16 @@ function loadLocalPortal(){
   const source=executableScripts(localHtml).at(-1)+`
     globalThis.__portal={
       SURVEY_ITEMS,ROLE_QUESTION,P_LIST,P,M,COMBO64,FINE_ITEMS,ACTION_LIB,THEMATIC_LIB,P38_TEXT,SITUATIONAL_HYPOTHESIS,
-      parseCSV,validateTableRows,aggregateSource,calculatePResults,
+      parseCSV,parseResponseValue,RESPONSE_SCALE,isProblemSurveyItem,compareSurveyPercent,validateTableRows,aggregateSource,calculatePResults,
       fmtPct,weatherStatus,boundaryFlag,mapStatusBadge,weatherMapHtml,managementSignal,comboTemplate,hasWeakSituationalPractice,selectedActions,attentionAspects,actualResultModel,buildReportHtml,planXlsxBytes,
-      normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,
+      normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,load,save,STORE,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
       setState(value){S=value},getState(){return S},render,
     };
   `;
   vm.runInContext(source,context,{filename:'local/index.html'});
-  return {api:context.__portal,listeners,app,storage};
+  return {api:context.__portal,listeners,app,storage,document};
 }
 
 const portal=loadLocalPortal();
@@ -910,3 +910,169 @@ test('public example shows only a conclusion for clear and fog-only combinations
   assert.equal((problem.detail.match(/class="example-action-card"/g)||[]).length,1);
 });
 test('embedded local portal is byte-for-byte synchronized after base64 decoding',()=>{const match=publicHtml.match(/const embeddedLocalPortal = '([A-Za-z0-9+/=]+)';/);assert.ok(match);const decoded=Buffer.from(match[1],'base64'),localBytes=fs.readFileSync(new URL('../local/index.html',import.meta.url));assert.equal(Buffer.compare(decoded,localBytes),0);});
+
+// Corrective patch F01/F02/F03/F04/F06: exercise the final runtime.
+for(const boundary of [15,30,55,75])test(`F01 stable comparison on both sides of ${boundary}%`,()=>{
+  assert.equal(portal.api.compareSurveyPercent(boundary-1e-7,boundary),-1);
+  assert.equal(portal.api.compareSurveyPercent(boundary,boundary),0);
+  assert.equal(portal.api.compareSurveyPercent(boundary+1e-7,boundary),1);
+  for(const noise of [-1e-12,0,1e-12])assert.equal(portal.api.compareSurveyPercent(boundary+noise,boundary),0);
+});
+for(const [label,values,expected] of [
+  ['15 below',[85,15-1e-7],'Ясно'],['15 exact',[85,14.999999999999995],'Хмарно'],['15 above',[85,15+1e-7],'Хмарно'],
+  ['30 below',[70,30-1e-7],'Хмарно'],['30 exact',[70,29.99999999999999],'Буря'],['30 above',[70,30+1e-7],'Буря'],
+  ['75 below',[75-1e-7,10],'Хмарно'],['75 exact',[74.99999999999999,10],'Ясно'],['75 above',[75+1e-7,10],'Ясно'],
+])test(`F01 weather ${label}`,()=>assert.equal(portal.api.weatherStatus(...values),expected));
+for(const [f,u,expected] of [[55-1e-7,10,true],[54.99999999999999,10,false],[55+1e-7,10,false],[70,30-1e-7,false],[70,29.99999999999999,true],[70,30+1e-7,true]])test(`F01 problem item ${f}/${u}`,()=>{
+  assert.equal(portal.api.isProblemSurveyItem({adequate:true,favorable:f,unfavorable:u}),expected);
+  setRuntimeScenario();
+  const source=portal.api.getState().r.periods[0].envs[0].survey.results.e;
+  source.items.E01={...source.items.E01,favorable:f,unfavorable:u};
+  assert.equal(portal.api.barometerRuntimeInput().E.states.E01,expected?'S':'N');
+});
+for(const [source,n,negative,status] of [['L',10,9,'Буря'],['L',20,9,'Хмарно'],['E',20,18,'Буря']])test(`F01 respondent profiles ${source} n=${n} negatives=${negative}`,()=>{
+  const rows=moduleRows(source,n,1,(r,i)=>i>=3?'NA':r<negative&&i===r%3?1:5);
+  const result=portal.api.aggregateSource(rows,source),m=result.modules[1];
+  assert.ok(Math.abs(m.unfavorable-negative/n/3*100)<1e-10);
+  assert.equal(m.status,status);
+  const {environment}=setRuntimeScenario();environment.survey.results[source.toLowerCase()]=result;
+  assert.equal(portal.api.actualResultModel()[0][source.toLowerCase()],status);
+  assert.ok(portal.api.buildReportHtml(environment).includes(status));
+});
+for(const [name,overrides,positive,negative,missing] of [
+  ['N+NA',{E11:5,E13:'NA'},['E11'],[],['E13']],
+  ['S+NA',{E11:1,E13:'NA'},[],['E11'],['E13']],
+  ['N+S',{E11:5,E13:1},['E11'],['E13'],[]],
+  ['NA+NA',{E11:'NA',E13:'NA'},[],[],['E11','E13']],
+  ['direct measured/additional NA',{E11:5,E13:5,E14:'NA'},['E11','E13'],[],[]],
+])test(`F02 measured evidence is scoped: ${name}`,()=>{
+  setRuntimeScenario({eOverrides:overrides,lOverrides:{L09:1}});
+  const a=portal.api.barometerSemanticInterpretation().modules[3].aspects.find(x=>x.id==='M3-C1');
+  assert.ok(a);
+  // Match the production signal labels through the rendered state-specific clauses.
+  const positiveSentence=a.alignment.match(/Відповіді працівників не вказують[^.]*\./)?.[0]||'';
+  const negativeSentence=a.alignment.match(/Відповіді працівників вказують[^.]*\./)?.[0]||'';
+  const missingSentence=a.alignment.match(/За відповідями працівників недостатньо[^.]*\./)?.[0]||'';
+  assert.equal(!!positiveSentence,positive.length>0);
+  assert.equal(!!negativeSentence,negative.length>0);
+  assert.equal(!!missingSentence,missing.length>0);
+  if(missing.includes('E13')){assert.doesNotMatch(positiveSentence,/допомог/i);assert.match(missingSentence,/допомог/i)}
+  if(negative.includes('E13')){assert.doesNotMatch(positiveSentence,/допомог/i);assert.match(negativeSentence,/допомог/i)}
+  if(overrides.E14==='NA')assert.doesNotMatch(a.alignment,/Додатково відповіді працівників/);
+});
+test('F02 partial NA remains visible even with no adverse signals',()=>{
+  const {environment}=setRuntimeScenario({eOverrides:{E13:'NA'}});
+  const m=portal.api.barometerSemanticInterpretation().modules[3];
+  assert.ok(m.aspects.some(a=>a.id==='M3-C1'));
+  assert.match(m.lead,/висновок не поширюється/);
+  assert.match(portal.api.buildReportHtml(environment),/недостатньо застосовних даних/);
+});
+for(const [code,id,terms] of [
+  ['E09','M2-D1',[/поточне навантаження/,/строк, пріоритет, обсяг або розподіл/]],
+  ['E10','M2-D2',[/управлінських рішень/,/ризики/]],
+  ['E14','M3-D1',[/висловлювати свою позицію/,/взаємодії чи організації/]],
+  ['L04','M2-D3',[/кількість прямих підлеглих/,/інші робочі обов’язки/]],
+  ['L06','M2-D4',[/бюджету, обладнання/,/рішення іншого рівня/]],
+  ['L17','M6-D1',[/порядок консультації/,/не діагностує/]],
+  ['L18','M6-D1',[/перенаправити/,/не діагностує/]],
+])test(`F03 isolated ${code} has a concrete plan-ready diagnostic action`,async()=>{
+  const {environment}=setSurveyIssueScenario(code),a=portal.api.barometerSemanticInterpretation();
+  const action=a.actions.find(x=>x.id===id);assert.ok(action);assert.equal(action.variant,'diagnostic');assert.equal(action.planEligible,true);
+  for(const term of terms)assert.match(action.action,term);
+  assert.ok(portal.api.selectedActions(action.module).find(x=>x.target===id));
+  assert.match(portal.api.buildReportHtml(environment),new RegExp(action.title));
+  if(code==='E14')assert.ok(!a.actions.some(x=>x.id==='M3-A1'));
+  const button={dataset:{a:'add-routed-action',m:String(action.module),target:id},replaceWith(){}};
+  await portal.listeners.get('click')({target:{closest(){return button}}});
+  const plan=portal.api.getState().r.plan;assert.equal(plan.length,1);assert.equal(plan[0].sourceTarget,id);assert.equal(plan[0].description,action.action);
+  await portal.listeners.get('click')({target:{closest(){return button}}});assert.equal(plan.length,1);
+  const saved=JSON.parse([...portal.storage.values()].at(-1));assert.equal(saved.plan[0].sourceTarget,id);
+  assert.ok(portal.api.planXlsxBytes(portal.api.planRows()).length>1000);
+});
+test('F03 L17 and L18 deduplicate and do not duplicate an existing help action',()=>{
+  setRuntimeScenario({lOverrides:{L17:1,L18:1}});
+  let actions=portal.api.barometerSemanticInterpretation().actions;
+  assert.equal(actions.filter(x=>x.id==='M6-D1').length,1);
+  assert.deepEqual(Array.from(actions.find(x=>x.id==='M6-D1').basis_codes),['L17','L18']);
+  setRuntimeScenario({eOverrides:{E29:1},lOverrides:{L17:1,L18:1}});
+  actions=portal.api.barometerSemanticInterpretation().actions;
+  assert.ok(actions.some(x=>x.id==='M6-A2'));assert.ok(!actions.some(x=>x.id==='M6-D1'));
+});
+for(const companion of [null,'E32','P41','L19'])test(`F04 E33 with ${companion||'favorable E32/L19/P41'}`,()=>{
+  setRuntimeScenario({eOverrides:{E33:1,...(companion==='E32'?{E32:1}:{})},lOverrides:companion==='L19'?{L19:1}:{},pOverrides:companion==='P41'?{P41:'partial'}:{}});
+  const a=portal.api.barometerSemanticInterpretation(),x=a.actions.find(x=>x.id==='M7-A1');
+  assert.ok(x);assert.match(x.action,/правила безпеки/);assert.match(x.action,/інструктаж/);assert.match(x.action,/застосувати правила/);
+  if(companion)assert.match(x.action,/небезпечну умову/);
+  else{assert.doesNotMatch(x.action,/небезпечну умову|Оцінити її практичне значення/);assert.match(x.title,/знання правил/);assert.match(a.modules[7].aspects.find(x=>x.id==='M7-C1').attention,/Сам цей сигнал не доводить/)}
+});
+for(let i=0;i<6;i++)test(`F06 current category ${i+1} and numeric equivalent import`,()=>{
+  assert.equal(portal.api.parseResponseValue(portal.api.RESPONSE_SCALE[i]),i===5?'NA':i+1);
+  for(const value of [String(i+1),i+1])assert.equal(portal.api.parseResponseValue(value),i===5?'NA':i+1);
+  const headers=[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>`${x.code}. ${x.text}`)];
+  const table=[headers,['Так',...portal.api.SURVEY_ITEMS.map(()=>portal.api.RESPONSE_SCALE[i])]];
+  assert.equal(portal.api.validateTableRows(table,'current.csv').errors.length,0);
+});
+for(const value of ['Важко відповісти','Не погоджуюся','Погоджуюся','Цілком погоджуюсь','Невідома категорія'])test(`F06 rejects and names ${value}`,()=>{
+  assert.equal(portal.api.parseResponseValue(value),undefined);
+  const table=[[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>`${x.code}. ${x.text}`)],['Так',...portal.api.SURVEY_ITEMS.map(x=>x.code==='E01'?value:'5')]];
+  const v=portal.api.validateTableRows(table,'legacy.csv');
+  assert.ok(v.errors.some(x=>x.includes(value)&&x.includes('шкалі Барометра v1.0')&&x.includes('не перекодовано')));
+});
+test('F06 blank stays absent, not neutral or NA',()=>{
+  assert.equal(portal.api.parseResponseValue(''),null);
+  const table=[[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>`${x.code}. ${x.text}`)],['Ні',...portal.api.SURVEY_ITEMS.map(x=>x.source==='L'?'':x.code==='E01'?'':'5')]];
+  const v=portal.api.validateTableRows(table,'blank.csv');assert.ok(v.errors.some(x=>x.includes('E01')&&x.includes('відсутнє')));assert.ok(!v.errors.some(x=>/L\d\d/.test(x)));
+});
+test('old backup keeps cached weather until source file is reimported',()=>{
+  const {environment}=setRuntimeScenario();
+  const rows=moduleRows('L',10,1,(r,i)=>r<9&&i===r%3?1:5);
+  const result=portal.api.aggregateSource(rows,'L');result.modules[1].status='Хмарно';
+  environment.survey.results.l=result;
+  const restored=JSON.parse(JSON.stringify(portal.api.getState().r));
+  assert.equal(portal.api.validateBackupResearch(restored),true);
+  portal.api.normalizeResearch(restored);
+  assert.equal(restored.periods[0].envs[0].survey.results.l.modules[1].status,'Хмарно');
+  restored.periods[0].envs[0].survey.results.l=portal.api.aggregateSource(rows,'L');
+  assert.equal(restored.periods[0].envs[0].survey.results.l.modules[1].status,'Буря');
+});
+
+// Continuation QA: exact literals, L partial coverage, and real restore handler.
+for(const [f,u,expected] of [[85,15,'Хмарно'],[70,30,'Буря'],[75,10,'Ясно'],[55,10,'Хмарно']])test(`F01 exact literal weather ${f}/${u}`,()=>{
+  assert.equal(portal.api.weatherStatus(f,u),expected);
+});
+test('F01 exact literal 55 is not a problem without 30 unfavorable',()=>{
+  assert.equal(portal.api.isProblemSurveyItem({adequate:true,favorable:55,unfavorable:29}),false);
+  assert.equal(portal.api.isProblemSurveyItem({adequate:true,favorable:55,unfavorable:30}),true);
+});
+for(const value of [5,1])test(`F02 L partial NA retains measured L17=${value} and missing L18`,()=>{
+  setRuntimeScenario({lOverrides:{L17:value,L18:'NA'}});
+  const m=portal.api.barometerSemanticInterpretation().modules[6];
+  const a=m.aspects.find(x=>x.id==='M6-C3');assert.ok(a);
+  assert.match(a.alignment,/За відповідями керівників недостатньо застосовних даних/);
+  assert.match(a.alignment,value===5?/Відповіді керівників не вказують/:/Відповіді керівників вказують/);
+  if(value===5)assert.match(m.lead,/висновок не поширюється/);
+});
+test('existing study load and JSON restore preserve cached status but use current interpretation',async()=>{
+  const {environment}=setRuntimeScenario({eOverrides:{E13:'NA'}});
+  const rows=moduleRows('L',10,1,(r,i)=>r<9&&i===r%3?1:5);
+  environment.survey.results.l=portal.api.aggregateSource(rows,'L');
+  environment.survey.results.l.modules[1].status='Хмарно';
+  const original=JSON.parse(JSON.stringify(portal.api.getState().r));
+  portal.storage.set(portal.api.STORE,JSON.stringify(original));
+  const loaded=portal.api.load();
+  assert.equal(loaded.periods[0].envs[0].survey.results.l.modules[1].status,'Хмарно');
+  const query=portal.document.querySelector;
+  portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:original})}]}:query(selector);
+  try{
+    await portal.listeners.get('click')({target:{closest(){return {dataset:{a:'restore-backup'}}}}});
+    const restored=portal.api.getState().r;
+    const e=restored.periods[0].envs[0];
+    assert.equal(e.survey.results.l.modules[1].status,'Хмарно');
+    assert.equal(JSON.parse(portal.storage.get(portal.api.STORE)).periods[0].envs[0].survey.results.l.modules[1].status,'Хмарно');
+    portal.api.setState({...portal.api.getState(),env:e.id,screen:'dash'});
+    assert.equal(portal.api.actualResultModel()[0].l,'Хмарно');
+    assert.match(portal.api.barometerSemanticInterpretation().modules[3].aspects.find(x=>x.id==='M3-C1').alignment,/недостатньо застосовних даних/);
+    e.survey.results.l=portal.api.aggregateSource(rows,'L');
+    assert.equal(portal.api.actualResultModel()[0].l,'Буря');
+  }finally{portal.document.querySelector=query}
+});
