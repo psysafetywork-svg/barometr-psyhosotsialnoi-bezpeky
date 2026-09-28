@@ -42,7 +42,7 @@ function loadLocalPortal(){
       normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,load,save,STORE,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
-      setState(value){S=value},getState(){return S},render,
+      setState(value){S=value},getState(){return S},render,studyProgress,
     };
   `;
   vm.runInContext(source,context,{filename:'local/index.html'});
@@ -1075,4 +1075,109 @@ test('existing study load and JSON restore preserve cached status but use curren
     e.survey.results.l=portal.api.aggregateSource(rows,'L');
     assert.equal(portal.api.actualResultModel()[0].l,'Буря');
   }finally{portal.document.querySelector=query}
+});
+
+
+// Study progress reads existing state; navigation reuses production handlers.
+function progressScenario({envCount=1,imported=0,done=false,modules=0,planCount=0}={}){
+  const {environment}=setRuntimeScenario();
+  const r=portal.api.getState().r,p=r.periods[0];
+  p.envs=Array.from({length:envCount},(_,i)=>({...JSON.parse(JSON.stringify(environment)),id:`progress-${i}`,name:`Середовище ${i+1}`,survey:i<imported?JSON.parse(JSON.stringify(environment.survey)):{} }));
+  p.checkup.done=done;
+  if(!done){p.checkup.answers=Object.fromEntries(portal.api.P_LIST.filter(x=>x.module<=modules).map(x=>[x.code,'full']));p.checkup.results=null;}
+  r.plan=Array.from({length:planCount},(_,i)=>({id:`plan-${i}`,periodId:p.id,envId:p.envs[0]?.id,module:'Модуль',action:'Дія',description:'Опис',status:'Не розпочато'}));
+  portal.api.setState({...portal.api.getState(),r,screen:'home',env:null});
+  return {r,p,html:portal.api.studyProgress()};
+}
+function progressStep(html,n){return html.split(`data-step="${n}"`)[1].split('<li class="study-step')[0];}
+function progressButton(html,action,id){
+  const tags=[...html.matchAll(/<button\b([^>]*)>/g)].map(x=>x[1]);
+  const tag=tags.find(x=>x.includes(`data-a="${action}"`)&&(id===undefined||x.includes(`data-id="${id}"`)));
+  assert.ok(tag,`visible ${action} ${id||''}`);
+  return {dataset:Object.fromEntries([...tag.matchAll(/data-([a-z]+)="([^"]*)"/g)].map(x=>[x[1],x[2]]))};
+}
+async function clickProgress(html,action,id){const button=progressButton(html,action,id);await portal.listeners.get('click')({target:{closest(){return button}}});}
+
+test('study progress replaces three questions and has five steps without persistent writes',()=>{
+  const {r}=progressScenario({envCount:0});const before=JSON.stringify(r),saved=JSON.stringify([...portal.storage]);
+  portal.api.render();
+  assert.equal((portal.app.innerHTML.match(/class="study-step(?: is-done)?"/g)||[]).length,5);
+  assert.doesNotMatch(portal.app.innerHTML,/Що я досліджую\?|Які дані вже є\?|Що мені треба зробити далі\?/);
+  assert.match(portal.app.innerHTML,/Ваше дослідження/);assert.match(portal.app.innerHTML,/Робочі середовища/);
+  assert.equal(JSON.stringify(r),before);assert.equal(JSON.stringify([...portal.storage]),saved);
+  const html=portal.api.studyProgress();assert.match(progressStep(html,1),/aria-current="step"/);
+  assert.match(html,/додайте перше робоче середовище/);assert.doesNotMatch(progressStep(html,3),/is-done|✓ Завершено/);
+  progressButton(html,'add-env');progressButton(html,'edit-research');progressButton(html,'plan');
+});
+for(const field of ['company','owner'])test(`study progress settings require ${field}`,()=>{
+  const {r}=progressScenario();r[field]=' ';assert.doesNotMatch(progressStep(portal.api.studyProgress(),1),/✓ Завершено/);
+});
+test('study progress empty checkup and survey remain independently accessible',()=>{
+  const {html}=progressScenario();assert.match(progressStep(html,1),/✓ Завершено/);
+  assert.match(progressStep(html,2),/Не розпочато/);assert.match(progressStep(html,3),/>Доступно</);
+  progressButton(html,'checkup');progressButton(html,'upload','progress-0');progressButton(html,'plan');
+  assert.match(progressStep(html,4),/Ще недоступно/);assert.doesNotMatch(progressStep(html,4),/data-a="dash"/);
+});
+test('study progress partial checkup counts actual complete modules',()=>{
+  const {p}=progressScenario();p.checkup.answers=Object.fromEntries([1,2,3].flatMap(m=>portal.api.P[m]).map(x=>[x.code,'full']));
+  const html=portal.api.studyProgress();assert.match(progressStep(html,2),/У процесі, 3 із 7 модулів/);
+  assert.match(html,/продовжте організаційний чекап. Завершено 3 із 7 модулів/);
+});
+test('study progress complete checkup recommends missing import',()=>{
+  const {html}=progressScenario({done:true});assert.match(progressStep(html,2),/✓ Завершено/);
+  assert.match(progressStep(html,3),/aria-current="step"/);assert.match(html,/«Середовище 1»/);
+});
+test('study progress survey import before P does not claim results ready',()=>{
+  const {html}=progressScenario({imported:1});assert.match(progressStep(html,3),/✓ Завершено/);
+  assert.match(progressStep(html,4),/Ще недоступно/);progressButton(html,'upload','progress-0');
+});
+for(const imported of [1,2,3])test(`study progress shows ${imported} of three independent imports`,()=>{
+  const {html}=progressScenario({envCount:3,imported,done:true});
+  assert.match(html,new RegExp(`Завантажено дані для ${imported} із 3`));
+  assert.match(progressStep(html,3),imported===3?/✓ Завершено/:/У процесі/);
+  assert.equal((progressStep(html,3).match(/data-a="upload"/g)||[]).length,3);
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,imported);
+  assert.doesNotMatch(progressStep(html,4),/Завершено/);assert.doesNotMatch(progressStep(html,5),/Завершено/);
+});
+test('study progress import replacement uses correct environment and preserves other data',async()=>{
+  const {html,p}=progressScenario({envCount:3,imported:2,done:true});
+  const other=JSON.stringify(p.envs[0]);await clickProgress(html,'upload','progress-1');
+  assert.equal(portal.api.getState().modal.e.id,'progress-1');
+  assert.equal(portal.api.getState().modal.step,1);assert.equal(JSON.stringify(p.envs[0]),other);
+});
+test('study progress new environment reopens import stage',()=>{
+  const {p}=progressScenario({imported:1,done:true});p.envs.push({id:'later',name:'Нове',survey:{}});
+  const html=portal.api.studyProgress();assert.match(html,/Завантажено дані для 1 із 2/);
+  assert.match(progressStep(html,3),/У процесі/);assert.match(html,/«Нове»/);
+});
+test('study progress obeys production canDashboard even for insufficient sample',()=>{
+  const {p}=progressScenario({envCount:2,imported:1,done:true});
+  p.envs[0].survey.results.e=portal.api.aggregateSource(surveyRows('E',5),'E');
+  assert.equal(portal.api.canDashboard(p.envs[0]),true);
+  const html=portal.api.studyProgress();progressButton(html,'dash','progress-0');
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,1);
+  assert.match(progressStep(html,4),/Результати ще недоступні/);
+});
+test('study progress dashboard buttons select the requested environment',async()=>{
+  const {html}=progressScenario({envCount:3,imported:3,done:true});
+  for(const id of ['progress-2','progress-0','progress-1']){await clickProgress(html,'dash',id);assert.equal(portal.api.getState().env,id);assert.equal(portal.api.getState().screen,'dash');}
+  assert.doesNotMatch(progressStep(portal.api.studyProgress(),4),/Завершено/);
+});
+for(const planCount of [0,1,4,11])test(`study progress plan ${planCount} has factual count without completion`,async()=>{
+  const {html}=progressScenario({planCount});
+  assert.match(progressStep(html,5),planCount?new RegExp(`У Плані: ${planCount}`):/>Доступно</);
+  assert.doesNotMatch(progressStep(html,5),/Завершено/);await clickProgress(html,'plan');assert.equal(portal.api.getState().screen,'plan');
+});
+test('study progress follows period switching and persisted restore',async()=>{
+  const {r,p}=progressScenario({imported:1,done:true,planCount:4});
+  const next={id:'next-period',label:'Новий період',start:'2026-02-01',end:'2026-02-28',envs:[],checkup:{answers:{},notes:{},done:false,schemaVersion:p.checkup.schemaVersion}};
+  r.periods.push(next);r.current=next.id;let html=portal.api.studyProgress();
+  assert.match(html,/Завантажено дані для 0 із 0/);assert.doesNotMatch(progressStep(html,5),/У Плані:/);
+  const button={dataset:{a:'switch-period',id:p.id}};await portal.listeners.get('click')({target:{closest(){return button}}});
+  portal.api.save();const loaded=portal.api.load();portal.api.setState({...portal.api.getState(),r:loaded});
+  html=portal.api.studyProgress();assert.match(html,/Завантажено дані для 1 із 1/);assert.match(html,/У Плані: 4 дії/);
+});
+test('study progress safely renders imported environment names',()=>{
+  const {p}=progressScenario({imported:1,done:true});p.envs[0].name='<img src=x onerror=alert(1)>';
+  const html=portal.api.studyProgress();assert.doesNotMatch(html,/<img src=x/);assert.match(html,/&lt;img/);
 });

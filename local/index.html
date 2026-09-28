@@ -157,6 +157,9 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:400;letter-spacing:-.03em;margin:0
 @media(max-width:800px){.module-guide-card{grid-template-columns:1fr}}
 
 
+
+.study-progress{margin:24px 0;overflow-wrap:anywhere}.study-progress h3{margin:0 0 18px}.study-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.study-step{min-width:0;border-top:3px solid var(--line);padding:14px 10px 10px;background:var(--paper);border-radius:0 10px 10px 10px}.study-step.is-done{border-color:var(--teal)}.study-step[aria-current="step"]{border-color:var(--gold);background:var(--gold-soft)}.study-step-number{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--line);font-weight:700;margin-bottom:10px}.is-done .study-step-number{background:var(--teal);color:#fff}.study-step[aria-current="step"] .study-step-number{background:var(--gold);color:var(--ink)}.study-step h4{font-size:16px;line-height:1.3;margin:0 0 10px}.study-step p{font-size:13px;margin:8px 0}.study-step-status{display:block;font-size:12px;font-weight:700;color:var(--muted)}.is-done .study-step-status{color:var(--teal)}.study-step .btn{max-width:100%;min-height:44px;white-space:normal;text-align:left}.study-step .card-actions{gap:8px;margin-top:10px}.study-envs{list-style:none;padding:0;margin:10px 0 0}.study-envs li{border-top:1px solid var(--line);padding:10px 0}.study-envs strong,.study-envs span{display:block;font-size:13px}.study-envs .btn{margin-top:6px}.study-now{border-left:3px solid var(--gold);padding:12px 14px;margin:14px 0 0;background:var(--paper);font-size:14px}
+@media(max-width:1000px){.topbar:has(+ .shell .study-progress) .topbar-inner{flex-wrap:wrap}.study-steps{grid-template-columns:1fr}.study-step{border-top:0;border-left:3px solid var(--line);padding:14px 16px}.study-step-number{float:left;margin:0 12px 8px 0}.study-step h4{min-height:30px;display:flex;align-items:center}.study-step p{clear:both}.study-step .card-actions{display:flex}.study-envs li{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}.study-envs strong{flex-basis:100%}.study-envs .btn{margin:0}}
 </style>
 <style id="semantic-aspect-ux-v2">
 .semantic-aspects{margin-top:18px}
@@ -391,8 +394,33 @@ function firstEnvForm(){
 }
 
 
+function studyProgress(){
+  const p=period(),environments=p.envs||[],pr=progress(),total=environments.length;
+  const configured=!!(S.r.company?.trim()&&S.r.owner?.trim()&&p.id&&p.start&&p.end&&total);
+  const imported=environments.filter(e=>!!getSurveyResults(e)),ready=environments.filter(e=>canDashboard(e));
+  const missing=environments.find(e=>!getSurveyResults(e)),planCount=currentPlan().length;
+  const checkupDone=!!p.checkup?.done;
+  const checkupStatus=checkupDone?'Завершено':pr.a?`У процесі, ${pr.mods} із ${M.length} модулів`:'Не розпочато';
+  const checkupButton=checkupDone?'Переглянути організаційний чекап':pr.a?'Продовжити організаційний чекап':'Заповнити організаційний чекап';
+  let current=1,now='додайте перше робоче середовище.';
+  if(total&&!configured)now='заповніть налаштування компанії, власника та періоду дослідження.';
+  else if(configured){
+    if(!checkupDone){current=2;now=pr.a?`продовжте організаційний чекап. Завершено ${pr.mods} із ${M.length} модулів.`:'заповніть організаційний чекап.';}
+    else if(missing){current=3;now=`завантажте дані опитування E/L для робочого середовища «${missing.name}».`;}
+    else if(ready.length){current=4;now=`результати готові. Перейдіть до дашборду робочого середовища «${ready[0].name}».`;}
+  }
+  const step=(n,title,description,status,done,content)=>`<li class="study-step${done?' is-done':''}" data-step="${n}"${current===n?' aria-current="step"':''}><span class="study-step-number" aria-hidden="true">${n}</span><h4>${title}</h4><span class="study-step-status">${done?'✓ ':''}${h(status)}</span><p>${description}</p>${content}</li>`;
+  return `<section class="study-progress" aria-labelledby="study-progress-title"><h3 id="study-progress-title">Ваше дослідження</h3><ol class="study-steps">
+    ${step(1,'Налаштуйте дослідження','Компанія, період і робочі середовища.',configured?'Завершено':'У процесі',configured,`<div class="card-actions"><button class="btn ghost small" data-a="edit-research">Налаштування дослідження</button>${!total?'<button class="btn primary small" data-a="add-env">Додати перше середовище</button>':''}</div>`)}
+    ${step(2,'Заповніть організаційний чекап','Оцініть організаційні практики компанії.',checkupStatus,checkupDone,`<div class="card-actions"><button class="btn ghost small" data-a="checkup">${checkupButton}</button></div>`)}
+    ${step(3,'Завантажте дані опитування E/L','Імпортуйте окремий XLSX/CSV для кожного робочого середовища.',!total?'Ще недоступно':imported.length===total?'Завершено':imported.length?'У процесі':'Доступно',total>0&&imported.length===total,`<p>Завантажено дані для ${imported.length} із ${total} робочих середовищ.</p>${total?`<ul class="study-envs">${environments.map(e=>`<li><strong>${h(e.name)}</strong><span class="muted">${getSurveyResults(e)?'✓ Дані завантажено':'○ Дані ще не завантажено'}</span><button class="btn ghost small" data-a="upload" data-id="${h(e.id)}">${getSurveyResults(e)?'Замінити дані':'Завантажити XLSX/CSV'}</button></li>`).join('')}</ul>`:'<p class="muted">Спочатку додайте робоче середовище.</p>'}`)}
+    ${step(4,'Перегляньте результати та сформуйте PDF-звіт','Перегляньте дашборд E/L/P для кожного робочого середовища та за потреби збережіть звіт у PDF.',ready.length?'Доступно':'Ще недоступно',false,`<p>Результати доступні для ${ready.length} із ${total} робочих середовищ.</p><ul class="study-envs">${environments.map(e=>`<li><strong>${h(e.name)}</strong>${canDashboard(e)?`<button class="btn ghost small" data-a="dash" data-id="${h(e.id)}">Переглянути результати</button>`:'<span class="muted">Результати ще недоступні</span>'}</li>`).join('')}</ul>`)}
+    ${step(5,'Сформуйте План організаційних дій','Оберіть дії, визначте відповідальних, строки та критерії результату. За потреби збережіть План.',planCount?`У Плані: ${planCount} ${planCount%10===1&&planCount%100!==11?'дія':[2,3,4].includes(planCount%10)&&![12,13,14].includes(planCount%100)?'дії':'дій'}`:'Доступно',false,'<div class="card-actions"><button class="btn ghost small" data-a="plan">Перейти до Плану</button></div>')}
+  </ol><p class="study-now"><strong>Зараз:</strong> ${h(now)}</p></section>`;
+}
+
 function home(){
-  let p=period(),pr=progress(),q=summary(),has=p.envs.length>0;
+  let p=period(),pr=progress(),has=p.envs.length>0;
   return `${bar()}<div class="shell">
     <div class="hero-mini">
       <div><p class="eyebrow">Огляд дослідження</p><h2>${h(S.r.company)}</h2>
@@ -406,11 +434,7 @@ function home(){
     </div>
 
 
-    <div class="question-strip">
-      <article><strong>Що я досліджую?</strong><span class="muted">${h(q.scope)}</span></article>
-      <article><strong>Які дані вже є?</strong><span class="muted">${h(q.data)}</span></article>
-      <article><strong>Що мені треба зробити далі?</strong><span class="muted">${h(q.next)}</span></article>
-    </div>
+    ${studyProgress()}
 
 
     <section class="section">
