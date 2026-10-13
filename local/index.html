@@ -262,7 +262,7 @@ function validateBackupResearch(r){
   for(const p of r.periods){
     if(!p||typeof p!=='object'||typeof p.id!=='string'||periodIds.has(p.id))throw new Error('Періоди мають відсутні або дубльовані ідентифікатори.');
     periodIds.add(p.id);
-    const cp=p.checkup?.results;
+    const cp=p.checkup?.schemaVersion===CHECKUP_SCHEMA_VERSION?p.checkup.results:null;
     if(cp!=null){
       if(typeof cp!=='object'||Array.isArray(cp)||!cp.modules||typeof cp.modules!=='object'||Array.isArray(cp.modules))throw new Error('Некоректні результати організаційного чекапу у резервній копії.');
       for(let i=1;i<=7;i++){
