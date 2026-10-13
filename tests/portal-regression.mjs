@@ -1230,3 +1230,12 @@ for(const delim of [',',';','\t'])for(const prefix of [[],['Службова і�
     assert.equal(result.found.length,56);
   });
 }
+
+
+test('M02 allows legacy checkup results to be migrated instead of rejecting the old schema',()=>{
+  setRuntimeScenario();
+  const r=JSON.parse(JSON.stringify(portal.api.getState().r));
+  r.periods[0].checkup.schemaVersion='legacy-checkup';
+  r.periods[0].checkup.results={modules:null};
+  assert.equal(portal.api.validateBackupResearch(r),true);
+});
