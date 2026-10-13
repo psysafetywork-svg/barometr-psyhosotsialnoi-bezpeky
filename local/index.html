@@ -262,6 +262,14 @@ function validateBackupResearch(r){
   for(const p of r.periods){
     if(!p||typeof p!=='object'||typeof p.id!=='string'||periodIds.has(p.id))throw new Error('Періоди мають відсутні або дубльовані ідентифікатори.');
     periodIds.add(p.id);
+    const cp=p.checkup?.results;
+    if(cp!=null){
+      if(typeof cp!=='object'||Array.isArray(cp)||!cp.modules||typeof cp.modules!=='object'||Array.isArray(cp.modules))throw new Error('Некоректні результати організаційного чекапу у резервній копії.');
+      for(let i=1;i<=7;i++){
+        const m=cp.modules[i];
+        if(!m||typeof m!=='object'||Array.isArray(m)||!['Ясно','Хмарно','Буря','Туман',null].includes(m.status))throw new Error('Некоректні результати організаційного чекапу у резервній копії.');
+      }
+    }
     const dateError=validatePeriodDates(p.start,p.end);if(dateError)throw new Error(dateError);
     if(!Array.isArray(p.envs))throw new Error('Некоректна структура робочих середовищ.');
     for(const e of p.envs){
@@ -270,7 +278,24 @@ function validateBackupResearch(r){
       const envError=validateEnvironmentValues(String(e.name||'').trim());
       if(envError)throw new Error(`Некоректне робоче середовище «${e.name||'Без назви'}»: ${envError}`);
       const sr=e.survey?.results;
-      if(sr&&(!sr.e||!sr.l||typeof sr.e.totalResponses!=='number'||typeof sr.l.totalResponses!=='number'))throw new Error(`Некоректні агреговані результати для середовища «${e.name}».`);
+      if(sr){
+        for(const source of ['e','l']){
+          const a=sr[source],bad=()=>{throw new Error(`Некоректні агреговані результати для середовища «${e.name}».`)};
+          if(!a||typeof a!=='object'||Array.isArray(a)||!Number.isInteger(a.totalResponses)||a.totalResponses<0||!a.modules||typeof a.modules!=='object'||Array.isArray(a.modules))bad();
+          for(let i=1;i<=7;i++){
+            const m=a.modules[i];
+            if(!m||typeof m!=='object'||Array.isArray(m)||!['Ясно','Хмарно','Буря','Туман',null].includes(m.status))bad();
+            for(const key of ['favorable','neutral','unfavorable'])if(m[key]!=null&&(!Number.isFinite(m[key])||m[key]<0||m[key]>100))bad();
+          }
+          if(a.items!=null){
+            if(typeof a.items!=='object'||Array.isArray(a.items))bad();
+            for(const item of Object.values(a.items)){
+              if(!item||typeof item!=='object'||Array.isArray(item)||!['Ясно','Хмарно','Буря','Туман'].includes(item.status))bad();
+              for(const key of ['favorable','neutral','unfavorable','naRate'])if(item[key]!=null&&(!Number.isFinite(item[key])||item[key]<0||item[key]>100))bad();
+            }
+          }
+        }
+      }
     }
   }
   if(r.current&&!periodIds.has(r.current))throw new Error('Поточний період не знайдено у резервній копії.');
@@ -1170,7 +1195,15 @@ function parseCSV(text){
   text=String(text||'').replace(/^\uFEFF/,'');
   const parseWith=delim=>{let rows=[],row=[],field='',q=false;for(let i=0;i<text.length;i++){let ch=text[i];if(q){if(ch==='"'&&text[i+1]==='"'){field+='"';i++}else if(ch==='"')q=false;else field+=ch}else{if(ch==='"')q=true;else if(ch===delim){row.push(field);field=''}else if(ch==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=ch}}row.push(field.replace(/\r$/,''));if(row.some(x=>normalizeText(x)))rows.push(row);return rows};
   let best=null;
-  for(const delim of ['\t',';',',']){const rows=parseWith(delim),headers=rows[0]||[],recognized=headers.filter(x=>matchItemHeader(x)).length+(headers.some(x=>isRoleHeader(x))?5:0),score=recognized*100+headers.length;if(!best||score>best.score)best={rows,score}}
+  for(const delim of ['\t',';',',']){
+    const rows=parseWith(delim);
+    let score=-1;
+    for(let i=0;i<Math.min(15,rows.length);i++){
+      const headers=rows[i]||[],recognized=headers.filter(x=>matchItemHeader(x)).length+(headers.some(x=>isRoleHeader(x))?5:0);
+      score=Math.max(score,recognized*100+headers.length);
+    }
+    if(!best||score>best.score)best={rows,score}
+  }
   return best?.rows||[]
 }
 function u16(d,o){return d.getUint16(o,true)}function u32(d,o){return d.getUint32(o,true)}
