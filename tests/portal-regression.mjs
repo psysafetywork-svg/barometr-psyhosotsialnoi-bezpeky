@@ -1183,3 +1183,59 @@ test('study progress safely renders imported environment names',()=>{
   const {p}=progressScenario({imported:1,done:true});p.envs[0].name='<img src=x onerror=alert(1)>';
   const html=portal.api.studyProgress();assert.doesNotMatch(html,/<img src=x/);assert.match(html,/&lt;img/);
 });
+
+
+// Regression cases limited to M02 JSON restore and M03 CSV preamble.
+test('M02 validates nested E/L and organizational checkup results',()=>{
+  setRuntimeScenario();
+  const original=JSON.parse(JSON.stringify(portal.api.getState().r));
+  assert.equal(portal.api.validateBackupResearch(original),true);
+  const modifications=[
+    r=>{r.periods[0].envs[0].survey.results.e.modules=null},
+    r=>{r.periods[0].envs[0].survey.results.l.modules={}},
+    r=>{r.periods[0].envs[0].survey.results.e.modules[1].favorable=160},
+    r=>{r.periods[0].envs[0].survey.results.e.modules[1].status='UNKNOWN'},
+    r=>{r.periods[0].envs[0].survey.results.l.totalResponses=-10},
+    r=>{r.periods[0].envs[0].survey.results.e.items.E01.naRate=130},
+    r=>{r.periods[0].checkup.results.modules=null}
+  ];
+  for(const modification of modifications){
+    const r=JSON.parse(JSON.stringify(original));modification(r);
+    assert.throws(()=>portal.api.validateBackupResearch(r),/Некоректні/);
+  }
+});
+test('M02 restore rejects malformed aggregates without changing existing research',async()=>{
+  setRuntimeScenario();
+  const initial=JSON.parse(JSON.stringify(portal.api.getState().r));
+  const corrupted=JSON.parse(JSON.stringify(initial));corrupted.periods[0].envs[0].survey.results.e.modules=null;
+  portal.storage.set(portal.api.STORE,JSON.stringify(initial));
+  const query=portal.document.querySelector;
+  portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:query(selector);
+  try{
+    await portal.listeners.get('click')({target:{closest(){return {dataset:{a:'restore-backup'}}}}});
+    assert.equal(portal.storage.get(portal.api.STORE),JSON.stringify(initial));
+    assert.equal(portal.api.getState().r.periods[0].envs[0].survey.results.e.modules[1].status,initial.periods[0].envs[0].survey.results.e.modules[1].status);
+  }finally{portal.document.querySelector=query}
+});
+for(const delim of [',',';','\t'])for(const prefix of [[],['Службова інформація'],['Звіт; метадані; період','Експорт, дата, джерело']]){
+  test('M03 CSV prefix '+prefix.length+' and delimiter '+JSON.stringify(delim),()=>{
+    const cell=x=>{const t=String(x??'');return t.includes(delim)||t.includes('"')||t.includes('\n')?'"'+t.replace(/"/g,'""')+'"':t};
+    const headers=[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>x.code+'. '+x.text)];
+    const data=Array.from({length:24},(_,i)=>[i<12?'Так':'Ні',...portal.api.SURVEY_ITEMS.map(x=>x.source==='E'||i<12?'5':'')]);
+    const source=[...prefix,headers,...data].map(r=>Array.isArray(r)?r.map(cell).join(delim):r).join('\r\n');
+    const result=portal.api.validateTableRows(portal.api.parseCSV(source),'M03-test.csv');
+    assert.equal(result.errors.length,0);
+    assert.equal(result.total,24);
+    assert.equal(result.managers,12);
+    assert.equal(result.found.length,56);
+  });
+}
+
+
+test('M02 allows legacy checkup results to be migrated instead of rejecting the old schema',()=>{
+  setRuntimeScenario();
+  const r=JSON.parse(JSON.stringify(portal.api.getState().r));
+  r.periods[0].checkup.schemaVersion='legacy-checkup';
+  r.periods[0].checkup.results={modules:null};
+  assert.equal(portal.api.validateBackupResearch(r),true);
+});
