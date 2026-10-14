@@ -1,0 +1,16 @@
+name: Temporary QA - Microsoft Forms E20 full regression
+on:
+  push:
+    branches:
+      - qa/ms-forms-truncated-headers-20261014
+  workflow_dispatch:
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Full regression without skips
+        run: node --test tests/portal-regression.mjs
