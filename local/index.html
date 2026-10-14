@@ -1205,7 +1205,22 @@ function stripHeaderCode(v){return normalizeText(v).replace(/^([EL])\s*0?\d{1,2}
 function canon(v){return stripOrdinal(normalizeText(v)).toLocaleLowerCase('uk-UA').replace(/[’`]/g,"'").replace(/\s+/g,' ')}
 const ITEM_BY_CODE=Object.fromEntries(SURVEY_ITEMS.map(x=>[x.code,x]));
 const ITEM_BY_TEXT=new Map(SURVEY_ITEMS.map(x=>[canon(x.text),x.code]));
-function matchItemHeader(v){let code=headerCode(v);if(code&&ITEM_BY_CODE[code])return code;let t=canon(stripHeaderCode(v));return ITEM_BY_TEXT.get(t)||ITEM_BY_TEXT.get(canon(v))||null}
+// Microsoft Forms can export a long question title as its first characters plus "...".
+// Accept it only when the visible prefix uniquely matches one current survey statement.
+function truncatedHeaderCode(v){
+  let text=normalizeText(v);
+  if(headerCode(text))return null;
+  let match=text.match(/^(.*?)(?:\.{3}|…)\s*$/u);
+  if(!match)return null;
+  let prefix=canon(match[1]);
+  if(prefix.length<190)return null;
+  let candidates=SURVEY_ITEMS.filter(item=>{
+    let full=canon(item.text);
+    return full.length>prefix.length&&full.startsWith(prefix);
+  });
+  return candidates.length===1?candidates[0].code:null;
+}
+function matchItemHeader(v){let code=headerCode(v);if(code&&ITEM_BY_CODE[code])return code;let t=canon(stripHeaderCode(v));return ITEM_BY_TEXT.get(t)||ITEM_BY_TEXT.get(canon(v))||truncatedHeaderCode(v)||null}
 function isRoleHeader(v){let c=canon(v),r=canon(ROLE_QUESTION);return c===r||c.includes('хоча б один працівник')&&c.includes('безпосередн')&&c.includes('керівник')}
 function parseResponseValue(v){let k=normalizeText(v);if(!k)return null;if(/^[1-5]$/.test(k))return Number(k);if(k==='6')return 'NA';let map=new Map(RESPONSE_SCALE.slice(0,5).map((x,i)=>[canon(x),i+1]));map.set(canon(RESPONSE_SCALE[5]),'NA');return map.has(canon(k))?map.get(canon(k)):undefined}
 function parseRoleValue(v){let k=canon(v);if(k==='так'||k==='yes')return true;if(k==='ні'||k==='нi'||k==='no')return false;return undefined}
@@ -1255,6 +1270,9 @@ function validateTableRows(table,fileName){
   for(let c of best.dups||[])errors.push('Дубльований стовпець '+c+'.');
   for(let it of SURVEY_ITEMS)if(best.map[it.code]==null)errors.push('Відсутнє твердження '+it.code+'.');
   if(best.role<0)errors.push('Не знайдено рольове запитання про наявність прямих підлеглих.');
+  for(let [code,column] of Object.entries(best.map)){
+    if(truncatedHeaderCode(best.headers[column])===code)warnings.push(`Заголовок ${code} скорочено в експортованому файлі та однозначно розпізнано за початком. Перевірте повне формулювання запитання у вихідній формі.`);
+  }
   let piiPatterns=[/e-?mail|електронн.*пошт/i,/піб|прізвищ|ім['’]?я/i,/employee\s*id|табельн|корпоративн.*логін/i,/телефон|phone/i];let pii=(best.headers||[]).filter(x=>piiPatterns.some(q=>q.test(x)));if(pii.length)warnings.push('Файл містить потенційні персональні дані у службових колонках. Вони не зберігатимуться після розрахунку.');
   let parsed=[],managers=0,invalid=0,rows=table.slice(best.row+1).filter(row=>row.some(x=>normalizeText(x)));
   rows.forEach((row,k)=>{let rowNo=best.row+k+2,role=best.role>=0?parseRoleValue(row[best.role]):undefined;if(role===undefined){if(invalid<20)errors.push(`Рядок ${rowNo}: недопустима або відсутня відповідь на рольове запитання.`);invalid++}let answers={},isManager=role===true;if(isManager)managers++;for(let it of SURVEY_ITEMS){let idx=best.map[it.code];if(idx==null)continue;let val=parseResponseValue(row[idx]),required=it.source==='E'||isManager;if(val===undefined||(required&&val===null)){if(invalid<20)errors.push(val===undefined?`Рядок ${rowNo}, ${it.code}: категорія «${normalizeText(row[idx])}» не відповідає чинній шкалі Барометра v1.0. Файл містить іншу або нерозпізнану шкалу; відповідь не перекодовано. Перевірте вихідну форму та файл відповідей.`:`Рядок ${rowNo}, ${it.code}: відсутнє значення відповіді.`);invalid++}else if(!required&&val!==null){if(invalid<20)errors.push(`Рядок ${rowNo}: для працівника без прямих підлеглих блок L має бути порожнім.`);invalid++}else answers[it.code]=val}parsed.push({isManager,answers})});

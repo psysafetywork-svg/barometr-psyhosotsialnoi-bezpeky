@@ -1307,3 +1307,47 @@ test('M02 keeps legacy schema backup compatible with checkup migration',()=>{
   valid.periods[0].checkup.answers.P01='historical-value';
   assert.equal(portal.api.validateBackupResearch(valid),true);
 });
+
+  
+// Real Microsoft Forms E20 export truncates the 221-character heading to
+// the first 196 characters and three dots. Use synthetic answers only.
+function checkTruncatedE20Export(e20Header){
+  const items=portal.api.SURVEY_ITEMS;
+  const headers=['ID',...items.filter(x=>x.source==='E').map(x=>x.code==='E20'?e20Header:x.text),
+    portal.api.ROLE_QUESTION,...items.filter(x=>x.source==='L').map(x=>x.text)];
+  const rows=Array.from({length:34},(_,i)=>[String(i+1),...Array(35).fill('4'),
+    i<8?'Так':'Ні',...Array(21).fill(i<8?'5':'')]);
+  return portal.api.validateTableRows([headers,...rows],'microsoft-forms-export.xlsx');
+}
+test('F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning',()=>{
+  const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
+  const exported=e20.slice(0,196)+'...';
+  assert.equal(exported.length,199);
+  const parsed=checkTruncatedE20Export(exported);
+  assert.equal(parsed.errors.length,0);
+  assert.equal(parsed.total,34);
+  assert.equal(parsed.managers,8);
+  assert.equal(parsed.found.length,56);
+  assert.equal(parsed.warnings.filter(x=>x.includes('E20')).length,1);
+});
+test('F07 a unicode ellipsis and unchanged full E20 still import correctly',()=>{
+  const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
+  for(const heading of [e20,e20.slice(0,196)+'…']){
+    const parsed=checkTruncatedE20Export(heading);
+    assert.equal(parsed.errors.length,0);
+    assert.equal(parsed.found.length,56);
+    assert.equal(parsed.warnings.some(x=>x.includes('E20')),heading.endsWith('…'));
+  }
+});
+test('F07 rejects unmarked, short, changed and coded truncated E20 headings',()=>{
+  const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
+  for(const [label,heading,expectedError] of [
+    ['unmarked',e20.slice(0,196),'Відсутнє твердження E20'],
+    ['too short',e20.slice(0,120)+'...','Відсутнє твердження E20'],
+    ['changed prefix',e20.slice(0,195)+'х...','Відсутнє твердження E20'],
+    ['coded truncation','E20. '+e20.slice(0,196)+'...','Змінено текст твердження E20'],
+  ]){
+    const parsed=checkTruncatedE20Export(heading);
+    assert.ok(parsed.errors.some(error=>error.startsWith(expectedError)),label+' unexpectedly accepted: '+parsed.errors.join('; '));
+  }
+});
