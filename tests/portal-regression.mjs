@@ -1239,3 +1239,71 @@ test('M02 allows legacy checkup results to be migrated instead of rejecting the 
   r.periods[0].checkup.results={modules:null};
   assert.equal(portal.api.validateBackupResearch(r),true);
 });
+
+test('M02 backup rejects invalid current-schema P values and unknown P codes',()=>{
+  setRuntimeScenario();
+  const original=JSON.parse(JSON.stringify(portal.api.getState().r));
+  for(const [code,value] of [['P01','INVALID'],['P01',42],['P01','yes'],['P99','full']]){
+    const invalid=JSON.parse(JSON.stringify(original));
+    invalid.periods[0].checkup.answers[code]=value;
+    assert.throws(()=>portal.api.validateBackupResearch(invalid),/Некоректні відповіді організаційного чекапу/);
+  }
+  for(const malformed of [[], 'full']){
+    const invalid=JSON.parse(JSON.stringify(original));
+    invalid.periods[0].checkup.answers=malformed;
+    assert.throws(()=>portal.api.validateBackupResearch(invalid),/Некоректні відповіді організаційного чекапу/);
+  }
+});
+test('M02 backup recognizes every supported current-schema P answer, including partial drafts',()=>{
+  setRuntimeScenario();
+  const original=JSON.parse(JSON.stringify(portal.api.getState().r));
+  for(const choice of ['full','partial','no','insufficient']){
+    const valid=JSON.parse(JSON.stringify(original));
+    valid.periods[0].checkup.answers.P01=choice;
+    assert.equal(portal.api.validateBackupResearch(valid),true);
+  }
+  const draft=JSON.parse(JSON.stringify(original));
+  draft.periods[0].checkup.done=false;
+  draft.periods[0].checkup.answers={P01:null,P02:''};
+  assert.equal(portal.api.validateBackupResearch(draft),true);
+});
+test('M02 backup rejects invalid calendar dates in periods and current checkup',()=>{
+  setRuntimeScenario();
+  const original=JSON.parse(JSON.stringify(portal.api.getState().r));
+  for(const date of ['2026-02-30','2025-02-29','2026-13-01','2026-10-32','2026-1-01']){
+    for(const field of ['start','end']){
+      const invalid=JSON.parse(JSON.stringify(original));
+      invalid.periods[0][field]=date;
+      assert.throws(()=>portal.api.validateBackupResearch(invalid),/Некоректна календарна дата/);
+    }
+    const invalid=JSON.parse(JSON.stringify(original));
+    invalid.periods[0].checkup.asOfDate=date;
+    assert.throws(()=>portal.api.validateBackupResearch(invalid),/Некоректна календарна дата/);
+  }
+  const leap=JSON.parse(JSON.stringify(original));
+  leap.periods[0].start='2024-02-29';
+  leap.periods[0].end='2024-03-01';
+  assert.equal(portal.api.validateBackupResearch(leap),true);
+});
+test('M02 restore invalid P answer or date does not change existing research and storage',async()=>{
+  setRuntimeScenario();
+  const before=JSON.parse(JSON.stringify(portal.api.getState().r));
+  const beforeText=JSON.stringify(before),oldQuery=portal.document.querySelector;
+  portal.storage.set(portal.api.STORE,beforeText);
+  try{
+    for(const change of [r=>{r.periods[0].checkup.answers.P01='INVALID'},r=>{r.periods[0].start='2026-02-30'}]){
+      const corrupted=JSON.parse(beforeText);change(corrupted);
+      portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:oldQuery(selector);
+      await portal.listeners.get('click')({target:{closest(){return {dataset:{a:'restore-backup'}}}}});
+      assert.equal(portal.storage.get(portal.api.STORE),beforeText);
+      assert.deepEqual(portal.api.getState().r,before);
+    }
+  }finally{portal.document.querySelector=oldQuery}
+});
+test('M02 keeps legacy schema backup compatible with checkup migration',()=>{
+  setRuntimeScenario();
+  const valid=JSON.parse(JSON.stringify(portal.api.getState().r));
+  valid.periods[0].checkup.schemaVersion='legacy-checkup';
+  valid.periods[0].checkup.answers.P01='historical-value';
+  assert.equal(portal.api.validateBackupResearch(valid),true);
+});
