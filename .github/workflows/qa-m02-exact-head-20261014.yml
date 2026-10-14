@@ -1,0 +1,17 @@
+name: Temporary M02 Exact-HEAD QA
+on:
+  push:
+    branches:
+      - qa/m02-exact-head-20261014
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tested branch
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute full portal regression without skips
+        run: node --test tests/portal-regression.mjs
