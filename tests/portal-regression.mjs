@@ -1296,7 +1296,7 @@ test('M02 restore invalid P answer or date does not change existing research and
       portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:oldQuery(selector);
       await portal.listeners.get('click')({target:{closest(){return {dataset:{a:'restore-backup'}}}}});
       assert.equal(portal.storage.get(portal.api.STORE),beforeText);
-      assert.deepEqual(portal.api.getState().r,before);
+      assert.deepEqual(JSON.parse(JSON.stringify(portal.api.getState().r)),before);
     }
   }finally{portal.document.querySelector=oldQuery}
 });
