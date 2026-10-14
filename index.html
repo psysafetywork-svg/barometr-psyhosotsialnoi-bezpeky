@@ -287,6 +287,27 @@
     .example-aspect-section h5{margin:0 0 6px;font-size:14px;font-weight:700;color:var(--ink)}
     .example-aspect-section p{font-size:15px;line-height:1.55;color:var(--text)}
     .example-action-card h4{font-size:18px;color:var(--ink)}
+
+/* coverage-calculator:start */
+.bc-coverage-toggle{margin-top:20px}
+.bc-coverage[hidden],.bc-coverage [hidden]{display:none!important}
+.bc-coverage{margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--text)}
+.bc-coverage h4{margin:0;font-size:21px;color:var(--ink);line-height:1.3}
+.bc-coverage-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
+.bc-coverage-fields label{display:flex;flex-direction:column;justify-content:space-between;gap:10px;font-size:14px;font-weight:600;color:var(--ink)}
+.bc-coverage-fields input{width:100%;min-width:0;padding:12px;border:1px solid var(--teal);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:18px}
+.bc-coverage-fields input[aria-invalid="true"]{border-color:var(--storm)}
+.bc-coverage input:focus-visible,.bc-coverage-toggle:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.bc-coverage-value{font-size:42px;font-weight:700;line-height:1.2;color:var(--teal);margin-bottom:14px;font-variant-numeric:tabular-nums}
+.bc-coverage-track{height:12px;background:var(--line);border-radius:8px;overflow:hidden}
+.bc-coverage-fill{width:0;height:100%;background:var(--teal);transition:width .35s ease}
+.bc-coverage-scale{display:flex;justify-content:space-between;font-size:12px;margin-top:5px;color:var(--text)}
+.bc-coverage h5{margin:18px 0 10px;font-size:19px;color:var(--ink)}
+.bc-coverage-note{font-size:13px;border-top:1px solid var(--line);padding-top:14px;margin-bottom:0}
+.bc-coverage-error,.bc-coverage-minimum{color:var(--ink);padding:12px;border-left:3px solid var(--storm);background:var(--storm-soft)}
+@media(max-width:600px){.bc-coverage-fields{grid-template-columns:1fr}.bc-coverage{padding:16px}}
+@media(prefers-reduced-motion:reduce){.bc-coverage-fill{transition:none}}
+/* coverage-calculator:end */
 </style>
 </head>
 <body id="top">
@@ -438,6 +459,28 @@
             </ul>
             <div class="sample-note"><strong>Мінімальна кількість відповідей.</strong> Для окремого аналізу цього робочого середовища потрібно щонайменше 20 валідних анкет працівників і 10 валідних анкет керівників. Якщо таку кількість неможливо отримати в межах цього середовища, перегляньте його межі або об’єднайте порівнювані робочі середовища.</div>
             <div class="sample-note"><strong>Кількість анкет не потрібно вводити вручну.</strong> Після імпорту локальний портал сам визначає, скільки валідних анкет працівників і керівників отримано. Якщо мінімальної кількості відповідей не досягнуто, портал показує, скільки валідних анкет бракує, а статус для цього джерела не розраховується.</div>
+
+            <!-- coverage-calculator:start -->
+            <button class="btn teal bc-coverage-toggle" id="bc-coverage-toggle" type="button" aria-expanded="false" aria-controls="bc-coverage-panel">Перевірити рівень охоплення</button>
+            <section class="bc-coverage" id="bc-coverage-panel" aria-labelledby="bc-coverage-heading" hidden>
+              <h4 id="bc-coverage-heading">Калькулятор рівня участі в опитуванні</h4>
+              <p>Зазначте дані про участь працівників і дізнайтеся, що рівень охоплення означає для висновків Барометра.</p>
+              <div class="bc-coverage-fields">
+                <label for="bc-coverage-invited">Кількість працівників робочого середовища, яким надіслано анкету<input id="bc-coverage-invited" type="text" inputmode="numeric" value="400" autocomplete="off" aria-describedby="bc-coverage-error"></label>
+                <label for="bc-coverage-responses">Кількість отриманих валідних анкет працівників (E)<input id="bc-coverage-responses" type="text" inputmode="numeric" value="50" autocomplete="off" aria-describedby="bc-coverage-error"></label>
+              </div>
+              <p id="bc-coverage-error" class="bc-coverage-error" role="status" hidden></p>
+              <div id="bc-coverage-result" aria-live="polite" aria-atomic="true">
+                <div class="bc-coverage-value" id="bc-coverage-percent"></div>
+                <div class="bc-coverage-track" id="bc-coverage-meter" role="meter" aria-label="Рівень участі в опитуванні" aria-valuemin="0" aria-valuemax="100"><div id="bc-coverage-fill" class="bc-coverage-fill"></div></div>
+                <div class="bc-coverage-scale" aria-hidden="true"><span>0%</span><span>100%</span></div>
+                <h5 id="bc-coverage-level"></h5>
+                <div id="bc-coverage-description"></div>
+                <p class="bc-coverage-minimum" id="bc-coverage-minimum" hidden>Мінімальної кількості валідних анкет E для окремого аналізу не досягнуто. Барометр розраховує результати E за наявності щонайменше 20 валідних анкет та достатньої кількості застосовних відповідей.</p>
+              </div>
+              <p class="bc-coverage-note">Рівень участі не гарантує статистичної репрезентативності. Якщо анкету отримали не всі працівники робочого середовища, показник характеризує лише участь серед запрошених.</p>
+            </section>
+            <!-- coverage-calculator:end -->
           </article>
         </div>
         <div class="subsection" id="sources">
@@ -1021,5 +1064,57 @@
       });
     })();
   </script>
+
+<!-- coverage-calculator:start -->
+<script>
+(() => {
+  'use strict';
+  const panel = document.getElementById('bc-coverage-panel');
+  const toggle = document.getElementById('bc-coverage-toggle');
+  const invited = panel.querySelector('#bc-coverage-invited');
+  const responses = panel.querySelector('#bc-coverage-responses');
+  const result = panel.querySelector('#bc-coverage-result');
+  const error = panel.querySelector('#bc-coverage-error');
+  const levels = [{"title": "Низький рівень участі", "paragraphs": ["В опитуванні взяли участь менше половини запрошених працівників. Результати відображають досвід учасників, але їх не можна автоматично поширювати на все робоче середовище.", "Виявлені Барометром сигнали потребують уваги. Рекомендується з'ясувати причини низької участі та за потреби уточнити виявлені проблеми через аналіз робочих умов, конфіденційні інтерв'ю або додаткове опитування."]}, {"title": "Помірний рівень участі", "paragraphs": ["В опитуванні взяли участь від половини до 70% запрошених працівників. Результати дозволяють визначити сприятливі та проблемні аспекти роботи й пріоритети організаційних дій.", "Водночас досвід працівників, які не відповіли, може відрізнятися. Перед ухваленням рішень для всього робочого середовища за потреби уточніть поширеність виявлених проблем."]}, {"title": "Високий рівень участі", "paragraphs": ["В опитуванні взяла участь значна більшість запрошених працівників. Це забезпечує широке охоплення їхніх оцінок і дозволяє сформувати більш повне уявлення про стан психосоціальної безпеки робочого середовища.", "Якщо до опитування були запрошені всі працівники цього середовища, результати Барометра можна використовувати для його узагальненої оцінки, визначення сприятливих і проблемних аспектів та планування конкретних організаційних дій."]}];
+  const format = new Intl.NumberFormat('uk-UA', {minimumFractionDigits:1, maximumFractionDigits:1});
+  const integer = value => /^\d+$/.test(value.trim()) && Number.isSafeInteger(Number(value)) ? Number(value) : null;
+  function update() {
+    const n = integer(invited.value), e = integer(responses.value);
+    const badN = n === null || n <= 0;
+    const badE = e === null || (!badN && e > n);
+    invited.setAttribute('aria-invalid', String(badN));
+    responses.setAttribute('aria-invalid', String(badE));
+    error.hidden = !badN && !badE;
+    result.hidden = badN || badE;
+    if (badN || badE) {
+      error.textContent = badN ? 'Введіть додатне ціле число запрошених працівників.' : e === null ? 'Введіть невід’ємне ціле число валідних анкет.' : 'Кількість анкет не може перевищувати кількість запрошених.';
+      return;
+    }
+    error.textContent = '';
+    const percent = e / n * 100;
+    const level = levels[BigInt(e)*100n < BigInt(n)*50n ? 0 : BigInt(e)*100n <= BigInt(n)*70n ? 1 : 2];
+    const display = format.format(percent) + '%';
+    panel.querySelector('#bc-coverage-percent').textContent = display;
+    panel.querySelector('#bc-coverage-fill').style.width = percent + '%';
+    const meter = panel.querySelector('#bc-coverage-meter');
+    meter.setAttribute('aria-valuenow', String(percent));
+    meter.setAttribute('aria-valuetext', display + ', ' + level.title);
+    panel.querySelector('#bc-coverage-level').textContent = level.title;
+    const description = panel.querySelector('#bc-coverage-description');
+    description.replaceChildren(...level.paragraphs.map(text => {
+      const p = document.createElement('p'); p.textContent = text; return p;
+    }));
+    panel.querySelector('#bc-coverage-minimum').hidden = e >= 20;
+  }
+  toggle.addEventListener('click', () => {
+    panel.hidden = !panel.hidden;
+    toggle.setAttribute('aria-expanded', String(!panel.hidden));
+  });
+  invited.addEventListener('input', update);
+  responses.addEventListener('input', update);
+  update();
+})();
+</script>
+<!-- coverage-calculator:end -->
 </body>
 </html>
