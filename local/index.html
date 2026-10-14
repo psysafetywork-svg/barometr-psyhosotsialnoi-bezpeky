@@ -255,6 +255,11 @@ function normalizeResearch(r){
   return r
 }
 function safeResearchClone(r){return normalizeResearch(JSON.parse(JSON.stringify(r)))}
+function validBackupCalendarDate(value){
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+  const parsed=new Date(value+'T00:00:00Z');
+  return Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===value;
+}
 function validateBackupResearch(r){
   if(!r||typeof r!=='object'||typeof r.company!=='string'||!r.company.trim()||typeof r.owner!=='string'||!r.owner.trim())throw new Error('Файл не містить коректних параметрів дослідження.');
   if(!Array.isArray(r.periods)||!r.periods.length)throw new Error('У резервній копії немає періодів дослідження.');
@@ -262,6 +267,19 @@ function validateBackupResearch(r){
   for(const p of r.periods){
     if(!p||typeof p!=='object'||typeof p.id!=='string'||periodIds.has(p.id))throw new Error('Періоди мають відсутні або дубльовані ідентифікатори.');
     periodIds.add(p.id);
+    if(!validBackupCalendarDate(p.start)||!validBackupCalendarDate(p.end)||
+       (p.checkup?.asOfDate!=null&&p.checkup.asOfDate!==''&&!validBackupCalendarDate(p.checkup.asOfDate)))
+      throw new Error('Некоректна календарна дата у резервній копії.');
+    if(p.checkup?.schemaVersion===CHECKUP_SCHEMA_VERSION&&p.checkup.answers!=null){
+      const answers=p.checkup.answers;
+      if(typeof answers!=='object'||Array.isArray(answers))throw new Error('Некоректні відповіді організаційного чекапу у резервній копії.');
+      const knownCodes=new Set(P_LIST.map(item=>item.code));
+      for(const [code,value] of Object.entries(answers)){
+        const unfinishedBlank=!p.checkup.done&&(value===null||value==='');
+        if(!knownCodes.has(code)||(!unfinishedBlank&&!['full','partial','no','insufficient'].includes(value)))
+          throw new Error('Некоректні відповіді організаційного чекапу у резервній копії.');
+      }
+    }
     const cp=p.checkup?.schemaVersion===CHECKUP_SCHEMA_VERSION?p.checkup.results:null;
     if(cp!=null){
       if(typeof cp!=='object'||Array.isArray(cp)||!cp.modules||typeof cp.modules!=='object'||Array.isArray(cp.modules))throw new Error('Некоректні результати організаційного чекапу у резервній копії.');
