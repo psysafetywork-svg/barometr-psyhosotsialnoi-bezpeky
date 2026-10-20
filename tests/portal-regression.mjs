@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 
 const localHtml=fs.readFileSync(new URL('../local/index.html',import.meta.url),'utf8');
 const publicHtml=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
@@ -42,6 +43,7 @@ function loadLocalPortal(){
       normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,load,save,STORE,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
+      barometerPracticeVerification,BAROMETER_P_VERIFICATION,BAROMETER_P_ANSWER_LABELS,barometerPModuleLead,barometerPVerificationMarkup,barometerPReportAppendix,barometerCompanyContext,barometerActionScope,barometerSemanticAction,checkup,
       setState(value){S=value},getState(){return S},render,studyProgress,
     };
   `;
@@ -830,7 +832,7 @@ test('fog-only module gives one data-limitation conclusion and no aspect cards o
   assert.match(module.lead,/застосовних відповідей працівників та керівників/);
   assert.match(module.lead,/підтвердіть дані організаційного чекапу/);
   const markup=portal.api.barometerSemanticModuleMarkup(row);
-  assert.doesNotMatch(markup,/Аспекти, що потребують уваги|semantic-aspect-card|data-a="add-routed-action"/);
+  assert.doesNotMatch(markup,/Аспекти, що потребують уваги|data-aspect-id=|class="evidence-action"/);
   assert.match(portal.api.buildReportHtml(environment),/Недостатньо даних, щоб надійно оцінити/);
 });
 test('a real problem or P gap remains visible beside fog',()=>{
@@ -1125,9 +1127,9 @@ test('study progress partial checkup counts actual complete modules',()=>{
   const html=portal.api.studyProgress();assert.match(progressStep(html,2),/У процесі, 3 із 7 модулів/);
   assert.match(html,/продовжте організаційний чекап. Завершено 3 із 7 модулів/);
 });
-test('study progress complete checkup recommends missing import',()=>{
+test('study progress complete checkup makes P results available before import',()=>{
   const {html}=progressScenario({done:true});assert.match(progressStep(html,2),/✓ Завершено/);
-  assert.match(progressStep(html,3),/aria-current="step"/);assert.match(html,/«Середовище 1»/);
+  assert.match(progressStep(html,4),/aria-current="step"/);assert.match(html,/результати організаційного чекапу вже доступні/);
 });
 test('study progress survey import before P does not claim results ready',()=>{
   const {html}=progressScenario({imported:1});assert.match(progressStep(html,3),/✓ Завершено/);
@@ -1138,7 +1140,7 @@ for(const imported of [1,2,3])test(`study progress shows ${imported} of three in
   assert.match(html,new RegExp(`Завантажено дані для ${imported} із 3`));
   assert.match(progressStep(html,3),imported===3?/✓ Завершено/:/У процесі/);
   assert.equal((progressStep(html,3).match(/data-a="upload"/g)||[]).length,3);
-  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,imported);
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,3);
   assert.doesNotMatch(progressStep(html,4),/Завершено/);assert.doesNotMatch(progressStep(html,5),/Завершено/);
 });
 test('study progress import replacement uses correct environment and preserves other data',async()=>{
@@ -1150,15 +1152,15 @@ test('study progress import replacement uses correct environment and preserves o
 test('study progress new environment reopens import stage',()=>{
   const {p}=progressScenario({imported:1,done:true});p.envs.push({id:'later',name:'Нове',survey:{}});
   const html=portal.api.studyProgress();assert.match(html,/Завантажено дані для 1 із 2/);
-  assert.match(progressStep(html,3),/У процесі/);assert.match(html,/«Нове»/);
+  assert.match(progressStep(html,3),/У процесі/);progressButton(html,'upload','later');progressButton(html,'dash','later');
 });
 test('study progress obeys production canDashboard even for insufficient sample',()=>{
   const {p}=progressScenario({envCount:2,imported:1,done:true});
   p.envs[0].survey.results.e=portal.api.aggregateSource(surveyRows('E',5),'E');
   assert.equal(portal.api.canDashboard(p.envs[0]),true);
   const html=portal.api.studyProgress();progressButton(html,'dash','progress-0');
-  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,1);
-  assert.match(progressStep(html,4),/Результати ще недоступні/);
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,2);
+  assert.doesNotMatch(progressStep(html,4),/Результати ще недоступні/);
 });
 test('study progress dashboard buttons select the requested environment',async()=>{
   const {html}=progressScenario({envCount:3,imported:3,done:true});
@@ -1350,4 +1352,99 @@ test('F07 rejects unmarked, short, changed and coded truncated E20 headings',()=
     const parsed=checkTruncatedE20Export(heading);
     assert.ok(parsed.errors.some(error=>error.startsWith(expectedError)),label+' unexpectedly accepted: '+parsed.errors.join('; '));
   }
+});
+
+
+// Checkup-only results and read-only practice verification, 2026-10-20.
+function checkupOnlyScenario({eCount=0,lCount=0,done=true,overrides={}}={}){
+  const x=setRuntimeScenario({eCount,lCount,pOverrides:overrides});
+  if(!eCount&&!lCount)delete x.environment.survey;
+  const state=portal.api.getState();state.r.periods[0].checkup.done=done;
+  return {...x,state,cp:state.r.periods[0].checkup};
+}
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`checkup-only source availability E=${eCount} L=${lCount}`,()=>{
+  const {environment,state}=checkupOnlyScenario({eCount,lCount,overrides:{P31:'partial'}});
+  assert.equal(portal.api.canDashboard(environment),true);
+  const rows=portal.api.actualResultModel();assert.equal(rows.length,7);
+  for(const row of rows){assert.equal(row.e,eCount===0?'Немає даних':eCount<20?'Недостатня вибірка':'Ясно');assert.equal(row.l,lCount===0?'Немає даних':lCount<10?'Недостатня вибірка':'Ясно');}
+  assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта погодних статусів/);
+  const analysis=portal.api.barometerSemanticInterpretation();assert.ok(analysis.actions.some(x=>x.final_action_id==='M6-A1'));
+  if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/За організаційним чекапом компанії/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
+  const report=portal.api.buildReportHtml(environment);assert.match(report,/checkup-verification-appendix/);assert.equal((report.match(/data-practice-code=/g)||[]).length,42);
+  assert.equal(state.r.plan.length,0);
+});
+test('unfinished P with no survey has no results or criteria',()=>{
+  const {environment}=checkupOnlyScenario({done:false});assert.equal(portal.api.canDashboard(environment),false);assert.equal(portal.api.actualResultModel().length,0);assert.equal(portal.api.barometerPVerificationMarkup(1),'');assert.equal(portal.api.buildReportHtml(environment),'');
+});
+test('company-only context is derived and not persisted as environment',()=>{
+  const {state}=checkupOnlyScenario();state.r.periods[0].envs=[];state.env=null;
+  const before=JSON.stringify(state.r),company=portal.api.barometerCompanyContext();assert.equal(company.id,null);assert.equal(portal.api.canDashboard(company),true);
+  portal.api.render();assert.match(portal.app.innerHTML,/Організаційний чекап компанії/);assert.match(portal.api.buildReportHtml(company),/Карта погодних статусів/);assert.equal(JSON.stringify(state.r),before);
+});
+for(const practice of portal.api.P_LIST)for(const answer of ['full','partial','no','insufficient'])test(`verification ${practice.code} / ${answer}: exact practice, valid state, no scoring or writes`,()=>{
+  const {cp,state}=checkupOnlyScenario({overrides:{[practice.code]:answer}}),before=JSON.stringify(state.r),storage=JSON.stringify([...portal.storage]);
+  const score=JSON.stringify(portal.api.calculatePResults(cp)),view=portal.api.barometerPracticeVerification(practice.code);
+  assert.equal(view.code,practice.code);assert.equal(view.answer,answer);assert.equal(view.label,portal.api.BAROMETER_P_ANSWER_LABELS[answer]);assert.match(view.conclusion,new RegExp(view.title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.ok(view.checks.length>=1);assert.ok(view.steps.length>=1);assert.equal(view.sources.length,2);
+  if(answer==='full'){assert.equal(view.checks.length,3);assert.match(view.heading,/Як перевірити, що практика працює/);assert.match(view.steps.join(' '),/Якщо фактичне застосування/);assert.doesNotMatch(view.conclusion,/ефективно працює/);}
+  if(answer==='partial'){assert.ok(view.results.length>=1&&view.results.length<=2);assert.match(view.conclusion,/частково або нерівномірно/);}
+  if(answer==='no'){assert.equal(view.checks.length,3);assert.match(view.conclusion,/не реалізована або фактично не працює/);}
+  if(answer==='insufficient'){assert.match(view.conclusion,/не може бути достовірно підтверджений/);assert.equal(view.results.length,0);}
+  const markup=portal.api.barometerPVerificationMarkup(practice.module);assert.match(markup,new RegExp('data-practice-code="'+practice.code+'" data-practice-answer="'+answer+'"'));
+  assert.equal(JSON.stringify(portal.api.calculatePResults(cp)),score);assert.equal(JSON.stringify(state.r),before);assert.equal(JSON.stringify([...portal.storage]),storage);
+});
+test('42 practice criteria have distinct factual checks, gaps, steps, outcomes and sources',()=>{
+  for(const key of ['title','checks','gaps','steps','results','sources']){
+    const values=Object.values(portal.api.BAROMETER_P_VERIFICATION).map(x=>JSON.stringify(x[key]));assert.equal(new Set(values).size,42,key);
+  }
+});
+test('all full P gives seven favorable statuses and no automatic corrective actions',()=>{
+  checkupOnlyScenario();assert.ok(portal.api.actualResultModel().every(x=>x.p==='Ясно'));assert.equal(portal.api.barometerSemanticInterpretation().actions.length,0);
+  assert.ok(portal.api.barometerSemanticAction('VERIFY:P01',1));assert.equal(portal.api.barometerSemanticInterpretation().actions.length,0);
+});
+test('verification reflects changed response immediately without changing saved answers',()=>{
+  const {cp}=checkupOnlyScenario();assert.equal(portal.api.barometerPracticeVerification('P01').answer,'full');
+  cp.answers.P01='partial';const view=portal.api.barometerPracticeVerification('P01');assert.equal(view.answer,'partial');assert.match(view.heading,/покращити/);assert.equal(cp.answers.P01,'partial');assert.equal(portal.api.barometerSemanticAction('VERIFY:P01',1),null);
+});
+test('critical P storm, two missing practices, partial and fog keep original rules',()=>{
+  for(const [overrides,status] of [[{P04:'no'},'Буря'],[{P01:'no',P02:'no'},'Буря'],[{P01:'partial'},'Хмарно'],[{P01:'insufficient',P02:'insufficient',P03:'insufficient'},'Туман']]){
+    checkupOnlyScenario({overrides});assert.equal(portal.api.actualResultModel()[0].p,status);
+  }
+});
+test('P40 verification is conditional and does not create a local protection action without confirmed applicability',()=>{
+  const {cp}=checkupOnlyScenario({overrides:{P40:'no'}});cp.p40Risk='confirmed';cp.p40ApplicabilityByEnvironment={};
+  let a=portal.api.barometerSemanticInterpretation();assert.ok(!a.actions.some(x=>x.basis_codes.includes('P40')));
+  assert.match(portal.api.barometerPracticeVerification('P40').steps.join(' '),/Лише за підтвердженого ризику/);
+  cp.p40ApplicabilityByEnvironment['env-runtime']='confirmed';a=portal.api.barometerSemanticInterpretation();const action=a.actions.find(x=>x.basis_codes.includes('P40'));assert.ok(action);assert.equal(portal.api.barometerActionScope(action),'env-runtime');
+});
+test('P-only actions and voluntary strong-practice checks deduplicate at company scope',async()=>{
+  const {state}=checkupOnlyScenario({overrides:{P31:'partial'}});const first=state.env;
+  const click=async(target,m)=>{const b={dataset:{a:'add-routed-action',target,m:String(m)},replaceWith(){}};await portal.listeners.get('click')({target:{closest:()=>b}})};
+  await click('M6-A1',6);await click('VERIFY:P01',1);assert.equal(state.r.plan.length,2);assert.ok(state.r.plan.every(x=>x.envId===null));
+  state.r.periods[0].envs.push({id:'other',name:'Other',survey:{}});state.env='other';await click('M6-A1',6);await click('VERIFY:P01',1);assert.equal(state.r.plan.length,2);
+  assert.equal(first,'env-runtime');
+});
+test('questionnaire has no verification controls and retains exactly 42 original practices',()=>{
+  const {state}=checkupOnlyScenario();state.screen='checkup';state.module=1;
+  const html=portal.api.checkup();assert.equal((html.match(/class="practice"/g)||[]).length,6);assert.doesNotMatch(html,/data-practice-code|VERIFY:|Критерії перевірки організаційних/);
+});
+test('public portal outside embedded local copy and XLSX stays byte-identical to reviewed baseline',()=>{
+  const strip=html=>html.replace(/(const embeddedLocalPortal\s*=\s*["'])[^"']*(["'])/,'$1LOCAL$2');
+  // Hash pins all public content, calculator, scripts, styles, embedded XLSX and images.
+  assert.equal(createHash('sha256').update(strip(publicHtml)).digest('hex'),'885e92a3a4ee7f27341fe15d4982887d811229081161b8977e1075f414cd6663');
+});
+
+const protectedBaselineHashes={"aggregateSource": "695e76cb37ca7e94f1afa741b74e82ca8ed54e17a2f472ff7faa5f2f57b4765c", "calculatePResults": "549aa9222e9af58a164eec902e0165aad7aadc2cce2c69d7abe44850eb1ec61b", "parseCSV": "acf9f984a969598d100007c8e6a8dcfde9f20635f54d34bbb95913f84f00b82a", "validateTableRows": "fe3fa9cdb97a9c2e08027dc18204ff1cffb1c95c423754fb30d0ecd17304f02d", "validateBackupResearch": "77e8629332abdfc94bcacf9eae1e1319e251ad1b773814a3f4870a3db8238e2b", "weatherStatus": "f80774c17408ec7b2d64b8ec4f41bbb418f9bae3f0023d55b065475f04e6fccf", "planXlsxBytes": "9b560caddbac4e3d9456c48601d614f1ace028e33839b8905db68d432e9abf91"};
+for(const [name,expected] of Object.entries(protectedBaselineHashes))test(`protected baseline function remains byte-identical: ${name}`,()=>{assert.equal(createHash('sha256').update(portal.api[name].toString()).digest('hex'),expected)});
+test('local portal retains exact baseline CSS and original questionnaire data',()=>{
+ assert.equal(createHash('sha256').update(localHtml.match(/<style>([\s\S]*?)<\/style>/)[1]).digest('hex'),'895a5bc8cc4f9647bc9b2813b1263fe9526b78d354706160b2a11b8a980d0ad6');
+ assert.equal(createHash('sha256').update(JSON.stringify(portal.api.P_LIST)).digest('hex'),'2fa16e0311e95eeae173f47db68d4d0ec71d6b3727196cd83f6c79aa359c2050');
+ assert.equal(createHash('sha256').update(JSON.stringify(portal.api.SURVEY_ITEMS)).digest('hex'),'08343b921cb972ccbe11dbe73351ea31b0558645afaed86286bd2be415f62445');
+});
+test('existing environment-scoped P action stays usable without duplication or migration',async()=>{
+  const {state}=checkupOnlyScenario({overrides:{P31:'partial'}});
+  state.r.plan.push({id:'existing-action',periodId:'period-1',envId:'env-runtime',sourceTarget:'M6-A1',module:portal.api.M[5],action:'Existing user-edited title',description:'Preserved user notes',priority:'Високий',status:'У роботі',indicator:'User-defined criterion'});
+  const before=JSON.stringify(state.r.plan),button={dataset:{a:'add-routed-action',m:'6',target:'M6-A1'},replaceWith(){}};
+  await portal.listeners.get('click')({target:{closest:()=>button}});
+  assert.equal(state.r.plan.length,1);assert.equal(JSON.stringify(state.r.plan),before);assert.equal(button.disabled,true);
 });

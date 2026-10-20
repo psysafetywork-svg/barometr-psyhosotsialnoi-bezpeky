@@ -449,7 +449,7 @@ function studyProgress(){
   if(total&&!configured)now='заповніть налаштування компанії, власника та періоду дослідження.';
   else if(configured){
     if(!checkupDone){current=2;now=pr.a?`продовжте організаційний чекап. Завершено ${pr.mods} із ${M.length} модулів.`:'заповніть організаційний чекап.';}
-    else if(missing){current=3;now=`завантажте дані опитування E/L для робочого середовища «${missing.name}».`;}
+    else if(missing){current=4;now='результати організаційного чекапу вже доступні. Відповіді E/L можна додати пізніше.';}
     else if(ready.length){current=4;now=`результати готові. Перейдіть до дашборду робочого середовища «${ready[0].name}».`;}
   }
   const step=(n,title,description,status,done,content)=>`<li class="study-step${done?' is-done':''}" data-step="${n}"${current===n?' aria-current="step"':''}><span class="study-step-number" aria-hidden="true">${n}</span><h4>${title}</h4><span class="study-step-status">${done?'✓ ':''}${h(status)}</span><p>${description}</p>${content}</li>`;
@@ -457,7 +457,7 @@ function studyProgress(){
     ${step(1,'Налаштуйте дослідження','Компанія, період і робочі середовища.',configured?'Завершено':'У процесі',configured,`<div class="card-actions"><button class="btn ghost small" data-a="edit-research">Налаштування дослідження</button>${!total?'<button class="btn primary small" data-a="add-env">Додати перше середовище</button>':''}</div>`)}
     ${step(2,'Заповніть організаційний чекап','Оцініть організаційні практики компанії.',checkupStatus,checkupDone,`<div class="card-actions"><button class="btn ghost small" data-a="checkup">${checkupButton}</button></div>`)}
     ${step(3,'Завантажте дані опитування E/L','Імпортуйте окремий XLSX/CSV для кожного робочого середовища.',!total?'Ще недоступно':imported.length===total?'Завершено':imported.length?'У процесі':'Доступно',total>0&&imported.length===total,`<p>Завантажено дані для ${imported.length} із ${total} робочих середовищ.</p>${total?`<ul class="study-envs">${environments.map(e=>`<li><strong>${h(e.name)}</strong><span class="muted">${getSurveyResults(e)?'✓ Дані завантажено':'○ Дані ще не завантажено'}</span><button class="btn ghost small" data-a="upload" data-id="${h(e.id)}">${getSurveyResults(e)?'Замінити дані':'Завантажити XLSX/CSV'}</button></li>`).join('')}</ul>`:'<p class="muted">Спочатку додайте робоче середовище.</p>'}`)}
-    ${step(4,'Перегляньте результати та сформуйте PDF-звіт','Перегляньте дашборд E/L/P для кожного робочого середовища та за потреби збережіть звіт у PDF.',ready.length?'Доступно':'Ще недоступно',false,`<p>Результати доступні для ${ready.length} із ${total} робочих середовищ.</p><ul class="study-envs">${environments.map(e=>`<li><strong>${h(e.name)}</strong>${canDashboard(e)?`<button class="btn ghost small" data-a="dash" data-id="${h(e.id)}">Переглянути результати</button>`:'<span class="muted">Результати ще недоступні</span>'}</li>`).join('')}</ul>`)}
+    ${step(4,'Перегляньте результати та сформуйте PDF-звіт','Перегляньте дашборд E/L/P для кожного робочого середовища та за потреби збережіть звіт у PDF.',checkupDone?'Доступно':'Ще недоступно',false,`${checkupDone?'<div class="card-actions"><button class="btn ghost small" data-a="company-results">Результати організаційного чекапу компанії</button></div>':''}<p>Результати доступні для ${ready.length} із ${total} робочих середовищ.</p><ul class="study-envs">${environments.map(e=>`<li><strong>${h(e.name)}</strong>${canDashboard(e)?`<button class="btn ghost small" data-a="dash" data-id="${h(e.id)}">Переглянути результати</button>`:'<span class="muted">Результати ще недоступні</span>'}</li>`).join('')}</ul>`)}
     ${step(5,'Сформуйте План організаційних дій','Оберіть дії, визначте відповідальних, строки та критерії результату. За потреби збережіть План.',planCount?`У Плані: ${planCount} ${planCount%10===1&&planCount%100!==11?'дія':[2,3,4].includes(planCount%10)&&![12,13,14].includes(planCount%100)?'дії':'дій'}`:'Доступно',false,'<div class="card-actions"><button class="btn ghost small" data-a="plan">Перейти до Плану</button></div>')}
   </ol><p class="study-now"><strong>Зараз:</strong> ${h(now)}</p></section>`;
 }
@@ -600,15 +600,16 @@ function checkup(){
   </div>`
 }
 function complete(){
-  let ready=period().envs.filter(e=>count(e)===3);
+  let ready=period().envs.filter(e=>canDashboard(e));
   return `${bar()}<div class="shell checkup">
     <div class="interpret-card">
       <p class="eyebrow">Організаційний чекап завершено</p>
       <h2>Оцінювання <span>завершено</span></h2>
       <p>Результат організаційного чекапу збережено для поточного періоду і використовується як третє джерело для всіх робочих середовищ.</p>
-      <div class="notice"><strong>Що далі?</strong><br>${ready.length?'Для робочих середовищ, де вже завантажені дані опитування, можна переглянути дашборд результатів.':'Тепер завантажте дані опитування для робочих середовищ.'}</div>
+      <div class="notice"><strong>Що далі?</strong><br>Перегляньте результати організаційного чекапу компанії. Відповіді E/L можна додати пізніше; вони аналізуються лише за достатньої вибірки.</div>
       <div class="card-actions">
         <button class="btn ghost" data-a="home">Назад до огляду</button>
+        <button class="btn primary" data-a="company-results">Результати організаційного чекапу компанії</button>
         ${ready.length===1?`<button class="btn primary" data-a="dash" data-id="${ready[0].id}">Переглянути дашборд результатів</button>`:''}
       </div>
       ${ready.length>1?`<section class="section"><h3>Готові робочі середовища</h3><div class="env-list">${ready.map(e=>`<div class="env-card"><strong>${h(e.name)}</strong><div class="card-actions"><button class="btn primary small" data-a="dash" data-id="${e.id}">Переглянути дашборд результатів</button></div></div>`).join('')}</div></section>`:''}
@@ -710,16 +711,17 @@ const P_DESC_RUNTIME={
 
 function actualResultModel(){
   let eobj=env(S.env),sr=getSurveyResults(eobj);
-  if(!sr||!period()?.checkup?.done)return [];
+  if(!period()?.checkup?.done)return [];
+  sr=sr||{e:{modules:{}},l:{modules:{}}};
   let pr=period().checkup.results||calculatePResults(period().checkup);
   return M.map((name,i)=>{
-    let mid=i+1,em=sr.e.modules[mid],lm=sr.l.modules[mid],pm=pr.modules[mid]||{},
-        e=em?.status||'Туман',
-        l=lm?.status||'Туман',
+    let mid=i+1,em=sr.e.modules[mid]||{},lm=sr.l.modules[mid]||{},pm=pr.modules[mid]||{},
+        e=Number(sr.e.totalResponses||0)===0?'Немає даних':Number(sr.e.totalResponses)<20?'Недостатня вибірка':em?.status||'Туман',
+        l=Number(sr.l.totalResponses||0)===0?'Немає даних':Number(sr.l.totalResponses)<10?'Недостатня вибірка':lm?.status||'Туман',
         p=pm.status||'Туман',
         tpl=comboTemplate(e,l,p,mid);
-    let stats=`Працівники: ${e}${em?.status!=='Туман'?` (${fmtPct(em.favorable)} сприятливих; ${fmtPct(em.unfavorable)} несприятливих; ${qualityDisplay(em)})`:em?` (${qualityDisplay(em)})`:''}. `+
-      `Керівники: ${l}${lm?.status!=='Туман'&&sr.l.detailAllowed?` (${fmtPct(lm.favorable)} сприятливих; ${fmtPct(lm.unfavorable)} несприятливих; ${qualityDisplay(lm)})`:lm?` (${qualityDisplay(lm)})`:''}. `+
+    let stats=`Працівники: ${e}${em?.status&&em.status!=='Туман'?` (${fmtPct(em.favorable)} сприятливих; ${fmtPct(em.unfavorable)} несприятливих; ${qualityDisplay(em)})`:em?` (${qualityDisplay(em)})`:''}. `+
+      `Керівники: ${l}${lm?.status&&lm.status!=='Туман'&&sr.l.detailAllowed?` (${fmtPct(lm.favorable)} сприятливих; ${fmtPct(lm.unfavorable)} несприятливих; ${qualityDisplay(lm)})`:lm?` (${qualityDisplay(lm)})`:''}. `+
       `Організаційний чекап: ${p}${pm?.quality?` (${qualityDisplay(pm)})`:''}.`;
     let hyp=[...(tpl?.hypotheses||[])];
     if(em?.masked||lm?.masked)hyp.unshift('Середній результат модуля відповідав би умовам «Ясно», але окреме оцінюване твердження є проблемним за критерієм Барометра: менше 55% сприятливих або щонайменше 30% несприятливих відповідей. Тому статус модуля обмежено до «Хмарно», щоб важливий локальний сигнал не був замаскований середнім.');
@@ -770,16 +772,17 @@ function weatherMapHtml(rows,eobj,report=false){
 
 
 function dash(){
-  let e=env(S.env);
-  if(!S.demo&&!canDashboard(e))return `${bar()}<div class="shell"><div class="hero-mini"><div><p class="eyebrow">Дашборд результатів</p><h2>Результати ще <span>не готові</span></h2></div><button class="btn ghost" data-a="home">Назад</button></div><div class="notice">Дашборд стане доступним після завантаження необхідних даних опитування та завершення організаційного чекапу.</div></div>`;
+  let e=env(S.env)||barometerCompanyContext();
+  if(!S.demo&&!canDashboard(e))return `${bar()}<div class="shell"><div class="hero-mini"><div><p class="eyebrow">Дашборд результатів</p><h2>Результати ще <span>не готові</span></h2></div><button class="btn ghost" data-a="home">Назад</button></div><div class="notice">Дашборд стане доступним після завершення організаційного чекапу. Відповіді E/L можна додати пізніше.</div></div>`;
   let rows=resultModel();
   return `${bar()}<div class="shell">
     <div class="hero-mini"><div><p class="eyebrow">Дашборд результатів</p>
       <h2>${h(S.r.company)}. <span>${h(e.name)}</span></h2>
-      <div class="meta"><span class="pill">${h(period().label)}</span><span class="pill">${e.survey.e} відповідей працівників</span><span class="pill">${e.survey.l} відповідей керівників</span></div>
+      <div class="meta"><span class="pill">${h(period().label)}</span><span class="pill">${e.survey?.e||0} відповідей працівників</span><span class="pill">${e.survey?.l||0} відповідей керівників</span></div>
     </div><div class="card-actions"><button class="btn ghost" data-a="home">Назад</button><button class="btn secondary" data-a="report">Завантажити звіт</button></div></div>
 
 
+    <div class="notice">Організаційний чекап заповнено один раз на рівні компанії за цей період. Його статуси не є окремою оцінкою практик кожного робочого середовища. ${!surveyEligibility(e).employee&&!surveyEligibility(e).manager?'Наразі висновки спираються лише на організаційний чекап. Досвід працівників і можливості керівників не оцінюються без достатніх E/L.':''}</div>
     ${weatherMapHtml(rows,e)}
     <div class="notice"><strong>Як читати детальні результати</strong><br>Погодний статус допомагає визначити, де зосередити увагу. Він не замінює аналізу причин і не означає, що за статусу «Ясно» подальший моніторинг не потрібен. Три джерела не усереднюються в один загальний бал.</div>
     <div class="dashboard-grid">${rows.map(r=>matrixModule(r)).join('')}</div>
@@ -1638,6 +1641,7 @@ document.addEventListener('click',async e=>{
     if(cp.answers.P40==='no'&&!cp.p40Risk)return alert('Для P40 уточніть, чи виявлено актуальний ризик насильства або домагань з боку третіх осіб.');
     cp.results=calculatePResults(cp);cp.done=true;cp.schemaVersion=CHECKUP_SCHEMA_VERSION;save();S.screen='complete';window.scrollTo(0,0)
   }
+  if(a==='company-results'){if(!period()?.checkup?.done)return;S.env=null;S.screen='dash';window.scrollTo(0,0)}
   if(a==='dash'){let target=env(b.dataset.id||S.env);if(!S.demo&&!canDashboard(target))return alert('Дашборд стане доступним після завантаження необхідних даних опитування та завершення організаційного чекапу.');S.env=b.dataset.id||S.env;S.screen='dash';window.scrollTo(0,0)}
   if(a==='interpret'){S.module=+b.dataset.m||S.module;S.screen='interpret';window.scrollTo(0,0)}
   if(a==='recs')S.screen='recs';
@@ -1744,10 +1748,10 @@ document.addEventListener('click',async e=>{
     return;
   }
   if(a==='add-routed-action'){
-    const moduleId=+b.dataset.m,target=b.dataset.target,x=selectedActions(moduleId).find(z=>z.target===target);
+    const moduleId=+b.dataset.m,target=b.dataset.target,x=barometerSemanticAction(target,moduleId)||selectedActions(moduleId).find(z=>z.target===target);
     if(x){
       if(planHasAction(moduleId,target)){b.textContent='Уже додано';b.disabled=true;return}
-      S.r.plan.push({id:uid('a'),periodId:period().id,envId:S.env,sourceTarget:target,module:M[moduleId-1],aspect:[...new Set(x.issues.map(i=>i.topic))].join('; '),action:x.title.replace(/^Перевірити розрив:\s*/,''),description:x.action,priority:'Середній',status:'Не розпочато',indicator:x.check});
+      S.r.plan.push({id:uid('a'),periodId:period().id,envId:barometerActionScope(x),sourceTarget:target,module:M[moduleId-1],aspect:[...new Set(x.issues.map(i=>i.topic))].join('; '),action:x.title.replace(/^Перевірити розрив:\s*/,''),description:x.action,priority:'Середній',status:'Не розпочато',indicator:x.check});
       save();
       const replacement=document.createElement('span');
       replacement.className='data-quality';
@@ -1767,7 +1771,7 @@ document.addEventListener('click',async e=>{
 
   if(a==='report'){
     let ready=(period()?.envs||[]).filter(e=>canDashboard(e));
-    let target=env(S.env);
+    let target=env(S.env)||(!S.env&&period()?.checkup?.done?barometerCompanyContext():null);
     if(!target||!canDashboard(target)){
       let planEnvIds=[...new Set(currentPlan().map(x=>x.envId).filter(Boolean))];
       if(planEnvIds.length===1)target=env(planEnvIds[0]);
@@ -2098,7 +2102,7 @@ normalizeResearch=function(research){return barometerMigratePlanFinalIds(baromet
 const barometerSaveV10=save;
 save=function(){barometerMigratePlanFinalIds(S.r);return barometerSaveV10()};
 const barometerCanDashboardV10=canDashboard;
-canDashboard=function(environment){return !!environment&&!!getSurveyResults(environment)&&!!period()?.checkup?.done};
+canDashboard=function(environment){return !!environment&&!!period()?.checkup?.done};
 const barometerEnvCardV10=envCard;
 envCard=function(environment){
   const html=barometerEnvCardV10(environment);
@@ -2108,24 +2112,27 @@ envCard=function(environment){
 const barometerActualResultModelV10=actualResultModel;
 actualResultModel=function(){
   const rows=barometerActualResultModelV10(),environment=env(S.env),results=getSurveyResults(environment);
-  if(!results)return rows;
+  if(!results)return rows.map(row=>({...row,e:'Немає даних',l:'Немає даних'}));
   const eEligible=Number(results.e?.totalResponses||0)>=20,lEligible=Number(results.l?.totalResponses||0)>=10;
-  return rows.map(row=>({...row,e:eEligible?row.e:'Недостатня вибірка',l:lEligible?row.l:'Недостатня вибірка'}))
+  return rows.map(row=>({...row,e:eEligible?row.e:Number(results.e?.totalResponses||0)?'Недостатня вибірка':'Немає даних',l:lEligible?row.l:Number(results.l?.totalResponses||0)?'Недостатня вибірка':'Немає даних'}))
 };
 const barometerMapStatusBadgeV10=mapStatusBadge;
 mapStatusBadge=function(status,source,moduleId,results){
-  if(status==='Недостатня вибірка')return '<span class="weather-badge fog">– Статус не розраховується</span>';
+  if(status==='Немає даних')return '<span class="data-quality">Немає даних</span>';
+  if(status==='Недостатня вибірка')return '<span class="data-quality">Недостатня вибірка. Статус не розраховується</span>';
   return barometerMapStatusBadgeV10(status,source,moduleId,results)
 };
 const barometerChipV10=chip;
 chip=function(status,label){
-  if(status==='Недостатня вибірка')return `<span class="status fog">– ${h(label)}: статус не розраховується</span>`;
+  if(status==='Немає даних')return `<span class="status">${h(label)}: немає даних</span>`;
+  if(status==='Недостатня вибірка')return `<span class="status" aria-label="${h(label)}: Недостатня вибірка. Статус не розраховується">${h(label)}: недостатня вибірка</span>`;
   return barometerChipV10(status,label)
 };
 const barometerPlanActionV10=planAction;
 planAction=function(moduleOrFinalId,targetMaybe){
   const legacyCall=targetMaybe!==undefined,finalActionId=legacyCall?targetMaybe:moduleOrFinalId,aliases=barometerPlanAliases(finalActionId);
-  const found=currentPlan().find(action=>action.envId===S.env&&(aliases.includes(action.final_action_id)||aliases.includes(action.finalActionId)||aliases.includes(action.sourceTarget)));
+  const candidate=barometerSemanticAction(finalActionId),scope=candidate?barometerActionScope(candidate):S.env;
+  const found=currentPlan().find(action=>(action.envId===scope||(!scope&&(!action.envId||action.envId===S.env)))&&(aliases.includes(action.final_action_id)||aliases.includes(action.finalActionId)||aliases.includes(action.sourceTarget)));
   return found||(legacyCall?barometerPlanActionV10(moduleOrFinalId,targetMaybe):null)
 };
 planHasAction=function(moduleOrFinalId,targetMaybe){return !!planAction(moduleOrFinalId,targetMaybe)};
@@ -2599,7 +2606,8 @@ plan=function(){
   html=html.replace('<button class="btn secondary" data-a="export">Завантажити План Excel</button>','');
   html=html.replace('До огляду','Назад');
   const ready=(period()?.envs||[]).filter(e=>canDashboard(e));
-  const current=env(S.env),currentReady=!!current&&canDashboard(current),needsChoice=ready.length>1&&!currentReady;
+  if(period()?.checkup?.done&&!S.env)ready.unshift(barometerCompanyContext());
+  const current=env(S.env)||(!S.env&&period()?.checkup?.done?barometerCompanyContext():null),currentReady=!!current&&canDashboard(current),needsChoice=ready.length>1&&!currentReady;
   const selector=needsChoice
     ?`<div class="field" style="min-width:300px"><label for="report-env-select-final">Для якого робочого середовища завантажити звіт?</label><select id="report-env-select-final">${ready.map(e=>`<option value="${h(e.id)}">${h(e.name)}</option>`).join('')}</select></div>`
     :'';
@@ -2956,8 +2964,10 @@ function barometerV2Lead(row,input,active){
 }
 function barometerV2DataNotes(input){
   const out=[];
-  if(!input.E.eligible){const missing=Math.max(0,20-Number(input.E.total||0));out.push(`Працівники: отримано ${Number(input.E.total||0)} валідних анкет. Для окремого аналізу цього середовища потрібно щонайменше 20. Потрібно ще ${missing}. Дані працівників не використовуються для формування висновків за цим середовищем.`);}
-  if(!input.L.eligible){const missing=Math.max(0,10-Number(input.L.total||0));out.push(`Керівники: отримано ${Number(input.L.total||0)} валідних анкет. Для окремого аналізу цього середовища потрібно щонайменше 10. Потрібно ще ${missing}. Дані керівників не використовуються для формування висновків за цим середовищем.`);}
+  if(!input.E.eligible&&!Number(input.E.total||0))out.push('Працівники: немає даних. Досвід працівників не оцінено.');
+  else if(!input.E.eligible){const missing=Math.max(0,20-Number(input.E.total||0));out.push(`Працівники: отримано ${Number(input.E.total||0)} валідних анкет. Для окремого аналізу цього середовища потрібно щонайменше 20. Потрібно ще ${missing}. Дані працівників не використовуються для формування висновків за цим середовищем.`);}
+  if(!input.L.eligible&&!Number(input.L.total||0))out.push('Керівники: немає даних. Можливості керівників не оцінено.');
+  else if(!input.L.eligible){const missing=Math.max(0,10-Number(input.L.total||0));out.push(`Керівники: отримано ${Number(input.L.total||0)} валідних анкет. Для окремого аналізу цього середовища потрібно щонайменше 10. Потрібно ще ${missing}. Дані керівників не використовуються для формування висновків за цим середовищем.`);}
   return out;
 }
 function barometerV2FogOnlyLead(aspects){
@@ -2977,7 +2987,7 @@ function barometerV2BuildSemanticAnalysis(rawInput){
     const fogOnly=active.length>0&&active.every(a=>!a.partial&&a.e!=='S'&&a.l!=='S'&&a.p!=='G'&&!a.eAdditional.length&&!a.lAdditional.length&&!a.pAdditional.length&&!a.special.length&&!a.p40Pending);
     const visible=(fogOnly?[]:active).map(a=>({id:a.id,title:(a.id==='M7-C2'&&input.E.eligible&&input.E.states.E31==='S'&&a.p!=='G'&&!a.lAdditional.length)?'Неприйнятне ставлення - сигнал для уточнення':a.title,alignment:barometerV2Alignment(a,input),attention:barometerV2Attention(a,input),e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
     const compatibilityClusters=moduleAll.map(a=>({id:a.id,name:a.title,e:a.e,l:a.l,p:a.p,eCodes:a.eCodes,lCodes:a.lCodes,pCodes:a.pCodes}));
-    modules[moduleId]={module:moduleId,aspects:visible,clusters:compatibilityClusters,actions:actions.filter(a=>a.module===moduleId),dataNotes:barometerV2DataNotes(input),crossRefs,lead:fogOnly?barometerV2FogOnlyLead(active):barometerV2Lead(row,input,active),problemCodes:barometerUnique(active.flatMap(a=>[...barometerV2ActiveCodes(input,a.eCodes),...barometerV2ActiveCodes(input,a.lCodes),...barometerV2ActiveCodes(input,a.pCodes),...barometerV2ActiveCodes(input,a.special)]))};
+    modules[moduleId]={module:moduleId,aspects:visible,clusters:compatibilityClusters,actions:actions.filter(a=>a.module===moduleId),dataNotes:barometerV2DataNotes(input),crossRefs,lead:!input.E.eligible&&!input.L.eligible&&!rawInput?barometerPModuleLead(moduleId):fogOnly?barometerV2FogOnlyLead(active):barometerV2Lead(row,input,active),problemCodes:barometerUnique(active.flatMap(a=>[...barometerV2ActiveCodes(input,a.eCodes),...barometerV2ActiveCodes(input,a.lCodes),...barometerV2ActiveCodes(input,a.pCodes),...barometerV2ActiveCodes(input,a.special)]))};
   }
   return {version:'2.0-2026-09-25',input,modules,actions,aspects:allAspects};
 }
@@ -2996,12 +3006,1011 @@ barometerSemanticModuleMarkup=function(row){
   const analysis=barometerSemanticInterpretation(),semantic=analysis.modules[row.m];if(!semantic)return '';
   const notes=semantic.dataNotes.length?`<div class="data-quality">${semantic.dataNotes.map(h).join('<br>')}</div>`:'',aspects=semantic.aspects.length?barometerV2AspectsMarkup(semantic.aspects):'',empty=semantic.crossRefs.length?'Окрема дубльована дія тут не створюється, оскільки відповідна дія щодо організаційних змін уже сформована в модулі 1.':'За доступними даними окрема організаційна дія для цього модуля не формується.';
   const actions=semantic.actions.length?`<h4 style="margin-top:18px">Рекомендовані організаційні дії</h4><div class="rec-inline-grid evidence">${barometerSemanticActionCards(row.m,semantic.actions)}</div><div class="data-quality">${h(BAROMETER_FINAL_PRIMARY_PREVENTION)}</div>`:`<div class="recommendation-empty"><h4>Рекомендовані організаційні дії</h4><p>${h(empty)}</p></div>`;
-  return `<article class="module-card matrix" id="matrix-${row.m}"><div class="matrix-row"><div class="matrix-title"><h3>${row.m}. ${h(M[row.m-1])}</h3><p class="muted">${h(semantic.lead)}</p></div><div class="matrix-top-statuses">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><div class="matrix-actions"><button class="btn ghost small" data-a="toggle-detail" data-m="${row.m}">Переглянути інтерпретацію</button></div><div class="matrix-detail" id="matrix-detail-${row.m}">${aspects}${notes}<div class="rec-inline">${actions}</div></div></article>`;
+  return `<article class="module-card matrix" id="matrix-${row.m}"><div class="matrix-row"><div class="matrix-title"><h3>${row.m}. ${h(M[row.m-1])}</h3><p class="muted">${h(semantic.lead)}</p></div><div class="matrix-top-statuses">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><div class="matrix-actions"><button class="btn ghost small" data-a="toggle-detail" data-m="${row.m}">Переглянути інтерпретацію</button></div><div class="matrix-detail" id="matrix-detail-${row.m}">${aspects}${barometerPVerificationMarkup(row.m)}${notes}<div class="rec-inline">${actions}</div></div></article>`;
 };
 matrixModule=function(row){return barometerSemanticModuleMarkup(row)};
-barometerReportModules=function(analysis,rows){return rows.map(row=>{const semantic=analysis.modules[row.m],aspects=(semantic.aspects||[]).map(a=>`<div class="compact-block"><h4>${h(a.title)}</h4><p><b>Як узгоджуються джерела:</b> ${h(a.alignment)}</p><p><b>На що звернути увагу:</b> ${h(a.attention)}</p></div>`).join(''),actions=semantic.actions.length?`<div class="actions-grid">${semantic.actions.map(action=>`<div class="action-box"><div class="action-main"><h5>${h(action.title)}</h5><p><b>Що зробити</b></p><ul>${action.steps.map(step=>`<li>${h(step)}</li>`).join('')}</ul></div><div class="action-check"><span>Як перевірити результат</span><p>${h(action.check)}</p></div></div>`).join('')}</div><p class="small-note">${h(BAROMETER_FINAL_PRIMARY_PREVENTION)}</p>`:`<p>${h(semantic.crossRefs.length?'Окрема дубльована дія тут не створюється, оскільки відповідна дія щодо організаційних змін уже сформована в модулі 1.':'За доступними даними окрема організаційна дія для цього модуля не формується.')}</p>`;return `<section class="module"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><p>${h(semantic.lead)}</p>${aspects}${semantic.dataNotes.length?`<div class="quality-note">${semantic.dataNotes.map(h).join('<br>')}</div>`:''}<div class="actions-section"><h4>Рекомендовані організаційні дії</h4>${actions}</div></section>`}).join('')};
+barometerReportModules=function(analysis,rows){return rows.map(row=>{const semantic=analysis.modules[row.m],aspects=(semantic.aspects||[]).map(a=>`<div class="compact-block"><h4>${h(a.title)}</h4><p><b>Як узгоджуються джерела:</b> ${h(a.alignment)}</p><p><b>На що звернути увагу:</b> ${h(a.attention)}</p></div>`).join(''),actions=semantic.actions.length?`<div class="actions-grid">${semantic.actions.map(action=>`<div class="action-box"><div class="action-main"><h5>${h(action.title)}</h5><p><b>Що зробити</b></p><ul>${action.steps.map(step=>`<li>${h(step)}</li>`).join('')}</ul></div><div class="action-check"><span>Як перевірити результат</span><p>${h(action.check)}</p></div></div>`).join('')}</div><p class="small-note">${h(BAROMETER_FINAL_PRIMARY_PREVENTION)}</p>`:`<p>${h(semantic.crossRefs.length?'Окрема дубльована дія тут не створюється, оскільки відповідна дія щодо організаційних змін уже сформована в модулі 1.':'За доступними даними окрема організаційна дія для цього модуля не формується.')}</p>`;return `<section class="module"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><p>${h(semantic.lead)}</p>${barometerPReportSummary(row.m)}${aspects}${semantic.dataNotes.length?`<div class="quality-note">${semantic.dataNotes.map(h).join('<br>')}</div>`:''}<div class="actions-section"><h4>Рекомендовані організаційні дії</h4>${actions}</div></section>`}).join('')};
 /* BAROMETER_SEMANTIC_LAYER_V2_2026_09_25_END */
 
+
+/* BAROMETER_CHECKUP_VERIFICATION_2026_10_20_START
+ * Presentation-only library. No saved fields, scores, thresholds or questionnaire changes.
+ */
+const BAROMETER_P_VERIFICATION={
+  "P01": {
+    "title": "Ролі, відповідальність і повноваження",
+    "checks": [
+      "Для різних чинних ролей можна знайти актуальні функції, межі рішень і підпорядкування, включно із суміщенням обов’язків.",
+      "Працівник і його керівник на конкретному завданні однаково пояснюють, хто виконує роботу, ухвалює рішення та відповідає за результат.",
+      "Виявлені дублювання або незакріплені функції отримали відповідального; повторна перевірка тих самих завдань підтверджує усунення неясності."
+    ],
+    "gaps": [
+      "Чи описані тимчасові й суміщені ролі та чи не суперечать повноваження фактичній відповідальності."
+    ],
+    "steps": [
+      "Зіставте описи ролей із фактичними завданнями та розберіть дублювання і незакріплену відповідальність.",
+      "Погодьте межі самостійних рішень і підпорядкування, поясніть їх відповідним працівникам та керівникам."
+    ],
+    "results": [
+      "На повторно розглянутих завданнях працівник і керівник однаково визначають відповідального та межі рішення."
+    ],
+    "sources": [
+      "Актуальні описи ролей і розподіл повноважень.",
+      "Приклади завдань, розмови з працівниками та керівниками відповідних ролей."
+    ]
+  },
+  "P02": {
+    "title": "Введення в роль під час найму або переведення",
+    "checks": [
+      "У випадках найму й переведення за останній період пояснювали вимоги ролі, очікуваний результат і контакт для уточнень.",
+      "Нові та переведені працівники можуть власними словами описати перше завдання і спосіб отримати уточнення.",
+      "Питання, які залишилися після введення в роль, отримали відповідь до самостійного виконання відповідної роботи."
+    ],
+    "gaps": [
+      "Чи охоплено переведення та всі формати роботи, а не лише нових офісних працівників."
+    ],
+    "steps": [
+      "Визначте обов’язковий зміст введення в роль та відповідального за пояснення конкретних завдань.",
+      "Після найму або переведення перевірте розуміння завдання, очікуваного результату та контакту для уточнень."
+    ],
+    "results": [
+      "У перевірених випадках людина пояснює свою роль і знає, до кого звертатися; невирішені питання опрацьовано."
+    ],
+    "sources": [
+      "Матеріали введення в роль, перелік наймів і переведень.",
+      "Зворотний зв’язок нових і переведених працівників та їхніх керівників."
+    ]
+  },
+  "P03": {
+    "title": "Пріоритети, результати, якість і строки завдань",
+    "checks": [
+      "Для різних видів робіт завдання містять зрозумілі очікувані результати, критерії якості, строки та пріоритет.",
+      "Зміни вимог доходять до відповідних працівників до виконання роботи; зрозуміло, яка версія вимог актуальна.",
+      "У вибірці змінених завдань працівники й керівники однаково називають поточний пріоритет і критерій прийнятного результату."
+    ],
+    "gaps": [
+      "Чи оновлюються строки, пріоритети та критерії якості одночасно і чи доходять уточнення до всіх змін."
+    ],
+    "steps": [
+      "Визначте для кожного виду робіт спосіб доведення результату, критеріїв якості, строків і пріоритетів.",
+      "Призначте відповідального за оновлення вимог та перевіряйте отримання змін перед виконанням завдань."
+    ],
+    "results": [
+      "У повторній вибірці завдань немає суперечливих актуальних версій, а виконавець правильно пояснює пріоритет і результат."
+    ],
+    "sources": [
+      "Завдання, змінні інструкції та повідомлення про їх оновлення.",
+      "Приклади передавання роботи між змінами, пояснення виконавців і керівників."
+    ]
+  },
+  "P04": {
+    "title": "Реагування на суперечливі, небезпечні або нереалістичні вимоги",
+    "checks": [
+      "Для кожного з трьох типів вимог визначено контакт, уповноважену особу та спосіб повідомлення остаточного рішення.",
+      "Працівники й керівники на реальному або навчальному прикладі знають, коли небезпечну роботу потрібно зупинити або не розпочинати.",
+      "У розглянутих випадках суперечність, небезпечну умову або нереалістичну вимогу усунено, а рішення доведено до виконавця."
+    ],
+    "gaps": [
+      "Чи є порядок дій, коли безпосередній керівник недоступний або сам надав суперечливу вимогу."
+    ],
+    "steps": [
+      "Визначте, кому повідомляти про суперечливі, небезпечні й нереалістичні вимоги та хто має право змінити їх.",
+      "Поясніть правила зупинки небезпечної роботи і перевірте проходження звернення до рішення на навчальному прикладі."
+    ],
+    "results": [
+      "Виконавець може безпечно призупинити небезпечне завдання, отримати узгоджену вимогу та дізнатися остаточне рішення."
+    ],
+    "sources": [
+      "Порядок звернення і повноваження осіб, які ухвалюють рішення.",
+      "Знеособлені приклади звернень або сценарна перевірка небезпечного завдання."
+    ]
+  },
+  "P05": {
+    "title": "Пояснення причин і впливу запланованих змін",
+    "checks": [
+      "У вибірці суттєвих запланованих змін повідомлення містили причини та вплив на ролі, завдання, пріоритети й умови роботи.",
+      "Повідомлення надійшли до впровадження з часом на підготовку та охопили відповідні локації й зміни.",
+      "Працівники, яких торкнулася зміна, можуть пояснити, що саме змінюється у їхній роботі та де отримати відповідь на запитання."
+    ],
+    "gaps": [
+      "Чи пояснюється вплив зміни на конкретну роботу і чи отримують інформацію люди поза офісом."
+    ],
+    "steps": [
+      "Для наступної суттєвої зміни підготуйте пояснення причин і конкретного впливу на роботу відповідних груп.",
+      "Доведіть повідомлення до впровадження, дайте час на запитання та перевірте розуміння змінених вимог."
+    ],
+    "results": [
+      "У перевіреній зміні відповідні групи поінформовані завчасно та правильно описують нові робочі вимоги."
+    ],
+    "sources": [
+      "План зміни, датовані повідомлення і матеріали роз’яснення.",
+      "Зворотний зв’язок працівників, яких стосується зміна."
+    ]
+  },
+  "P06": {
+    "title": "Перевірка відповідності фактичної роботи визначеним ролям",
+    "checks": [
+      "Є приклади періодичного зіставлення фактичних завдань із ролями та перевірки розуміння актуальних вимог.",
+      "Перевірка охоплює роботу після суттєвих змін і виявляє неофіційно додані обов’язки.",
+      "За виявленими розбіжностями уточнено ролі або організацію роботи, а повторна перевірка підтверджує відповідність."
+    ],
+    "gaps": [
+      "Чи завершуються перевірки зміною ролі або роботи, а не лише фіксацією розбіжностей."
+    ],
+    "steps": [
+      "Погодьте періодичне зіставлення описів ролей із фактичними завданнями разом із працівниками й керівниками.",
+      "Для розбіжностей змініть розподіл роботи або описи ролей і перевірте розуміння оновлених вимог."
+    ],
+    "results": [
+      "Повторне зіставлення підтверджує, що раніше неузгоджені завдання мають визначеного виконавця та повноваження."
+    ],
+    "sources": [
+      "Результати перегляду ролей, приклади фактичних завдань.",
+      "Оновлені домовленості та зворотний зв’язок виконавців і керівників."
+    ]
+  },
+  "P07": {
+    "title": "Визначені підходи до щоденної роботи керівника з командою",
+    "checks": [
+      "Орієнтири для керівників охоплюють планування, розподіл роботи, навантаження, зворотний зв’язок, реагування на проблеми й передавання невирішених питань.",
+      "Керівники різних команд можуть показати застосування цих підходів у конкретному робочому випадку.",
+      "Після обговорення проблеми є зрозуміла домовленість про рішення або відповідальну особу на вищому рівні."
+    ],
+    "gaps": [
+      "Які саме управлінські дії не визначені або застосовуються лише в окремих командах."
+    ],
+    "steps": [
+      "Опишіть очікувані дії керівника для планування, навантаження, робочого зворотного зв’язку та реагування на проблему.",
+      "Розберіть із керівниками реальні ситуації і погодьте порядок передавання питань за межами їхніх повноважень."
+    ],
+    "results": [
+      "У перевірених командах керівники застосовують погоджені дії, а невирішене питання має визначений наступний крок."
+    ],
+    "sources": [
+      "Управлінські орієнтири та порядок передавання питань.",
+      "Знеособлені приклади планування, робочих розмов і прийнятих рішень."
+    ]
+  },
+  "P08": {
+    "title": "Час, інформація, повноваження і ресурси керівників",
+    "checks": [
+      "Компанія перевіряє наявність у керівників часу, потрібної інформації, повноважень і ресурсів із визначеною періодичністю.",
+      "За виявленим дефіцитом можна простежити запит, відповідального за рішення та фактичний строк відповіді.",
+      "Після рішення керівник отримав потрібний ресурс або зміну завдання; та сама перешкода більше не блокує розглянуту роботу."
+    ],
+    "gaps": [
+      "На якому етапі залишаються без рішення запити, що виходять за межі повноважень керівника."
+    ],
+    "steps": [
+      "Разом із керівниками визначте конкретні дефіцити часу, інформації, ресурсів і повноважень.",
+      "Для питань поза їхніми повноваженнями визначте особу, строк рішення та спосіб перевірки усунення перешкоди."
+    ],
+    "results": [
+      "У повторно перевірених запитах рішення надано в погоджений строк, а керівник може продовжити відповідну роботу."
+    ],
+    "sources": [
+      "Результати перевірки робочих можливостей керівників.",
+      "Запити на ресурси, рішення уповноважених осіб і підтвердження їх виконання."
+    ]
+  },
+  "P09": {
+    "title": "Практичний розвиток управлінських навичок",
+    "checks": [
+      "Програма охоплює підтримуюче лідерство, навантаження, складні розмови та реагування на неприйнятну поведінку і доступна відповідним керівникам.",
+      "Керівники відпрацьовують ці дії на робочих сценаріях; перевіряється правильність рішень, а не лише відвідування.",
+      "Після навчання перевіряють застосування навичок у роботі та оновлюють програму за виявленими потребами."
+    ],
+    "gaps": [
+      "Які навички або групи керівників не охоплено та чи перевіряється перенесення навчання в роботу."
+    ],
+    "steps": [
+      "Зіставте програму з потрібними управлінськими діями і додайте практичне відпрацювання відсутніх тем.",
+      "Забезпечте участь відповідних керівників та перевірку застосування навичок із подальшим оновленням програми."
+    ],
+    "results": [
+      "На повторних сценаріях керівники обирають належні дії, а приклади їх застосування підтверджені робочими фактами."
+    ],
+    "sources": [
+      "Програма, оцінювання потреб, охоплення керівників навчанням.",
+      "Результати сценарних вправ і подальша перевірка управлінських дій."
+    ]
+  },
+  "P10": {
+    "title": "Орієнтири керівнику щодо спеціалізованої допомоги",
+    "checks": [
+      "Керівникам доступні актуальні контакти фахівців або сервісів та пояснення меж їхньої управлінської ролі.",
+      "У навчальному сценарії керівник пропонує відповідну допомогу без діагностування, примусу чи вимоги розкрити приватні подробиці.",
+      "Перевірка маршруту підтверджує актуальність контакту і можливість конфіденційного звернення без зайвих посередників."
+    ],
+    "gaps": [
+      "Чи зрозумілі межі конфіденційності, порядок невідкладної допомоги та дії за недоступності основного сервісу."
+    ],
+    "steps": [
+      "Дайте керівникам короткий порядок пропозиції психологічної, медичної або кризової допомоги з актуальними контактами.",
+      "Поясніть межі ролі й конфіденційності та перевірте дії на сценарії без розкриття персональних даних."
+    ],
+    "results": [
+      "Керівник правильно пропонує відповідний сервіс, а тестовий маршрут не вимагає повідомляти йому зміст звернення."
+    ],
+    "sources": [
+      "Інструкція керівнику, контакти сервісів, правила конфіденційності.",
+      "Сценарна перевірка та підтвердження доступності контакту провайдером."
+    ]
+  },
+  "P11": {
+    "title": "Регулярні індивідуальні робочі зустрічі",
+    "checks": [
+      "Індивідуальні зустрічі фактично відбуваються з погодженою регулярністю в різних командах і змінах.",
+      "Обговорення охоплює навантаження, пріоритети, труднощі, необхідну допомогу в роботі та двосторонній зворотний зв’язок.",
+      "За погодженими робочими діями є подальша перевірка виконання; приватний зміст розмов не збирають для звітності."
+    ],
+    "gaps": [
+      "Чи не скасовуються зустрічі систематично і чи завершуються вони виконуваними робочими домовленостями."
+    ],
+    "steps": [
+      "Виділіть керівникам і працівникам час на індивідуальні зустрічі та погодьте їхню регулярність і робочі теми.",
+      "Фіксуйте лише потрібні робочі домовленості й повертайтеся до їх виконання на наступній зустрічі."
+    ],
+    "results": [
+      "Зустрічі відбуваються в погоджені строки, а вибірка робочих домовленостей має виконання або пояснений перегляд."
+    ],
+    "sources": [
+      "Зведені дані про регулярність зустрічей без приватного змісту.",
+      "Добровільний зворотний зв’язок учасників і приклади робочих домовленостей."
+    ]
+  },
+  "P12": {
+    "title": "Перевірка застосування управлінських підходів",
+    "checks": [
+      "Перевірка охоплює допомогу у роботі, зворотний зв’язок, навантаження, складні ситуації та неприйнятну поведінку.",
+      "Висновки спираються на приклади дій і конфіденційний зворотний зв’язок, а не лише самооцінку керівника.",
+      "Для системних прогалин визначено зміну управлінської практики та повторно перевірено її застосування."
+    ],
+    "gaps": [
+      "Чи охоплює перевірка всі суттєві управлінські дії та чи виконується реагування на повторювані прогалини."
+    ],
+    "steps": [
+      "Визначте спосіб регулярної перевірки управлінських дій із захищеним зворотним зв’язком працівників.",
+      "За підтвердженими прогалинами погодьте зміну дій, потрібні ресурси й дату повторної перевірки."
+    ],
+    "results": [
+      "У тих самих робочих ситуаціях повторна перевірка підтверджує застосування погодженого управлінського підходу."
+    ],
+    "sources": [
+      "Порядок оцінювання управлінських дій та зведений зворотний зв’язок.",
+      "Приклади виконаних заходів і повторної перевірки."
+    ]
+  },
+  "P13": {
+    "title": "Правила поважної взаємодії та захист від помсти",
+    "checks": [
+      "Правила містять зрозумілі ознаки дискримінації, мобінгу, домагань і заборону негативних наслідків за добросовісне повідомлення.",
+      "Працівники різних категорій знають ці правила, а відповідальні особи на сценарії пояснюють захисні дії.",
+      "Після звернення перевіряють можливу помсту; відсутність скарг сама по собі не використовується як доказ безпечної взаємодії."
+    ],
+    "gaps": [
+      "Чи прямо заборонено помсту та чи є практичні дії для перевірки негативних наслідків після звернення."
+    ],
+    "steps": [
+      "Опишіть неприпустиму поведінку на зрозумілих прикладах і прямо встановіть захист добросовісного повідомлення.",
+      "Поясніть правила всім відповідним групам і визначте, хто перевіряє захист від помсти після звернення."
+    ],
+    "results": [
+      "На сценарній перевірці люди розпізнають порушення і знають спосіб звернення, а відповідальні можуть застосувати захист."
+    ],
+    "sources": [
+      "Правила взаємодії та матеріали їх пояснення.",
+      "Сценарні вправи, знеособлені результати перевірки захисту заявників."
+    ]
+  },
+  "P14": {
+    "title": "Конструктивне обговорення запитань, помилок і ризиків",
+    "checks": [
+      "Регулярні командні формати дають час на запитання, помилки, ризики та пропозиції, зокрема від працівників різних змін.",
+      "У розглянутих обговореннях на незгоду й повідомлення про проблему реагували без звинувачення або приниження.",
+      "Після піднятого питання є відповідь або наступний крок; добровільний зворотний зв’язок підтверджує можливість висловитися."
+    ],
+    "gaps": [
+      "Чи можуть говорити менш активні учасники і чи повертається команда до незручних або невирішених питань."
+    ],
+    "steps": [
+      "У регулярних робочих обговореннях виділіть час на ризики, помилки й пропозиції та погодьте правила поважної реакції.",
+      "Визначайте наступний крок за порушеним питанням і повідомляйте команді результат його розгляду."
+    ],
+    "results": [
+      "У перевірених обговореннях є конструктивна реакція на складне питання та простежується подальша відповідь."
+    ],
+    "sources": [
+      "Порядок командних обговорень і приклади рішень без ідентифікації авторів.",
+      "Спостереження за зустрічами та конфіденційний добровільний зворотний зв’язок."
+    ]
+  },
+  "P15": {
+    "title": "Конфіденційний канал поза безпосереднім керівником",
+    "checks": [
+      "Працівник із будь-якої відповідної локації або зміни може знайти й використати канал без дозволу керівника.",
+      "Контрольне звернення без персональних подробиць доходить до уповноваженої особи; доступ до повідомлення обмежений.",
+      "Працівникам пояснено, хто бачить звернення, як захищається конфіденційність і як отримати відповідь; конфіденційність не прирівнюють до анонімності."
+    ],
+    "gaps": [
+      "Чи доступний канал без корпоративного комп’ютера та чи не потрапляє звернення особі, на яку скаржаться."
+    ],
+    "steps": [
+      "Надайте альтернативний керівнику спосіб звернення з визначеним одержувачем та обмеженням доступу.",
+      "Поясніть порядок звернення і межі конфіденційності та проведіть безпечну контрольну перевірку доставки."
+    ],
+    "results": [
+      "Тестове повідомлення надходить належному одержувачу, а працівники можуть знайти канал без звернення до керівника."
+    ],
+    "sources": [
+      "Опис каналу, права доступу та контакти уповноважених осіб.",
+      "Результат контрольного звернення, зведений відгук про доступність і довіру."
+    ]
+  },
+  "P16": {
+    "title": "Неупереджений розгляд звернень і допомога постраждалим",
+    "checks": [
+      "Процедура визначає незалежність розгляду, відвід через конфлікт інтересів, строки, інформування та допомогу постраждалій особі.",
+      "За знеособленим випадком або сценарієм простежується шлях від звернення до рішення, захисних дій та повідомлення заявнику.",
+      "Погоджені заходи виконано і перевірено; відсутність нових звернень не вважається достатнім доказом усунення проблеми."
+    ],
+    "gaps": [
+      "Чи передбачено розгляд скарги на керівника або уповноважену особу, інформування заявника й доступ до необхідної допомоги."
+    ],
+    "steps": [
+      "Визначте етапи неупередженого розгляду, усунення конфлікту інтересів, захист конфіденційності та строки повідомлень.",
+      "Погодьте необхідну допомогу постраждалим і перевірте весь порядок на знеособленому випадку або сценарії."
+    ],
+    "results": [
+      "Відповідальні можуть провести незалежний розгляд і повідомити належну інформацію; захисні заходи та допомога фактично доступні."
+    ],
+    "sources": [
+      "Процедура розгляду, правила відводу й перелік доступної допомоги.",
+      "Знеособлений журнал етапів справи або сценарна перевірка без матеріалів, що розкривають особу."
+    ]
+  },
+  "P17": {
+    "title": "Аналіз робочих і системних причин помилок та інцидентів",
+    "checks": [
+      "Розбори охоплюють організацію роботи, навантаження, ресурси й взаємодію поряд із діями учасників.",
+      "Від встановленої причини можна простежити конкретну зміну процесу з відповідальним і строком.",
+      "Після зміни повторно перевіряють ту саму робочу ситуацію та повторюваність збою за порівнюваних умов."
+    ],
+    "gaps": [
+      "Чи не зводиться розбір до пошуку винного або повторного інструктажу без перевірки робочих причин."
+    ],
+    "steps": [
+      "Запровадьте розбір значущих помилок із перевіркою умов роботи й системних причин.",
+      "Для підтвердженої причини визначте зміну процесу та повторну перевірку відповідної ситуації."
+    ],
+    "results": [
+      "У вибірці розборів кожна суттєва організаційна причина пов’язана з виконаною зміною та перевіркою її результату."
+    ],
+    "sources": [
+      "Знеособлені матеріали розборів помилок, збоїв та інцидентів.",
+      "Плани змін процесів і результати повторної перевірки."
+    ]
+  },
+  "P18": {
+    "title": "Зведений аналіз звернень і контроль реагування",
+    "checks": [
+      "Звернення та повторювані проблеми регулярно узагальнюють, не розкриваючи особу через малі групи або подробиці випадку.",
+      "У повторюваних темах визначено організаційні причини, погоджені дії, відповідальних і строки.",
+      "Контроль перевіряє фактичне виконання дій та подальший стан проблеми; зменшення кількості скарг оцінюють разом із доступністю каналу."
+    ],
+    "gaps": [
+      "Чи захищені малі групи у звітності та чи перевіряється виконання заходів за повторюваними темами."
+    ],
+    "steps": [
+      "Організуйте регулярний зведений аналіз звернень із правилами захисту від ідентифікації.",
+      "Для повторюваних проблем погодьте організаційні зміни і відстежуйте фактичне виконання та результат."
+    ],
+    "results": [
+      "Зведений звіт не розкриває заявників, а за пріоритетними темами простежується виконана дія і повторна оцінка."
+    ],
+    "sources": [
+      "Знеособлена зведена звітність і правила обмеження малих груп.",
+      "Реєстр погоджених заходів та результати їх перевірки."
+    ]
+  },
+  "P19": {
+    "title": "Зрозумілі критерії оцінювання, оплати і заохочень",
+    "checks": [
+      "Чинні критерії охоплюють оцінювання роботи, оплату, премії та інші заохочення і пояснені відповідним працівникам.",
+      "На прикладі рішення працівник може знайти правило, а уповноважена особа пояснює його застосування.",
+      "У порівнюваних випадках однакові правила застосовано послідовно; винятки мають обґрунтування."
+    ],
+    "gaps": [
+      "Чи пояснено критерії до оцінювання та чи не суперечать фактичні рішення оголошеним правилам."
+    ],
+    "steps": [
+      "Визначте й поясніть критерії оцінювання, оплати, преміювання та інших заохочень для відповідних ролей.",
+      "Звірте вибірку рішень із цими правилами та усуньте непояснені відхилення."
+    ],
+    "results": [
+      "Рішення у вибірці пояснюються відомими критеріями, а порівнювані випадки не мають необґрунтованих відмінностей у застосуванні правил."
+    ],
+    "sources": [
+      "Положення про оцінювання та винагороду, матеріали пояснення.",
+      "Знеособлені приклади рішень для порівнюваних ролей."
+    ]
+  },
+  "P20": {
+    "title": "Пояснення і незалежний перегляд важливих рішень",
+    "checks": [
+      "Працівникам доступний спосіб отримати причину рішення і звернутися до іншої уповноваженої особи або на вищий рівень.",
+      "Перевірений запит на перегляд надходить особі, яка має повноваження перевірити підстави рішення.",
+      "Заявнику надано мотивовану відповідь, а за потреби переглянуте рішення виконано в погоджений строк."
+    ],
+    "gaps": [
+      "Чи є реальна можливість перегляду поза особою, яка ухвалила рішення, та чи повідомляють результат."
+    ],
+    "steps": [
+      "Поясніть порядок отримання причин важливого рішення і звернення по його перегляд.",
+      "Визначте іншу уповноважену особу, строк відповіді та перевірте проходження запиту до мотивованого рішення."
+    ],
+    "results": [
+      "На знеособленому випадку або сценарії працівник отримує пояснення й доступ до перегляду належною особою."
+    ],
+    "sources": [
+      "Порядок пояснення і перегляду рішень, повноваження відповідальних.",
+      "Знеособлені запити та відповіді або навчальна перевірка звернення."
+    ]
+  },
+  "P21": {
+    "title": "Конфіденційна адаптація роботи до індивідуальних потреб",
+    "checks": [
+      "Запит на адаптацію графіка, місця, завдань або взаємодії приймають конфіденційно та збирають лише необхідну для рішення інформацію.",
+      "У знеособленому випадку з працівником обговорено варіанти, пояснено рішення і розглянуто альтернативи за неможливості початкового варіанта.",
+      "Погоджена адаптація фактично застосовується та переглядається разом із працівником; доступ до приватних даних обмежено."
+    ],
+    "gaps": [
+      "Чи охоплено різні види адаптації, альтернативні варіанти та перевірку виконання домовленості."
+    ],
+    "steps": [
+      "Визначте конфіденційний спосіб подання запиту і межі необхідної інформації.",
+      "Разом із працівником погоджуйте доступні варіанти, пояснюйте рішення та перевіряйте виконання адаптації."
+    ],
+    "results": [
+      "У прикладі або сценарії запит проходить до поясненого рішення, а погоджена адаптація доступна без зайвого розкриття приватних даних."
+    ],
+    "sources": [
+      "Порядок адаптації, правила доступу до інформації.",
+      "Знеособлені домовленості та добровільний відгук про їх виконання."
+    ]
+  },
+  "P22": {
+    "title": "Доступна інформація про вакансії, навчання і розвиток",
+    "checks": [
+      "Відповідні працівники всіх локацій і змін можуть знайти актуальні вакансії, навчання та порядок подання заявки.",
+      "Строки й спосіб інформування дають реальну можливість подати заявку, включно з роботою без корпоративної пошти.",
+      "Під час контрольної перевірки працівник знаходить відповідну можливість і правильно пояснює наступний крок подання."
+    ],
+    "gaps": [
+      "Чи не обмежено доступ офісною поштою або інформацією лише від безпосереднього керівника."
+    ],
+    "steps": [
+      "Забезпечте актуальне джерело вакансій і навчальних можливостей із критеріями, строками та способом подання.",
+      "Додайте доступні канали для працівників без корпоративної пошти та перевірте пошук і подання заявки."
+    ],
+    "results": [
+      "Перевірка в різних форматах роботи підтверджує своєчасне отримання інформації та можливість подати заявку."
+    ],
+    "sources": [
+      "Оголошення, строки публікації, канали інформування.",
+      "Контрольний пошук можливості й зворотний зв’язок різних груп працівників."
+    ]
+  },
+  "P23": {
+    "title": "Заздалегідь визначені критерії найму, навчання і просування",
+    "checks": [
+      "Критерії та етапи визначені до відбору і стосуються вимог роботи для найму, навчання та кар’єрного просування.",
+      "У вибірці рішень є зіставлення кандидатів із критеріями, перевірка конфлікту інтересів і пояснення винятків.",
+      "Перевірка порівнюваних рішень виявляє й усуває невиправданий вплив суб’єктивних суджень; окрема відмінність сама по собі не доводить дискримінацію."
+    ],
+    "gaps": [
+      "Чи критерії не змінюють після появи кандидатів і чи однаково застосовують у всіх трьох видах відбору."
+    ],
+    "steps": [
+      "До початку відбору визначайте пов’язані з роботою критерії та етапи для найму, навчання і просування.",
+      "Документуйте підстави рішень та перевіряйте порівнювані випадки й конфлікти інтересів."
+    ],
+    "results": [
+      "У повторній вибірці рішення спираються на наперед визначені критерії, а необґрунтовані відхилення опрацьовано."
+    ],
+    "sources": [
+      "Оголошені критерії й матеріали відбору.",
+      "Знеособлені оцінки кандидатів і результати перегляду рішень."
+    ]
+  },
+  "P24": {
+    "title": "Аналіз необґрунтованих відмінностей між групами",
+    "checks": [
+      "Зведений аналіз охоплює оплату, премії, навчання, розвиток і просування та захищає дані малих груп.",
+      "Порівнюють зіставні ролі й умови, перевіряють обґрунтовані пояснення відмінностей, не ототожнюючи різницю з дискримінацією.",
+      "За необґрунтованими відмінностями визначено дії, а повторне порівняння показує їх виконання та зміну відповідного розриву."
+    ],
+    "gaps": [
+      "Які напрями не аналізують та чи відокремлюють вплив ролі, стажу й умов від непояснених відмінностей."
+    ],
+    "steps": [
+      "Налаштуйте конфіденційний зведений аналіз порівнюваних груп за винагородою, навчанням і просуванням.",
+      "Перевірте причини суттєвих відмінностей, усуньте необґрунтовані та повторіть зіставлення."
+    ],
+    "results": [
+      "Для пріоритетної необґрунтованої відмінності є виконана дія та повторне порівняння за тими самими правилами."
+    ],
+    "sources": [
+      "Зведені дані HR про винагороду, навчання й просування з обмеженням малих груп.",
+      "Методика порівняння, перевірка причин і результати коригування."
+    ]
+  },
+  "P25": {
+    "title": "Усунення зайвих погоджень, затримок і надмірного контролю",
+    "checks": [
+      "На прикладах типових рішень вимірюють фактичні етапи погодження, строки й повторне введення однакової інформації.",
+      "До аналізу залучають виконавців; вимоги безпеки та якості відокремлено від необґрунтованих обмежень.",
+      "Після зміни скорочуються зайві етапи або затримки без погіршення безпеки та якості за доступними даними."
+    ],
+    "gaps": [
+      "Які погодження дублюються або не мають зрозумілого призначення та чи затримуються рішення на конкретному етапі."
+    ],
+    "steps": [
+      "Разом із виконавцями простежте типове рішення від запиту до погодження та визначте зайві кроки.",
+      "Приберіть необґрунтовані погодження й перевірте строк рішення разом із збереженням вимог безпеки та якості."
+    ],
+    "results": [
+      "Те саме типове рішення проходить із меншою кількістю зайвих кроків або затримок без втрати потрібного контролю."
+    ],
+    "sources": [
+      "Схеми погодження, фактичні строки виконання запитів.",
+      "Зворотний зв’язок виконавців і порівняння процесу до та після зміни."
+    ]
+  },
+  "P26": {
+    "title": "Обґрунтованість контролю та цифрового моніторингу",
+    "checks": [
+      "Для застосованого або запланованого контролю визначено мету, необхідність і менш обмежувальні альтернативи.",
+      "Перед упровадженням або переглядом оцінюють вплив на самостійність і психологічний тиск за участю відповідних працівників.",
+      "За виявленим надмірним контролем змінено обсяг чи порядок моніторингу і повторно перевірено вплив на виконання роботи."
+    ],
+    "gaps": [
+      "Чи оцінено автоматизовані оцінки, частоту спостереження та обмеження самостійності, а не лише технічну справність системи."
+    ],
+    "steps": [
+      "Перелічіть способи контролю та перевірте їхню необхідність і вплив на самостійність працівників.",
+      "Змініть надмірний порядок моніторингу, поясніть правила та повторно зберіть зворотний зв’язок про його вплив."
+    ],
+    "results": [
+      "Для зміненого способу контролю підтверджено потрібну мету, а зайві обмеження або тиск зменшилися за повторним відгуком."
+    ],
+    "sources": [
+      "Перелік і налаштування контролю, оцінка доцільності й альтернатив.",
+      "Консультації з працівниками та повторна оцінка після зміни."
+    ]
+  },
+  "P27": {
+    "title": "Участь працівників у плануванні та вдосконаленні роботи",
+    "checks": [
+      "Працівники мають конкретні питання планування й процесів, на які їхня пропозиція може вплинути.",
+      "Формат участі доступний і тим, чия самостійність обмежена технологією, графіком або правилами безпеки.",
+      "На прикладах видно, що пропозицію розглянуто та враховано, адаптовано або обґрунтовано відхилено."
+    ],
+    "gaps": [
+      "Чи залучення відбувається до рішення і чи охоплює працівників із найменшою самостійністю."
+    ],
+    "steps": [
+      "Визначте питання планування й процесів, щодо яких працівники можуть впливати на рішення.",
+      "Залучіть відповідні зміни й ролі та поясніть, як пропозиції вплинули на обраний спосіб роботи."
+    ],
+    "results": [
+      "У перевіреному процесі є простежувана пропозиція виконавців та пояснений результат її розгляду."
+    ],
+    "sources": [
+      "Матеріали робочих обговорень і пропозиції щодо процесів.",
+      "Приклади змін планування й добровільний відгук залучених працівників."
+    ]
+  },
+  "P28": {
+    "title": "Участь працівників у виявленні психосоціальних ризиків",
+    "checks": [
+      "Працівників або їхніх представників залучено і до виявлення небезпек, і до вибору заходів.",
+      "Залучення охоплює різні робочі середовища та дозволяє говорити про ризики без ідентифікації автора в загальній звітності.",
+      "В обраному заході простежується внесок працівників, а практичність рішення перевірено з тими, кого воно стосується."
+    ],
+    "gaps": [
+      "Чи не обмежується участь заповненням анкети без обговорення можливих організаційних заходів."
+    ],
+    "steps": [
+      "Залучіть працівників або представників різних середовищ до обговорення робочих небезпек.",
+      "Разом оберіть організаційні заходи, поясніть врахування пропозицій та перевірте практичність рішення."
+    ],
+    "results": [
+      "Є підтверджений внесок відповідних працівників у визначення ризику й заходу та перевірку його застосовності."
+    ],
+    "sources": [
+      "Матеріали консультацій і оцінювання ризиків у зведеному вигляді.",
+      "План заходів та відгук представників відповідних середовищ."
+    ]
+  },
+  "P29": {
+    "title": "Консультації щодо суттєвих змін і невідкладних рішень",
+    "checks": [
+      "За плановою зміною консультація відбулася до остаточного рішення, коли пропозиції ще могли його змінити.",
+      "Для невідкладної зміни є пояснена причина терміновості та подальше спільне оцінювання наслідків.",
+      "За виявленими наслідками змінено рішення або спосіб упровадження і перевірено результат із відповідними працівниками."
+    ],
+    "gaps": [
+      "Чи не підміняє інформування після рішення консультацію та чи аналізують наслідки невідкладних змін."
+    ],
+    "steps": [
+      "Визначте етап консультації до затвердження планової зміни та питання, на які працівники можуть вплинути.",
+      "Для невідкладних рішень передбачте спільний перегляд наслідків після впровадження й коригування за потреби."
+    ],
+    "results": [
+      "У перевіреній зміні консультація впливає на рішення або після невідкладного впровадження виконано погоджене коригування."
+    ],
+    "sources": [
+      "Дати консультацій, затвердження та впровадження змін.",
+      "Обґрунтування невідкладності й результати спільного перегляду наслідків."
+    ]
+  },
+  "P30": {
+    "title": "Відповідь працівникам після консультацій",
+    "checks": [
+      "Після консультації щодо ризиків або зміни є повідомлення з остаточним рішенням.",
+      "Для суттєвих пропозицій пояснено, які враховано, які ні та чому, без розкриття конфіденційних авторів.",
+      "Учасники різних змін можуть знайти відповідь і зрозуміти долю своїх пропозицій."
+    ],
+    "gaps": [
+      "Чи є обґрунтована відповідь на відхилені пропозиції та чи доходить вона до всіх учасників консультації."
+    ],
+    "steps": [
+      "Після консультації зіставляйте суттєві пропозиції з остаточним рішенням і коротким обґрунтуванням.",
+      "Повідомляйте результат доступним для всіх учасників способом і перевіряйте зрозумілість відповіді."
+    ],
+    "results": [
+      "Для перевіреної консультації учасники можуть знайти рішення і пояснити, як враховано суттєві пропозиції."
+    ],
+    "sources": [
+      "Зведений перелік пропозицій і повідомлення про рішення.",
+      "Добровільний відгук учасників консультацій різних змін і локацій."
+    ]
+  },
+  "P31": {
+    "title": "Відстеження та коригування надмірного навантаження",
+    "checks": [
+      "За доступними даними про обсяг завдань, робочий час і ресурси регулярно визначають повторювані ознаки надмірного навантаження.",
+      "Керівники мають повноваження переглянути обсяг, строки чи ресурси або швидко отримати відповідне рішення; є приклади фактичного коригування.",
+      "Після коригування порівнюють ті самі періоди або види робіт: наприклад, чи зменшилися понаднормові години без перенесення роботи на іншу групу."
+    ],
+    "gaps": [
+      "Чи приводить виявлення перевантаження до зміни роботи та чи перевіряється результат без перекладання навантаження на колег."
+    ],
+    "steps": [
+      "Погодьте ознаки повторюваного перевантаження та регулярно зіставляйте завдання з часом і наявними ресурсами.",
+      "Надайте повноваження коригувати пріоритети, строки, обсяг або ресурси та перевіряйте зміни навантаження після рішення."
+    ],
+    "results": [
+      "У повторно перевірених видах робіт зменшилося надмірне навантаження за доступними даними без перенесення його на інші групи."
+    ],
+    "sources": [
+      "Зведені дані про завдання, робочий час, понаднормову роботу та ресурси.",
+      "Рішення про перерозподіл або зміну строків і повторний відгук виконавців."
+    ]
+  },
+  "P32": {
+    "title": "Робочий час, перерви та можливість відновлення",
+    "checks": [
+      "Перевірка фактичних графіків охоплює перерви, міжзмінний відпочинок, регулярні понаднормові години й позаробочі контакти.",
+      "Виявлені перешкоди пов’язані з конкретними робочими причинами, наприклад відсутністю заміни або нереалістичним планом.",
+      "Після зміни графіка, підміни чи правил контактів у тих самих групах рідше пропускають перерви або працюють у час відпочинку."
+    ],
+    "gaps": [
+      "Чи можна фактично скористатися передбаченою перервою і чи відокремлені чергування та екстрені випадки від звичайної постійної доступності."
+    ],
+    "steps": [
+      "Зіставте фактичний час роботи й відпочинку з графіками та з’ясуйте причини пропущених перерв і регулярних позаробочих контактів.",
+      "Забезпечте заміну, перегляд планів або правила контактів, потрібні для усунення виявленої перешкоди."
+    ],
+    "results": [
+      "Повторна перевірка тієї самої групи підтверджує можливість перерв і відпочинку без прихованого перенесення роботи за межі графіка."
+    ],
+    "sources": [
+      "Фактичні графіки, зведений облік робочого часу й правила чергувань.",
+      "Конфіденційний відгук про пропущені перерви та позаробочі контакти."
+    ]
+  },
+  "P33": {
+    "title": "Доступ до медичної, психологічної та кризової допомоги",
+    "checks": [
+      "Працівникам доступна актуальна інформація про відповідні сервіси, умови отримання допомоги та спосіб запису.",
+      "Контрольний маршрут дозволяє звернутися без зайвого розкриття приватної проблеми; пояснено, хто бачить факт звернення та зміст консультації.",
+      "Перевірено фактичну доступність допомоги, зокрема строки запису, вартість для працівника, формат і можливості різних локацій."
+    ],
+    "gaps": [
+      "Чи не вимагає запис дозволу керівника або опису проблеми HR та чи доступний сервіс працівникам усіх відповідних змін."
+    ],
+    "steps": [
+      "Узгодьте з провайдерами доступні послуги, спосіб прямого запису та правила розкриття даних.",
+      "Поясніть працівникам можливості й конфіденційність та перевірте фактичний маршрут запису без реальних персональних даних."
+    ],
+    "results": [
+      "Перевірка маршруту підтверджує доступний запис і виконання заявлених правил конфіденційності."
+    ],
+    "sources": [
+      "Умови сервісів, матеріали інформування, правила обміну даними з провайдером.",
+      "Контрольна перевірка запису та зведені дані про доступність без змісту консультацій."
+    ]
+  },
+  "P34": {
+    "title": "Оцінювання обізнаності, бар’єрів і відповідності допомоги потребам",
+    "checks": [
+      "Періодична перевірка охоплює знання сервісів, фактичну можливість звернення, бар’єри та відповідність допомоги потребам.",
+      "Зворотний зв’язок можна надати конфіденційно; дані не дозволяють встановити, хто отримував допомогу.",
+      "За виявленим бар’єром змінено доступ або послугу, а повторна оцінка перевіряє той самий бар’єр; кількість звернень сама по собі не є показником успіху."
+    ],
+    "gaps": [
+      "Чи запитують про причини невикористання сервісу та потреби, які чинні послуги не охоплюють."
+    ],
+    "steps": [
+      "Конфіденційно перевірте обізнаність, доступність, бар’єри та відповідність сервісів потребам різних груп.",
+      "Усуньте пріоритетний бар’єр разом із провайдером і повторно перевірте його без ідентифікації користувачів допомоги."
+    ],
+    "results": [
+      "Повторна конфіденційна оцінка підтверджує зменшення обраного бар’єра або кращу відповідність послуги потребі."
+    ],
+    "sources": [
+      "Анонімний зворотний зв’язок і зведені дані про доступність.",
+      "Погоджені зміни сервісу та результати повторної перевірки бар’єра."
+    ]
+  },
+  "P35": {
+    "title": "Повернення та реінтеграція після тривалої відсутності",
+    "checks": [
+      "Процес передбачає конфіденційне обговорення робочих потреб без вимоги зайвих медичних подробиць.",
+      "За потреби погоджують зміни навантаження, графіка, завдань або умов із відповідальним і датою перегляду.",
+      "У знеособленому випадку домовленості виконано й переглянуто з працівником; за відсутності випадків перевірено готовність на сценарії."
+    ],
+    "gaps": [
+      "Чи починається повернення з узгодження потреб і чи перевіряють тимчасові зміни після виходу на роботу."
+    ],
+    "steps": [
+      "Визначте відповідальну особу та конфіденційний порядок узгодження робочих потреб перед поверненням.",
+      "Погоджуйте необхідні зміни й дату перегляду та перевіряйте їх фактичне виконання разом із працівником."
+    ],
+    "results": [
+      "На випадку або сценарії простежується шлях від обговорення потреб до виконаної адаптації й погодженого перегляду."
+    ],
+    "sources": [
+      "Порядок повернення та знеособлені робочі домовленості.",
+      "Добровільний відгук працівника або сценарна перевірка за відсутності випадків."
+    ]
+  },
+  "P36": {
+    "title": "Реагування після потенційно травматичної події",
+    "checks": [
+      "Визначено відповідальних і перші дії: фізична безпека, практична допомога, відпочинок та доступ до фахівця за потреби.",
+      "Психологічну допомогу пропонують добровільно й конфіденційно, без обов’язкового детального переказу події або групового дебрифінгу.",
+      "За випадком або сценарієм допомогу можна отримати своєчасно, а подальші потреби й необхідні зміни роботи переглядають."
+    ],
+    "gaps": [
+      "Чи забезпечено практичну допомогу й відпочинок поряд із пропозицією психолога та чи збережено добровільність звернення."
+    ],
+    "steps": [
+      "Погодьте порядок забезпечення безпеки, практичної допомоги, відпочинку й доступу до спеціалізованої допомоги після події.",
+      "Визначте подальший контакт для перевірки потреб і відпрацюйте порядок без примусу до обговорення пережитого."
+    ],
+    "results": [
+      "У сценарії відповідальні правильно виконують перші дії, а добровільний доступ до фахівця та подальший перегляд потреб забезпечено."
+    ],
+    "sources": [
+      "Порядок реагування, контакти допомоги та розподіл відповідальності.",
+      "Знеособлений огляд дій після події або результати навчального сценарію."
+    ]
+  },
+  "P37": {
+    "title": "Інтеграція психосоціальних ризиків у систему БЗР",
+    "checks": [
+      "У системі БЗР закріплено відповідальних за психосоціальні ризики, потрібні повноваження та ресурси.",
+      "Питання ризиків і виконання організаційних заходів фактично розглядають у регулярному управлінському циклі.",
+      "За результатом контролю ухвалено й виконано рішення про ресурс, зміну заходу або організації роботи."
+    ],
+    "gaps": [
+      "Чи має відповідальний повноваження й ресурси та чи потрапляють невирішені ризики до осіб, які ухвалюють рішення."
+    ],
+    "steps": [
+      "Включіть психосоціальні ризики до чинного управління БЗР із відповідальними, повноваженнями та ресурсами.",
+      "Погодьте регулярний розгляд ризиків, контроль заходів і порядок прийняття рішень за невирішеними питаннями."
+    ],
+    "results": [
+      "За пріоритетним ризиком простежується управлінське рішення, забезпечений ресурс і перевірка виконаної зміни."
+    ],
+    "sources": [
+      "Розподіл обов’язків у БЗР, ресурси й порядок управлінського перегляду.",
+      "Протоколи рішень та фактичне виконання заходів щодо психосоціальних ризиків."
+    ]
+  },
+  "P38": {
+    "title": "Повний цикл оцінювання і зменшення психосоціальних ризиків",
+    "checks": [
+      "Оцінювання проводять періодично, до суттєвих змін і після значущих інцидентів із визначенням робочих небезпек.",
+      "Для пріоритетних ризиків є конкретні заходи, відповідальні, строки та ресурси, а не лише звіт опитування.",
+      "Після заходу повторно оцінюють відповідний ризик за порівнюваними даними та коригують рішення, якщо очікуваного результату немає."
+    ],
+    "gaps": [
+      "Який етап відсутній: виявлення небезпеки, рішення про захід, ресурси, виконання чи перевірка результативності."
+    ],
+    "steps": [
+      "Визначте регулярність і події для повторного оцінювання психосоціальних ризиків.",
+      "Для пріоритетного ризику погодьте організаційний захід із ресурсом і строком та перевірте зміну саме цього ризику після впровадження."
+    ],
+    "results": [
+      "Для обраного ризику можна простежити весь цикл від робочої причини до виконаного заходу та повторного оцінювання."
+    ],
+    "sources": [
+      "Оцінки ризиків, матеріали перегляду змін та значущих інцидентів.",
+      "План заходів, дані про виконання й повторне оцінювання того самого ризику."
+    ]
+  },
+  "P39": {
+    "title": "Пріоритет організаційних заходів над індивідуальними",
+    "checks": [
+      "Для пріоритетного ризику визначено причину в умовах або організації роботи та спосіб її усунення чи зменшення.",
+      "У плані є фактичні зміни роботи; навчання, стресостійкість або психологічна допомога не підміняють усунення джерела ризику.",
+      "Після зміни перевіряють вплив на відповідну робочу небезпеку, а не лише кількість учасників навчання чи консультацій."
+    ],
+    "gaps": [
+      "Чи не складається відповідь на організаційний ризик лише з навчання працівників або направлення до психолога."
+    ],
+    "steps": [
+      "Перегляньте заходи для пріоритетного ризику та визначте зміну навантаження, процесу, графіка, ролей або іншої робочої причини.",
+      "Забезпечте виконання організаційної зміни, залишивши навчання і спеціалізовану допомогу доречними додатковими заходами."
+    ],
+    "results": [
+      "У виконаному плані є зміна джерела ризику та перевірка відповідної умови роботи після впровадження."
+    ],
+    "sources": [
+      "Опис робочих причин ризику і план організаційних заходів.",
+      "Факти зміни процесу або умов роботи та дані повторної перевірки."
+    ]
+  },
+  "P40": {
+    "title": "Оцінювання ризику та захист від насильства з боку третіх осіб",
+    "checks": [
+      "Оцінка визначає, у яких робочих ситуаціях і середовищах можливий ризик із боку третіх осіб; відсутність інцидентів не замінює оцінювання.",
+      "За виявленого ризику доступні запобіжні заходи, виклик допомоги, припинення небезпечної взаємодії та повідомлення про подію.",
+      "У відповідному середовищі сценарна перевірка підтверджує доступність допомоги; за інцидентами переглядають організацію роботи й перевіряють виконання змін."
+    ],
+    "gaps": [
+      "Чи проведено оцінювання ризику; де його актуальність підтверджена і які саме захисні дії доступні там."
+    ],
+    "steps": [
+      "Перевірте актуальність ризику від третіх осіб для відповідних робочих ситуацій і середовищ.",
+      "Лише за підтвердженого ризику погодьте запобігання, виклик допомоги, повідомлення та реагування і перевірте їх у відповідному середовищі."
+    ],
+    "results": [
+      "Оцінювання завершено; там, де ризик підтверджений, сценарій показує можливість припинити небезпечний контакт і своєчасно отримати допомогу."
+    ],
+    "sources": [
+      "Оцінки ризику взаємодії з третіми особами за середовищами.",
+      "Порядок реагування, сценарні перевірки, знеособлені дані про інциденти й зміни після них."
+    ]
+  },
+  "P41": {
+    "title": "Безпечність і доступність фізичних умов роботи",
+    "checks": [
+      "Огляди охоплюють робочі місця, обладнання, інструменти, маршрути, ергономіку та доступність у відповідних локаціях.",
+      "Для суттєвого недоліку визначено відповідального, строк і тимчасовий безпечний спосіб роботи за потреби.",
+      "Закритий недолік повторно перевірено на тому самому місці за участю виконавця: перешкоду або небезпечну умову фактично усунено."
+    ],
+    "gaps": [
+      "Чи охоплено всі потрібні локації та чи відрізняється документальне закриття недоліку від реального усунення."
+    ],
+    "steps": [
+      "Огляньте фактичні робочі місця й маршрути з урахуванням ергономіки та різних потреб у доступності.",
+      "Призначте відповідальних за суттєві недоліки, забезпечте тимчасовий захист і повторно перевірте усунення на місці."
+    ],
+    "results": [
+      "Повторний огляд того самого місця підтверджує усунення небезпечної умови або перешкоди для відповідного працівника."
+    ],
+    "sources": [
+      "Результати оглядів, заявки на усунення недоліків.",
+      "Повторна перевірка на робочому місці й відгук виконавців без медичних подробиць."
+    ]
+  },
+  "P42": {
+    "title": "Практична готовність до надзвичайних ситуацій",
+    "checks": [
+      "Актуальний порядок охоплює оповіщення, укриття чи евакуацію, допомогу й рішення про безпечне відновлення роботи.",
+      "Під час тренування в різних змінах перевіряють реальні маршрути, резервний зв’язок і допомогу людям, яким вона потрібна.",
+      "Недоліки тренування усунено з відповідальними й строками; повторний сценарій підтверджує правильні дії та доступність безпечного маршруту."
+    ],
+    "gaps": [
+      "Чи перевірено порядок на практиці в різних змінах і чи усунено проблеми зв’язку, маршруту та допомоги під час евакуації."
+    ],
+    "steps": [
+      "Оновіть порядок оповіщення, укриття або евакуації, надання допомоги й безпечного відновлення роботи.",
+      "Проведіть сценарну перевірку відповідних змін, усуньте недоліки та повторно перевірте проблемний етап."
+    ],
+    "results": [
+      "Повторне тренування підтверджує, що люди знають свої дії, можуть дістатися безпечного місця й отримати передбачену допомогу."
+    ],
+    "sources": [
+      "Порядок дій, схеми маршрутів, контакти та розподіл відповідальності.",
+      "Результати тренувань різних змін і підтвердження повторної перевірки недоліків."
+    ]
+  }
+};
+const BAROMETER_P_ANSWER_LABELS={full:'Реалізовано повністю',partial:'Реалізовано частково або нерівномірно',no:'Не реалізовано або не працює',insufficient:'Недостатньо підтверджених даних для оцінювання'};
+function barometerCompanyContext(){return period()?.checkup?.done?{id:null,name:'Організаційний чекап компанії'}:null}
+function barometerActionScope(action){
+  // Third-party protection remains tied to confirmed environment applicability.
+  if((action.basis_codes||[]).includes('P40'))return S.env||null;
+  return action.sources?.length&&action.sources.every(source=>source==='P')?null:S.env||null;
+}
+function barometerPracticeVerification(code,answer=period()?.checkup?.answers?.[code]){
+  const copy=BAROMETER_P_VERIFICATION[code];
+  if(!copy||!BAROMETER_P_ANSWER_LABELS[answer])return null;
+  const base={code,answer,label:BAROMETER_P_ANSWER_LABELS[answer],title:copy.title,sources:copy.sources};
+  if(answer==='full')return {...base,heading:'Як перевірити, що практика працює',conclusion:`За даними організаційного чекапу компанія оцінює практику «${copy.title}» як повністю реалізовану.`,checks:copy.checks,steps:['Якщо фактичне застосування та очікуваний результат підтверджені, збережіть практику. За потреби поширте підтверджений досвід на інші робочі середовища з урахуванням їхніх умов.'],results:copy.results};
+  if(answer==='partial')return {...base,heading:'Що перевірити та покращити',conclusion:`За даними організаційного чекапу практика «${copy.title}» реалізована частково або нерівномірно. Відповідь не визначає конкретне середовище чи причину прогалини.`,checks:copy.gaps,steps:copy.steps,results:copy.results};
+  if(answer==='no')return {...base,heading:'Що впровадити та як перевірити результат',conclusion:`За даними організаційного чекапу практика «${copy.title}» не реалізована або фактично не працює. Це оцінка організаційного механізму, а не підтвердження наслідків для працівників.`,checks:copy.checks,steps:copy.steps,results:copy.results};
+  return {...base,heading:'Яких підтверджень бракує',conclusion:`Стан практики «${copy.title}» не може бути достовірно підтверджений за даними організаційного чекапу. Брак підтверджень не означає відсутності практики.`,checks:copy.checks,steps:['Зберіть зазначені факти та приклади з доречних джерел. Лише після їх перевірки визначайте, чи потрібна організаційна зміна.'],results:[]};
+}
+function barometerPModuleLead(moduleId){
+  const answers=period()?.checkup?.answers||{},list=P[moduleId]||[],groups={full:[],partial:[],no:[],insufficient:[]};
+  list.forEach(item=>{if(groups[answers[item.code]])groups[answers[item.code]].push(BAROMETER_P_VERIFICATION[item.code].title.toLocaleLowerCase('uk-UA'))});
+  const parts=[];
+  if(groups.full.length)parts.push(`За організаційним чекапом компанії повністю реалізовано ${groups.full.length} із ${list.length} практик, зокрема ${groups.full.slice(0,2).join('; ')}.`);
+  else parts.push('За організаційним чекапом компанії повністю реалізованих практик у цьому модулі не зазначено.');
+  if(groups.partial.length||groups.no.length){const gaps=[];if(groups.partial.length)gaps.push('часткова або нерівномірна реалізація: '+groups.partial.join('; '));if(groups.no.length)gaps.push('не реалізовано або не працює: '+groups.no.join('; '));parts.push('Потребують уваги '+gaps.join('; ')+'.');}
+  if(groups.insufficient.length)parts.push(`Бракує підтверджень: ${groups.insufficient.join('; ')}; це не означає відсутності практики.`);
+  parts.push('Перевірте застосування та результат за критеріями нижче; підтверджені сильні практики зберігайте.');
+  return parts.join(' ');
+}
+function barometerPVerificationMarkup(moduleId){
+  if(!period()?.checkup?.done)return '';
+  const list=(title,items)=>items?.length?`<div class="semantic-aspect-section"><h5>${h(title)}</h5><ul>${items.map(item=>`<li>${h(item)}</li>`).join('')}</ul></div>`:'';
+  return `<section class="semantic-aspects"><h4 class="semantic-aspects-heading">Організаційні практики компанії: критерії перевірки</h4><p class="muted">Відповідь власника дослідження, фактичне застосування та результативність є різними рівнями підтвердження. Критерії не змінюють оцінок автоматично.</p><div class="semantic-aspects-list">${P[moduleId].map(item=>{
+    const view=barometerPracticeVerification(item.code);if(!view)return '';
+    const manual=view.answer==='full'||view.answer==='insufficient',target='VERIFY:'+item.code,existing=manual?planAction(target):null;
+    return `<details class="semantic-aspect-card" data-practice-code="${h(item.code)}" data-practice-answer="${view.answer}"><summary><span class="semantic-aspect-title">${item.code}. ${h(view.title)}<br><span class="muted">${h(view.label)}</span></span></summary><div class="semantic-aspect-body"><div class="semantic-aspect-section"><h5>Висновок</h5><p>${h(view.conclusion)}</p></div>${list(view.heading,view.checks)}${list(view.answer==='no'?'Що рекомендується впровадити':'Що рекомендується',view.steps)}${list(view.answer==='no'?'Як перевірити впровадження':'Як перевірити результат',view.results)}${view.answer==='insufficient'?list('Де отримати підтвердження',view.sources):''}${manual?`<div class="card-actions">${existing?'<span class="data-quality">Перевірку вже додано до Плану організаційних дій</span>':`<button class="btn ghost small" data-a="add-routed-action" data-m="${moduleId}" data-target="${target}">Додати перевірку практики до Плану</button>`}</div>`:''}</div></details>`;
+  }).join('')}</div></section>`;
+}
+function barometerPReportSummary(moduleId){
+  if(!period()?.checkup?.done)return '';
+  const full=P[moduleId].filter(item=>period().checkup.answers[item.code]==='full');
+  if(!full.length)return '';
+  const selected=full[0],copy=BAROMETER_P_VERIFICATION[selected.code];
+  return `<div class="compact-block"><h4>Сильні практики за відповідями компанії</h4><p>${full.map(item=>h(item.code+'. '+BAROMETER_P_VERIFICATION[item.code].title)).join('; ')}.</p><p><b>Підтвердження застосування:</b> ${h(selected.code)}: ${h(copy.checks[1])} ${h(copy.results[0])}</p><p class="small-note">Зберігайте підтверджені практики. Повні критерії для всіх відповідей наведено в додатку; відповідь «Реалізовано повністю» сама по собі не доводить результативності.</p></div>`;
+}
+function barometerPReportAppendix(){
+  if(!period()?.checkup?.done)return '';
+  return `<section class="module" id="checkup-verification-appendix"><h2>Додаток. Критерії перевірки організаційних практик компанії</h2><p class="small-note">Єдиний організаційний чекап компанії за поточний період. Критерії відповідають обраним відповідям і не змінюють оцінок чи погодних статусів. За відсутності реальних випадків перевірка сценарію підтверджує готовність, але не доводить результативності в реальній події.</p>${P_LIST.map(item=>{
+    const view=barometerPracticeVerification(item.code);if(!view)return '';
+    const list=(heading,items)=>items?.length?`<p><b>${h(heading)}</b></p><ul>${items.map(t=>`<li>${h(t)}</li>`).join('')}</ul>`:'';
+    return `<div class="compact-block" data-practice-code="${item.code}"><h4>${item.code}. ${h(view.title)}</h4><p><b>${h(view.label)}.</b> ${h(view.conclusion)}</p>${list(view.heading,view.checks)}${view.answer!=='full'?list(view.answer==='no'?'Що впровадити':'Що рекомендується',view.steps):'<p>Зберігайте практику за підтвердженого застосування та результату; за потреби поширюйте підтверджений досвід.</p>'}${view.answer==='partial'||view.answer==='no'?list('Як перевірити результат',view.results):''}${view.answer==='insufficient'?list('Де отримати підтвердження',view.sources):''}</div>`;
+  }).join('')}</section>`;
+}
+const barometerSemanticActionBeforeVerification=barometerSemanticAction;
+barometerSemanticAction=function(id,moduleId=null){
+  if(/^VERIFY:P\d{2}$/.test(id||'')){
+    const code=id.slice(7),practice=P_LIST.find(item=>item.code===code),view=barometerPracticeVerification(code);
+    if(!view||!['full','insufficient'].includes(view.answer)||(moduleId&&practice.module!==moduleId))return null;
+    const copy=BAROMETER_P_VERIFICATION[code],title=`Перевірити фактичне застосування: ${copy.title}`;
+    return {id,target:id,final_action_id:id,module:practice.module,title,action:[...view.checks,...(view.answer==='full'?view.steps:[])].join('\n'),check:view.answer==='full'?copy.results.join(' '):'Перевірено зазначені факти й визначено підтверджений стан практики.',issues:[{source:'Організаційний чекап',topic:copy.title}],sources:['P'],basis_codes:[],planEligible:true};
+  }
+  return barometerSemanticActionBeforeVerification(id,moduleId);
+};
+const barometerReportBeforeVerification=buildReportHtml;
+buildReportHtml=function(eobj){
+  const context=eobj||barometerCompanyContext();if(!context||!canDashboard(context))return '';
+  const html=barometerReportBeforeVerification(context);
+  const scope='<div class="legend">Організаційний чекап є єдиною оцінкою компанії за період. Його не слід трактувати як окрему оцінку кожного робочого середовища. Без достатніх E/L немає висновків про досвід працівників або можливості керівників.</div>';
+  return html.replace('<h2>Дані дослідження</h2>',scope+'<h2>Дані дослідження</h2>').replace('</div></body></html>',barometerPReportAppendix()+'</div></body></html>');
+};
+/* BAROMETER_CHECKUP_VERIFICATION_2026_10_20_END */
 
 render();
 </script>
