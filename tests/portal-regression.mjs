@@ -1600,3 +1600,21 @@ test('updated content notice covers an old practice record without rewriting man
  assert.equal(JSON.stringify(state.r.plan),before);
  state.r.plan=[];assert.doesNotMatch(portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]),/Цю дію додано раніше/);
 });
+
+test('cloudy P solely from one or two unknown practices has an evidence explanation',()=>{
+ for(const count of [1,2]){
+  const {environment}=checkupOnlyScenario({overrides:Object.fromEntries(['P01','P02'].slice(0,count).map(c=>[c,'insufficient']))});
+  const row=portal.api.actualResultModel()[0];assert.equal(row.p,'Хмарно');
+  const badge=portal.api.mapStatusBadge(row.p,'P',1,null);assert.match(badge,/Хмарно \(бракує підтверджень\)/);assert.doesNotMatch(badge,/є окремі прогалини/);
+  assert.match(portal.api.buildReportHtml(environment),/Хмарно \(бракує підтверджень\)/);
+ }
+ checkupOnlyScenario({overrides:{P01:'partial',P02:'insufficient'}});
+ assert.match(portal.api.mapStatusBadge('Хмарно','P',1,null),/є окремі прогалини/);
+});
+test('critical PDF summaries preserve protective intent and do not alter complete Plan steps',()=>{
+ checkupOnlyScenario({overrides:{P15:'no'}});
+ const a=portal.api.barometerPracticeAction('P15'),summary=portal.api.BAROMETER_P_ACTION_LIBRARY.P15.summary;
+ for(const term of [/поза безпосереднім керівником/,/уповноважених/,/обмежений доступ/,/строки/,/конфлікті інтересів/,/помсти/,/межі конфіденційності/,/контрольним зверненням/])assert.match(summary,term);
+ assert.ok(a.steps.some(x=>x.includes('переслідуванню')));assert.ok(a.steps.some(x=>x.includes('анонімності')));
+ assert.equal(portal.api.BAROMETER_P_ACTION_LIBRARY.P40.steps.length,4);
+});
