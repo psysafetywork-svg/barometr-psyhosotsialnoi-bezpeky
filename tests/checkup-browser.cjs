@@ -5,9 +5,10 @@ const fs=require('fs'),path=require('path'),http=require('http'),assert=require(
 const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'playwright'):'playwright');
 const os=require('os'),{execFileSync}=require('child_process');
 const repo=path.resolve(__dirname,'..'),out=process.env.BAROMETER_QA_OUTPUT||fs.mkdtempSync(path.join(os.tmpdir(),'barometer-checkup-qa-'));fs.mkdirSync(out,{recursive:true});
+const previous=execFileSync('git',['show','9a26a320a887b7f7a5e53dbd8ac92dbfdaff2938:local/index.html'],{cwd:repo,maxBuffer:10*1024*1024});
 const baseline=execFileSync('git',['show','15eea99fcabd0a22f7615311deda281949a9e716:local/index.html'],{cwd:repo,maxBuffer:10*1024*1024});
 let version='baseline',baseUrl;const logs=[],errors=[];
-const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:file?fs.readFileSync(file):'Not found')});
+const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:req.url==='/local/'&&version==='previous'?previous:file?fs.readFileSync(file):'Not found')});
 const record=(name,data={})=>{logs.push({name,status:'PASS',...data});fs.writeFileSync(out+'/browser-checks.json',JSON.stringify({browser:browserVersion,checks:logs,errors},null,2));console.log('PASS',name)};let browserVersion;
 async function setup(page,{E=40,L=20,answers={},empty=false}={}){
  return await page.evaluate(({E,L,answers,empty})=>{
@@ -23,7 +24,7 @@ async function dash(page,id='env-office'){
  await page.evaluate(id=>{S.env=id;S.screen='dash';S.modal=null;render()},id);
  await page.locator('.weather-table').waitFor();
 }
-async function download(page,click,file){const promise=page.waitForEvent('download');await click();const d=await promise;await d.saveAs(out+'/'+file);return out+'/'+file;}
+async function download(page,click,file){const promise=page.waitForEvent('download');promise.catch(()=>{});await click();const d=await promise;await d.saveAs(out+'/'+file);return out+'/'+file;}
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));baseUrl='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({executablePath:process.env.BAROMETER_CHROMIUM_PATH||undefined,headless:true,args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage']});browserVersion=browser.version();
@@ -49,7 +50,7 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  await page.setViewportSize({width:390,height:844});const baselineMobileWidth=await page.evaluate(()=>document.documentElement.scrollWidth);await page.screenshot({path:out+'/before-full-mobile.png',fullPage:true});await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:out+'/before-full-desktop.png',fullPage:true});await page.locator('.weather-map').screenshot({path:out+'/before-map.png'});
  await page.locator('[data-a="toggle-detail"][data-m="6"]').click();
  await page.locator('[data-a="add-routed-action"]').last().click();
- const beforeMap=await page.locator('.weather-map').evaluate(el=>({html:el.outerHTML,colors:Array.from(el.querySelectorAll('.weather-badge')).map(b=>[getComputedStyle(b).color,getComputedStyle(b).backgroundColor,getComputedStyle(b).fontSize,b.innerText])}));
+ const beforeMap=await page.locator('.weather-map').evaluate(el=>({html:el.outerHTML.replace('Карта погодних статусів','Карта організаційної погоди'),colors:Array.from(el.querySelectorAll('.weather-badge')).map(b=>[getComputedStyle(b).color,getComputedStyle(b).backgroundColor,getComputedStyle(b).fontSize,b.innerText])}));
  const before=await page.evaluate(()=>({stored:localStorage.getItem(STORE),data:JSON.parse(JSON.stringify(S.r)),rows:actualResultModel(),plan:JSON.parse(JSON.stringify(currentPlan()))}));
  fs.writeFileSync(out+'/previous-version-state.json',JSON.stringify(before,null,2));assert.ok(before.plan.length);
  record('Previous version: XLSX import, all 42 P form responses, generated Plan action');
@@ -57,13 +58,14 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  version='feature';await page.reload();await page.locator('[data-a="continue"]').click();
  const after=await page.evaluate(()=>({stored:localStorage.getItem(STORE),data:JSON.parse(JSON.stringify(S.r)),rows:(S.env='env-office',actualResultModel()),plan:JSON.parse(JSON.stringify(currentPlan()))}));
  assert.deepEqual(after.data,before.data);assert.deepEqual(after.rows,before.rows);assert.deepEqual(after.plan,before.plan);record('Same-origin upgrade preserves stored answers, cached calculations, P, Plan and settings');
- await dash(page);await page.screenshot({path:out+'/after-full-desktop.png',fullPage:true});await page.locator('.weather-map').screenshot({path:out+'/after-map.png'});const afterMap=await page.locator('.weather-map').evaluate(el=>({html:el.outerHTML,colors:Array.from(el.querySelectorAll('.weather-badge')).map(b=>[getComputedStyle(b).color,getComputedStyle(b).backgroundColor,getComputedStyle(b).fontSize,b.innerText])}));assert.deepEqual(afterMap,beforeMap);record('Full E/L/P map markup, icons, colors and typography match baseline');await page.setViewportSize({width:390,height:844});const featureMobileWidth=await page.evaluate(()=>document.documentElement.scrollWidth);assert.equal(featureMobileWidth,baselineMobileWidth);record('Existing narrow-screen header overflow matches baseline',{viewport:390,baseline:baselineMobileWidth,feature:featureMobileWidth});await page.setViewportSize({width:1440,height:1000});
+ await dash(page);await page.screenshot({path:out+'/after-full-desktop.png',fullPage:true});await page.locator('.weather-map').screenshot({path:out+'/after-map.png'});const afterMap=await page.locator('.weather-map').evaluate(el=>({html:el.outerHTML.replace('Карта погодних статусів','Карта організаційної погоди'),colors:Array.from(el.querySelectorAll('.weather-badge')).map(b=>[getComputedStyle(b).color,getComputedStyle(b).backgroundColor,getComputedStyle(b).fontSize,b.innerText])}));assert.deepEqual(afterMap,beforeMap);record('Full E/L/P map markup, icons, colors and typography match baseline');await page.setViewportSize({width:390,height:844});const featureMobileWidth=await page.evaluate(()=>document.documentElement.scrollWidth);assert.equal(featureMobileWidth,baselineMobileWidth);record('Existing narrow-screen header overflow matches baseline',{viewport:390,baseline:baselineMobileWidth,feature:featureMobileWidth});await page.setViewportSize({width:1440,height:1000});
  await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),before.data);record('Reload preserves previous-version study');
  const backup=await download(page,async()=>{await page.locator('[data-a="backup-info"]').first().click();await page.locator('[data-a="backup-download"]').click()},'same-origin-backup.json');
  const saved=JSON.parse(fs.readFileSync(backup)).data;
  await page.locator('[data-a="restore-open"]').count().then(async n=>{if(!n)await page.evaluate(()=>{S.screen='start';S.r=null;render()})});
  await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(backup);await page.locator('[data-a="restore-backup"]').click();
  await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>S.r),saved);record('Actual JSON file download and restore preserve same study');
+ version='previous';await page.reload();await setup(page,{E:0,L:0});await dash(page);await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();await page.locator('[data-target="VERIFY:P01"]').click();const reviewed=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),reviewed);record('Same-origin upgrade from reviewed test SHA preserves legacy VERIFY action without migration');
  // Feature-version CSV import through the actual picker.
  await setup(page,{E:0,L:0,empty:true});await page.locator('[data-a="upload"][data-id="env-office"]').first().click();await page.locator('#file').setInputFiles(out+'/synthetic-import.csv');await page.locator('[data-a="validate"]').click();await page.locator('[data-a="accept"]').click();assert.equal(await page.evaluate(()=>env('env-office').survey.e),40);record('Feature-version actual CSV import');
  // P-only dashboard and recommendations, using a mixed synthetic profile.
@@ -71,11 +73,26 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  assert.equal(await page.locator('.weather-table tbody tr').count(),7);assert.equal(await page.locator('.weather-table .data-quality').count(),14);
  await page.screenshot({path:out+'/p-only-desktop.png',fullPage:true});record('P-only dashboard: seven P statuses, E/L have no data');
  await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();
- await page.locator('[data-practice-code="P01"]').screenshot({path:out+'/full-practice-verification.png'});
- const actualFull=await page.locator('[data-practice-code="P01"]').innerText();assert.match(actualFull,/Як перевірити, що практика працює/);
- await page.locator('[data-target="VERIFY:P01"]').click();
- assert.equal(await page.evaluate(()=>currentPlan().filter(x=>x.sourceTarget==='VERIFY:P01'&&!x.envId).length),1);
- await dash(page,'env-shift');await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();assert.equal(await page.locator('[data-target="VERIFY:P01"]').count(),0);record('Manual positive-practice verification uses company Plan scope and deduplicates across environments');
+ await page.setViewportSize({width:1440,height:1400});await page.locator('[data-practice-code="P01"]').evaluate(el=>window.scrollTo(0,el.getBoundingClientRect().top+scrollY-120));await page.locator('[data-practice-code="P01"]').screenshot({path:out+'/full-practice-verification.png'});await page.setViewportSize({width:1440,height:1000});
+ const actualFull=await page.locator('[data-practice-code="P01"]').innerText();assert.match(actualFull,/Перевірити актуальність описів завдань і повноважень/);
+ assert.equal(await page.locator('[data-criterion-id]').count(),168);assert.equal(await page.locator('[data-aspect-id]').count(),0);
+ await page.locator('[data-target="CRITERION:P01-C1"]').click();
+ assert.equal(await page.locator('[data-target="CRITERION:P01-C1"]').innerText(),'Додано до Плану');await page.locator('[data-criterion-id="P01-C1"]').screenshot({path:out+'/criterion-added.png'});
+ assert.equal(await page.evaluate(()=>currentPlan().filter(x=>x.sourceTarget==='CRITERION:P01-C1'&&!x.envId).length),1);
+ await dash(page,'env-shift');await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();assert.equal(await page.locator('[data-target="CRITERION:P01-C1"]').isDisabled(),true);record('Individual criterion button adds real company action and deduplicates across environments');
+ await page.locator('[data-a="plan"]').last().click();
+ const card=page.locator('.plan-card').first();
+ await card.locator('[data-f="action"]').fill('Власний захід за критерієм P01-C1');await card.locator('[data-f="description"]').fill('Кроки, уточнені власницею');await card.locator('[data-f="indicator"]').fill('Погоджений власницею результат');await card.locator('[data-f="owner"]').fill('Відповідальна особа QA');await card.locator('[data-f="due"]').fill('2026-12-01');await card.locator('[data-f="priority"]').selectOption('Високий');await card.locator('[data-f="status"]').selectOption('У роботі');await card.locator('[data-f="envId"]').selectOption('env-shift');
+ const edited=await page.evaluate(()=>JSON.parse(JSON.stringify(currentPlan()[0])));assert.equal(edited.envId,'env-shift');
+ await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>currentPlan()[0]),edited);record('Actual Plan controls preserve title, steps, outcome, owner, deadline, priority, status and environment after reload');
+ await dash(page);await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();await page.locator('[data-target="CRITERION:P01-C1"]').click();
+ assert.equal(await page.evaluate(()=>currentPlan().length),2);await page.locator('[data-a="plan"]').last().click();await page.locator('.plan-card').nth(1).locator('[data-f="envId"]').selectOption('env-shift');assert.equal(await page.evaluate(()=>currentPlan()[1].envId),null);record('Separate company and branch action allowed; duplicate scope move rejected');
+ await page.locator('.plan-card').nth(1).locator('[data-a="del"]').click();assert.equal(await page.evaluate(()=>currentPlan().length),1);assert.deepEqual(await page.evaluate(()=>currentPlan()[0]),edited);record('Manual delete removes only selected action');
+ // Change P through the real questionnaire, retaining all edited Plan fields.
+ await page.evaluate(()=>{S.module=1;S.screen='checkup';render()});const partial=page.locator('input[name="P01"][value="partial"]');await partial.evaluate(el=>el.closest('.practice').scrollIntoView({block:'center',behavior:'instant'}));await partial.check();await page.evaluate(()=>{S.module=7;render()});await page.locator('[data-a="finish"]').click();assert.deepEqual(await page.evaluate(()=>currentPlan()[0]),edited);record('Changed P answer retains edited criterion action and selected branch');
+ await page.evaluate(()=>{S.screen='home';render()});
+ const criterionBackup=await download(page,async()=>{await page.locator('[data-a="backup-info"]').first().click();await page.locator('[data-a="backup-download"]').click()},'criterion-backup.json');
+ await page.evaluate(()=>{S.screen='start';S.r=null;render()});await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(criterionBackup);await page.locator('[data-a="restore-backup"]').click();await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>currentPlan()[0]),edited);record('Actual criterion backup/restore preserves edited entry and envId');
  await dash(page,'env-office');await page.locator('[data-a="toggle-detail"][data-m="6"]').click();await page.locator('[data-target="M6-A1"]').click();
  assert.equal(await page.evaluate(()=>currentPlan().filter(x=>x.sourceTarget==='M6-A1'&&!x.envId).length),1);
  await dash(page,'env-shift');await page.locator('[data-a="toggle-detail"][data-m="6"]').click();assert.equal(await page.locator('[data-target="M6-A1"]').count(),0);record('P-only corrective recommendation uses company scope without duplicate per environment');
@@ -88,10 +105,14 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
   await setup(page,{E,L,answers:{P03:'partial',P31:'partial'}});await dash(page);
   const rows=await page.evaluate(()=>actualResultModel());
   assert.equal(rows[0].e,E===0?'Немає даних':E<20?'Недостатня вибірка':'Ясно');assert.equal(rows[0].l,L===0?'Немає даних':L<10?'Недостатня вибірка':'Ясно');
+  const criterion=page.locator('[data-target="CRITERION:P03-C1"]');await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P03"] summary').click();await criterion.click();assert.equal(await page.evaluate(()=>currentPlan().filter(x=>x.sourceTarget==='CRITERION:P03-C1'&&!x.envId).length),1);record(`Criterion actual add with E=${E} L=${L}`);
   if(name==='insufficient'){const widths=await page.locator('.matrix-title').evaluateAll(els=>els.map(el=>el.getBoundingClientRect().width));assert.ok(widths.every(w=>w>260),JSON.stringify(widths));await page.screenshot({path:out+'/insufficient-desktop.png',fullPage:true});record('Insufficient-source labels preserve readable module title width',{widths});}
-  if(name==='full')await page.screenshot({path:out+'/full-study-desktop.png',fullPage:true});record(`Dashboard E=${E} L=${L}`);
+  if(name==='E-only'||name==='full'){
+   await page.screenshot({path:out+'/'+(name==='full'?'full-study':'p-plus-e')+'-desktop.png',fullPage:true});
+   const filename=name==='full'?'p-plus-e-plus-l-report':'p-plus-e-report';const htmlfile=await download(page,()=>page.locator('[data-a="report"]').click(),filename+'.html');const pdfpage=await context.newPage();await pdfpage.goto('file://'+htmlfile);assert.equal(await pdfpage.locator('#checkup-verification-appendix [data-practice-code]').count(),42);assert.match(await pdfpage.innerText('body'),/Рівень опитування: робоче середовище/);await pdfpage.pdf({path:out+'/'+filename+'.pdf',format:'A4',printBackground:true,preferCSSPageSize:true});await pdfpage.close();record(filename+' actual downloaded report and PDF');
+  }record(`Dashboard E=${E} L=${L}`);
  }
- await setup(page,{E:0,L:0});await dash(page);assert.equal(await page.locator('.evidence-action').count(),0);assert.equal(await page.evaluate(()=>barometerSemanticInterpretation().actions.length),0);record('All full P: no automatic corrective actions');
+ await setup(page,{E:0,L:0});await dash(page);assert.equal(await page.locator('.rec-inline .evidence-action').count(),0);assert.equal(await page.evaluate(()=>barometerSemanticInterpretation().actions.length),0);record('All full P: no automatic corrective actions');
  await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();
  // Change through actual questionnaire controls, then finish again.
  await page.evaluate(()=>{S.module=1;S.screen='checkup';render()});await page.locator('input[name="P01"][value="partial"]').evaluate(el=>el.closest('.practice').scrollIntoView({block:'center',behavior:'instant'}));await page.locator('input[name="P01"][value="partial"]').check();
@@ -99,6 +120,10 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  assert.equal(await page.locator('[data-practice-code="P01"]').getAttribute('data-practice-answer'),'partial');record('Changed P answer refreshes corresponding verification through actual form');
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:out+'/p-only-mobile.png',fullPage:true});
  const overflow=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));record('Mobile viewport screenshot',overflow);
+ // Mixed local coverage retains one shared P and different E/L sufficiency.
+ await page.setViewportSize({width:1440,height:1000});await setup(page,{E:40,L:20});
+ await page.evaluate(()=>{const shared=period().checkup;const rows=Array.from({length:9},()=>({answers:Object.fromEntries(SURVEY_ITEMS.map(x=>[x.code,5]))}));env('env-shift').survey={ok:true,e:9,l:3,results:{e:aggregateSource(rows,'E'),l:aggregateSource(rows.slice(0,3),'L')}};save();if(shared!==period().checkup)throw Error('P replaced')});
+ await dash(page,'env-office');const officeP=await page.evaluate(()=>actualResultModel().map(r=>r.p));await dash(page,'env-shift');assert.deepEqual(await page.evaluate(()=>actualResultModel().map(r=>r.p)),officeP);assert.equal(await page.evaluate(()=>actualResultModel()[0].e),'Недостатня вибірка');assert.equal(await page.locator('[data-aspect-id]').count(),0);record('Multiple environments share exactly one P while sufficient and insufficient E/L retain distinct local analysis');
  // Corporate results also work before environments are added.
  await page.setViewportSize({width:1440,height:1000});await setup(page,{E:0,L:0});await page.evaluate(()=>{period().envs=[];S.env=null;S.screen='home';save();render()});
  await page.locator('[data-a="company-results"]').click();assert.equal(await page.locator('.weather-table tbody tr').count(),7);record('Company P-only results without an environment and without a saved-schema change');

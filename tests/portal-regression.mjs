@@ -43,7 +43,7 @@ function loadLocalPortal(){
       normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,load,save,STORE,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
-      barometerPracticeVerification,BAROMETER_P_VERIFICATION,BAROMETER_P_ANSWER_LABELS,barometerPModuleLead,barometerPVerificationMarkup,barometerPReportAppendix,barometerCompanyContext,barometerActionScope,barometerSemanticAction,checkup,
+      barometerCriterionView,barometerEquivalentPlanAction,planAction,planHasAction,updatePlanField,plan,barometerPracticeVerification,BAROMETER_P_VERIFICATION,BAROMETER_P_ANSWER_LABELS,barometerPModuleLead,barometerPVerificationMarkup,barometerPReportAppendix,barometerCompanyContext,barometerActionScope,barometerSemanticAction,checkup,
       setState(value){S=value},getState(){return S},render,studyProgress,
     };
   `;
@@ -1367,7 +1367,7 @@ for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`checkup-o
   assert.equal(portal.api.canDashboard(environment),true);
   const rows=portal.api.actualResultModel();assert.equal(rows.length,7);
   for(const row of rows){assert.equal(row.e,eCount===0?'Немає даних':eCount<20?'Недостатня вибірка':'Ясно');assert.equal(row.l,lCount===0?'Немає даних':lCount<10?'Недостатня вибірка':'Ясно');}
-  assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта погодних статусів/);
+  assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта організаційної погоди/);
   const analysis=portal.api.barometerSemanticInterpretation();assert.ok(analysis.actions.some(x=>x.final_action_id==='M6-A1'));
   if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/За організаційним чекапом компанії/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
   const report=portal.api.buildReportHtml(environment);assert.match(report,/checkup-verification-appendix/);assert.equal((report.match(/data-practice-code=/g)||[]).length,42);
@@ -1379,22 +1379,22 @@ test('unfinished P with no survey has no results or criteria',()=>{
 test('company-only context is derived and not persisted as environment',()=>{
   const {state}=checkupOnlyScenario();state.r.periods[0].envs=[];state.env=null;
   const before=JSON.stringify(state.r),company=portal.api.barometerCompanyContext();assert.equal(company.id,null);assert.equal(portal.api.canDashboard(company),true);
-  portal.api.render();assert.match(portal.app.innerHTML,/Організаційний чекап компанії/);assert.match(portal.api.buildReportHtml(company),/Карта погодних статусів/);assert.equal(JSON.stringify(state.r),before);
+  portal.api.render();assert.match(portal.app.innerHTML,/Організаційний чекап компанії/);assert.match(portal.api.buildReportHtml(company),/Карта організаційної погоди/);assert.equal(JSON.stringify(state.r),before);
 });
 for(const practice of portal.api.P_LIST)for(const answer of ['full','partial','no','insufficient'])test(`verification ${practice.code} / ${answer}: exact practice, valid state, no scoring or writes`,()=>{
   const {cp,state}=checkupOnlyScenario({overrides:{[practice.code]:answer}}),before=JSON.stringify(state.r),storage=JSON.stringify([...portal.storage]);
   const score=JSON.stringify(portal.api.calculatePResults(cp)),view=portal.api.barometerPracticeVerification(practice.code);
   assert.equal(view.code,practice.code);assert.equal(view.answer,answer);assert.equal(view.label,portal.api.BAROMETER_P_ANSWER_LABELS[answer]);assert.match(view.conclusion,new RegExp(view.title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.ok(view.checks.length>=1);assert.ok(view.steps.length>=1);assert.equal(view.sources.length,2);
-  if(answer==='full'){assert.equal(view.checks.length,3);assert.match(view.heading,/Як перевірити, що практика працює/);assert.match(view.steps.join(' '),/Якщо фактичне застосування/);assert.doesNotMatch(view.conclusion,/ефективно працює/);}
-  if(answer==='partial'){assert.ok(view.results.length>=1&&view.results.length<=2);assert.match(view.conclusion,/частково або нерівномірно/);}
-  if(answer==='no'){assert.equal(view.checks.length,3);assert.match(view.conclusion,/не реалізована або фактично не працює/);}
-  if(answer==='insufficient'){assert.match(view.conclusion,/не може бути достовірно підтверджений/);assert.equal(view.results.length,0);}
+  if(answer==='full'){assert.equal(view.checks.length,4);assert.match(view.heading,/Критерії повної реалізації/);assert.match(view.steps.join(' '),/Якщо умова й результат/);assert.doesNotMatch(view.conclusion,/ефективно працює/);}
+  if(answer==='partial'){assert.ok(view.results.length===4);assert.match(view.conclusion,/частково або нерівномірно/);}
+  if(answer==='no'){assert.equal(view.checks.length,4);assert.match(view.conclusion,/не реалізована або фактично не працює/);}
+  if(answer==='insufficient'){assert.match(view.conclusion,/не може бути достовірно підтверджений/);assert.equal(view.results.length,4);}
   const markup=portal.api.barometerPVerificationMarkup(practice.module);assert.match(markup,new RegExp('data-practice-code="'+practice.code+'" data-practice-answer="'+answer+'"'));
   assert.equal(JSON.stringify(portal.api.calculatePResults(cp)),score);assert.equal(JSON.stringify(state.r),before);assert.equal(JSON.stringify([...portal.storage]),storage);
 });
 test('42 practice criteria have distinct factual checks, gaps, steps, outcomes and sources',()=>{
-  for(const key of ['title','checks','gaps','steps','results','sources']){
+  for(const key of ['title','criteria','sources']){
     const values=Object.values(portal.api.BAROMETER_P_VERIFICATION).map(x=>JSON.stringify(x[key]));assert.equal(new Set(values).size,42,key);
   }
 });
@@ -1447,4 +1447,65 @@ test('existing environment-scoped P action stays usable without duplication or m
   const before=JSON.stringify(state.r.plan),button={dataset:{a:'add-routed-action',m:'6',target:'M6-A1'},replaceWith(){}};
   await portal.listeners.get('click')({target:{closest:()=>button}});
   assert.equal(state.r.plan.length,1);assert.equal(JSON.stringify(state.r.plan),before);assert.equal(button.disabled,true);
+});
+
+// Stable criteria and individual Plan actions refine the reviewed implementation.
+const answersForCriteria=['full','partial','no','insufficient'];
+for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)test(`stable criterion set and one-click persistence: ${practice.code}/${answer}`,async()=>{
+ const {cp,state}=checkupOnlyScenario({overrides:{[practice.code]:answer}});
+ const expected=portal.api.barometerPracticeVerification(practice.code,'full').criteria.map(c=>[c.id,c.criterion]);
+ const view=portal.api.barometerPracticeVerification(practice.code);
+ assert.deepEqual(view.criteria.map(c=>[c.id,c.criterion]),expected);
+ for(const criterion of view.criteria){
+  assert.match(criterion.title,/^(Перевірити|Уточнити|Зібрати дані про) /);
+  const b={dataset:{a:'add-routed-action',m:String(practice.module),target:criterion.target},replaceWith(){throw Error('Criterion button must remain visible')}};
+  portal.api.normalizeResearch(state.r);const before=JSON.stringify(cp);await portal.listeners.get('click')({target:{closest:()=>b}});
+  assert.equal(b.textContent,'Додано до Плану');assert.equal(b.disabled,true);
+  const action=state.r.plan.at(-1);assert.equal(action.sourceTarget,criterion.target);assert.equal(action.envId,null);
+  assert.equal(action.action,criterion.title);assert.equal(action.indicator,criterion.result);assert.match(action.description,new RegExp(criterion.id));assert.equal(action.owner,undefined);assert.equal(action.due,undefined);
+  assert.equal(JSON.stringify(cp),before);
+  await portal.listeners.get('click')({target:{closest:()=>b}});
+  assert.equal(state.r.plan.filter(x=>x.sourceTarget===criterion.target).length,1);
+  assert.ok(JSON.parse(portal.storage.get(portal.api.STORE)).plan.some(x=>x.sourceTarget===criterion.target));
+ }
+ assert.equal(state.r.plan.length,4);
+});
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`criterion availability and P-only presentation: ${eCount}/${lCount}`,()=>{
+ checkupOnlyScenario({eCount,lCount,overrides:{P01:'partial'}});
+ for(const practice of portal.api.P_LIST)assert.equal(portal.api.barometerPracticeVerification(practice.code).criteria.length,4);
+ const markup=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]);
+ assert.match(markup,/Організаційні практики: критерії повної реалізації/);
+ assert.doesNotMatch(markup,/Критерії не змінюють оцінок автоматично|Відповідь власника дослідження, фактичне застосування/);
+ if(eCount<20&&lCount<10)assert.doesNotMatch(markup,/Аспекти, що потребують уваги|Як узгоджуються джерела/);
+ const report=portal.api.buildReportHtml(portal.api.getState().r.periods[0].envs[0]);
+ assert.match(report,/Як перевірити фактичне застосування/);assert.doesNotMatch(report,/Підтвердження застосування:/);
+ if(eCount<20&&lCount<10)assert.match(report,/Рівень оцінювання: компанія/);
+ else assert.match(report,/Рівень опитування: робоче середовище/);
+});
+test('criterion scope, exact dedup, edits, response changes and JSON compatibility',async()=>{
+ const {state,cp}=checkupOnlyScenario();state.r.periods[0].envs.push({id:'branch-2',name:'Філія 2'});
+ const click=async(id)=>portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:id},replaceWith(){}})}});
+ await click('CRITERION:P01-C1');const first=state.r.plan[0];
+ const change=(id,field,value)=>portal.api.updatePlanField({target:{dataset:{f:field},value,closest:()=>({dataset:{p:id}})}});
+ change(first.id,'action','Змінений власником захід');change(first.id,'description','Власні кроки');change(first.id,'indicator','Власний результат');change(first.id,'owner','Власниця');change(first.id,'due','2026-12-01');change(first.id,'priority','Високий');change(first.id,'status','У роботі');change(first.id,'envId','branch-2');
+ assert.equal(first.envId,'branch-2');await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,2);assert.equal(state.r.plan[1].envId,null);
+ change(state.r.plan[1].id,'envId','branch-2');assert.equal(state.r.plan[1].envId,null,'scope collision rejected without losing action');
+ const before=JSON.stringify(first);for(const answer of answersForCriteria){cp.answers.P01=answer;portal.api.render();await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,2);assert.equal(JSON.stringify(first),before)}
+ assert.equal(portal.api.validateBackupResearch(JSON.parse(JSON.stringify(state.r))),true);
+ assert.ok(portal.api.plan().includes('data-f="envId"'));assert.ok(portal.api.planRows().some(row=>row.includes('Компанія загалом')));
+ state.r.current='period-2';state.r.periods.push({...JSON.parse(JSON.stringify(state.r.periods[0])),id:'period-2'});await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,3,'other period can have same criterion');
+});
+test('genuinely equivalent semantic record deduplicates; broad route and other criterion remain distinct',async()=>{
+ const {state}=checkupOnlyScenario();const target='CRITERION:P01-C2',candidate=portal.api.barometerSemanticAction(target);
+ state.r.plan.push({id:'semantic-equivalent',periodId:state.r.current,envId:null,sourceTarget:'M1-A1',action:candidate.title,description:candidate.action,indicator:candidate.check});
+ assert.equal(portal.api.planAction(target).id,'semantic-equivalent');assert.equal(portal.api.planAction('CRITERION:P01-C1'),null);
+ state.r.plan[0].description='Інші кроки за тим самим заголовком';assert.equal(portal.api.planAction(target),null);state.r.plan[0].description=candidate.action;
+ state.r.plan[0].action='Ширша інша дія';assert.equal(portal.api.planAction(target),null);
+ state.r.plan[0].action=candidate.title;state.r.plan[0].envId='env-runtime';assert.equal(portal.api.planAction(target),null);
+});
+test('P01 and P03 editorial fixes and 2–4 sentence P-only summaries',()=>{
+ checkupOnlyScenario({overrides:{P01:'partial',P02:'no',P03:'insufficient'}});
+ const p1=portal.api.barometerPracticeVerification('P01').checks.join(' '),p3=portal.api.barometerPracticeVerification('P03').checks.join(' ');
+ assert.match(p1,/тимчасовим заміщенням/);assert.match(p1,/суміщенн/);assert.match(p3,/різних робочих змін/);assert.doesNotMatch(p3,/до всіх змін/);
+ for(let m=1;m<=7;m++){const lead=portal.api.barometerPModuleLead(m);assert.ok((lead.match(/[.!?](?: |$)/g)||[]).length>=2);assert.ok((lead.match(/[.!?](?: |$)/g)||[]).length<=4);}
 });
