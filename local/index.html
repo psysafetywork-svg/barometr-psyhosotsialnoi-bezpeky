@@ -6429,9 +6429,9 @@ function barometerModuleSummary(row,analysis){
   const availableStatuses=['E','L'].filter(source=>input[source].eligible).map(source=>source==='E'?row.e:row.l);
   if(availableStatuses.length&&availableStatuses.every(status=>status==='Ясно')&&['Хмарно','Буря'].includes(row.p)){
     const practiceResult=calculatePResults(cp||{answers:{}}).modules[row.m];
-    text+=practiceResult.notImplemented||practiceResult.partial?' Сприятливі оцінки опитувань не доводять повноти організаційних механізмів: виявлені чекапом прогалини потребують окремої перевірки.':' Сприятливі оцінки опитувань не усувають браку підтверджень практик; цей брак не доводить відсутності або нефункціонування механізмів.';
+    text+=practiceResult.notImplemented||practiceResult.partial?' Попри сприятливі оцінки опитувань, чекап виявив прогалини організаційних механізмів.':' Опитування сприятливі; у чекапі бракує підтверджень, а не встановлено відсутність механізмів.';
   }
-  if(row.p==='Ясно'&&availableStatuses.some(status=>status==='Буря'))text+=' Повні відповіді чекапу не гарантують однакового застосування практик у цьому середовищі; потрібно з’ясувати, які робочі ситуації пояснюють несприятливі оцінки.';
+  if(row.p==='Ясно'&&availableStatuses.some(status=>status==='Буря'))text+=' Чекап і опитування оцінюють різні аспекти; перевірте застосування практик у цьому середовищі.';
   if(survey.length&&(row.e==='Туман'||row.l==='Туман'))text+=' Недостатньо даних, щоб надійно оцінити частину досвіду працівників або можливостей керівників: для відповідного джерела бракує застосовних відповідей.';
   const semantic=analysis.modules[row.m];
   const surveyAspects=(semantic.aspects||[]).filter(a=>a.e==='S'||a.l==='S');
@@ -6481,7 +6481,7 @@ barometerSemanticModuleMarkup=function(row){
 };
 barometerReportModules=function(analysis,rows){return rows.map(row=>{
   const actions=barometerModuleActions(row.m,analysis);
-  return `<section class="module"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><p>${h(barometerModuleSummary(row,analysis))}</p>${actions.length?`<div class="actions-section"><h4>Пріоритетні рекомендовані організаційні дії</h4>${actions.map(a=>`<div class="compact-block" style="break-inside:avoid;page-break-inside:avoid"><h5>${h(a.code?a.code+'. ':'')}${h(a.title)}</h5><p>${h(a.code&&a.answer==='insufficient'?BAROMETER_P_ACTION_LIBRARY[a.code].insufficient.summary:a.code&&a.answer==='partial'?BAROMETER_P_ACTION_LIBRARY[a.code].partial.summary:a.code&&a.answer==='no'&&BAROMETER_P_ACTION_LIBRARY[a.code].summary?BAROMETER_P_ACTION_LIBRARY[a.code].summary:a.steps.filter(s=>!s.startsWith('З’ясувати з відповідальними'))[0])}</p><p><b>Перевірка результату:</b> ${h(a.check)}</p></div>`).join('')}</div>`:''}</section>`;
+  return `<section class="module"><div style="break-inside:avoid;page-break-inside:avoid"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div><p>${h(barometerModuleSummary(row,analysis))}</p></div>${actions.length?`<div class="actions-section"><h4>Пріоритетні рекомендовані організаційні дії</h4>${actions.map(a=>`<div class="compact-block" style="break-inside:avoid;page-break-inside:avoid"><h5>${h(a.code?a.code+'. ':'')}${h(a.title)}</h5><p>${h(a.code&&a.answer==='insufficient'?BAROMETER_P_ACTION_LIBRARY[a.code].insufficient.summary:a.code&&a.answer==='partial'?BAROMETER_P_ACTION_LIBRARY[a.code].partial.summary:a.code&&a.answer==='no'&&BAROMETER_P_ACTION_LIBRARY[a.code].summary?BAROMETER_P_ACTION_LIBRARY[a.code].summary:a.steps.filter(s=>!s.startsWith('З’ясувати з відповідальними'))[0])}</p><p><b>Перевірка результату:</b> ${h(a.check)}</p></div>`).join('')}</div>`:''}</section>`;
 }).join('')};
 /* BAROMETER_ORGANISATIONAL_ACTIONS_2026_10_20_END */
 
