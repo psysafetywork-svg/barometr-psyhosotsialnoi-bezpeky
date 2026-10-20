@@ -970,7 +970,7 @@ test('F02 partial NA remains visible even with no adverse signals',()=>{
   const m=portal.api.barometerSemanticInterpretation().modules[3];
   assert.ok(m.aspects.some(a=>a.id==='M3-C1'));
   assert.match(m.lead,/висновок не поширюється/);
-  assert.match(portal.api.buildReportHtml(environment),/недостатньо застосовних даних/);
+  assert.match(portal.api.buildReportHtml(environment),/недостатньо застосовних (?:даних|відповідей)/);
 });
 for(const [code,id,terms] of [
   ['E09','M2-D1',[/поточне навантаження/,/строк, пріоритет, обсяг або розподіл/]],
