@@ -1,0 +1,531 @@
+{
+  "status": "BLOCKED",
+  "date": "2026-10-21",
+  "testedCommit": "c350b835bdc439bb71931f2c33af1cd8567de2f7",
+  "main": "15eea99fcabd0a22f7615311deda281949a9e716",
+  "node": {
+    "tests": 727,
+    "pass": 727,
+    "fail": 0
+  },
+  "existingBrowser": {
+    "checks": 40,
+    "errors": []
+  },
+  "expandedBrowser": {
+    "engines": {
+      "chromium": "156.0.8078.4",
+      "firefox": "157.0",
+      "webkit": "27.2"
+    },
+    "checks": 91,
+    "pass": 82,
+    "blocked": 9,
+    "notVerified": [],
+    "errors": []
+  },
+  "p": {
+    "cases": 40960,
+    "statusCounts": {
+      "Ясно": 10,
+      "Хмарно": 13206,
+      "Буря": 23221,
+      "Туман": 4523
+    },
+    "modules": {
+      "1": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1455,
+          "Буря": 2152,
+          "Туман": 488
+        }
+      },
+      "2": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1647,
+          "Буря": 1909,
+          "Туман": 539
+        }
+      },
+      "3": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1071,
+          "Буря": 2638,
+          "Туман": 386
+        }
+      },
+      "4": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1455,
+          "Буря": 2152,
+          "Туман": 488
+        }
+      },
+      "5": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1455,
+          "Буря": 2152,
+          "Туман": 488
+        }
+      },
+      "6": {
+        "cases": 4096,
+        "counts": {
+          "Ясно": 1,
+          "Хмарно": 1263,
+          "Буря": 2395,
+          "Туман": 437
+        }
+      },
+      "7": {
+        "cases": 16384,
+        "counts": {
+          "Ясно": 4,
+          "Хмарно": 4860,
+          "Буря": 9823,
+          "Туман": 1697
+        }
+      }
+    },
+    "unknownOnlyCloudy": 210,
+    "failures": []
+  },
+  "elp": {
+    "profiles": 120,
+    "moduleRows": 840
+  },
+  "pdfs": {
+    "p-only": {
+      "pages": 4,
+      "methodologyPage": 4
+    },
+    "p-plus-e": {
+      "pages": 4,
+      "methodologyPage": 4
+    },
+    "p-plus-l": {
+      "pages": 4,
+      "methodologyPage": 4
+    },
+    "p-plus-e-plus-l": {
+      "pages": 4,
+      "methodologyPage": 4
+    }
+  },
+  "xlsx": "PASS: exact title, full description and outcome for three actual exported Plan rows",
+  "protection": {
+    "STORE": "barometer_v2_final",
+    "functions": {
+      "save": "BYTE_IDENTICAL",
+      "load": "BYTE_IDENTICAL",
+      "normalizeResearch": "BYTE_IDENTICAL",
+      "safeResearchClone": "BYTE_IDENTICAL",
+      "validateBackupResearch": "BYTE_IDENTICAL",
+      "downloadResearchBackup": "BYTE_IDENTICAL",
+      "planXlsxBytes": "BYTE_IDENTICAL",
+      "parseCSV": "BYTE_IDENTICAL",
+      "validateTableRows": "BYTE_IDENTICAL",
+      "weatherStatus": "BYTE_IDENTICAL",
+      "aggregateSource": "BYTE_IDENTICAL",
+      "calculatePResults": "BYTE_IDENTICAL"
+    }
+  },
+  "risks": [
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "chromium",
+      "versions": "production-production",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "chromium",
+      "versions": "feature-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "chromium",
+      "versions": "production-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "firefox",
+      "versions": "production-production",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "firefox",
+      "versions": "feature-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "firefox",
+      "versions": "production-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "webkit",
+      "versions": "production-production",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "webkit",
+      "versions": "feature-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    },
+    {
+      "id": "STORAGE-STALE-TAB",
+      "engine": "webkit",
+      "versions": "production-feature",
+      "severity": "BLOCKER",
+      "lostAnswer": "P13",
+      "lostEditedPlanField": "owner",
+      "beforeAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P13": "partial"
+      },
+      "afterAnswers": {
+        "P01": "full",
+        "P02": "partial",
+        "P03": "insufficient",
+        "P04": "no",
+        "P05": "full",
+        "P06": "partial",
+        "P07": "insufficient",
+        "P08": "no",
+        "P09": "full",
+        "P10": "partial",
+        "P11": "insufficient",
+        "P12": "no",
+        "P14": "no"
+      }
+    }
+  ],
+  "uniqueBlockers": [
+    "STORAGE-STALE-TAB"
+  ],
+  "online": {
+    "engine": "live-chromium",
+    "name": "Actual public URL, local link, same origin and current HTTP cache headers",
+    "status": "PASS",
+    "publicUrl": "https://psysafetywork-svg.github.io/barometr-psyhosotsialnoi-bezpeky/",
+    "localUrl": "https://psysafetywork-svg.github.io/barometr-psyhosotsialnoi-bezpeky/local/index.html",
+    "publicCacheControl": "max-age=600",
+    "localCacheControl": "max-age=600",
+    "etag": "W/\"6acfceae-f6a84\"",
+    "conditionalStatus": 304,
+    "productionOnly": true
+  },
+  "applicationSha256": {
+    "local/index.html": "9a75e750b2370428d6c01ace4bf3ad8c0730b3198e10162d2e573814172f144d",
+    "index.html": "8b5536ab58b51a16b0bfad9bb717353ec5425f7bf07bca99618f389dcc413032"
+  },
+  "visualReview": {
+    "status": "PASS",
+    "scope": "Four actual PDF contact sheets and full methodology page inspected; all four reports have four pages; module headings remain with summaries."
+  },
+  "releaseSafety": {
+    "status": "FAIL",
+    "blocker": "STORAGE-STALE-TAB",
+    "reproductions": 9,
+    "storageChanged": false
+  },
+  "testedApplicationGitBlobs": [
+    {
+      "path": "local/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "175020e7439eb6665a459e669ef4dbb11c8702c0"
+    },
+    {
+      "path": "index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d9ba5e1b4ba05e8f898c5a3d853bf31614665d4"
+    }
+  ],
+  "finalCommitChangesOnly": "QA reports and removal of temporary workflow; application and tests match tested commit."
+}

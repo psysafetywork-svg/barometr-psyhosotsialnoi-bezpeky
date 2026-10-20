@@ -1,0 +1,859 @@
+[
+  {
+    "engine": "chromium",
+    "name": "partial-12: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-12: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-12: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-27: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-27: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-27: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "completed: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "completed: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "completed: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-with-imported-EL: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-with-imported-EL: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "partial-with-imported-EL: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "edited-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "edited-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "edited-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "edited-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "multiple-environments: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "multiple-environments: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "multiple-environments: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "legacy-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "legacy-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "legacy-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "legacy-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "Concurrent production-production: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-production",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "chromium",
+    "name": "Concurrent feature-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "feature-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "chromium",
+    "name": "Concurrent production-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "chromium",
+    "name": "Server update does not force reload or interrupt actual answer entry",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "Next explicit reload fetches feature at identical origin and preserves entered answer",
+    "status": "PASS"
+  },
+  {
+    "engine": "chromium",
+    "name": "Cache lifetime model: next open and ETag revalidation preserve state",
+    "status": "PASS",
+    "serverCacheControl": "public, max-age=600",
+    "versionBeforeExplicitReload": "undefined",
+    "requests": [
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": "\"62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4\""
+      }
+    ]
+  },
+  {
+    "engine": "chromium",
+    "name": "Offline production HTML remains unchanged after HTTP feature update",
+    "status": "PASS",
+    "sha256": "62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-12: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-12: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-12: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-27: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-27: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-27: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "completed: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "completed: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "completed: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-with-imported-EL: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-with-imported-EL: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "partial-with-imported-EL: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "edited-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "edited-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "edited-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "edited-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "multiple-environments: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "multiple-environments: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "multiple-environments: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "legacy-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "legacy-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "legacy-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "legacy-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "Concurrent production-production: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-production",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "firefox",
+    "name": "Concurrent feature-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "feature-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "firefox",
+    "name": "Concurrent production-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "firefox",
+    "name": "Server update does not force reload or interrupt actual answer entry",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "Next explicit reload fetches feature at identical origin and preserves entered answer",
+    "status": "PASS"
+  },
+  {
+    "engine": "firefox",
+    "name": "Cache lifetime model: next open and ETag revalidation preserve state",
+    "status": "PASS",
+    "serverCacheControl": "public, max-age=600",
+    "versionBeforeExplicitReload": "undefined",
+    "requests": [
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": "\"62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4\""
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": "\"62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4\""
+      }
+    ]
+  },
+  {
+    "engine": "firefox",
+    "name": "Offline production HTML remains unchanged after HTTP feature update",
+    "status": "PASS",
+    "sha256": "62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-12: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-12: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-12: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-27: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-27: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-27: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "completed: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "completed: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "completed: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-with-imported-EL: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-with-imported-EL: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "partial-with-imported-EL: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "edited-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "edited-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "edited-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "edited-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "multiple-environments: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "multiple-environments: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "multiple-environments: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "legacy-plan: production-to-feature exact state and localStorage preservation",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "legacy-plan: reload preserves all fields",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "legacy-plan: actual JSON download and restore exact equality",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "legacy-plan: actual XLSX export with preserved edited or legacy action",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "Concurrent production-production: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-production",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "webkit",
+    "name": "Concurrent feature-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "feature-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "webkit",
+    "name": "Concurrent production-feature: stale save loses newer answer and edited Plan field",
+    "status": "BLOCKED",
+    "id": "STORAGE-STALE-TAB",
+    "versions": "production-feature",
+    "severity": "BLOCKER",
+    "lostAnswer": "P13",
+    "lostEditedPlanField": "owner",
+    "beforeAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P13": "partial"
+    },
+    "afterAnswers": {
+      "P01": "full",
+      "P02": "partial",
+      "P03": "insufficient",
+      "P04": "no",
+      "P05": "full",
+      "P06": "partial",
+      "P07": "insufficient",
+      "P08": "no",
+      "P09": "full",
+      "P10": "partial",
+      "P11": "insufficient",
+      "P12": "no",
+      "P14": "no"
+    }
+  },
+  {
+    "engine": "webkit",
+    "name": "Server update does not force reload or interrupt actual answer entry",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "Next explicit reload fetches feature at identical origin and preserves entered answer",
+    "status": "PASS"
+  },
+  {
+    "engine": "webkit",
+    "name": "Cache lifetime model: next open and ETag revalidation preserve state",
+    "status": "PASS",
+    "serverCacheControl": "public, max-age=600",
+    "versionBeforeExplicitReload": "object",
+    "requests": [
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": "\"62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4\""
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": "\"62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4\""
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "baseline",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": null
+      },
+      {
+        "path": "/cache/local/index.html",
+        "version": "feature",
+        "ifNoneMatch": null
+      }
+    ]
+  },
+  {
+    "engine": "webkit",
+    "name": "Offline production HTML remains unchanged after HTTP feature update",
+    "status": "PASS",
+    "sha256": "62e65c1926c170ae36b3ced851c49ad5a7b6d459ea8ee286ca1390738afd1fe4"
+  },
+  {
+    "engine": "live-chromium",
+    "name": "Actual public URL, local link, same origin and current HTTP cache headers",
+    "status": "PASS",
+    "publicUrl": "https://psysafetywork-svg.github.io/barometr-psyhosotsialnoi-bezpeky/",
+    "localUrl": "https://psysafetywork-svg.github.io/barometr-psyhosotsialnoi-bezpeky/local/index.html",
+    "publicCacheControl": "max-age=600",
+    "localCacheControl": "max-age=600",
+    "etag": "W/\"6acfceae-f6a84\"",
+    "conditionalStatus": 304,
+    "productionOnly": true
+  }
+]
