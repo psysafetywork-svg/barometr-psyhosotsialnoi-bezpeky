@@ -1,0 +1,197 @@
+{
+  "baseline": {
+    "production": "15eea99fcabd0a22f7615311deda281949a9e716",
+    "previous_test": "0b45c29dbb3a1300ef1e8c0389377f60ab9bf20d",
+    "tests": 547,
+    "pass": 547
+  },
+  "final": {
+    "automated": 718,
+    "pass": 718,
+    "fail": 0,
+    "skip": 0,
+    "browser": {
+      "browser": "153.0.8010.0",
+      "checks": [
+        {
+          "name": "Previous version: XLSX import, all 42 P form responses, generated Plan action",
+          "status": "PASS"
+        },
+        {
+          "name": "Same-origin upgrade preserves stored answers, cached calculations, P, Plan and settings",
+          "status": "PASS"
+        },
+        {
+          "name": "Full E/L/P map markup, icons, colors and typography match baseline",
+          "status": "PASS"
+        },
+        {
+          "name": "Existing narrow-screen header overflow matches baseline",
+          "status": "PASS",
+          "viewport": 390,
+          "baseline": 477,
+          "feature": 477
+        },
+        {
+          "name": "Reload preserves previous-version study",
+          "status": "PASS"
+        },
+        {
+          "name": "Actual JSON file download and restore preserve same study",
+          "status": "PASS"
+        },
+        {
+          "name": "Same-origin upgrade from 0b45c29 preserves legacy criterion action without migration",
+          "status": "PASS"
+        },
+        {
+          "name": "Feature-version actual CSV import",
+          "status": "PASS"
+        },
+        {
+          "name": "p-only-report: actual downloaded report, seven modules, no appendix, browser PDF",
+          "status": "PASS"
+        },
+        {
+          "name": "p-only: statuses, cross-module provenance, real add and duplicate prevention",
+          "status": "PASS"
+        },
+        {
+          "name": "insufficient: statuses, cross-module provenance, real add and duplicate prevention",
+          "status": "PASS"
+        },
+        {
+          "name": "p-plus-e-report: actual downloaded report, seven modules, no appendix, browser PDF",
+          "status": "PASS"
+        },
+        {
+          "name": "p-plus-e: statuses, cross-module provenance, real add and duplicate prevention",
+          "status": "PASS"
+        },
+        {
+          "name": "p-plus-l: statuses, cross-module provenance, real add and duplicate prevention",
+          "status": "PASS"
+        },
+        {
+          "name": "p-plus-e-plus-l-report: actual downloaded report, seven modules, no appendix, browser PDF",
+          "status": "PASS"
+        },
+        {
+          "name": "p-plus-e-plus-l: statuses, cross-module provenance, real add and duplicate prevention",
+          "status": "PASS"
+        },
+        {
+          "name": "P03: complete steps, outcome and priority persisted",
+          "status": "PASS"
+        },
+        {
+          "name": "P15: complete steps, outcome and priority persisted",
+          "status": "PASS"
+        },
+        {
+          "name": "P24: complete steps, outcome and priority persisted",
+          "status": "PASS"
+        },
+        {
+          "name": "Plan actual controls and reload preserve all fields and branch scope",
+          "status": "PASS"
+        },
+        {
+          "name": "Moving action to a branch does not recreate a company duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "Actual changed P response preserves edited action",
+          "status": "PASS"
+        },
+        {
+          "name": "Actual JSON download and restore preserve new actions and edited fields",
+          "status": "PASS"
+        },
+        {
+          "name": "Manual delete affects only selected action",
+          "status": "PASS"
+        },
+        {
+          "name": "Same-origin 0b45c29 criterion upgrade preserves edited record and avoids duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "Upgraded criterion study: real JSON restore and XLSX export",
+          "status": "PASS"
+        },
+        {
+          "name": "all-full: map, conclusions, recommendations and report",
+          "status": "PASS"
+        },
+        {
+          "name": "two-no: map, conclusions, recommendations and report",
+          "status": "PASS"
+        },
+        {
+          "name": "fog: map, conclusions, recommendations and report",
+          "status": "PASS"
+        },
+        {
+          "name": "partial: map, conclusions, recommendations and report",
+          "status": "PASS"
+        },
+        {
+          "name": "unfinished: dashboard blocked",
+          "status": "PASS"
+        },
+        {
+          "name": "C01 preserves one full combined action for information and consultation during change",
+          "status": "PASS"
+        },
+        {
+          "name": "E/L discrepancy with full P retains source-based verification and no invented P failure",
+          "status": "PASS"
+        },
+        {
+          "name": "Branches share one P with distinct local E/L",
+          "status": "PASS"
+        },
+        {
+          "name": "Corporate P-only results without environments",
+          "status": "PASS"
+        },
+        {
+          "name": "Offline action generation and persistence",
+          "status": "PASS"
+        },
+        {
+          "name": "Local file HTML works offline after actual JSON restore",
+          "status": "PASS"
+        },
+        {
+          "name": "No browser runtime errors",
+          "status": "PASS"
+        }
+      ],
+      "errors": []
+    },
+    "exports": {
+      "pdfs": {
+        "p-only-report.pdf": 5,
+        "p-plus-e-plus-l-report.pdf": 5,
+        "p-plus-e-report.pdf": 5
+      },
+      "xlsx_new_actions": 3,
+      "xlsx_legacy_actions": 1,
+      "result": "PASS"
+    }
+  },
+  "methodology": {
+    "practice_answer_scenarios": 168,
+    "not_implemented_models": 42,
+    "implementation_criteria_mapped": 168,
+    "canonical_semantic_builder_sources": "byte-identical to 0b45c29"
+  },
+  "file_hashes": {
+    "local/index.html": "1c7c2d4f1099883ed19ceec1915c085dfeef5fd3cd8fe945bde1935ad2f1756e",
+    "index.html": "d1317d0a98611b9a6f181576ae55ce85f2396115630cb66e84c2521320ad69c3",
+    "tests/portal-regression.mjs": "ba5937a469d758c789f4efacaa0bb187595e8ca8ab82d1400b652b6119a2c1b8",
+    "tests/checkup-browser.cjs": "b588d62177d996f21c37e3057f8f8bf9444d7a343e3b0e86e00061f03159a2cc"
+  }
+}
