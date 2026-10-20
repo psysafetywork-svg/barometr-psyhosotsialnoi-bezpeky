@@ -6,9 +6,10 @@ const {chromium}=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?path.joi
 const os=require('os'),{execFileSync}=require('child_process');
 const repo=path.resolve(__dirname,'..'),out=process.env.BAROMETER_QA_OUTPUT||fs.mkdtempSync(path.join(os.tmpdir(),'barometer-checkup-qa-'));fs.mkdirSync(out,{recursive:true});
 const previous=execFileSync('git',['show','0b45c29dbb3a1300ef1e8c0389377f60ab9bf20d:local/index.html'],{cwd:repo,maxBuffer:10*1024*1024});
+const reviewed=execFileSync('git',['show','4de7798e0df7d9ee339762d620eda6a9ef64f6ce:local/index.html'],{cwd:repo,maxBuffer:10*1024*1024});
 const baseline=execFileSync('git',['show','15eea99fcabd0a22f7615311deda281949a9e716:local/index.html'],{cwd:repo,maxBuffer:10*1024*1024});
 let version='baseline',baseUrl;const logs=[],errors=[];
-const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:req.url==='/local/'&&version==='previous'?previous:file?fs.readFileSync(file):'Not found')});
+const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:req.url==='/local/'&&version==='previous'?previous:req.url==='/local/'&&version==='reviewed'?reviewed:file?fs.readFileSync(file):'Not found')});
 const record=(name,data={})=>{logs.push({name,status:'PASS',...data});fs.writeFileSync(out+'/browser-checks.json',JSON.stringify({browser:browserVersion,checks:logs,errors},null,2));console.log('PASS',name)};let browserVersion;
 async function setup(page,{E=40,L=20,answers={},empty=false}={}){
  return await page.evaluate(({E,L,answers,empty})=>{
@@ -76,7 +77,7 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
   assert.equal(await p.locator('#checkup-verification-appendix').count(),0);
   assert.equal(await p.locator('.module-head').count(),7);
   const text=await p.innerText('body');assert.doesNotMatch(text,/P\d{2}-C[1-4]|Повні критерії.*додатку|окрема організаційна дія.*не формується/i);
-  assert.match(text,/P15/);assert.match(text,/5 із 6/);assert.match(text,/Буря/);
+  assert.equal(await p.locator('#report-methodology').count(),1);assert.equal(await p.locator('#report-source-scope').count(),1);assert.doesNotMatch(text,/Усі кроки доступні в дашборді/);assert.match(text,/P15/);assert.match(text,/5 із 6/);assert.match(text,/Буря/);
   await p.pdf({path:out+'/'+name+'.pdf',format:'A4',printBackground:true,preferCSSPageSize:true});await p.close();record(name+': actual downloaded report, seven modules, no appendix, browser PDF');
  }
  for(const [E,L,name] of [[0,0,'p-only'],[9,3,'insufficient'],[20,0,'p-plus-e'],[0,10,'p-plus-l'],[20,10,'p-plus-e-plus-l']]){
@@ -87,7 +88,7 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
   assert.equal(await page.locator('[data-criterion-id]').count(),0);assert.equal(await page.locator('[data-action-id="PRACTICE:P31"]').count(),1);
   assert.equal(await page.locator('#matrix-2 [data-action-id]').count(),0);
   await page.screenshot({path:out+'/'+name+'-dashboard.png',fullPage:true});
-  if(['p-only','p-plus-e','p-plus-e-plus-l'].includes(name))await reportPdf(name+'-report');
+  if(['p-only','p-plus-e','p-plus-l','p-plus-e-plus-l'].includes(name))await reportPdf(name+'-report');
   await expand(1,'P03');const button=page.locator('[data-target="PRACTICE:P03"]');await button.click();
   assert.equal(await page.evaluate(()=>currentPlan().length),1);assert.equal(await page.evaluate(()=>currentPlan()[0].envId),null);
   await dash(page);await expand(1,'P03');assert.equal(await button.isDisabled(),true);record(`${name}: statuses, cross-module provenance, real add and duplicate prevention`);
@@ -123,9 +124,20 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  version='previous';await page.reload();await setup(page,{E:20,L:10,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="CRITERION:P03-C1"]').click();
  await page.evaluate(()=>{const a=currentPlan()[0];a.description='Ручні зміни старого запису';a.envId='env-shift';save()});
  const old=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),old);
- await dash(page);await expand(1,'P03');assert.equal(await page.locator('[data-target="PRACTICE:P03"]').isDisabled(),true);assert.match(await page.locator('[data-practice-code="P03"]').innerText(),/попередні редагування збережено/);record('Same-origin 0b45c29 criterion upgrade preserves edited record and avoids duplicate');
+ await dash(page);await expand(1,'P03');assert.equal(await page.locator('[data-target="PRACTICE:P03"]').isDisabled(),true);assert.match(await page.locator('[data-practice-code="P03"]').innerText(),/Цю дію додано раніше\. Перевірте, чи її опис містить усі потрібні кроки\. Ми не змінювали її автоматично\./);await page.locator('[data-practice-code="P03"]').screenshot({path:out+'/legacy-plan-notice.png'});record('Same-origin 0b45c29 criterion upgrade preserves edited record and avoids duplicate');
  const legacyBackup=await download(page,async()=>{await page.evaluate(()=>{S.screen='home';render()});await page.locator('[data-a="backup-info"]').first().click();await page.locator('[data-a="backup-download"]').click()},'legacy-upgrade-backup.json');
  await page.evaluate(()=>{S.screen='start';S.r=null;render()});await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(legacyBackup);await page.locator('[data-a="restore-backup"]').click();await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>S.r),JSON.parse(fs.readFileSync(legacyBackup)).data);await page.locator('[data-a="plan"]').last().click();await download(page,()=>page.locator('[data-a="export"]').click(),'legacy-upgrade-plan.xlsx');record('Upgraded criterion study: real JSON restore and XLSX export');
+
+ // Latest reviewed 4de7798 action, edited by its owner, remains intact at the same origin.
+ version='reviewed';await page.reload();await setup(page,{E:0,L:0,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="PRACTICE:P03"]').click();
+ await page.evaluate(()=>{const a=currentPlan()[0];a.description='Збережені власницею кроки з перевіреної версії';a.owner='Власниця';save()});
+ const latestReviewedState=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));
+ version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),latestReviewedState);
+ await dash(page);await expand(1,'P03');assert.equal(await page.locator('[data-target="PRACTICE:P03"]').isDisabled(),true);
+ assert.match(await page.locator('[data-practice-code="P03"]').innerText(),/Цю дію додано раніше/);
+ await page.locator('[data-practice-code="P03"]').screenshot({path:out+'/legacy-4de7798-notice.png'});
+ record('Same-origin 4de7798 upgrade preserves old practice action and shows contextual notice');
+
  // Additional required status and presentation scenarios.
  for(const [name,answers,done] of [['all-full',{},true],['two-no',{P01:'no',P02:'no'},true],['fog',{P01:'insufficient',P02:'insufficient',P03:'insufficient'},true],['partial',{P03:'partial'},true],['unfinished',{},false]]){
   await setup(page,{E:0,L:0,answers});if(!done){await page.evaluate(()=>{period().checkup.done=false;save();render()});assert.equal(await page.evaluate(()=>canDashboard(env('env-office'))),false);record(name+': dashboard blocked');continue;}

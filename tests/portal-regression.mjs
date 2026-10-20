@@ -167,7 +167,7 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   const report=portal.api.buildReportHtml(environment);
   assert.match(report,/Ключові результати за модулями/);
   assert.doesNotMatch(report,/Що уточнити/);
-  assert.match(report,/позитивна самооцінка сама по собі не доводить їх результативності/);
+  assert.match(report,/позитивна відповідь сама по собі не доводить результативності практики/);
   assert.match(report,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(report,/<th>Організаційні практики<\/th>/);
   const xlsx=portal.api.planXlsxBytes(portal.api.planRows());
@@ -261,7 +261,7 @@ test('report uses final semantic action wording when E and P support an action',
   const report=portal.api.buildReportHtml(environment);
   assert.match(report,/Сигнали опитування потребують перевірки/);
   assert.match(report,/P19/);
-  assert.match(report,/Уточнити та вдосконалити практику/);
+  assert.match(report,/Уточнити пояснення й послідовне застосування критеріїв винагороди/);
 });
 
 test('P40 follow-up renders immediately after selecting not implemented',()=>{
@@ -1370,7 +1370,7 @@ for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`checkup-o
   for(const row of rows){assert.equal(row.e,eCount===0?'Немає даних':eCount<20?'Недостатня вибірка':'Ясно');assert.equal(row.l,lCount===0?'Немає даних':lCount<10?'Недостатня вибірка':'Ясно');}
   assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта організаційної погоди/);
   const analysis=portal.api.barometerSemanticInterpretation();assert.ok(analysis.actions.some(x=>x.final_action_id==='M6-A1'));
-  if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/За самооцінкою компанії/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
+  if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/Повністю реалізовано/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
   const report=portal.api.buildReportHtml(environment);assert.doesNotMatch(report,/checkup-verification-appendix|P\d{2}-C[1-4]/);assert.equal((report.match(/class="module-head"/g)||[]).length,7);
   assert.equal(state.r.plan.length,0);
 });
@@ -1529,7 +1529,7 @@ for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)t
  assert.equal(Object.keys(model.coverage).length,4);
  for(const [id,step] of Object.entries(model.coverage)){assert.equal(model.steps[step-1].length>30,true,id);assert.ok(portal.api.BAROMETER_P_VERIFICATION[practice.code].criteria.some(c=>c.id===id));}
  if(answer==='no'){for(const step of model.steps)assert.ok(action.steps.includes(step));assert.match(action.action,/відсутній.*існує, але не працює/);}
- if(answer==='partial'){assert.match(action.action,/Усунути лише встановлені прогалини/);assert.ok(action.steps.filter(s=>s.startsWith('Перевірити, чи')).length===4);}
+ if(answer==='partial'){for(const step of model.partial.steps)assert.ok(action.steps.includes(step));assert.equal(action.title,model.partial.title);assert.doesNotMatch(action.action,/Перевірити, чи виконується така умова/);assert.doesNotMatch(action.title,/Уточнити та вдосконалити практику:/);}
  if(answer==='insufficient'){assert.match(action.action,/брак підтверджень не доводить відсутності/i);for(const source of portal.api.BAROMETER_P_VERIFICATION[practice.code].sources)assert.ok(action.action.includes(source));}
  const click=async()=>portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:String(practice.module),target:action.id},replaceWith(){}})}});
  await click();await click();assert.equal(state.r.plan.length,1);const saved=state.r.plan[0];
@@ -1566,4 +1566,37 @@ test('C01 presentation preserves one complete action across P-only and E/L/P',as
   await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:'C01'},replaceWith(){}})}});
   assert.equal(state.r.plan.length,1);assert.equal(state.r.plan[0].description,c.action);assert.equal(state.r.plan[0].envId,null);
  }
+});
+
+test('all 84 editorial variants have individual titles and four preserved review questions',()=>{
+ for(const answer of ['partial','insufficient']){
+  const titles=portal.api.P_LIST.map(p=>portal.api.BAROMETER_P_ACTION_LIBRARY[p.code][answer].title);assert.equal(new Set(titles).size,42);
+  for(const p of portal.api.P_LIST){const model=portal.api.BAROMETER_P_ACTION_LIBRARY[p.code];checkupOnlyScenario({overrides:{[p.code]:answer}});
+   const a=portal.api.barometerPracticeAction(p.code);for(const question of model.partial.steps.slice(0,4))assert.ok(a.steps.includes(question));
+   assert.doesNotMatch(a.action,/З’ясувати й зафіксувати підтвердження або відхилення:|Перевірити, чи виконується така умова:/);
+  }
+ }
+});
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test('report sources and one methodology block '+eCount+'/'+lCount,()=>{
+ const {environment}=checkupOnlyScenario({eCount,lCount,overrides:{P03:'partial',P15:'no',P24:'insufficient',P31:'partial'}});
+ const html=portal.api.buildReportHtml(environment);
+ assert.equal((html.match(/id="report-source-scope"/g)||[]).length,1);assert.equal((html.match(/id="report-methodology"/g)||[]).length,1);
+ assert.equal((html.match(/позитивна відповідь сама по собі/g)||[]).length,1);
+ assert.doesNotMatch(html,/Усі кроки доступні в дашборді|переносяться до Плану|<b>Як читати статуси\.<\/b>/);
+ assert.ok(html.indexOf('id="report-source-scope"')<html.indexOf('<section class="summary-card">'));
+ assert.ok(html.indexOf('id="report-methodology"')>html.lastIndexOf('class="module-head"'));
+ if(eCount===20&&lCount===10)assert.match(html,/досвід працівників, оцінку керівників та організаційний чекап/);
+ else if(eCount===20)assert.match(html,/Без достатніх даних керівників/);
+ else if(lCount===10)assert.match(html,/Без достатніх даних працівників/);
+ else assert.match(html,/Результати організаційного чекапу на рівні компанії/);
+ if(eCount===9)assert.match(html,/недостатня вибірка \(9 із потрібних 20\)/);
+ for(const threshold of ['75%','15%','30%','55%','20 валідних','10 валідних','P40'])assert.ok(html.includes(threshold));
+});
+test('updated content notice covers an old practice record without rewriting manual edits',()=>{
+ const {state}=checkupOnlyScenario({overrides:{P03:'partial'}});
+ state.r.plan=[{id:'old-practice',periodId:state.r.current,envId:null,sourceTarget:'PRACTICE:P03',action:'Ручна назва',description:'Старі ручні кроки',indicator:'Ручний показник'}];
+ const before=JSON.stringify(state.r.plan),html=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]);
+ assert.match(html,/Цю дію додано раніше\. Перевірте, чи її опис містить усі потрібні кроки\. Ми не змінювали її автоматично\./);
+ assert.equal(JSON.stringify(state.r.plan),before);
+ state.r.plan=[];assert.doesNotMatch(portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]),/Цю дію додано раніше/);
 });

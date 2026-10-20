@@ -5,8 +5,8 @@ const r={company:'Синтетична компанія QA',owner:'QA',current:'
 const rows=[];
 for(const p of api.P_LIST)for(const answer of ['full','partial','no','insufficient']){
  const a=api.barometerPracticeAction(p.code,answer),criteria=api.BAROMETER_P_VERIFICATION[p.code].criteria,model=api.BAROMETER_P_ACTION_LIBRARY[p.code];
- const coverage=criteria.map((c,i)=>({id:c.id,criterion:c.criterion,step:answer==='no'?a.steps.indexOf(model.steps[i])+1:answer==='partial'?i+1:answer==='insufficient'?i+2:null,step_text:answer==='no'?model.steps[i]:answer==='partial'||answer==='insufficient'?a.steps[answer==='partial'?i:i+1]:null}));
- if(answer==='no'&&coverage.some(c=>c.step<1))throw Error('Missing coverage '+p.code);
+ const coverage=criteria.map((c,i)=>({id:c.id,criterion:c.criterion,step:answer==='no'?a.steps.indexOf(model.steps[i])+1:answer==='partial'?a.steps.indexOf(model.partial.steps[i])+1:answer==='insufficient'?a.steps.indexOf(model.partial.steps[i])+1:null,step_text:answer==='no'?model.steps[i]:answer==='partial'||answer==='insufficient'?model.partial.steps[i]:null}));
+ if(answer!=='full'&&coverage.some(c=>c.step<1))throw Error('Missing coverage '+p.code);
  rows.push({practice:p.code,statement:p.text,answer,label:api.BAROMETER_P_ANSWER_LABELS[answer],criteria,action:a?.title||'Коригувальний захід не формується',steps:a?.steps||[],coverage,check:a?.check||'Підтримувати фактичне застосування; позитивна самооцінка не доводить результативності.',audit:'PASS',review:answer==='full'?'Без штучної корекції.':answer==='partial'?'Усі складові перевіряються; усуваються лише встановлені прогалини.':answer==='insufficient'?'Отримання підтверджень без припущення про відсутність практики.':'Індивідуальна модель впровадження охоплює всі чотири істотні критерії; уточнюється відсутність або нефункціонування.'});
 }
 fs.writeFileSync(root+'/docs/ORGANISATIONAL_ACTIONS_AUDIT_2026-10-20.json',JSON.stringify(rows,null,2));
