@@ -38,7 +38,5 @@ jobs:
         if: always()
         with:
           name: corrective-review
-          path: |
-            /tmp/barometer-corrective-review/
-            docs/ORGANISATIONAL_ACTIONS_AUDIT_2026-10-20.*
+          path: /tmp/barometer-corrective-review/
           retention-days: 30
