@@ -1,3 +1,5 @@
+> Оновлення тестової гілки після погодженого data-safety patch: поточний технічний статус **READY FOR REVIEW**, план переходу **SAFE ROLLOUT PLAN VERIFIED**. Див. [новий звіт](STORAGE_SAFETY_PATCH_2026-10-21.md). Нижче збережено історичний release-gate до виправлення. Production не змінено.
+
 # Барометр v1.0: фінальний release-gate
 
 **BLOCKED**

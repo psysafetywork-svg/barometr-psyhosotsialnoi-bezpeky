@@ -1,0 +1,9 @@
+{
+  "testedCommit": "c0c6b77e01e0f658894ad905762a6628426eded4",
+  "publicOuterByteIdenticalTo569a2be": true,
+  "embeddedByteIdentical": true,
+  "localSHA256": "4a26e88806aa6d8879dde54a1d2812e35fe9d2ed4f617cf43589a23241f710ff",
+  "publicSHA256": "4e67415287e7a4e7fec6a5e25b28f999f22c13d27fa20037af3c5277d7941ab8",
+  "archiveSHA256": "cf8ce461b08aa9aa313e7f1a15590b1bc3507dd41848aa3a445d59b75da3496b",
+  "sourceMain": "15eea99fcabd0a22f7615311deda281949a9e716"
+}
