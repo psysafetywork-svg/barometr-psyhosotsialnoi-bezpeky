@@ -134,6 +134,8 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  await page.evaluate(()=>{S.screen='start';S.r=null;render()});await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(legacyBackup);await page.locator('[data-a="restore-backup"]').click();await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>S.r),JSON.parse(fs.readFileSync(legacyBackup)).data);await page.locator('[data-a="plan"]').last().click();await download(page,()=>page.locator('[data-a="export"]').click(),'legacy-upgrade-plan.xlsx');record('Upgraded criterion study: real JSON restore and XLSX export');
 
  // Latest reviewed 4de7798 action, edited by its owner, remains intact at the same origin.
+ // Independent pre-protection fixture, retaining the same upgrade assertions.
+ await page.evaluate(()=>localStorage.clear());
  version='reviewed';await page.reload();await setup(page,{E:0,L:0,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="PRACTICE:P03"]').click();
  await page.evaluate(()=>{const a=currentPlan()[0];a.description='Збережені власницею кроки з перевіреної версії';a.owner='Власниця';save()});
  const latestReviewedState=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));

@@ -34,7 +34,7 @@ async function run(engine){
   assert.match(await b.locator('#storage-safety').innerText(),/Це дослідження вже відкрите в іншій вкладці/);
   const race=await Promise.all([edit(a,'P13','partial','owner','Нова відповідальна'),b.evaluate(()=>{let error;try{StorageSafety.persist(JSON.stringify({periods:[],company:'stale'}))}catch(e){error=e.message}return {error,raw:localStorage.getItem(STORE)}})]);
   assert.ok(race[1].error);assert.equal(JSON.parse((await state(a)).raw).plan[0].owner,'Нова відповідальна');
-  for(const action of ['confirm-delete','backup-existing','restore-backup','save-period','save-env','save-plan'])await b.evaluate(action=>document.dispatchEvent(new CustomEvent('click',{detail:action})),action);
+  for(const action of ['confirm-delete','backup-existing','restore-backup','save-period','save-env','save-plan'])await b.evaluate(action=>{const button=document.createElement('button');button.dataset.a=action;document.getElementById('app').appendChild(button);button.click();button.remove()},action);
   await b.reload();await mode(b,'waiting');await a.close();await ready(b);await b.locator('[data-a="continue"]').click();
   await edit(b,'P14','no','indicator','Новий показник');const r=await reloadAndRead(b);assert.equal(r.periods[0].checkup.answers.P13,'partial');assert.equal(r.periods[0].checkup.answers.P14,'no');assert.equal(r.plan[0].owner,'Нова відповідальна');assert.equal(r.plan[0].indicator,'Новий показник');
   await b.screenshot({path:out+'/'+engine+'-transferred.png',fullPage:true});
@@ -74,7 +74,7 @@ async function run(engine){
   await p.locator('[data-f="priority"]').first().selectOption('Середній');await p.locator('[data-f="status"]').first().selectOption('У роботі');await p.locator('[data-f="envId"]').first().selectOption('p1b');
   const expected=await p.evaluate(()=>JSON.parse(JSON.stringify(S.r)));assert.equal(expected.periods[0].envs[0].survey.e,30);assert.equal(expected.periods[0].envs[0].survey.l,12);
   const xlsxEvent=p.waitForEvent('download');await p.locator('[data-a="export"]').click();const xd=await xlsxEvent;await xd.saveAs(out+'/'+engine+'-plan.xlsx');
-  await p.locator('[data-a="backup-info"]').first().click();const event=p.waitForEvent('download');await p.locator('[data-a="backup-download"]').click();const d=await event;const file=out+'/'+engine+'-backup.json';await d.saveAs(file);const backup=JSON.parse(fs.readFileSync(file)).data;
+  await p.locator('[data-a="home"]').first().click();await p.locator('[data-a="backup-info"]').first().click();const event=p.waitForEvent('download');await p.locator('[data-a="backup-download"]').click();const d=await event;const file=out+'/'+engine+'-backup.json';await d.saveAs(file);const backup=JSON.parse(fs.readFileSync(file)).data;
   await p.evaluate(()=>{S.r=null;S.screen='start';render()});await p.locator('[data-a="restore-open"]').click();await p.locator('#restore-file').setInputFiles(file);await p.locator('[data-a="restore-backup"]').click();assert.deepEqual(await reloadAndRead(p),backup);
   const before=await state(p);await p.evaluate(()=>{S.r.current='p2';save();S.r.current='p1';save()});assert.equal((await state(p)).raw,before.raw);
   for(const id of [17,18,19,20,21,22,23,24])await evidence(engine,id,'EL, periods, Plan, backup and rapid writes intact',p,before,'Real CSV and XLSX import; edit all Plan fields; 50 saves; actual XLSX/JSON download; JSON restore; switch periods; full reload equality',{expected:backup});

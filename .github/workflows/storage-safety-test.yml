@@ -28,7 +28,7 @@ jobs:
       - name: Node regressions
         run: |
           mkdir -p "$BAROMETER_QA_OUTPUT"
-          node --test tests/portal-regression.mjs | tee "$BAROMETER_QA_OUTPUT/node-tests.tap"
+          node --test tests/portal-regression.mjs tests/storage-safety-unit.mjs | tee "$BAROMETER_QA_OUTPUT/node-tests.tap"
       - name: Exact methodology and import/export function checks
         if: always()
         run: node tests/release-gate-matrix.cjs > "$BAROMETER_QA_OUTPUT/matrix.log" 2>&1
@@ -40,7 +40,9 @@ jobs:
         run: node tests/storage-safety-browser.cjs
       - name: Inspect PDF and XLSX exports
         if: always()
-        run: python tests/inspect-corrective-pdfs.py
+        run: |
+          node tests/export-corrective-review.cjs
+          python tests/inspect-corrective-pdfs.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
