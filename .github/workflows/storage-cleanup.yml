@@ -1,0 +1,19 @@
+name: Cancel obsolete isolated storage verification
+on:
+  push:
+    branches: [feature/checkup-only-verification-2026-10-20]
+    paths: [.github/workflows/storage-cleanup.yml]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  cancel-obsolete-test:
+    if: github.ref == 'refs/heads/feature/checkup-only-verification-2026-10-20'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const run = await github.rest.actions.getWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 39552622841});
+            if (run.data.head_branch !== 'feature/checkup-only-verification-2026-10-20' || run.data.path !== '.github/workflows/storage-safety-test.yml') throw new Error('Unexpected target');
+            if (run.data.status !== 'completed') await github.rest.actions.cancelWorkflowRun({owner: context.repo.owner, repo: context.repo.repo, run_id: 39552622841});
