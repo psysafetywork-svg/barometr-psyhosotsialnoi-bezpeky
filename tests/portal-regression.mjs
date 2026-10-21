@@ -25,7 +25,9 @@ function loadLocalPortal(){
   };
   const context=vm.createContext({
     console,document,
-    window:{scrollTo(){},print(){}},
+    window:{scrollTo(){},print(){},addEventListener(){}},
+    // Synchronous single-document lock fixture. Concurrency is tested in real browsers.
+    navigator:{locks:{request(_name,_options,callback){return Promise.resolve(callback({name:_name}))}}},
     localStorage:{
       getItem(key){return storage.has(key)?storage.get(key):null},
       setItem(key,value){storage.set(key,String(value))},
@@ -1063,7 +1065,7 @@ test('existing study load and JSON restore preserve cached status but use curren
   environment.survey.results.l=portal.api.aggregateSource(rows,'L');
   environment.survey.results.l.modules[1].status='Хмарно';
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
-  portal.storage.set(portal.api.STORE,JSON.stringify(original));
+  portal.api.save();
   const loaded=portal.api.load();
   assert.equal(loaded.periods[0].envs[0].survey.results.l.modules[1].status,'Хмарно');
   const query=portal.document.querySelector;
@@ -1209,9 +1211,9 @@ test('M02 validates nested E/L and organizational checkup results',()=>{
 });
 test('M02 restore rejects malformed aggregates without changing existing research',async()=>{
   setRuntimeScenario();
+  portal.api.save(); // Seed through the protected writer before taking the fixture baseline.
   const initial=JSON.parse(JSON.stringify(portal.api.getState().r));
   const corrupted=JSON.parse(JSON.stringify(initial));corrupted.periods[0].envs[0].survey.results.e.modules=null;
-  portal.storage.set(portal.api.STORE,JSON.stringify(initial));
   const query=portal.document.querySelector;
   portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:query(selector);
   try{
@@ -1290,9 +1292,9 @@ test('M02 backup rejects invalid calendar dates in periods and current checkup',
 });
 test('M02 restore invalid P answer or date does not change existing research and storage',async()=>{
   setRuntimeScenario();
+  portal.api.save(); // Seed through the protected writer before taking the fixture baseline.
   const before=JSON.parse(JSON.stringify(portal.api.getState().r));
   const beforeText=JSON.stringify(before),oldQuery=portal.document.querySelector;
-  portal.storage.set(portal.api.STORE,beforeText);
   try{
     for(const change of [r=>{r.periods[0].checkup.answers.P01='INVALID'},r=>{r.periods[0].start='2026-02-30'}]){
       const corrupted=JSON.parse(beforeText);change(corrupted);

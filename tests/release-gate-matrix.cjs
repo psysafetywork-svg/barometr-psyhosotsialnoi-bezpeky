@@ -47,7 +47,7 @@ for(const [E,L] of [[0,0],[9,3],[20,0],[0,10],[20,10]])for(const eValue of [1,5]
 fs.writeFileSync(out+'/elp-matrix.json',JSON.stringify(elp,null,2));
 const baseline=execFileSync('git',['show','9f4458dc43179ea2398b817219650e8cc5c0de95:local/index.html'],{cwd:root,maxBuffer:12*1024*1024}).toString();
 const production=execFileSync('git',['show','15eea99fcabd0a22f7615311deda281949a9e716:local/index.html'],{cwd:root,maxBuffer:12*1024*1024}).toString();
-const names=['save','load','normalizeResearch','safeResearchClone','validateBackupResearch','downloadResearchBackup','planXlsxBytes','parseCSV','validateTableRows','weatherStatus','aggregateSource','calculatePResults'];
+const names=['normalizeResearch','safeResearchClone','validateBackupResearch','planXlsxBytes','parseCSV','validateTableRows','weatherStatus','aggregateSource','calculatePResults'];
 const minimalLoader=loader.replace(/globalThis\.__portal=\{[\s\S]*?\n    \};/,'globalThis.__portal={'+names.join(',')+',STORE};');
 const protectedApi=html=>new Function('fs','vm','localHtml',minimalLoader+';return loadLocalPortal()')(fs,vm,html).api;
 const protectedNew=protectedApi(localHtml),protectedMain=protectedApi(production),protectedBefore=protectedApi(baseline),protection={STORE:protectedNew.STORE,functions:{}};
@@ -57,3 +57,6 @@ const oldLibraryStart=baseline.indexOf('const BAROMETER_P_ACTION_LIBRARY=')+'con
 for(const [code,model] of Object.entries(oldLibrary))for(const key of ['title','steps','check','coverage','partial','insufficient'])assert.equal(JSON.stringify(api.BAROMETER_P_ACTION_LIBRARY[code][key]),JSON.stringify(model[key]),code+'/'+key);
 fs.writeFileSync(out+'/protected-functions.json',JSON.stringify(protection,null,2));
 console.log('GATE_NODE_RESULTS '+JSON.stringify({p:summary,elpRows:elp.length,sourceProfiles:120,protected:protection,unchangedRecommendationModels:168}));
+
+// Approved storage patch changes exactly the writer, reader and backup persistence.
+for(const name of ['save','load','downloadResearchBackup']) assert.match(localHtml.slice(localHtml.indexOf('function '+name+'('),localHtml.indexOf('\nfunction ',localHtml.indexOf('function '+name+'(')+1)),/StorageSafety/);

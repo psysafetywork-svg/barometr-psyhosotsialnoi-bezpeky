@@ -1,0 +1,49 @@
+name: Storage safety verification (test branch only)
+on:
+  push:
+    branches: [feature/checkup-only-verification-2026-10-20]
+    paths:
+      - local/index.html
+      - tests/**
+      - .github/workflows/storage-safety-test.yml
+permissions:
+  contents: read
+jobs:
+  storage-safety:
+    if: github.ref == 'refs/heads/feature/checkup-only-verification-2026-10-20'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BAROMETER_QA_OUTPUT: /tmp/barometer-storage-safety
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save playwright
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: python -m pip install pymupdf pillow openpyxl
+      - name: Node regressions
+        run: |
+          mkdir -p "$BAROMETER_QA_OUTPUT"
+          node --test tests/portal-regression.mjs | tee "$BAROMETER_QA_OUTPUT/node-tests.tap"
+      - name: Exact methodology and import/export function checks
+        if: always()
+        run: node tests/release-gate-matrix.cjs > "$BAROMETER_QA_OUTPUT/matrix.log" 2>&1
+      - name: Existing browser regression and PDF exports
+        if: always()
+        run: node tests/checkup-browser.cjs
+      - name: Storage safety in Chromium Firefox WebKit
+        if: always()
+        run: node tests/storage-safety-browser.cjs
+      - name: Inspect PDF and XLSX exports
+        if: always()
+        run: python tests/inspect-corrective-pdfs.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: barometer-storage-safety
+          path: /tmp/barometer-storage-safety/
+          retention-days: 30

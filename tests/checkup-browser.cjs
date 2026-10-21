@@ -12,6 +12,7 @@ let version='baseline',baseUrl;const logs=[],errors=[];
 const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:req.url==='/local/'&&version==='previous'?previous:req.url==='/local/'&&version==='reviewed'?reviewed:file?fs.readFileSync(file):'Not found')});
 const record=(name,data={})=>{logs.push({name,status:'PASS',...data});fs.writeFileSync(out+'/browser-checks.json',JSON.stringify({browser:browserVersion,checks:logs,errors},null,2));console.log('PASS',name)};let browserVersion;
 async function setup(page,{E=40,L=20,answers={},empty=false}={}){
+ await page.waitForFunction(()=>typeof StorageSafety==='undefined'||StorageSafety.mode==='editor');
  return await page.evaluate(({E,L,answers,empty})=>{
   const r={company:'Синтетична компанія - QA',owner:'Тестова власниця дослідження',current:'period-qa',periods:[{id:'period-qa',label:'Вересень 2026',start:'2026-09-01',end:'2026-09-30',envs:[{id:'env-office',name:'Офіс - синтетичні дані',survey:{}},{id:'env-shift',name:'Змінна робота - синтетичні дані',survey:{}}],checkup:{answers:{},notes:{},done:false,asOfDate:'2026-09-30',schemaVersion:CHECKUP_SCHEMA_VERSION}}],plan:[]};
   S={screen:'home',r,env:'env-office',module:1,modal:null,demo:false,returnResearch:null};
@@ -66,6 +67,8 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  await page.locator('[data-a="restore-open"]').count().then(async n=>{if(!n)await page.evaluate(()=>{S.screen='start';S.r=null;render()})});
  await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(backup);await page.locator('[data-a="restore-backup"]').click();
  await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>S.r),saved);record('Actual JSON file download and restore preserve same study');
+ // Independent old-version fixture; mixed-version conflicts are covered by storage-safety-browser.cjs.
+ await page.evaluate(()=>localStorage.clear());
  version='previous';await page.reload();await setup(page,{E:0,L:0});await dash(page);await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();await page.locator('[data-target="CRITERION:P01-C1"]').click();const reviewed=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),reviewed);record('Same-origin upgrade from 0b45c29 preserves legacy criterion action without migration');
  // Feature-version CSV import through the actual picker.
  await setup(page,{E:0,L:0,empty:true});await page.locator('[data-a="upload"][data-id="env-office"]').first().click();await page.locator('#file').setInputFiles(out+'/synthetic-import.csv');await page.locator('[data-a="validate"]').click();await page.locator('[data-a="accept"]').click();assert.equal(await page.evaluate(()=>env('env-office').survey.e),40);record('Feature-version actual CSV import');
@@ -121,6 +124,8 @@ async function download(page,click,file){const promise=page.waitForEvent('downlo
  await page.evaluate(()=>{S.screen='start';S.r=null;render()});await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(newBackup);await page.locator('[data-a="restore-backup"]').click();await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(()=>S.r),backupData);record('Actual JSON download and restore preserve new actions and edited fields');
  await page.locator('[data-a="plan"]').last().click();await page.locator('.plan-card').nth(2).locator('[data-a="del"]').click();assert.equal(await page.evaluate(()=>currentPlan().length),2);assert.deepEqual(await page.evaluate(()=>currentPlan()[0]),edited);record('Manual delete affects only selected action');
  // Previous criterion model, including edited records, remains readable and does not duplicate.
+ // Independent old-version fixture; mixed-version conflicts are covered by storage-safety-browser.cjs.
+ await page.evaluate(()=>localStorage.clear());
  version='previous';await page.reload();await setup(page,{E:20,L:10,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="CRITERION:P03-C1"]').click();
  await page.evaluate(()=>{const a=currentPlan()[0];a.description='Ручні зміни старого запису';a.envId='env-shift';save()});
  const old=await page.evaluate(()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(()=>S.r),old);
