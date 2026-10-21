@@ -327,14 +327,17 @@ function validateBackupResearch(r){
   return true
 }
 /* BAROMETER_STORAGE_SAFETY_2026_10_21_START
- * One lifetime Web Lock for the entire STORE. The auxiliary, atomic envelope is
- * authoritative for protected writes; STORE remains the backwards-compatible
- * mirror. Old code cannot be forced to cooperate. Never silently merge it.
+ * One lifetime Web Lock for the entire STORE. Strict IndexedDB transactions
+ * hold the authoritative full envelope; localStorage records are compatible
+ * mirrors. No save is acknowledged before the strict transaction completes. Old code cannot be forced to cooperate. Never silently merge it.
  */
 const StorageSafety=(()=>{
   const KEY=STORE+'_safety_v1',LOCK=STORE+'_editor_v1',MAX_CHARS=2000000;
   let owned=false,mode='starting',journal=null,journalText=null,problem='',release=null;
-  let memory=[],damagedJournal=null;
+  let memory=[],damagedJournal=null,db=null,vaultText=null,saving=0,chain=Promise.resolve();
+  const activeWrites=new Set();
+  let settleReady;const ready=new Promise(resolve=>{settleReady=resolve});
+  const enqueue=fn=>{const task=chain.then(fn);chain=task.catch(()=>{});return task};
   const fingerprint=raw=>{let n=2166136261;for(const c of String(raw)){n^=c.charCodeAt(0);n=Math.imul(n,16777619)}return (n>>>0).toString(16)};
   const snapshot=(raw,reason)=>({raw,hash:fingerprint(raw),reason,at:new Date().toISOString()});
   function valid(s){
@@ -346,12 +349,52 @@ const StorageSafety=(()=>{
     if(raw!==undefined&&!memory.some(s=>s.raw===raw))memory.push(snapshot(raw,reason));
   }
   function writeJournal(next){
+    if(!owned)throw new Error('Ця вкладка більше не має права запису.');
     const text=JSON.stringify(next);
     if(text.length>MAX_CHARS)throw new Error('Захисні копії заповнили доступний обсяг. Завантажте копії та зверніться по допомогу.');
     localStorage.setItem(KEY,text);
     if(localStorage.getItem(KEY)!==text)throw new Error('Не вдалося перевірити захисну копію.');
     journal=next;journalText=text;
   }
+  async function openVault(){
+    if(db)return;
+    if(typeof indexedDB==='undefined')throw new Error('Безпечне сховище недоступне у цьому браузері. Збережені дані не змінено.');
+    db=await new Promise((resolve,reject)=>{
+      const req=indexedDB.open(STORE+'_vault_v1',1);
+      req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('records'))req.result.createObjectStore('records')};
+      req.onerror=()=>reject(req.error||new Error('Не вдалося відкрити захисне сховище.'));
+      req.onblocked=()=>reject(new Error('Закрийте інші вкладки Барометра та повторіть перевірку.'));
+      req.onsuccess=()=>resolve(req.result);
+    });
+    db.onversionchange=()=>{db.close();db=null;fail(new Error('Захисне сховище змінилося. Закрийте інші вкладки та повторіть перевірку.'))};
+  }
+  async function readVault(){
+    await openVault();
+    return new Promise((resolve,reject)=>{const tx=db.transaction('records','readonly'),req=tx.objectStore('records').get('journal');req.onsuccess=()=>resolve(req.result??null);req.onerror=()=>reject(req.error);tx.onabort=()=>reject(tx.error||new Error('Читання захисної копії перервано.'))});
+  }
+  async function storeVault(next){
+    const text=JSON.stringify(next);
+    if(text.length>MAX_CHARS)throw new Error('Захисні копії заповнили доступний обсяг. Завантажте копії та зверніться по допомогу.');
+    await openVault();
+    if(!owned)throw new Error('Ця вкладка більше не має права запису.');
+    await new Promise((resolve,reject)=>{
+      // Strict durability must be supported. There is deliberately no silent
+      // fallback to relaxed transactions or localStorage-only acknowledgement.
+      const tx=db.transaction('records','readwrite',{durability:'strict'});activeWrites.add(tx);
+      let reason=null;
+      tx.onabort=()=>{activeWrites.delete(tx);reject(reason||tx.error||new Error('Запис захисної копії перервано.'))};
+      tx.onerror=()=>{};
+      tx.oncomplete=()=>{activeWrites.delete(tx);resolve()};
+      if(tx.durability!=='strict'){reason=new Error('У цьому браузері безпечне збереження недоступне. Відкрийте портал у сучасному браузері.');tx.abort();return}
+      const store=tx.objectStore('records'),read=store.get('journal');
+      read.onsuccess=()=>{
+        if((read.result??null)!==vaultText){reason=new Error('Захисні копії змінилися. Редагування призупинено.');tx.abort();return}
+        store.put(text,'journal');
+      };
+    });
+    vaultText=text;journal=next;
+  }
+  async function durableMetadata(next){await storeVault(next);if(!owned)throw new Error('Право редагування передано іншій вкладці.');writeJournal(next)}
   function preview(raw){
     let r;try{r=JSON.parse(raw)}catch{return ''}if(!r)return '';
     return `<details><summary>Переглянути дані версії</summary><p>Власник дослідження: ${h(r.owner)}. Поточний період: ${h(r.current)}</p>${r.periods.map(p=>`<section><h4>${h(p.label||p.id)}: ${h(p.start)} - ${h(p.end)}</h4><p>Відповіді чекапу: ${Object.entries(p.checkup?.answers||{}).map(([k,v])=>h(k)+': '+h(BAROMETER_P_ANSWER_LABELS[v]||v)).join('; ')}</p><p>Примітки: ${Object.entries(p.checkup?.notes||{}).map(([k,v])=>h(k)+': '+h(v)).join('; ')}</p><p>Робочі середовища: ${(p.envs||[]).map(e=>h(e.name)+'; анкет працівників: '+h(e.survey?.e||0)+'; керівників: '+h(e.survey?.l||0)).join('<br>')}</p></section>`).join('')}<h4>План організаційних дій</h4>${(r.plan||[]).map(a=>`<article style="border-top:1px solid #ddd"><p><b>${h(a.action)}</b></p><p>${h(a.description)}</p><p>Відповідальний: ${h(a.owner)}; строк: ${h(a.due)}; статус: ${h(a.status)}; пріоритет: ${h(a.priority)}</p><p>Показник: ${h(a.indicator)}</p><p>Період: ${h(a.periodId)}; середовище: ${h(a.envId||'Компанія загалом')}</p></article>`).join('')}</details>`;
@@ -373,13 +416,13 @@ const StorageSafety=(()=>{
         if(action==='download-all')download({format:'barometr-safety-copies',versions:versions(),damagedJournal},'Барометр_захисні_копії.json');
         if(action==='recover'){
           if(!confirm('Інші вкладки Барометра закриті? Відновити вибрану версію? Усі доступні копії залишаться збереженими.'))return;
-          recover(s);
+          await enqueue(()=>recover(s));
         }
         if(action==='confirm'){
           if(!owned||mode!=='review'||!journal||!journal.reviewPending)throw new Error('Спочатку виберіть версію для відновлення.');
-          verify();writeJournal({...journal,reviewPending:false});mode='editor';problem='';resetView();
+          await enqueue(async()=>{verify();await durableMetadata({...journal,reviewPending:false});verify();if(mode!=='review')throw new Error('Відновлення потребує повторної перевірки.');mode='editor';problem='';resetView()});
         }
-        if(action==='retry'&&owned){captureMemory();initialize()}
+        if(action==='retry'&&owned){captureMemory();await enqueue(initialize)}
         if(action==='close-copies'&&mode==='copies'){verify();mode='editor'}
       }catch(err){fail(err)}
       draw();
@@ -387,18 +430,16 @@ const StorageSafety=(()=>{
   }
   function download(value,name){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
   function versions(){
-    const list=[...(journal?.head?[{...journal.head,reason:'Останній захищений запис'}]:[]),...(journal?.previous?[{...journal.previous,reason:'Попередній захищений запис'}]:[]),...(Array.isArray(journal?.versions)?journal.versions:[]),...memory];
+    const list=[...(journal?.head?[{...journal.head,reason:journal.pending?'Копія незавершеного збереження':'Останній підтверджений запис'}]:[]),...(journal?.previous?[{...journal.previous,reason:'Попередній захищений запис'}]:[]),...(Array.isArray(journal?.versions)?journal.versions:[]),...memory];
     return list.filter((s,i)=>s&&list.findIndex(x=>x?.raw===s.raw)===i);
   }
   function captureMemory(){if(typeof S!=='undefined'&&S.r&&!S.demo)remember(JSON.stringify(S.r),'Зміни у цій вкладці')}
   function fail(err){captureMemory();mode='error';problem=err?.name==='QuotaExceededError'?'У браузері недостатньо місця для безпечного збереження. Завантажте доступні копії перед продовженням.':['SecurityError','NotAllowedError','InvalidStateError','UnknownError'].includes(err?.name)?'У цьому середовищі безпечне сховище недоступне. Збережені дані не змінюємо. Завантажте доступні копії або відкрийте портал у дозволеному браузері.':String(err?.message||err);draw();return false}
   function conflict(raw,reason){
     captureMemory();remember(raw,reason);mode='conflict';problem='Виявлено різні версії дослідження. Редагування призупинено, щоб зберегти дані.';
-    if(owned&&journal){
-      try{
-        const all=versions();writeJournal({...journal,conflict:true,versions:all});
-      }catch(err){fail(err)}
-    }
+    if(owned&&journal)enqueue(async()=>{
+      try{const all=versions();await durableMetadata({...journal,conflict:true,versions:all})}catch(err){fail(err)}
+    });
     draw();
   }
   function verify(){
@@ -415,19 +456,28 @@ const StorageSafety=(()=>{
     verify();
   }
   function persist(raw,{preserve=false}={}){
-    try{
-      assertEditor();
-      if(raw===journal.head.raw)return true;
-      const next={...journal,seq:journal.seq+1,previous:journal.head,head:snapshot(raw,'Захищений запис'),pending:true};
-      if(preserve)next.versions=versions();
-      // Atomic full recovery payload first. A crash after this point is visible
-      // as pending and requires explicit recovery, never silent rollback.
-      writeJournal(next);
-      if(raw===null)localStorage.removeItem(STORE);else localStorage.setItem(STORE,raw);
-      verify();writeJournal({...journal,pending:false});
-      const status=$('#autosave');if(status)status.textContent='Збережено автоматично';
-      return true;
-    }catch(err){if(mode!=='conflict')fail(err);throw err}
+    if(!allow())return Promise.reject(new Error('Редагування заблоковано для захисту даних.'));
+    saving++;const status=$('#autosave');if(status)status.textContent='Зберігаємо зміни…';
+    const task=enqueue(async()=>{
+      try{
+        assertEditor();
+        if(raw===journal.head.raw)return true;
+        const base=localStorage.getItem(STORE),baseText=journalText;
+        const next={...journal,seq:journal.seq+1,previous:journal.head,head:snapshot(raw,'Захищений запис'),pending:true};
+        if(preserve)next.versions=versions();
+        // Durable prepare contains the full candidate and previous state before
+        // either localStorage record changes. Every cross-store gap is visible.
+        await storeVault(next);
+        if(!allow()||localStorage.getItem(STORE)!==base||localStorage.getItem(KEY)!==baseText){conflict(localStorage.getItem(STORE),'Запис під час збереження');throw new Error('Збереження призупинено через різні версії.')}
+        writeJournal(next);
+        if(raw===null)localStorage.removeItem(STORE);else localStorage.setItem(STORE,raw);
+        verify();await storeVault({...journal,pending:false});verify();
+        if(!allow())throw new Error('Збереження потребує повторної перевірки.');
+        writeJournal(journal);
+        return true;
+      }catch(err){if(mode!=='conflict')fail(err);throw err}
+    });
+    return task.finally(()=>{saving--;const el=$('#autosave');if(el)el.textContent=allow()&&!saving?'Збережено автоматично':saving?'Зберігаємо зміни…':'Збереження призупинено'});
   }
   function read(){
     if(!allow())return null;
@@ -437,43 +487,53 @@ const StorageSafety=(()=>{
     S={screen:'start',r:null,env:null,module:1,modal:null,demo:false,returnResearch:null};
     render();draw();
   }
-  function initialize(){
+  async function initialize(){
     if(!owned)return;
+    mode='starting';draw();
     try{
       const raw=localStorage.getItem(STORE),text=localStorage.getItem(KEY);
-      journalText=text;
-      if(text!==null){
-        try{journal=JSON.parse(text)}catch{journal=null;damagedJournal=text;remember(raw,'Основний запис');mode='conflict';problem='Захисна копія пошкоджена. Виберіть доступну цілу версію.';draw();return;}
-        if(journal?.schema!==1||!Number.isSafeInteger(journal.seq)||!valid(journal.head)||!Array.isArray(journal.versions)||journal.versions.some(s=>!valid(s))||(journal.previous&&!valid(journal.previous))){
-          damagedJournal=text;remember(raw,'Основний запис');mode='conflict';problem='Захисна копія не пройшла перевірку. Виберіть доступну цілу версію.';draw();return;
+      journalText=text;vaultText=await readVault();
+      const authoritative=vaultText??text;
+      if(authoritative!==null){
+        try{journal=JSON.parse(authoritative)}catch{journal=null;damagedJournal=authoritative;remember(raw,'Основний запис');mode='conflict';problem='Захисна копія пошкоджена. Виберіть доступну цілу версію.';draw();return}
+        if(journal?.schema!==1||!Number.isSafeInteger(journal.seq)||!valid(journal.head)||!Array.isArray(journal.versions)||journal.versions.some(s=>!valid(s))||(journal.previous&&!valid(journal.previous))){damagedJournal=authoritative;remember(raw,'Основний запис');mode='conflict';problem='Захисна копія не пройшла перевірку. Виберіть доступну цілу версію.';draw();return}
+        if(vaultText===null)await storeVault(journal);
+        if(journal.pending||journal.conflict||raw!==journal.head.raw||text!==vaultText){
+          if(text&&text!==vaultText){try{const local=JSON.parse(text);if(valid(local.head))remember(local.head.raw,'Інша локальна захисна копія')}catch{damagedJournal=text}}
+          conflict(localStorage.getItem(STORE),'Основний запис після перерваного збереження або іншої вкладки');return;
         }
-        if(journal.pending||journal.conflict||raw!==journal.head.raw){conflict(raw,'Основний запис після перерваного збереження або іншої вкладки');return}
         if(journal.reviewPending){mode='review';problem='Підтвердіть завершення відновлення.';draw();return}
       }else{
-        if(raw!==null&&!valid(snapshot(raw,'Основний запис'))){remember(raw,'Нерозпізнаний основний запис');throw new Error('Не вдалося прочитати дослідження. Основний запис не змінено.');}
-        // First introduction preserves exact legacy bytes. No normalization write.
-        writeJournal({schema:1,seq:0,head:snapshot(raw,'Початковий запис'),previous:null,versions:[],pending:false,conflict:false,reviewPending:false});
-        if(localStorage.getItem(STORE)!==raw){conflict(localStorage.getItem(STORE),'Запис під час першого відкриття');return}
-        if(memory.length){conflict(raw,'Основний запис після втрати захисного сховища');return}
+        if(raw!==null&&!valid(snapshot(raw,'Основний запис'))){remember(raw,'Нерозпізнаний основний запис');throw new Error('Не вдалося прочитати дослідження. Основний запис не змінено.')}
+        const initial={schema:1,seq:0,head:snapshot(raw,'Початковий запис'),previous:null,versions:[],pending:false,conflict:false,reviewPending:false};
+        await storeVault(initial);
+        if(localStorage.getItem(STORE)!==raw||localStorage.getItem(KEY)!==text){conflict(localStorage.getItem(STORE),'Запис під час першого відкриття');return}
+        writeJournal(initial);
+        if(memory.length){conflict(raw,'Основний запис після втрати локального сховища');return}
         if(raw===null){
-          for(const key of LEGACY_STORES){const old=localStorage.getItem(key);if(old){if(!valid(snapshot(old,'Попередня версія')))throw new Error('Не вдалося перевірити попередню версію дослідження.');mode='editor';persist(old,{preserve:true});break}}
+          for(const key of LEGACY_STORES){const old=localStorage.getItem(key);if(old){
+            if(!valid(snapshot(old,'Попередня версія')))throw new Error('Не вдалося перевірити попередню версію дослідження.');
+            const next={...journal,seq:1,previous:journal.head,head:snapshot(old,'Дослідження попередньої версії'),pending:true};
+            await storeVault(next);if(localStorage.getItem(STORE)!==null){conflict(localStorage.getItem(STORE),'Запис під час відкриття попередньої версії');return}writeJournal(next);localStorage.setItem(STORE,old);verify();await durableMetadata({...journal,pending:false});break;
+          }}
         }
       }
-      if(memory.some(s=>s.raw!==journal.head.raw)){conflict(raw,'Незбережені зміни перед отриманням права редагування');return}
+      if(memory.some(s=>s.raw!==journal.head.raw)){conflict(localStorage.getItem(STORE),'Незбережені зміни перед отриманням права редагування');return}
       mode='editor';problem='';resetView();
     }catch(err){remember((()=>{try{return localStorage.getItem(STORE)}catch{return undefined}})(),'Основний запис');fail(err)}
   }
-  function recover(s){
+  async function recover(s){
     if(!owned||!valid(s))throw new Error('Вибрана версія не пройшла перевірку.');
-    const currentText=localStorage.getItem(KEY);
-    if(currentText!==journalText)throw new Error('Захисні копії змінилися. Повторіть перевірку.');
-    remember(localStorage.getItem(STORE),'Основний запис перед відновленням');captureMemory();
+    if(localStorage.getItem(KEY)!==journalText)throw new Error('Захисні копії змінилися. Повторіть перевірку.');
+    const base=localStorage.getItem(STORE);remember(base,'Основний запис перед відновленням');captureMemory();
     const next={schema:1,seq:(Number.isSafeInteger(journal?.seq)?journal.seq:0)+1,head:snapshot(s.raw,'Відновлена версія'),previous:valid(journal?.head)?journal.head:null,versions:versions().filter(valid),pending:true,conflict:false,reviewPending:true};
     if(damagedJournal)next.damagedJournal=damagedJournal;
     else if(journal?.damagedJournal)next.damagedJournal=journal.damagedJournal;
+    await storeVault(next);
+    if(!owned||localStorage.getItem(STORE)!==base){conflict(localStorage.getItem(STORE),'Запис під час відновлення');throw new Error('Закрийте старі вкладки та повторіть відновлення.')}
     writeJournal(next);
     if(s.raw===null)localStorage.removeItem(STORE);else localStorage.setItem(STORE,s.raw);
-    verify();writeJournal({...journal,pending:false});mode='review';problem='Вибрану версію відновлено. Підтвердіть завершення.';
+    verify();await storeVault({...journal,pending:false});verify();writeJournal(journal);mode='review';problem='Вибрану версію відновлено. Підтвердіть завершення.';
   }
   function onStorage(e){
     if(!owned||e.storageArea!==localStorage)return;
@@ -486,22 +546,24 @@ const StorageSafety=(()=>{
   }
   function start(){
     draw();
-    if(typeof navigator==='undefined'||!navigator.locks?.request){try{remember(localStorage.getItem(STORE),'Основний запис')}catch{}fail(new Error('У цьому браузері безпечне редагування недоступне. Відкрийте портал у сучасному браузері через захищене посилання. Збережені дані не змінено.'));return}
+    if(typeof navigator==='undefined'||!navigator.locks?.request){try{remember(localStorage.getItem(STORE),'Основний запис')}catch{}fail(new Error('У цьому браузері безпечне редагування недоступне. Відкрийте портал у сучасному браузері через захищене посилання. Збережені дані не змінено.'));settleReady();return}
     mode='waiting';draw();
-    navigator.locks.request(LOCK,{mode:'exclusive'},()=>{
-      owned=true;captureMemory();initialize();
-      return new Promise(resolve=>{release=resolve});
-    }).catch(err=>{owned=false;try{remember(localStorage.getItem(STORE),'Основний запис')}catch{}fail(err)});
+    navigator.locks.request(LOCK,{mode:'exclusive'},async()=>{
+      const held=new Promise(resolve=>{release=resolve});
+      owned=true;captureMemory();await enqueue(initialize);settleReady();
+      return held;
+    }).catch(err=>{owned=false;try{remember(localStorage.getItem(STORE),'Основний запис')}catch{}fail(err);settleReady()});
     window.addEventListener('storage',onStorage);
-    window.addEventListener('pagehide',()=>{owned=false;mode='suspended';if(release)release()});
+    window.addEventListener('pagehide',()=>{owned=false;mode='suspended';for(const tx of activeWrites){try{tx.abort()}catch{}}if(release)release()});
     window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
-    window.addEventListener('beforeunload',e=>{if(mode==='error'||mode==='conflict'||mode==='review'){e.preventDefault();e.returnValue=''}});
+    window.addEventListener('beforeunload',e=>{if(saving||mode==='error'||mode==='conflict'||mode==='review'){e.preventDefault();e.returnValue=''}});
   }
-  return {start,allow,assertEditor,persist,read,draw,openCopies(){assertEditor();mode='copies';problem='Доступні збережені версії дослідження.';draw()},KEY,get mode(){return mode}};
+  return {start,allow,assertEditor,persist,read,draw,ready,whenIdle:()=>chain,inspect:()=>owned?enqueue(readVault):Promise.resolve(null),get saving(){return saving},openCopies(){assertEditor();mode='copies';problem='Доступні збережені версії дослідження.';draw()},KEY,get mode(){return mode}};
 })();
 /* BAROMETER_STORAGE_SAFETY_2026_10_21_END */
 
-function storageGuarded(handler){return async e=>{try{return await handler(e)}catch(err){if(StorageSafety.allow())throw err}}}
+let storageEvents=Promise.resolve();
+function storageGuarded(handler){return e=>{if(e.type==='submit')e.preventDefault();const task=storageEvents.then(async()=>{try{return await handler(e)}catch(err){if(StorageSafety.allow())throw err}});storageEvents=task.catch(()=>{});return task}}
 function save(preserve=false){if(S.r&&!S.demo){normalizeResearch(S.r);return StorageSafety.persist(JSON.stringify(S.r),{preserve})}}
 function load(){try{const raw=StorageSafety.read();return raw===null?null:normalizeResearch(JSON.parse(raw))}catch{return null}}
 function period(){return S.r?.periods?.find(x=>x.id===S.r.current)||S.r?.periods?.[0]}
@@ -540,15 +602,15 @@ function qualityDisplay(m){
   return `якість даних: ${String(m.quality).toLowerCase()}${reasons.length?`; ${reasons.join('; ')}`:''}`
 }
 function getSurveyResults(e){return e?.survey?.results||null}
-function downloadResearchBackup(data){
+async function downloadResearchBackup(data){
   const now=new Date().toISOString(),clean=safeResearchClone(data);
   clean.lastBackupAt=now;
-  if(S.r&&data===S.r){S.r.lastBackupAt=now;save()}else StorageSafety.persist(JSON.stringify(clean));
+  if(S.r&&data===S.r){S.r.lastBackupAt=now;await save()}else await StorageSafety.persist(JSON.stringify(clean));
   const payload={format:'barometr-backup',version:'r43',exportedAt:now,data:clean},blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),x=document.createElement('a');
   x.href=URL.createObjectURL(blob);x.download=`Резервна_копія_${safeFilePart(clean.company)}_${safeFilePart((clean.periods.find(p=>p.id===clean.current)||clean.periods[0])?.label)}.json`;
   x.click();setTimeout(()=>URL.revokeObjectURL(x.href),1000)
 }
-function bar(){if(!S.r)return'';return `<div class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark"></span>Барометр</div><span class="pill">${h(S.r.company)}</span><span class="pill">${h(period().label)}</span><span class="spacer"></span><span id="autosave" class="saved">${StorageSafety.allow()?'Збережено автоматично':'Збереження призупинено'}</span>${S.screen==='home'?'':'<button class="btn ghost small" data-a="home">Огляд дослідження</button>'}</div></div>`}
+function bar(){if(!S.r)return'';return `<div class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark"></span>Барометр</div><span class="pill">${h(S.r.company)}</span><span class="pill">${h(period().label)}</span><span class="spacer"></span><span id="autosave" class="saved">${StorageSafety.saving?'Зберігаємо зміни…':StorageSafety.allow()?'Збережено автоматично':'Збереження призупинено'}</span>${S.screen==='home'?'':'<button class="btn ghost small" data-a="home">Огляд дослідження</button>'}</div></div>`}
 function start(){let x=load();return `<main class="start"><section class="start-card"><div class="start-grid"><div class="start-copy"><div class="start-copy-top"><svg class="fru-logo" viewBox="0 0 257 180" role="img" aria-label="Федерація роботодавців України" xmlns="http://www.w3.org/2000/svg"><defs><filter id="fruLogoTransparent" color-interpolation-filters="sRGB">
   <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1.02823 0 0 0 1" result="blue"/>
   <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 -1.2201 0 1.2105" result="orange"/>
@@ -1690,14 +1752,14 @@ function render(){
   $('#app').innerHTML=html+modal();
   growPlanTextareas();enhanceFormAccessibility();StorageSafety.draw()
 }
-document.addEventListener('submit',storageGuarded(e=>{
+document.addEventListener('submit',storageGuarded(async e=>{
   if(!StorageSafety.allow())return;
   if(e.target.id==='first-env'){
     e.preventDefault();
     let name=$('#fen').value.trim();
     const error=validateEnvironmentValues(name);if(error)return alert(error);
     period().envs.push({id:uid('e'),name,survey:{}});
-    save();render();return
+    await save();render();return
   }
   if(e.target.id!=='setup')return;
   e.preventDefault();
@@ -1705,9 +1767,9 @@ document.addEventListener('submit',storageGuarded(e=>{
   if(!company||!owner)return alert('Вкажіть назву компанії та власника дослідження.');
   const dateError=validatePeriodDates(st,en);if(dateError)return alert(dateError);
   S.r={company,owner,current:id,periods:[{id,label:periodLabel(st,en),start:st,end:en,envs:[],checkup:{answers:{},notes:{},done:false,asOfDate:todayISO(),schemaVersion:CHECKUP_SCHEMA_VERSION}}],plan:[]};
-  save(true);S.screen='home';render()
+  await save(true);S.screen='home';render()
 }));
-function updatePlanField(e){
+async function updatePlanField(e){
   if(!StorageSafety.allow())return;
   const field=e.target.dataset.f;if(!field)return;
   const card=e.target.closest('[data-p]'),action=S.r.plan.find(x=>x.id===card?.dataset.p);if(!action)return;
@@ -1715,14 +1777,14 @@ function updatePlanField(e){
     const scope=e.target.value||null;if(scope&&!(period()?.envs||[]).some(x=>x.id===scope)){e.target.value=action.envId||'';return}
     const duplicate=currentPlan().some(x=>x.id!==action.id&&(x.envId||null)===scope&&((action.sourceTarget&&x.sourceTarget===action.sourceTarget)||barometerEquivalentPlanAction(x,{title:action.action,action:action.description,check:action.indicator})));
     if(duplicate){e.target.value=action.envId||'';alert('Така дія вже є у Плані для обраного рівня.');return}
-    action.envId=scope;save();render();return;
+    action.envId=scope;await save();render();return;
   }
-  action[field]=e.target.value;save();
+  action[field]=e.target.value;await save();
 }
-document.addEventListener('change',storageGuarded(e=>{
+document.addEventListener('change',storageGuarded(async e=>{
   if(!StorageSafety.allow())return;
   if(e.target.id==='checkup-date'&&S.screen==='checkup'){
-    period().checkup.asOfDate=e.target.value;save()
+    period().checkup.asOfDate=e.target.value;await save()
   }
   if(e.target.type==='radio'&&S.screen==='checkup'){
     if(e.target.dataset.p40Env){
@@ -1743,15 +1805,15 @@ document.addEventListener('change',storageGuarded(e=>{
         period().checkup.p40ApplicabilityByEnvironment={};
       }
     }
-    period().checkup.results=calculatePResults(period().checkup);save();
+    period().checkup.results=calculatePResults(period().checkup);await save();
     if(e.target.name==='P40'||e.target.name==='p40Risk'){render();return}
   }
-  updatePlanField(e)
+  await updatePlanField(e)
 }));
-document.addEventListener('input',storageGuarded(e=>{
+document.addEventListener('input',storageGuarded(async e=>{
   if(!StorageSafety.allow())return;
-  if(e.target.dataset.note&&S.screen==='checkup'){period().checkup.notes=period().checkup.notes||{};period().checkup.notes[e.target.dataset.note]=e.target.value;save()}
-  updatePlanField(e);
+  if(e.target.dataset.note&&S.screen==='checkup'){period().checkup.notes=period().checkup.notes||{};period().checkup.notes[e.target.dataset.note]=e.target.value;await save()}
+  await updatePlanField(e);
   if(e.target.matches('textarea[data-autogrow="1"]')){
     e.target.style.height='auto';
     e.target.style.height=Math.max(96,e.target.scrollHeight)+'px'
@@ -1765,7 +1827,7 @@ document.addEventListener('click',storageGuarded(async e=>{
     if(existing)S.modal={t:'replace-research',existing};
     else S.screen='setup'
   }
-  if(a==='backup-existing'){downloadResearchBackup(S.modal.existing);return}
+  if(a==='backup-existing'){await downloadResearchBackup(S.modal.existing);return}
   if(a==='confirm-new'){S.r=null;S.modal=null;S.screen='setup'}
   if(a==='start'){S.r=null;S.screen='start'}
   if(a==='continue'){S.r=load();S.screen='home'}
@@ -1776,7 +1838,7 @@ document.addEventListener('click',storageGuarded(async e=>{
   if(a==='safety-copies'){StorageSafety.openCopies();return}
   if(a==='delete-research')S.modal={t:'delete-research'};
   if(a==='confirm-delete'){
-    StorageSafety.persist(null,{preserve:true});
+    await StorageSafety.persist(null,{preserve:true});
     S.r=null;S.env=null;S.modal=null;S.screen='start';window.scrollTo(0,0)
   }
   if(a==='add-env')S.modal={t:'env'};
@@ -1789,7 +1851,7 @@ document.addEventListener('click',storageGuarded(async e=>{
       const edited=S.modal.e;Object.assign(edited,{name})
     }
     else period().envs.push({id:uid('e'),name,survey:{}});
-    S.modal=null;save();render();return
+    S.modal=null;await save();render();return
   }
   if(a==='save-research'){
     let company=$('#rc').value.trim(),owner=$('#ro').value.trim(),st=$('#rs').value,en=$('#re').value,p=period();
@@ -1797,7 +1859,7 @@ document.addEventListener('click',storageGuarded(async e=>{
     const dateError=validatePeriodDates(st,en);if(dateError)return alert(dateError);
     let changed=st!==p.start||en!==p.end,has=p.envs.some(x=>x.survey?.ok);
     if(changed&&has&&!confirm('Для цього періоду вже є дані опитування. Підтвердьте, що нові дати відповідають фактичному періоду збору даних.'))return;
-    S.r.company=company;S.r.owner=owner;p.start=st;p.end=en;p.label=periodLabel(st,en);S.modal=null;save()
+    S.r.company=company;S.r.owner=owner;p.start=st;p.end=en;p.label=periodLabel(st,en);S.modal=null;await save()
   }
   if(a==='upload')S.modal={t:'upload',step:1,e:env(b.dataset.id)};
   if(a==='validate'){
@@ -1811,15 +1873,15 @@ document.addEventListener('click',storageGuarded(async e=>{
   if(a==='accept'){
     if(!S.modal?.calc||S.modal.v.errors.length||S.modal.calc.e.totalResponses<1)return;
     let en=S.modal.e;en.survey={ok:true,leaders:S.modal.calc.l.totalResponses>0,e:S.modal.calc.e.totalResponses,l:S.modal.calc.l.totalResponses,results:S.modal.calc,importMeta:{filename:S.modal.v.fileName,calculatedAt:new Date().toISOString(),warnings:S.modal.v.warnings}};
-    S.modal=null;save()
+    S.modal=null;await save()
   }
   if(a==='checkup'){
     let cp=period().checkup||{};
     if(cp.schemaVersion!==CHECKUP_SCHEMA_VERSION){
       period().checkup={answers:{},notes:{},done:false,asOfDate:todayISO(),schemaVersion:CHECKUP_SCHEMA_VERSION};
-      cp=period().checkup;save()
+      cp=period().checkup;await save()
     }
-    if(!cp.asOfDate){cp.asOfDate=todayISO();save()}
+    if(!cp.asOfDate){cp.asOfDate=todayISO();await save()}
     S.screen='checkup';window.scrollTo(0,0)
   }
   if(a==='prev'){S.module=Math.max(1,S.module-1);window.scrollTo(0,0)}
@@ -1834,7 +1896,7 @@ document.addEventListener('click',storageGuarded(async e=>{
     if(!cp.asOfDate)return alert('Вкажіть дату, станом на яку проведено організаційний чекап.');
     if(missing.length)return alert('Щоб завершити організаційний чекап, оцініть усі 42 практики.');
     if(cp.answers.P40==='no'&&!cp.p40Risk)return alert('Для P40 уточніть, чи виявлено актуальний ризик насильства або домагань з боку третіх осіб.');
-    cp.results=calculatePResults(cp);cp.done=true;cp.schemaVersion=CHECKUP_SCHEMA_VERSION;save();S.screen='complete';window.scrollTo(0,0)
+    cp.results=calculatePResults(cp);cp.done=true;cp.schemaVersion=CHECKUP_SCHEMA_VERSION;await save();S.screen='complete';window.scrollTo(0,0)
   }
   if(a==='company-results'){if(!period()?.checkup?.done)return;S.env=null;S.screen='dash';window.scrollTo(0,0)}
   if(a==='dash'){let target=env(b.dataset.id||S.env);if(!S.demo&&!canDashboard(target))return alert('Дашборд стане доступним після завантаження необхідних даних опитування та завершення організаційного чекапу.');S.env=b.dataset.id||S.env;S.screen='dash';window.scrollTo(0,0)}
@@ -1849,11 +1911,11 @@ document.addEventListener('click',storageGuarded(async e=>{
       action:['Уточнити порядок дій і відповідальність','Перевірити, як практика працює на рівні команд','Визначити спосіб повторної перевірки результативності'][+b.dataset.i],
       priority:'Середній',status:'Не розпочато'
     });
-    save();b.textContent='Додано до плану';b.disabled=true
+    await save();b.textContent='Додано до плану';b.disabled=true
   }
   if(a==='plan'){S.screen='plan';window.scrollTo(0,0)}
   if(a==='save-plan'){
-    save();
+    await save();
     b.textContent='Збережено';
     b.disabled=true;
     setTimeout(()=>{b.textContent='Зберегти зміни';b.disabled=false},1200);
@@ -1882,15 +1944,15 @@ document.addEventListener('click',storageGuarded(async e=>{
       due:$('#ma-due').value.trim(),
       indicator:$('#ma-indicator').value.trim()
     });
-    S.modal=null;save();S.screen='plan'
+    S.modal=null;await save();S.screen='plan'
   }
   if(a==='del'){
     if(confirm('Видалити цю дію з Плану організаційних дій?')){
-      S.r.plan=S.r.plan.filter(x=>x.id!==b.dataset.id);save()
+      S.r.plan=S.r.plan.filter(x=>x.id!==b.dataset.id);await save()
     }
   }
   if(a==='backup-download'){
-    downloadResearchBackup(S.r);S.modal=null
+    await downloadResearchBackup(S.r);S.modal=null
   }
   if(a==='restore-backup'){
     let file=$('#restore-file')?.files?.[0];if(!file)return alert('Оберіть файл резервної копії.');
@@ -1906,13 +1968,13 @@ document.addEventListener('click',storageGuarded(async e=>{
           p.checkup.asOfDate=todayISO();
         }
       }
-      normalizeResearch(r);StorageSafety.persist(JSON.stringify(r),{preserve:true});S.r=r;S.demo=false;S.returnResearch=null;S.env=null;S.screen='home';S.modal=null;window.scrollTo(0,0);
+      normalizeResearch(r);await StorageSafety.persist(JSON.stringify(r),{preserve:true});S.r=r;S.demo=false;S.returnResearch=null;S.env=null;S.screen='home';S.modal=null;window.scrollTo(0,0);
       if(resetCheckup)alert('Резервну копію відновлено. Оскільки організаційний чекап оновлено, його потрібно заповнити повторно для кожного періоду.')
     }catch(err){alert('Не вдалося відновити резервну копію: '+String(err.message||err));return}
   }
   if(a==='switch-period'){
     const target=S.r.periods.find(x=>x.id===b.dataset.id);
-    if(target){S.r.current=target.id;S.env=null;S.screen='home';save();window.scrollTo(0,0);render()}
+    if(target){S.r.current=target.id;S.env=null;S.screen='home';await save();window.scrollTo(0,0);render()}
     return;
   }
   if(a==='new-period')S.modal={t:'period'};
@@ -1923,7 +1985,7 @@ document.addEventListener('click',storageGuarded(async e=>{
       ?old.envs.map(x=>({id:uid('e'),name:x.name,survey:{}}))
       :[];
     S.r.periods.push({id,label:periodLabel(st,en),start:st,end:en,envs,checkup:{answers:{},notes:{},done:false,asOfDate:todayISO(),schemaVersion:CHECKUP_SCHEMA_VERSION}});
-    S.r.current=id;S.modal=null;save()
+    S.r.current=id;S.modal=null;await save()
   }
 
 
@@ -1947,7 +2009,7 @@ document.addEventListener('click',storageGuarded(async e=>{
     if(x){
       if(planHasAction(moduleId,target)){b.textContent=target.startsWith('CRITERION:')?'Додано до Плану':'Уже додано';b.disabled=true;return}
       S.r.plan.push({id:uid('a'),periodId:period().id,envId:barometerActionScope(x),sourceTarget:target,module:M[moduleId-1],aspect:[...new Set(x.issues.map(i=>i.topic))].join('; '),action:x.title.replace(/^Перевірити розрив:\s*/,''),description:x.action,priority:x.priority||'Середній',status:'Не розпочато',indicator:x.check});
-      save();
+      await save();
       if(target.startsWith('CRITERION:')){b.textContent='Додано до Плану';b.disabled=true;return}
       const replacement=document.createElement('span');
       replacement.className='data-quality';
@@ -1960,7 +2022,7 @@ document.addEventListener('click',storageGuarded(async e=>{
     let r=resultModel().find(x=>x.m===+b.dataset.m),action=r?.actions?.[+b.dataset.i];
     if(r&&action){
       S.r.plan.push({id:uid('a'),periodId:period().id,module:M[r.m-1],aspect:r.signal,action,description:'',priority:'Середній',status:'Не розпочато'});
-      save();b.textContent='Додано до плану';b.disabled=true
+      await save();b.textContent='Додано до плану';b.disabled=true
     }
   }
 

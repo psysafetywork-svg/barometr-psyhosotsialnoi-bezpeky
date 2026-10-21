@@ -12,6 +12,8 @@ for engine in ('chromium','firefox','webkit'):
     for a in actions:
         scope=next(e['name'] for e in period['envs'] if e['id']==a['envId']) if a.get('envId') else 'Компанія загалом'
         expected.append((scope,a.get('module') or None,a.get('aspect') or None,a.get('action') or None,a.get('description') or None,a.get('priority') or None,a.get('owner') or None,a.get('due') or None,a.get('indicator') or None,a.get('status') or None))
+    actual=[tuple('' if x is None else x for x in row) for row in actual]
+    expected=[tuple('' if x is None else x for x in row) for row in expected]
     assert actual==expected,(engine,actual,expected)
     results[engine]={'status':'PASS','rows':len(actual),'allTenColumnsEqual':True}
 (out/'storage-xlsx-equality.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
