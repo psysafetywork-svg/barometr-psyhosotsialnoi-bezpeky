@@ -391,7 +391,7 @@ const StorageSafety=(()=>{
     return list.filter((s,i)=>s&&list.findIndex(x=>x?.raw===s.raw)===i);
   }
   function captureMemory(){if(typeof S!=='undefined'&&S.r&&!S.demo)remember(JSON.stringify(S.r),'Зміни у цій вкладці')}
-  function fail(err){captureMemory();mode='error';problem=String(err?.message||err);draw();return false}
+  function fail(err){captureMemory();mode='error';problem=err?.name==='QuotaExceededError'?'У браузері недостатньо місця для безпечного збереження. Завантажте доступні копії перед продовженням.':['SecurityError','NotAllowedError','InvalidStateError','UnknownError'].includes(err?.name)?'У цьому середовищі безпечне сховище недоступне. Збережені дані не змінюємо. Завантажте доступні копії або відкрийте портал у дозволеному браузері.':String(err?.message||err);draw();return false}
   function conflict(raw,reason){
     captureMemory();remember(raw,reason);mode='conflict';problem='Виявлено різні версії дослідження. Редагування призупинено, щоб зберегти дані.';
     if(owned&&journal){
@@ -491,7 +491,7 @@ const StorageSafety=(()=>{
     navigator.locks.request(LOCK,{mode:'exclusive'},()=>{
       owned=true;captureMemory();initialize();
       return new Promise(resolve=>{release=resolve});
-    }).catch(err=>{owned=false;fail(err)});
+    }).catch(err=>{owned=false;try{remember(localStorage.getItem(STORE),'Основний запис')}catch{}fail(err)});
     window.addEventListener('storage',onStorage);
     window.addEventListener('pagehide',()=>{owned=false;mode='suspended';if(release)release()});
     window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});

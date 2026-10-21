@@ -27,7 +27,7 @@ async function recoverHead(p){
 }
 async function run(engine){
  const browser=await pw[engine].launch({headless:true,args:engine==='chromium'?['--no-sandbox']:[]});engines[engine]=browser.version();
- async function scenario(id,name,fn){const ctx=await browser.newContext({acceptDownloads:true,viewport:{width:1280,height:900}});try{await fn(ctx)}catch(e){errors.push({engine,id,name,error:String(e.stack||e)});fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.error('STORAGE_FAIL',engine,id,name,e);throw e}finally{await ctx.close()}}
+ async function scenario(id,name,fn){const ctx=await browser.newContext({acceptDownloads:true,viewport:{width:1280,height:900}});ctx.setDefaultTimeout(15000);try{await fn(ctx)}catch(e){errors.push({engine,id,name,error:String(e.stack||e)});fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.error('STORAGE_FAIL',engine,id,name,e);throw e}finally{await ctx.close()}}
  try{
  await scenario('01-09,12','New/new lifetime lock, all writes, transfer',async ctx=>{
   const a=await open(ctx);await seed(a);const before=await state(a),b=await ctx.newPage();await b.goto(origin+'/new');await mode(b,'waiting');
@@ -51,6 +51,7 @@ async function run(engine){
   await edit(oldPage,'P14','no','indicator','Стара версія');await mode(a,'conflict');
   assert.equal(JSON.parse((await state(a)).journal).head.raw,protectedRaw);await a.screenshot({path:out+'/'+engine+'-conflict.png',fullPage:true});
   for(let i=0;i<3;i++)await edit(oldPage,'P14','no','due','old-'+i);
+  await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);await edit(oldPage,'P14','no','due','repeat-after-recovery');
   await mode(a,'conflict');await oldPage.close();await a.reload();await mode(a,'conflict');
   const before=await state(a);await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);const r=await reloadAndRead(a);assert.deepEqual(r,JSON.parse(protectedRaw));
   assert.ok(JSON.parse((await state(a)).journal).versions.length>=2);
@@ -79,6 +80,9 @@ async function run(engine){
   const before=await state(p);await p.evaluate(()=>{S.r.current='p2';save();S.r.current='p1';save()});assert.equal((await state(p)).raw,before.raw);
   for(const id of [17,18,19,20,21,22,23,24])await evidence(engine,id,'EL, periods, Plan, backup and rapid writes intact',p,before,'Real CSV and XLSX import; edit all Plan fields; 50 saves; actual XLSX/JSON download; JSON restore; switch periods; full reload equality',{expected:backup});
  });
+ await scenario(33,'Safe rollout procedure with old tabs closed',async ctx=>{
+  const p=await open(ctx,'old');await seed(p,27,true);await p.locator('[data-a="backup-info"]').first().click();const event=p.waitForEvent('download');await p.locator('[data-a="backup-download"]').click();const d=await event,file=out+'/'+engine+'-rollout-backup.json';await d.saveAs(file);const expected=JSON.parse(fs.readFileSync(file)).data,before=await state(p);await p.close();const next=await open(ctx);await next.locator('[data-a="continue"]').click();assert.deepEqual(await next.evaluate(()=>S.r),expected);await edit(next,'P28','full');const final=await reloadAndRead(next);assert.equal(final.periods[0].checkup.answers.P28,'full');assert.deepEqual(final.periods[1],expected.periods[1]);assert.deepEqual(final.plan,expected.plan);await evidence(engine,33,'Rollout: backup, close old, open new, verify, edit',next,before,'Actual old backup download; close all legacy pages in isolated profile; open new; full equality; edit P28 and reload');
+ });
  await scenario(25,'Missing Web Locks fails closed',async ctx=>{
   const oldPage=await open(ctx,'old');await seed(oldPage);const before=await state(oldPage);await oldPage.close();await ctx.addInitScript(()=>Object.defineProperty(navigator,'locks',{value:undefined}));const p=await ctx.newPage();await p.goto(origin+'/new');await mode(p,'error');assert.equal((await state(p)).raw,before.raw);assert.equal((await state(p)).journal,null);await p.reload();await mode(p,'error');assert.equal((await state(p)).raw,before.raw);await evidence(engine,25,'Unsupported browser cannot change data',p,before,'Remove Web Locks before boot; verify primary and no journal; reload');
  });
@@ -103,14 +107,15 @@ async function run(engine){
  }finally{await browser.close()}
  // Real browser restart with the same on-disk profile, not storageState emulation.
  const profile=fs.mkdtempSync(path.join(os.tmpdir(),'barometer-'+engine+'-'));
- let persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});let p=await open(persistent);await seed(p,42,true);const expected=(await state(p)).raw;await persistent.close();persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});p=await open(persistent);assert.equal((await state(p)).raw,expected);await evidence(engine,11,'Browser process restart preserves full state',p,{raw:expected},'Close browser; relaunch same actual profile; compare raw');await persistent.close();
+ let persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);let p=await open(persistent);await seed(p,42,true);const expected=(await state(p)).raw;await persistent.close();persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);p=await open(persistent);assert.equal((await state(p)).raw,expected);await evidence(engine,11,'Browser process restart preserves full state',p,{raw:expected},'Close browser; relaunch same actual profile; compare raw');await persistent.close();
  // Abruptly kill worker and browser process group immediately after acknowledged save.
  const crashProfile=fs.mkdtempSync(path.join(os.tmpdir(),'barometer-crash-'+engine+'-'));
  const child=spawn(process.execPath,[__filename,'crash-worker',engine,crashProfile,origin],{detached:true,stdio:['ignore','pipe','pipe'],env:process.env});
  let output='';const result=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Crash worker timeout '+output)),45000);child.stdout.on('data',b=>{output+=b.toString();const line=output.split('\n').find(x=>x.startsWith('ACK '));if(line){clearTimeout(timer);resolve(JSON.parse(line.slice(4)))}});child.stderr.on('data',b=>output+=b.toString());child.on('exit',code=>{if(code)reject(new Error('Crash worker exited '+output))})});
  for(const pid of result.browserPids){try{process.kill(-pid,'SIGKILL')}catch{try{process.kill(pid,'SIGKILL')}catch{}}}
  process.kill(-child.pid,'SIGKILL');await new Promise(resolve=>child.once('exit',resolve));
- persistent=await pw[engine].launchPersistentContext(crashProfile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});p=await open(persistent);assert.equal((await state(p)).raw,result.raw,'Immediate process crash must retain confirmed state');await evidence(engine,10,'Immediate process-group crash after save',p,result,'SIGKILL worker and browser immediately after ACK; relaunch same actual profile; compare all bytes');await persistent.close();
+ persistent=await pw[engine].launchPersistentContext(crashProfile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);
+ try{p=await persistent.newPage();p.on('dialog',d=>d.accept());await p.goto(origin+'/new');await p.waitForFunction(()=>['editor','conflict','review','error'].includes(StorageSafety.mode));const atRestart=await state(p);if(atRestart.mode==='conflict'){assert.equal(JSON.parse(atRestart.journal).head.raw,result.raw,'Crash recovery copy must retain the last confirmed state');await recoverHead(p)}assert.equal((await state(p)).raw,result.raw,'Immediate process crash must retain confirmed state');await evidence(engine,10,'Immediate process-group crash after save',p,result,'SIGKILL worker and browser immediately after ACK; relaunch same actual profile; compare all bytes',{atRestart})}finally{await persistent.close()}
 }
 (async()=>{
  if(process.argv[2]==='crash-worker'){

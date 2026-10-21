@@ -6,6 +6,9 @@ on:
       - local/index.html
       - tests/**
       - .github/workflows/storage-safety-test.yml
+concurrency:
+  group: barometer-storage-safety-test-branch
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -43,6 +46,10 @@ jobs:
         run: |
           node tests/export-corrective-review.cjs
           python tests/inspect-corrective-pdfs.py
+          python tests/inspect-storage-xlsx.py
+      - name: Package actual storage evidence
+        if: always()
+        run: node tests/package-storage-review.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
