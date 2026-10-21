@@ -12,6 +12,11 @@ let version='baseline',baseUrl;const logs=[],errors=[];
 const server=http.createServer((req,res)=>{const file=req.url==='/local/'?(version==='baseline'?null:repo+'/local/index.html'):req.url==='/'?repo+'/index.html':null;res.setHeader('Content-Type','text/html;charset=utf-8');res.end(req.url==='/local/'&&version==='baseline'?baseline:req.url==='/local/'&&version==='previous'?previous:req.url==='/local/'&&version==='reviewed'?reviewed:file?fs.readFileSync(file):'Not found')});
 const record=(name,data={})=>{logs.push({name,status:'PASS',...data});fs.writeFileSync(out+'/browser-checks.json',JSON.stringify({browser:browserVersion,checks:logs,errors},null,2));console.log('PASS',name)};let browserVersion;
 async function syncPage(page){await page.evaluate(async()=>{if(typeof storageEvents!=='undefined')await storageEvents;if(typeof StorageSafety!=='undefined')await StorageSafety.whenIdle()})}
+async function resetFixture(page,nextVersion){
+ await syncPage(page);await page.goto(baseUrl+'/qa-reset');
+ await page.evaluate(async()=>{localStorage.clear();await new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase('barometer_v2_final_vault_v1');request.onsuccess=resolve;request.onerror=()=>reject(request.error);request.onblocked=()=>reject(new Error('Synthetic fixture database is still open'))})});
+ version=nextVersion;await page.goto(baseUrl+'/local/');
+}
 async function setup(page,{E=40,L=20,answers={},empty=false}={}){
  await page.waitForFunction(()=>typeof StorageSafety==='undefined'||StorageSafety.mode==='editor');await syncPage(page);
  return await page.evaluate(async ({E,L,answers,empty})=>{
@@ -70,8 +75,7 @@ async function download(page,click,file){await syncPage(page);const promise=page
  await page.locator('[data-a="restore-open"]').click();await page.locator('#restore-file').setInputFiles(backup);await page.locator('[data-a="restore-backup"]').click();
  await page.locator('.study-progress').waitFor();assert.deepEqual(await page.evaluate(async ()=>S.r),saved);record('Actual JSON file download and restore preserve same study');
  // Independent old-version fixture; mixed-version conflicts are covered by storage-safety-browser.cjs.
- await syncPage(page);await page.evaluate(async ()=>localStorage.clear());
- version='previous';await page.reload();await setup(page,{E:0,L:0});await dash(page);await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();await page.locator('[data-target="CRITERION:P01-C1"]').click();const reviewed=await page.evaluate(async ()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(async ()=>S.r),reviewed);record('Same-origin upgrade from 0b45c29 preserves legacy criterion action without migration');
+ await resetFixture(page,'previous');await setup(page,{E:0,L:0});await dash(page);await page.locator('[data-a="toggle-detail"][data-m="1"]').click();await page.locator('[data-practice-code="P01"] summary').click();await page.locator('[data-target="CRITERION:P01-C1"]').click();const reviewed=await page.evaluate(async ()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(async ()=>S.r),reviewed);record('Same-origin upgrade from 0b45c29 preserves legacy criterion action without migration');
  // Feature-version CSV import through the actual picker.
  await setup(page,{E:0,L:0,empty:true});await page.locator('[data-a="upload"][data-id="env-office"]').first().click();await page.locator('#file').setInputFiles(out+'/synthetic-import.csv');await page.locator('[data-a="validate"]').click();await page.locator('[data-a="accept"]').click();assert.equal(await page.evaluate(async ()=>env('env-office').survey.e),40);record('Feature-version actual CSV import');
  const mixed={P03:'partial',P15:'no',P24:'insufficient',P31:'partial'};
@@ -127,8 +131,7 @@ async function download(page,click,file){await syncPage(page);const promise=page
  await page.locator('[data-a="plan"]').last().click();await page.locator('.plan-card').nth(2).locator('[data-a="del"]').click();assert.equal(await page.evaluate(async ()=>currentPlan().length),2);assert.deepEqual(await page.evaluate(async ()=>currentPlan()[0]),edited);record('Manual delete affects only selected action');
  // Previous criterion model, including edited records, remains readable and does not duplicate.
  // Independent old-version fixture; mixed-version conflicts are covered by storage-safety-browser.cjs.
- await syncPage(page);await page.evaluate(async ()=>localStorage.clear());
- version='previous';await page.reload();await setup(page,{E:20,L:10,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="CRITERION:P03-C1"]').click();
+ await resetFixture(page,'previous');await setup(page,{E:20,L:10,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="CRITERION:P03-C1"]').click();
  await page.evaluate(async ()=>{const a=currentPlan()[0];a.description='Ручні зміни старого запису';a.envId='env-shift';await save()});
  const old=await page.evaluate(async ()=>JSON.parse(JSON.stringify(S.r)));version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(async ()=>S.r),old);
  await dash(page);await expand(1,'P03');assert.equal(await page.locator('[data-target="PRACTICE:P03"]').isDisabled(),true);assert.match(await page.locator('[data-practice-code="P03"]').innerText(),/Цю дію додано раніше\. Перевірте, чи її опис містить усі потрібні кроки\. Ми не змінювали її автоматично\./);await page.locator('[data-practice-code="P03"]').screenshot({path:out+'/legacy-plan-notice.png'});record('Same-origin 0b45c29 criterion upgrade preserves edited record and avoids duplicate');
@@ -137,8 +140,7 @@ async function download(page,click,file){await syncPage(page);const promise=page
 
  // Latest reviewed 4de7798 action, edited by its owner, remains intact at the same origin.
  // Independent pre-protection fixture, retaining the same upgrade assertions.
- await syncPage(page);await page.evaluate(async ()=>localStorage.clear());
- version='reviewed';await page.reload();await setup(page,{E:0,L:0,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="PRACTICE:P03"]').click();
+ await resetFixture(page,'reviewed');await setup(page,{E:0,L:0,answers:{P03:'partial'}});await dash(page);await expand(1,'P03');await page.locator('[data-target="PRACTICE:P03"]').click();
  await page.evaluate(async ()=>{const a=currentPlan()[0];a.description='Збережені власницею кроки з перевіреної версії';a.owner='Власниця';await save()});
  const latestReviewedState=await page.evaluate(async ()=>JSON.parse(JSON.stringify(S.r)));
  version='feature';await page.reload();await page.locator('[data-a="continue"]').click();assert.deepEqual(await page.evaluate(async ()=>S.r),latestReviewedState);

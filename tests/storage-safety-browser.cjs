@@ -23,6 +23,7 @@ async function evidence(engine,id,name,p,before,actions,extra={}){
  const after=p?await state(p):null;const row={engine,id,name,status:'PASS',before,actions,after,...extra};checks.push(row);
  fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.log('STORAGE_PASS',engine,id,name);
 }
+async function choose(p,code,value){const radio=p.locator('input[name="'+code+'"][value="'+value+'"]');await radio.evaluate(el=>el.closest('.practice').scrollIntoView({block:'center',behavior:'instant'}));await radio.check()}
 async function recoverHead(p){
  await p.locator('[data-safety="recover"][data-version="0"]').click();await mode(p,'review');
  await p.locator('[data-safety="confirm"]').click();await ready(p);
@@ -31,6 +32,12 @@ async function run(engine){
  const browser=await pw[engine].launch({headless:true,args:engine==='chromium'?['--no-sandbox']:[]});engines[engine]=browser.version();
  async function scenario(id,name,fn){const ctx=await browser.newContext({acceptDownloads:true,viewport:{width:1280,height:900}});ctx.setDefaultTimeout(15000);try{await fn(ctx)}catch(e){errors.push({engine,id,name,error:String(e.stack||e)});fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.error('STORAGE_FAIL',engine,id,name,e);throw e}finally{await ctx.close()}}
  try{
+ await scenario(34,'Actual create forms and checkup autosave',async ctx=>{
+  const p=await open(ctx),url=p.url();await p.locator('[data-a="new"]').click();await p.locator('#company').fill('Створена через форму QA');await p.locator('#owner').fill('Власниця через форму');await p.locator('#ps').fill('2026-09-01');await p.locator('#pe').fill('2026-09-30');await p.locator('#setup button[type="submit"]').click();await p.locator('.study-progress').waitFor();assert.equal(p.url(),url);
+  await p.locator('#fen').fill('Додане середовище QA');await p.locator('#first-env button[type="submit"]').click();await settled(p);assert.equal(await p.evaluate(async()=>period().envs[0].name),'Додане середовище QA');await p.locator('[data-a="checkup"]').first().click();
+  for(let module=1;module<=2;module++){const codes=await p.evaluate(async module=>P[module].map(x=>x.code),module);for(const code of codes)await choose(p,code,'full');await p.locator('[data-a="next"]').click();}
+  await choose(p,'P13','partial');await choose(p,'P14','full');await settled(p);const before=await state(p);assert.equal(JSON.parse(before.raw).periods[0].checkup.answers.P13,'partial');assert.deepEqual(await reloadAndRead(p),JSON.parse(before.raw));await evidence(engine,34,'Native forms and real radio autosave preserve data',p,before,'Submit actual study and environment forms without navigation; fill twelve answers and P13/P14 using actual controls; await confirmed save and reload');
+ });
  await scenario('01-09,12','New/new lifetime lock, all writes, transfer',async ctx=>{
   const a=await open(ctx);await seed(a);const before=await state(a),b=await ctx.newPage();await b.goto(origin+'/new');await mode(b,'waiting');
   assert.match(await b.locator('#storage-safety').innerText(),/Це дослідження вже відкрите в іншій вкладці/);
@@ -51,12 +58,13 @@ async function run(engine){
   const oldPage=await open(ctx,'old');await seed(oldPage,42,true);const a=await open(ctx);await a.locator('[data-a="continue"]').click();
   await edit(a,'P13','partial','owner','Захищена відповідальна');const protectedRaw=(await state(a)).raw;
   await edit(oldPage,'P14','no','indicator','Стара версія');await mode(a,'conflict');
-  assert.equal(JSON.parse((await state(a)).journal).head.raw,protectedRaw);await a.screenshot({path:out+'/'+engine+'-conflict.png',fullPage:true});
+  assert.equal(JSON.parse((await state(a)).journal).head.raw,protectedRaw);const bundleEvent=a.waitForEvent('download');await a.locator('[data-safety="download-all"]').click();const bundleDownload=await bundleEvent;const bundleFile=out+'/'+engine+'-conflict-copies.json';await bundleDownload.saveAs(bundleFile);await a.screenshot({path:out+'/'+engine+'-conflict.png',fullPage:true});
   for(let i=0;i<3;i++)await edit(oldPage,'P14','no','due','old-'+i);
   await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);await edit(oldPage,'P14','no','due','repeat-after-recovery');
   await mode(a,'conflict');await oldPage.close();await a.reload();await mode(a,'conflict');
   const before=await state(a);await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);const r=await reloadAndRead(a);assert.deepEqual(r,JSON.parse(protectedRaw));
   assert.ok(JSON.parse((await state(a)).journal).versions.length>=2);
+  await a.evaluate(async()=>{S.r=null;S.screen='start';render()});await a.locator('[data-a="restore-open"]').click();await a.locator('#restore-file').setInputFiles(bundleFile);await a.locator('[data-a="restore-backup"]').click();await mode(a,'conflict');await recoverHead(a);assert.deepEqual(await reloadAndRead(a),JSON.parse(protectedRaw));
   await a.screenshot({path:out+'/'+engine+'-recovered.png',fullPage:true});
   for(const id of [2,13,31,32])await evidence(engine,id,'Full protected state survives old tab and explicit recovery',a,before,'Old production page writes repeatedly; protected full snapshot retained; close old; reload; choose version 0 and confirm; reload equality',{protectedRaw,recovered:r});
  });
@@ -116,15 +124,16 @@ async function run(engine){
  // Abruptly kill worker and browser process group immediately after acknowledged save.
  const crashProfile=fs.mkdtempSync(path.join(os.tmpdir(),'barometer-crash-'+engine+'-'));
  const child=spawn(process.execPath,[__filename,'crash-worker',engine,crashProfile,origin],{detached:true,stdio:['ignore','pipe','pipe'],env:process.env});
- let output='';const result=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Crash worker timeout '+output)),45000);child.stdout.on('data',b=>{output+=b.toString();const line=output.split('\n').find(x=>x.startsWith('ACK '));if(line){clearTimeout(timer);resolve(JSON.parse(line.slice(4)))}});child.stderr.on('data',b=>output+=b.toString());child.on('exit',code=>{if(code)reject(new Error('Crash worker exited '+output))})});
- for(const pid of result.browserPids){try{process.kill(-pid,'SIGKILL')}catch{try{process.kill(pid,'SIGKILL')}catch{}}}
+ let output='',stderr='';child.stdout.setEncoding('utf8');child.stderr.setEncoding('utf8');const acknowledgment=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Crash worker timeout '+output)),45000);child.stdout.on('data',b=>{output+=b.toString();const line=output.slice(0,output.lastIndexOf('\n')).split('\n').find(x=>x.startsWith('ACK '));if(line){clearTimeout(timer);resolve(JSON.parse(line.slice(4)))}});child.stderr.on('data',b=>stderr+=b.toString());child.on('exit',code=>{if(code)reject(new Error('Crash worker exited '+output))})});
+ for(const pid of acknowledgment.browserPids){try{process.kill(-pid,'SIGKILL')}catch{try{process.kill(pid,'SIGKILL')}catch{}}}
  process.kill(-child.pid,'SIGKILL');await new Promise(resolve=>child.once('exit',resolve));
+ const result={...JSON.parse(fs.readFileSync(acknowledgment.stateFile)),browserPids:acknowledgment.browserPids};
  persistent=await pw[engine].launchPersistentContext(crashProfile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);
- try{p=await persistent.newPage();p.on('dialog',d=>d.accept());await p.goto(origin+'/new');await p.waitForFunction(()=>['editor','conflict','review','error'].includes(StorageSafety.mode));const atRestart=await state(p);if(atRestart.mode==='conflict'){assert.equal(JSON.parse(atRestart.vault).head.raw,result.raw,'Crash recovery copy must retain the last confirmed state');await recoverHead(p)}assert.equal((await state(p)).raw,result.raw,'Immediate process crash must retain confirmed state');await evidence(engine,10,'Immediate process-group crash after save',p,result,'SIGKILL worker and browser immediately after ACK; relaunch same actual profile; compare all bytes',{atRestart})}finally{await persistent.close()}
+ try{p=await persistent.newPage();p.on('dialog',d=>d.accept());await p.goto(origin+'/new');await p.waitForFunction(()=>['editor','conflict','review','error'].includes(StorageSafety.mode));const atRestart=await state(p);if(atRestart.mode==='conflict'){assert.equal(JSON.parse(atRestart.vault).head.raw,result.raw,'Crash recovery copy must retain the last confirmed state');await recoverHead(p)}assert.equal((await state(p)).raw,result.raw,'Immediate process crash must retain confirmed state');await p.reload();await ready(p);assert.equal((await state(p)).raw,result.raw);await evidence(engine,10,'Immediate process-group crash after save',p,result,'SIGKILL worker and browser immediately after ACK; relaunch same actual profile; compare all bytes',{atRestart})}finally{await persistent.close()}
 }
 (async()=>{
  if(process.argv[2]==='crash-worker'){
-  const engine=process.argv[3];origin=process.argv[5];const ctx=await pw[engine].launchPersistentContext(process.argv[4],{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});const p=await open(ctx);await seed(p,42,true);const browserPids=execFileSync('ps',['-eo','pid,ppid'],{encoding:'utf8'}).trim().split('\n').slice(1).map(x=>x.trim().split(/\s+/).map(Number)).filter(x=>x[1]===process.pid).map(x=>x[0]);console.log('ACK '+JSON.stringify({...await state(p),browserPids}));await new Promise(()=>{});return;
+  const engine=process.argv[3];origin=process.argv[5];const ctx=await pw[engine].launchPersistentContext(process.argv[4],{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});const p=await open(ctx);await seed(p,42,true);const browserPids=execFileSync('ps',['-eo','pid,ppid'],{encoding:'utf8'}).trim().split('\n').slice(1).map(x=>x.trim().split(/\s+/).map(Number)).filter(x=>x[1]===process.pid).map(x=>x[0]);const stateFile=process.argv[4]+'.expected.json';fs.writeFileSync(stateFile,JSON.stringify(await state(p)));console.log('ACK '+JSON.stringify({stateFile,browserPids}));await new Promise(()=>{});return;
  }
  const server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html;charset=utf-8');res.setHeader('Cache-Control',req.url==='/cached-old'?'public, max-age=600':'no-store');res.end(req.url==='/old'||req.url==='/cached-old'?old:fresh)});await new Promise(r=>server.listen(0,'127.0.0.1',r));origin='http://127.0.0.1:'+server.address().port;
  try{for(const engine of ['chromium','firefox','webkit']){try{await run(engine)}catch(e){errors.push({engine,error:String(e.stack||e)});console.error(e)}}}finally{server.close();fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));}
