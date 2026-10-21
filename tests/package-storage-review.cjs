@@ -5,6 +5,9 @@ const expected=['chromium','firefox','webkit'],missing=Object.fromEntries(expect
 const xlsx=[]; // Exact workbook equality is checked by inspect-storage-xlsx.py.
 const summary={testedCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:repo,encoding:'utf8'}).trim(),engines:results.engines,pass:results.checks.length,missing,errors:results.errors,status:results.errors.length||Object.values(missing).some(x=>x.length)?'BLOCKED':'READY FOR REVIEW',production:'PRODUCTION RELEASE BLOCKED',note:'No production update. Linux WebKit is not a Safari verification.'};
 fs.writeFileSync(out+'/storage-summary.json',JSON.stringify(summary,null,2));
+if(summary.status==='READY FOR REVIEW'&&expected.every(engine=>results.checks.some(r=>r.engine===engine&&r.id===33&&r.status==='PASS')))summary.production='SAFE ROLLOUT PLAN VERIFIED';
+summary.deployment='NOT PERFORMED; requires separate explicit authorization';
+fs.writeFileSync(out+'/storage-summary.json',JSON.stringify(summary,null,2));
 const h=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const screenshots=expected.flatMap(e=>[e+'-transferred.png',e+'-conflict.png',e+'-recovered.png']).filter(f=>fs.existsSync(out+'/'+f));
 const files=['storage-summary.json','storage-browser-results.json','node-tests.tap','browser-checks.json','protected-functions.json','p-only-report.pdf','p-plus-e-report.pdf','p-plus-l-report.pdf','p-plus-e-plus-l-report.pdf','organisational-plan.xlsx',...expected.flatMap(e=>[e+'-backup.json',e+'-plan.xlsx'])].filter(f=>fs.existsSync(out+'/'+f));
