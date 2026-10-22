@@ -10,6 +10,7 @@ for p in sorted(out.glob('*.pdf')):
   for w in page.get_text('words'):assert w[0]>=-1 and w[1]>=-1 and w[2]<=page.rect.width+1 and w[3]<=page.rect.height+1,(p.name,page.number,w)
  last=norm(texts[-1]);assert not(len(doc)>1 and last.startswith('Використання результатів.')),(p.name,'orphan usage-only final page')
  if p.stem=='profile-p-only':
+  assert len(doc)<=5,(p.name,'expanded recommendation pagination leaves avoidable extra page')
   assert 'PRIVATE_PROFILE_NOTE' not in text
   for code in ['P35','P38']:
    for para in approved[code]['steps']:assert norm(para) in text,(p.name,code,para)

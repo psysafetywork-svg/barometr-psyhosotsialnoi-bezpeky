@@ -6814,11 +6814,16 @@ function barometerProfileModules(rows){
   return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+rows.filter(row=>!ids.has(row.m)).map(row=>matrixModule(row)).join('');
 }
 function barometerActionParagraphs(text){return String(text).split(/\n\s*\n/).map(part=>'<p>'+h(part)+'</p>').join('')}
+function barometerReportActionMarkup(action){
+  const full=action.code==='P35'||action.code==='P38'&&action.answer==='insufficient';
+  const content=full?barometerActionParagraphs(barometerCompactActionText(action))+'<p><b>Перевірка результату:</b></p>'+barometerActionParagraphs(action.check):`<p>${h(barometerCompactActionText(action))}</p><p><b>Перевірка результату:</b> ${h(action.check)}</p>`;
+  return `<div class="compact-block" style="break-inside:${full?'auto':'avoid'};page-break-inside:${full?'auto':'avoid'}"><h5>${h(action.code?action.code+'. ':'')}${h(action.title)}</h5>${content}</div>`;
+}
 barometerReportModules=function(analysis,rows){
   const favourable=barometerFavourableModuleRows(rows,analysis),group=favourable.length>=2?favourable:[],ids=new Set(group.map(row=>row.m));
   return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+rows.filter(row=>!ids.has(row.m)).map(row=>{
   const actions=barometerModuleActions(row.m,analysis);
-  return `<section class="module" data-report-module="${row.m}"><div style="break-inside:avoid;page-break-inside:avoid"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div>${barometerSummaryMarkup(row,analysis)}</div>${actions.length?`<div class="actions-section"><h4>Пріоритетні рекомендовані організаційні дії</h4>${actions.map(a=>`<div class="compact-block" style="break-inside:avoid;page-break-inside:avoid"><h5>${h(a.code?a.code+'. ':'')}${h(a.title)}</h5>${barometerActionParagraphs(barometerCompactActionText(a))}<p><b>Перевірка результату:</b></p>${barometerActionParagraphs(a.check)}</div>`).join('')}</div>`:''}</section>`;
+  return `<section class="module" data-report-module="${row.m}"><div style="break-inside:avoid;page-break-inside:avoid"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div>${barometerSummaryMarkup(row,analysis)}</div>${actions.length?`<div class="actions-section"><h4>Пріоритетні рекомендовані організаційні дії</h4>${actions.map(action=>barometerReportActionMarkup(action)).join('')}</div>`:''}</section>`;
 }).join('')};
 /* BAROMETER_ORGANISATIONAL_ACTIONS_2026_10_20_END */
 
