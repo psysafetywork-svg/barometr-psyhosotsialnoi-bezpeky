@@ -54,9 +54,16 @@ const protectedNew=protectedApi(localHtml),protectedMain=protectedApi(production
 assert.equal(protectedNew.STORE,'barometer_v2_final');
 for(const n of names){assert.equal(protectedNew[n].toString(),protectedMain[n].toString(),n+' vs main');assert.equal(protectedNew[n].toString(),protectedBefore[n].toString(),n+' vs previous');protection.functions[n]='BYTE_IDENTICAL';}
 const oldLibraryStart=baseline.indexOf('const BAROMETER_P_ACTION_LIBRARY=')+'const BAROMETER_P_ACTION_LIBRARY='.length,oldLibrary=JSON.parse(baseline.slice(oldLibraryStart,baseline.indexOf(';\nfunction barometerPracticeAction',oldLibraryStart)));
-for(const [code,model] of Object.entries(oldLibrary))for(const key of ['title','steps','check','coverage','partial','insufficient'])assert.equal(JSON.stringify(api.BAROMETER_P_ACTION_LIBRARY[code][key]),JSON.stringify(model[key]),code+'/'+key);
+// 2026-10-22: content changes are authorised; retain exact equality for every
+// untouched model and all criterion-to-step identifiers. Dedicated refinements
+// tests verify the approved changes, P32 exclusion and all 168 current states.
+const approvedContentCodes=new Set(['P02','P04','P09','P11','P13','P15','P16','P24','P29','P32','P33','P34','P35','P36','P37','P38','P40','P41','P42']);
+for(const [code,model] of Object.entries(oldLibrary)){
+ assert.equal(JSON.stringify(api.BAROMETER_P_ACTION_LIBRARY[code].coverage),JSON.stringify(model.coverage),code+'/coverage');
+ if(!approvedContentCodes.has(code))for(const key of ['title','steps','check','partial','insufficient'])assert.equal(JSON.stringify(api.BAROMETER_P_ACTION_LIBRARY[code][key]),JSON.stringify(model[key]),code+'/'+key);
+}
 fs.writeFileSync(out+'/protected-functions.json',JSON.stringify(protection,null,2));
-console.log('GATE_NODE_RESULTS '+JSON.stringify({p:summary,elpRows:elp.length,sourceProfiles:120,protected:protection,unchangedRecommendationModels:168}));
+console.log('GATE_NODE_RESULTS '+JSON.stringify({p:summary,elpRows:elp.length,sourceProfiles:120,protected:protection,unchangedRecommendationModels:42-approvedContentCodes.size}));
 
 // Approved storage patch changes exactly the writer, reader and backup persistence.
 for(const name of ['save','load','downloadResearchBackup']) assert.match(localHtml.slice(localHtml.indexOf('function '+name+'('),localHtml.indexOf('\nfunction ',localHtml.indexOf('function '+name+'(')+1)),/StorageSafety/);
