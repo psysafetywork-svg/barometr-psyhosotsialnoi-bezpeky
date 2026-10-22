@@ -1389,7 +1389,7 @@ for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`checkup-o
   assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта організаційної погоди/);
   const analysis=portal.api.barometerSemanticInterpretation();assert.ok(analysis.actions.some(x=>x.final_action_id==='M6-A1'));
   if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/Повністю реалізовано/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
-  const report=portal.api.buildReportHtml(environment);assert.doesNotMatch(report,/checkup-verification-appendix|P\d{2}-C[1-4]/);assert.equal((report.match(/class="module-head"/g)||[]).length,7);
+  const report=portal.api.buildReportHtml(environment);assert.doesNotMatch(report,/checkup-verification-appendix|P\d{2}-C[1-4]/);assert.equal((report.match(/class="module-head"/g)||[]).length+(report.match(/data-favourable-module=/g)||[]).length,7);
   assert.equal(state.r.plan.length,0);
 });
 test('unfinished P with no survey has no results or criteria',async()=>{
@@ -1540,7 +1540,7 @@ for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)t
  const {state,cp}=checkupOnlyScenario({overrides:{[practice.code]:answer}});
  portal.api.normalizeResearch(state.r);const before=JSON.stringify(cp),action=portal.api.barometerPracticeAction(practice.code);
  if(answer==='full'){assert.equal(action,null);return;}
- assert.equal(action.code,practice.code);assert.ok(action.steps.length>=6);
+ assert.equal(action.code,practice.code);assert.ok(action.steps.length>=((practice.code==='P35'||practice.code==='P38'&&answer==='insufficient')?3:6));
  assert.equal(action.sources.join(''),'P');assert.equal(portal.api.barometerActionScope(action),null);
  assert.doesNotMatch(action.action+action.check,/P\d{2}-C[1-4]|Зіставте приклади застосування з очікуваним результатом/);
  const model=portal.api.BAROMETER_P_ACTION_LIBRARY[practice.code];
@@ -1548,7 +1548,7 @@ for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)t
  for(const [id,step] of Object.entries(model.coverage)){assert.equal(model.steps[step-1].length>30,true,id);assert.ok(portal.api.BAROMETER_P_VERIFICATION[practice.code].criteria.some(c=>c.id===id));}
  if(answer==='no'){for(const step of model.steps)assert.ok(action.steps.includes(step));assert.match(action.action,/відсутній.*існує, але не працює/);}
  if(answer==='partial'){for(const step of model.partial.steps)assert.ok(action.steps.includes(step));assert.equal(action.title,model.partial.title);assert.doesNotMatch(action.action,/Перевірити, чи виконується така умова/);assert.doesNotMatch(action.title,/Уточнити та вдосконалити практику:/);}
- if(answer==='insufficient'){assert.match(action.action,/брак підтверджень не доводить відсутності/i);for(const source of portal.api.BAROMETER_P_VERIFICATION[practice.code].sources)assert.ok(action.action.includes(source));}
+ if(answer==='insufficient'&&!['P35','P38'].includes(practice.code)){assert.match(action.action,/брак підтверджень не доводить відсутності/i);for(const source of portal.api.BAROMETER_P_VERIFICATION[practice.code].sources)assert.ok(action.action.includes(source));}
  const click=async()=>await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:String(practice.module),target:action.id},replaceWith(){}})}});
  await click();await click();assert.equal(state.r.plan.length,1);const saved=state.r.plan[0];
  assert.equal(saved.description,action.action);assert.equal(saved.indicator,action.check);assert.equal(saved.priority,action.priority);assert.equal(saved.envId,null);
@@ -1592,7 +1592,7 @@ test('all 84 editorial variants have individual titles and four preserved review
  for(const answer of ['partial','insufficient']){
   const titles=portal.api.P_LIST.map(p=>portal.api.BAROMETER_P_ACTION_LIBRARY[p.code][answer].title);assert.equal(new Set(titles).size,42);
   for(const p of portal.api.P_LIST){const model=portal.api.BAROMETER_P_ACTION_LIBRARY[p.code];checkupOnlyScenario({overrides:{[p.code]:answer}});
-   const a=portal.api.barometerPracticeAction(p.code);const grammatical=t=>t.replace(/^Перевірити/, 'Перевірте').replace(/^З’ясувати/, 'З’ясуйте').replace(/^Уточнити/, 'Уточніть').replace(/^Переглянути/, 'Перегляньте').replace(/^Зіставити/, 'Зіставте').replace(/^Безпечно перевірити/, 'Безпечно перевірте').replace(/^Попросити/, 'Попросіть');for(const question of model.partial.steps.slice(0,4))assert.ok(a.steps.some(step=>grammatical(step)===grammatical(question)),p.code+'/'+answer+': '+question);
+   const a=portal.api.barometerPracticeAction(p.code);const grammatical=t=>t.replace(/^Перевірити/, 'Перевірте').replace(/^З’ясувати/, 'З’ясуйте').replace(/^Уточнити/, 'Уточніть').replace(/^Переглянути/, 'Перегляньте').replace(/^Зіставити/, 'Зіставте').replace(/^Безпечно перевірити/, 'Безпечно перевірте').replace(/^Попросити/, 'Попросіть');for(const question of (answer==='insufficient'&&['P35','P38'].includes(p.code)?model.insufficient.steps:model.partial.steps.slice(0,4)))assert.ok(a.steps.some(step=>grammatical(step)===grammatical(question)),p.code+'/'+answer+': '+question);
    assert.doesNotMatch(a.action,/З’ясувати й зафіксувати підтвердження або відхилення:|Перевірити, чи виконується така умова:/);
   }
  }

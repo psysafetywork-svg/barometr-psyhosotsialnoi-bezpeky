@@ -84,7 +84,7 @@ async function download(page,click,file){await syncPage(page);const promise=page
   const htmlfile=await download(page,()=>page.locator('[data-a="report"]').click(),name+'.html');
   const p=await context.newPage();await p.goto('file://'+htmlfile);
   assert.equal(await p.locator('#checkup-verification-appendix').count(),0);
-  assert.equal(await p.locator('.module-head').count(),7);
+  assert.equal(await p.locator('.module-head, [data-favourable-module]').count(),7);
   const text=await p.innerText('body');assert.doesNotMatch(text,/P\d{2}-C[1-4]|Повні критерії.*додатку|окрема організаційна дія.*не формується/i);
   assert.equal(await p.locator('#report-methodology').count(),1);assert.equal(await p.locator('#report-source-scope').count(),1);assert.doesNotMatch(text,/Усі кроки доступні в дашборді/);assert.match(text,/P15/);assert.match(text,/5 із 6/);assert.match(text,/Буря/);
   await p.pdf({path:out+'/'+name+'.pdf',format:'A4',printBackground:true,preferCSSPageSize:true});await p.close();record(name+': actual downloaded report, seven modules, no appendix, browser PDF');
