@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 
 const localHtml=fs.readFileSync(new URL('../local/index.html',import.meta.url),'utf8');
 const publicHtml=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
@@ -10,6 +11,20 @@ function executableScripts(html){
   return [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)]
     .filter(match=>!/type="application\/octet-stream"/.test(match[0]))
     .map(match=>match[1]);
+}
+
+// Unit-test adapter only. Browser tests exercise native strict IndexedDB.
+function fixtureIndexedDB(){
+  const tables=new Map();
+  const database={objectStoreNames:{contains:name=>tables.has(name)},createObjectStore(name){tables.set(name,new Map())},close(){},transaction(name,mode,options={}){
+    const committed=tables.get(name),working=new Map(committed),tx={durability:options.durability||'default',error:null};let pending=0,aborted=false,completion=null;
+    const finish=()=>{clearTimeout(completion);completion=setTimeout(()=>{if(!pending&&!aborted){if(mode==='readwrite')tables.set(name,new Map(working));tx.oncomplete?.()}},0)};
+    function request(action){const req={};pending++;setTimeout(()=>{if(aborted)return;try{req.result=action();req.onsuccess?.()}catch(error){req.error=error;req.onerror?.();tx.error=error;tx.abort()}pending--;finish()},0);return req}
+    tx.abort=()=>{aborted=true;clearTimeout(completion);setTimeout(()=>tx.onabort?.(),0)};
+    tx.objectStore=()=>({get:key=>request(()=>working.get(key)),put:(value,key)=>request(()=>working.set(key,value))});
+    finish();return tx;
+  }};
+  return {open(){const req={};setTimeout(()=>{req.result=database;req.onupgradeneeded?.();req.onsuccess?.()},0);return req}};
 }
 
 function loadLocalPortal(){
@@ -23,8 +38,10 @@ function loadLocalPortal(){
     body:{appendChild(){}},
   };
   const context=vm.createContext({
-    console,document,
-    window:{scrollTo(){},print(){}},
+    console,document,indexedDB:fixtureIndexedDB(),
+    window:{scrollTo(){},print(){},addEventListener(){}},
+    // Synchronous single-document lock fixture. Concurrency is tested in real browsers.
+    navigator:{locks:{request(_name,_options,callback){return Promise.resolve(callback({name:_name}))}}},
     localStorage:{
       getItem(key){return storage.has(key)?storage.get(key):null},
       setItem(key,value){storage.set(key,String(value))},
@@ -36,20 +53,23 @@ function loadLocalPortal(){
   });
   const source=executableScripts(localHtml).at(-1)+`
     globalThis.__portal={
+      storageReady:typeof StorageSafety==='undefined'?Promise.resolve():StorageSafety.ready,
       SURVEY_ITEMS,ROLE_QUESTION,P_LIST,P,M,COMBO64,FINE_ITEMS,ACTION_LIB,THEMATIC_LIB,P38_TEXT,SITUATIONAL_HYPOTHESIS,
       parseCSV,parseResponseValue,RESPONSE_SCALE,isProblemSurveyItem,compareSurveyPercent,validateTableRows,aggregateSource,calculatePResults,
       fmtPct,weatherStatus,boundaryFlag,mapStatusBadge,weatherMapHtml,managementSignal,comboTemplate,hasWeakSituationalPractice,selectedActions,attentionAspects,actualResultModel,buildReportHtml,planXlsxBytes,
       normalizeResearch,safeResearchClone,validateBackupResearch,currentPlan,planRows,canDashboard,load,save,STORE,
       barometerRuntimeInput,barometerSemanticInterpretation,barometerStateForCodes,barometerSemanticModuleMarkup,barometerSemanticActionCards,barometerV2AspectsMarkup,
       validateEnvironmentValues,validatePeriodDates,
+      barometerPracticeAction,barometerModuleActions,barometerModuleSummary,BAROMETER_P_ACTION_LIBRARY,barometerCriterionView,barometerEquivalentPlanAction,planAction,planHasAction,updatePlanField,plan,barometerPracticeVerification,BAROMETER_P_VERIFICATION,BAROMETER_P_ANSWER_LABELS,barometerPModuleLead,barometerPVerificationMarkup,barometerPReportAppendix,barometerCompanyContext,barometerActionScope,barometerSemanticAction,checkup,
       setState(value){S=value},getState(){return S},render,studyProgress,
     };
   `;
   vm.runInContext(source,context,{filename:'local/index.html'});
-  return {api:context.__portal,listeners,app,storage,document};
+  return {api:context.__portal,listeners,app,storage,document,ready:context.__portal.storageReady};
 }
 
 const portal=loadLocalPortal();
+await portal.ready;
 
 function renderPublicExample(e,l,p){
   const nodes=new Map(Object.entries({
@@ -119,13 +139,13 @@ function setRuntimeScenario({eCount=20,lCount=10,eAnswer=5,lAnswer=5,eOverrides=
   return {eResult,lResult,environment};
 }
 
-test('all executable scripts parse',()=>{
+test('all executable scripts parse',async()=>{
   for(const [name,html] of [['local/index.html',localHtml],['index.html',publicHtml]]){
     executableScripts(html).forEach((source,index)=>assert.doesNotThrow(()=>new Function(source),`${name}, script ${index+1}`));
   }
 });
 
-test('synthetic import accepts 2,400 E responses and 1,200 L responses',()=>{
+test('synthetic import accepts 2,400 E responses and 1,200 L responses',async()=>{
   const {SURVEY_ITEMS,ROLE_QUESTION}=portal.api;
   const headers=[ROLE_QUESTION,...SURVEY_ITEMS.map(item=>`${item.code} ${item.text}`)];
   const rows=Array.from({length:2400},(_,index)=>{
@@ -146,7 +166,7 @@ test('synthetic import accepts 2,400 E responses and 1,200 L responses',()=>{
   assert.ok(Object.values(manager.modules).every(module=>module.status==='Ясно'));
 });
 
-test('a complete 2,400-response route produces seven results, a report, and an XLSX plan',()=>{
+test('a complete 2,400-response route produces seven results, a report, and an XLSX plan',async()=>{
   const answers=Object.fromEntries(portal.api.SURVEY_ITEMS.map(item=>[item.code,5]));
   const rows=Array.from({length:2400},(_,index)=>({isManager:index<1200,answers}));
   const eResult=portal.api.aggregateSource(rows,'E',2400);
@@ -165,7 +185,7 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   const report=portal.api.buildReportHtml(environment);
   assert.match(report,/Ключові результати за модулями/);
   assert.doesNotMatch(report,/Що уточнити/);
-  assert.match(report,/За доступними даними виражених проблемних ознак у цьому модулі не виявлено/);
+  assert.match(report,/позитивна відповідь сама по собі не доводить результативності практики/);
   assert.match(report,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(report,/<th>Організаційні практики<\/th>/);
   const xlsx=portal.api.planXlsxBytes(portal.api.planRows());
@@ -174,7 +194,7 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   assert.ok(xlsx.length>1000);
 });
 
-test('respondent-based E profiles give every valid person equal weight',()=>{
+test('respondent-based E profiles give every valid person equal weight',async()=>{
   const rows=moduleRows('E',20,1,(respondent,index)=>respondent<15?5:index<3?1:'NA');
   const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
   assert.equal(module.favorable,75);
@@ -186,7 +206,7 @@ test('respondent-based E profiles give every valid person equal weight',()=>{
   assert.equal(result.items.E01.favorable,75);
 });
 
-test('E needs three applicable answers per person and L needs two',()=>{
+test('E needs three applicable answers per person and L needs two',async()=>{
   for(const [source,count,validItems,insufficientItems] of [['E',20,3,2],['L',10,2,1]]){
     const enough=portal.api.aggregateSource(moduleRows(source,count,1,(_,index)=>index<validItems?5:'NA'),source);
     assert.equal(enough.modules[1].status,'Ясно');
@@ -196,7 +216,7 @@ test('E needs three applicable answers per person and L needs two',()=>{
   }
 });
 
-test('module profile minimum is half the E or L respondents, subject to the floor',()=>{
+test('module profile minimum is half the E or L respondents, subject to the floor',async()=>{
   for(const [source,total,minimum] of [['E',30,15],['E',20,10],['L',15,8],['L',10,5]]){
     const make=valid=>portal.api.aggregateSource(moduleRows(source,total,1,(respondent)=>respondent<valid?5:'NA'),source);
     assert.equal(make(minimum).modules[1].status,'Ясно');
@@ -207,7 +227,7 @@ test('module profile minimum is half the E or L respondents, subject to the floo
   }
 });
 
-test('module status can use respondent profiles even when no item meets its separate minimum',()=>{
+test('module status can use respondent profiles even when no item meets its separate minimum',async()=>{
   const rows=moduleRows('E',30,1,(respondent,index)=>
     respondent<15&&[respondent%5,(respondent+1)%5,(respondent+2)%5].includes(index)?5:'NA');
   const result=portal.api.aggregateSource(rows,'E');
@@ -218,7 +238,7 @@ test('module status can use respondent profiles even when no item meets its sepa
   assert.equal(result.problems.length,0);
 });
 
-test('scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно',()=>{
+test('scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно',async()=>{
   const rows=moduleRows('E',30,1,(respondent)=>respondent<24?5:respondent<27?3:1);
   const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
   assert.equal(module.favorable,80);
@@ -228,7 +248,7 @@ test('scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are 
   assert.equal(module.masked,false);
 });
 
-test('scenario B: a sufficiently answered problem item masks nominal Ясно',()=>{
+test('scenario B: a sufficiently answered problem item masks nominal Ясно',async()=>{
   const rows=moduleRows('E',30,1,(respondent,index)=>index<4?5:respondent<15?1:'NA');
   const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1],item=result.items.E05;
   assert.equal(module.favorable,90);
@@ -243,7 +263,7 @@ test('scenario B: a sufficiently answered problem item masks nominal Ясно',(
   assert.match(portal.api.mapStatusBadge(module.status,'E',1,{e:result}),/☁ Хмарно \(є проблемний аспект\)/);
 });
 
-test('scenario C: two half-applicable problem items give 80/0/20 and Хмарно',()=>{
+test('scenario C: two half-applicable problem items give 80/0/20 and Хмарно',async()=>{
   const rows=moduleRows('E',30,1,(respondent,index)=>index<3?5:respondent<15?1:'NA');
   const result=portal.api.aggregateSource(rows,'E'),module=result.modules[1];
   assert.equal(module.favorable,80);
@@ -254,35 +274,35 @@ test('scenario C: two half-applicable problem items give 80/0/20 and Хмарн�
   assert.deepEqual(Array.from(result.problems,item=>item.code).sort(),['E04','E05']);
 });
 
-test('report uses final semantic action wording when E and P support an action',()=>{
+test('report uses final semantic action wording when E and P support an action',async()=>{
   const {environment}=setRuntimeScenario({eOverrides:{E16:1},pOverrides:{P19:'partial'}});
   const report=portal.api.buildReportHtml(environment);
-  assert.match(report,/Як узгоджуються джерела/);
-  assert.match(report,/<b>Що зробити<\/b>/);
-  assert.match(report,/Зробити важливі рішення щодо оцінювання і винагороди зрозумілими та послідовними/);
+  assert.match(report,/Сигнали опитування потребують перевірки/);
+  assert.match(report,/P19/);
+  assert.match(report,/Уточнити пояснення й послідовне застосування критеріїв винагороди/);
 });
 
-test('P40 follow-up renders immediately after selecting not implemented',()=>{
+test('P40 follow-up renders immediately after selecting not implemented',async()=>{
   const r=research();
   portal.api.setState({screen:'checkup',r,env:null,module:7,modal:null,demo:false,returnResearch:null});
   portal.api.render();
-  portal.listeners.get('change')({target:{type:'radio',name:'P40',value:'no',dataset:{}}});
+  await portal.listeners.get('change')({target:{type:'radio',name:'P40',value:'no',dataset:{}}});
   assert.match(portal.app.innerHTML,/Уточнення для P40/);
   assert.match(portal.app.innerHTML,/Так, ризик виявлено/);
 });
 
-test('P40 follow-up records applicability for each environment and survives normalization and backup',()=>{
+test('P40 follow-up records applicability for each environment and survives normalization and backup',async()=>{
   const r=research();
   r.periods[0].envs=[{id:'office',name:'Офіс',survey:{}},{id:'service',name:'Сервіс',survey:{}}];
   r.periods[0].checkup.answers.P40='no';
   portal.api.setState({screen:'checkup',r,env:null,module:7,modal:null,demo:false,returnResearch:null});
-  portal.listeners.get('change')({target:{type:'radio',name:'p40Risk',value:'confirmed',dataset:{}}});
+  await portal.listeners.get('change')({target:{type:'radio',name:'p40Risk',value:'confirmed',dataset:{}}});
   assert.match(portal.app.innerHTML,/Актуальність ризику для кожного робочого середовища/);
   assert.match(portal.app.innerHTML,/data-p40-env="office"/);
   assert.match(portal.app.innerHTML,/data-p40-env="service"/);
   const change=portal.listeners.get('change');
-  change({target:{type:'radio',name:'p40Environment-office',value:'confirmed',dataset:{p40Env:'office'}}});
-  change({target:{type:'radio',name:'p40Environment-service',value:'not_confirmed',dataset:{p40Env:'service'}}});
+  await change({target:{type:'radio',name:'p40Environment-office',value:'confirmed',dataset:{p40Env:'office'}}});
+  await change({target:{type:'radio',name:'p40Environment-service',value:'not_confirmed',dataset:{p40Env:'service'}}});
   const cp=r.periods[0].checkup;
   assert.equal(cp.p40Risk,'confirmed');
   assert.equal(cp.p40ApplicabilityByEnvironment.office,'confirmed');
@@ -296,11 +316,11 @@ test('P40 follow-up records applicability for each environment and survives norm
   legacy.periods[0].checkup={answers:{P40:'no'},p40Risk:'confirmed',done:true};
   portal.api.normalizeResearch(legacy);
   assert.equal(Object.keys(legacy.periods[0].checkup.p40ApplicabilityByEnvironment).length,0);
-  change({target:{type:'radio',name:'p40Risk',value:'not_confirmed',dataset:{}}});
+  await change({target:{type:'radio',name:'p40Risk',value:'not_confirmed',dataset:{}}});
   assert.equal(Object.keys(cp.p40ApplicabilityByEnvironment).length,0);
 });
 
-test('survey weather thresholds, badges and problem-item safeguard follow final E/L rules',()=>{
+test('survey weather thresholds, badges and problem-item safeguard follow final E/L rules',async()=>{
   const scenarios=[
     [85,13,'Ясно'],
     [82,16,'Хмарно'],
@@ -381,7 +401,7 @@ test('survey weather thresholds, badges and problem-item safeguard follow final 
   assert.match(map,/«Хмарно»: змішаний профіль відповідей або наявність окремого проблемного аспекту/);
 });
 
-test('the 55% item boundary stays separate from storm weather',()=>{
+test('the 55% item boundary stays separate from storm weather',async()=>{
   const rows=(favorable,neutral,unfavorable)=>Array.from({length:20},(_,index)=>({
     answers:Object.fromEntries(portal.api.SURVEY_ITEMS.filter(item=>item.source==='E').map(item=>[
       item.code,item.code==='E01'?(index<favorable?5:index<favorable+neutral?3:1):5,
@@ -399,7 +419,7 @@ test('the 55% item boundary stays separate from storm weather',()=>{
   assert.ok(adverse.problems.some(item=>item.code==='E01'));
 });
 
-test('checkup status rules remain reproducible, including conditional P40',()=>{
+test('checkup status rules remain reproducible, including conditional P40',async()=>{
   const allFull=Object.fromEntries(portal.api.P_LIST.map(item=>[item.code,'full']));
   assert.ok(Object.values(portal.api.calculatePResults({answers:allFull}).modules).every(module=>module.status==='Ясно'));
 
@@ -420,7 +440,7 @@ test('checkup status rules remain reproducible, including conditional P40',()=>{
   assert.equal(portal.api.calculatePResults({answers:p40,p40Risk:'not_confirmed'}).modules[7].status,'Хмарно');
 });
 
-test('P badges explain practices and never show a numerical percentage',()=>{
+test('P badges explain practices and never show a numerical percentage',async()=>{
   for(const [status,expected] of [
     ['Ясно','☀ Ясно (усі практики реалізовані)'],
     ['Хмарно','☁ Хмарно (є окремі прогалини)'],
@@ -433,7 +453,7 @@ test('P badges explain practices and never show a numerical percentage',()=>{
   }
 });
 
-test('weather map and report omit visible boundary messages',()=>{
+test('weather map and report omit visible boundary messages',async()=>{
   const {environment}=setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L01:1}});
   const rows=portal.api.actualResultModel();
   const map=portal.api.weatherMapHtml(rows,environment);
@@ -445,7 +465,7 @@ test('weather map and report omit visible boundary messages',()=>{
   }
 });
 
-test('public methodology describes weather statuses, E/L calculation, problem items and categorical P',()=>{
+test('public methodology describes weather statuses, E/L calculation, problem items and categorical P',async()=>{
   assert.match(publicHtml,/<h4>Ясно<\/h4><p>Щонайменше 75% сприятливих і менше 15% несприятливих відповідей<\/p>/);
   assert.match(publicHtml,/<h4>Хмарно<\/h4><p>Є сигнали, що потребують уваги, але немає підстав для статусу «Буря»<\/p>/);
   assert.match(publicHtml,/<h4>Буря<\/h4><p>Щонайменше 30% несприятливих відповідей<\/p>/);
@@ -466,7 +486,7 @@ test('public methodology describes weather statuses, E/L calculation, problem it
   assert.doesNotMatch(publicHtml,/портал позначає статуси біля межі/);
 });
 
-test('all 64 interpretation combinations remain available and recommendations stay capped at three',()=>{
+test('all 64 interpretation combinations remain available and recommendations stay capped at three',async()=>{
   assert.equal(Object.keys(portal.api.COMBO64).length,64);
   assert.doesNotMatch(JSON.stringify(portal.api.COMBO64),/Організаційний чекап підтверджує/);
   for(const key of Object.keys(portal.api.COMBO64)){
@@ -478,7 +498,7 @@ test('all 64 interpretation combinations remain available and recommendations st
   for(let moduleId=1;moduleId<=7;moduleId++)assert.ok(portal.api.selectedActions(moduleId).length<=3);
 });
 
-test('E16 routes primarily to the new pay-equity thematic recommendation',()=>{
+test('E16 routes primarily to the new pay-equity thematic recommendation',async()=>{
   setSurveyIssueScenario('E16');
   const links=Array.from(portal.api.FINE_ITEMS.E16.links,link=>({target:link.target,role:link.role}));
   assert.deepEqual(links,[
@@ -493,7 +513,7 @@ test('E16 routes primarily to the new pay-equity thematic recommendation',()=>{
   assert.equal(action.check,'Суттєві відмінності в оплаті мають зрозуміле й документоване обґрунтування.');
 });
 
-test('E22 routes primarily to the new time-and-pace flexibility recommendation',()=>{
+test('E22 routes primarily to the new time-and-pace flexibility recommendation',async()=>{
   setSurveyIssueScenario('E22');
   const links=Array.from(portal.api.FINE_ITEMS.E22.links,link=>({target:link.target,role:link.role}));
   assert.deepEqual(links,[
@@ -507,7 +527,7 @@ test('E22 routes primarily to the new time-and-pace flexibility recommendation',
   assert.equal(action.check,'Працівники розуміють межі своєї самостійності й можуть реально користуватися доступною гнучкістю.');
 });
 
-test('E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary',()=>{
+test('E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary',async()=>{
   setSurveyIssueScenario('E25');
   const links=Array.from(portal.api.FINE_ITEMS.E25.links,link=>({target:link.target,role:link.role}));
   assert.deepEqual(links,[
@@ -524,7 +544,7 @@ test('E25 uses the feedback recommendation, explains work problem, and keeps P18
   assert.equal(portal.api.SURVEY_ITEMS.find(item=>item.code==='E25').text,'Коли я повідомляю про робочу проблему, мене інформують про результат її розгляду та рішення щодо подальших дій.');
 });
 
-test('L21 routes to P38 and every runtime P38 copy uses the revised wording',()=>{
+test('L21 routes to P38 and every runtime P38 copy uses the revised wording',async()=>{
   const links=Array.from(portal.api.FINE_ITEMS.L21.links,link=>({target:link.target,role:link.role}));
   assert.deepEqual(links,[
     {target:'P38',role:'primary'},
@@ -539,7 +559,7 @@ test('L21 routes to P38 and every runtime P38 copy uses the revised wording',()=
   assert.equal(portal.api.P38_TEXT,'Компанія регулярно та перед суттєвими змінами в роботі проводить оцінювання для виявлення психосоціальних небезпек і пов’язаних із ними ризиків, а також повторює оцінювання після значущих інцидентів; для пріоритетних ризиків визначає заходи, відповідальних, строки й ресурси та перевіряє результативність вжитих заходів.');
 });
 
-test('COMBO64 situation hypothesis appears only with a weak situational practice in that module',()=>{
+test('COMBO64 situation hypothesis appears only with a weak situational practice in that module',async()=>{
   setSurveyIssueScenario('E16',{checkupOverrides:{P19:'partial'}});
   assert.equal(portal.api.hasWeakSituationalPractice(4),false);
   const everyday=portal.api.comboTemplate('Ясно','Ясно','Хмарно',4);
@@ -553,7 +573,7 @@ test('COMBO64 situation hypothesis appears only with a weak situational practice
   assert.match(situational.gap_analysis.join(' '),/ще не стикалися із ситуацією/);
 });
 
-test('manager detail is never retained below ten responses',()=>{
+test('manager detail is never retained below ten responses',async()=>{
   const managerRows=Array.from({length:9},()=>({answers:Object.fromEntries(portal.api.SURVEY_ITEMS.filter(x=>x.source==='L').map(x=>[x.code,5]))}));
   const result=portal.api.aggregateSource(managerRows,'L',9);
   assert.equal(result.detailAllowed,false);
@@ -567,7 +587,7 @@ test('manager detail is never retained below ten responses',()=>{
   assert.equal(r.periods[0].envs[0].survey.results.l.problems.length,0);
 });
 
-test('E=19 has no status or problem items, while E=20 gets a weather status',()=>{
+test('E=19 has no status or problem items, while E=20 gets a weather status',async()=>{
   const below=portal.api.aggregateSource(surveyRows('E',19,{answer:1}),'E');
   assert.equal(below.eligible,false);
   assert.equal(below.detailAllowed,false);
@@ -580,7 +600,7 @@ test('E=19 has no status or problem items, while E=20 gets a weather status',()=
   assert.ok(Object.values(atThreshold.modules).every(module=>module.status==='Ясно'));
 });
 
-test('L=9 has no status or problem items, while L=10 gets a weather status',()=>{
+test('L=9 has no status or problem items, while L=10 gets a weather status',async()=>{
   const below=portal.api.aggregateSource(surveyRows('L',9,{answer:1}),'L');
   assert.equal(below.eligible,false);
   assert.equal(below.detailAllowed,false);
@@ -593,7 +613,7 @@ test('L=9 has no status or problem items, while L=10 gets a weather status',()=>
   assert.ok(Object.values(atThreshold.modules).every(module=>module.status==='Ясно'));
 });
 
-test('eligible E and L with too few applicable answers receive Туман, not a sample warning',()=>{
+test('eligible E and L with too few applicable answers receive Туман, not a sample warning',async()=>{
   const {eResult,lResult}=setRuntimeScenario({eAnswer:'NA',lAnswer:'NA'});
   for(const result of [eResult,lResult]){
     assert.equal(result.eligible,true);
@@ -608,7 +628,7 @@ test('eligible E and L with too few applicable answers receive Туман, not a
   assert.equal(input.L.states.L01,'T');
 });
 
-test('E=19 is excluded from final comparison while valid L and P still produce analysis',()=>{
+test('E=19 is excluded from final comparison while valid L and P still produce analysis',async()=>{
   const {environment}=setRuntimeScenario({eCount:19,eAnswer:1,lOverrides:{L01:1},pOverrides:{P01:'no'}});
   const rows=portal.api.actualResultModel();
   assert.ok(rows.every(row=>row.e==='Недостатня вибірка'));
@@ -632,7 +652,7 @@ test('E=19 is excluded from final comparison while valid L and P still produce a
   assert.match(analysis.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);
 });
 
-test('L=9 is excluded from final comparison while valid E and P still produce analysis',()=>{
+test('L=9 is excluded from final comparison while valid E and P still produce analysis',async()=>{
   setRuntimeScenario({lCount:9,lAnswer:1,eOverrides:{E01:1},pOverrides:{P01:'no'}});
   const rows=portal.api.actualResultModel();
   assert.ok(rows.every(row=>row.l==='Недостатня вибірка'));
@@ -654,7 +674,7 @@ test('L=9 is excluded from final comparison while valid E and P still produce an
   assert.match(analysis.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/);
 });
 
-test('zero manager responses no longer block the final dashboard availability',()=>{
+test('zero manager responses no longer block the final dashboard availability',async()=>{
   const r=research();
   const environment={id:'env-1',name:'Середовище',emp:30,man:2,survey:{results:{e:{totalResponses:30},l:{totalResponses:0}}}};
   r.periods[0].envs=[environment];r.periods[0].checkup.done=true;
@@ -662,7 +682,7 @@ test('zero manager responses no longer block the final dashboard availability',(
   assert.equal(portal.api.canDashboard(environment),true);
 });
 
-test('plan is isolated by period and export contains action description',()=>{
+test('plan is isolated by period and export contains action description',async()=>{
   const p1={id:'p1',label:'Перший',start:'2026-01-01',end:'2026-01-31',envs:[{id:'e1',name:'Офіс',emp:20,man:2,invE:20,invL:2,survey:{}}],checkup:{answers:{},notes:{},done:false}};
   const p2={id:'p2',label:'Другий',start:'2026-02-01',end:'2026-02-28',envs:[],checkup:{answers:{},notes:{},done:false}};
   const r=research({periods:[p1,p2],plan:[
@@ -677,7 +697,7 @@ test('plan is isolated by period and export contains action description',()=>{
   assert.equal(rows.length,2);
 });
 
-test('legacy plan actions are assigned to the period that owns their environment',()=>{
+test('legacy plan actions are assigned to the period that owns their environment',async()=>{
   const p1={id:'p1',label:'Перший',start:'2026-01-01',end:'2026-01-31',envs:[{id:'e1',name:'Офіс',emp:20,man:0,invE:20,invL:0,survey:{}}],checkup:{answers:{},notes:{},done:false}};
   const p2={id:'p2',label:'Другий',start:'2026-02-01',end:'2026-02-28',envs:[{id:'e2',name:'Склад',emp:20,man:0,invE:20,invL:0,survey:{}}],checkup:{answers:{},notes:{},done:false}};
   const r=research({periods:[p1,p2],plan:[{id:'a1',envId:'e2'}]});
@@ -685,7 +705,7 @@ test('legacy plan actions are assigned to the period that owns their environment
   assert.equal(r.plan[0].periodId,'p2');
 });
 
-test('backup validation rejects inconsistent structures before replacement',()=>{
+test('backup validation rejects inconsistent structures before replacement',async()=>{
   const valid=research();
   assert.equal(portal.api.validateBackupResearch(valid),true);
   const duplicate=research({periods:[valid.periods[0],{...valid.periods[0]}]});
@@ -696,25 +716,25 @@ test('backup validation rejects inconsistent structures before replacement',()=>
   assert.throws(()=>portal.api.validateBackupResearch(badPlan),/некоректний запис/);
 });
 
-test('no-manager interpretation removes manager-specific hypotheses and checks',()=>{
+test('no-manager interpretation removes manager-specific hypotheses and checks',async()=>{
   const result=portal.api.comboTemplate('Хмарно','Не застосовується','Буря');
   for(const text of [...result.hypotheses,...result.checks,...result.next_step]){
     assert.doesNotMatch(text,/(керівник|управлінськ|лідер)/i);
   }
 });
 
-test('report sentences start with capitals',()=>{
+test('report sentences start with capitals',async()=>{
   const text=portal.api.managementSignal({e:'Хмарно',l:'Буря',p:'Хмарно'},[]);
   assert.doesNotMatch(text,/\. [а-яіїєґ]/u);
 });
 
-test('environment and period validation rejects inconsistent values',()=>{
+test('environment and period validation rejects inconsistent values',async()=>{
   assert.match(portal.api.validateEnvironmentValues(''),/Вкажіть назву робочого середовища/);
   assert.equal(portal.api.validateEnvironmentValues('Офіс'),'');
   assert.match(portal.api.validatePeriodDates('2026-02-02','2026-02-01'),/не може бути раніше/);
 });
 
-test('public portal documents the previously hidden rules and four checkup answers',()=>{
+test('public portal documents the previously hidden rules and four checkup answers',async()=>{
   assert.match(publicHtml,/Недостатньо підтверджених даних<\/strong>/);
   assert.match(publicHtml,/75% сприятливих і менше 15% несприятливих/i);
   assert.match(publicHtml,/Якщо мінімальної вибірки не досягнуто, статус джерела не розраховується/);
@@ -728,14 +748,14 @@ test('public portal documents the previously hidden rules and four checkup answe
 function semanticFixture({e={},l={},p={},eEligible=true,lEligible=true,p40Applicable=false,p40Known=false}={}){
   return {E:{eligible:eEligible,total:eEligible?20:19,states:e},L:{eligible:lEligible,total:lEligible?10:9,states:l},P:{states:p,p40Applicable,p40Known:p40Known||p40Applicable}};
 }
-test('semantic v2 defines all 27 aspects and approved positive conclusion',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture());assert.equal(a.version,'2.0-2026-09-25');assert.equal(a.aspects.length,27);assert.equal(a.modules[1].aspects.length,0);assert.match(a.modules[1].lead,/За доступними даними виражених проблемних ознак у цьому модулі не виявлено/)});
-test('semantic v2 E-only problem is aspect-specific',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/Відповіді працівників вказують/);assert.doesNotMatch(x.alignment,/\bякщо\b/i)});
-test('semantic v2 alignment names concrete evidence from each available source',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E09:'S'},l:{L06:'S'},p:{P31:'G'}})),x=a.modules[2].aspects.find(x=>x.id==='M2-C3');assert.ok(x);assert.match(x.alignment,/навантаження враховують при визначенні завдань і строків/i);assert.match(x.alignment,/керівник має достатньо ресурсів/i);assert.match(x.alignment,/відстеження навантаження й реакція на системне перевантаження/i);assert.doesNotMatch(x.alignment,/пов’язаний сигнал у цьому аспекті/i)});
-test('semantic v2 visible interpretation avoids banned technical wording',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P08:'G',P16:'G',P33:'G',P34:'G'},l:{L17:'S'}})),visible=Object.values(a.modules).flatMap(m=>m.aspects).map(x=>x.alignment+' '+x.attention).join(' ');assert.doesNotMatch(visible,/блокер|ескалац|маршрутизац|управлінська спроможність/i);assert.match(visible,/порядок передавання питання на відповідний рівень/i);assert.match(visible,/спеціалізована психологічна, медична, кризова або інша професійна допомога/i)});
-test('semantic v2 L-only problem is retained',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/Відповіді керівників вказують/)});
-test('semantic v2 P-only gap is preventive',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P01:'G'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/превентивна організаційна прогалина/)});
-test('semantic v2 E problem plus favorable P describes discrepancy',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},p:{P01:'N',P06:'N'}}));assert.match(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Досвід працівників відрізняється від результату організаційного чекапу/)});
-test('P gap A: problematic E remains actionable with favorable L and corporate P',()=>{
+test('semantic v2 defines all 27 aspects and approved positive conclusion',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture());assert.equal(a.version,'2.0-2026-09-25');assert.equal(a.aspects.length,27);assert.equal(a.modules[1].aspects.length,0);assert.match(a.modules[1].lead,/За доступними даними виражених проблемних ознак у цьому модулі не виявлено/)});
+test('semantic v2 E-only problem is aspect-specific',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/Відповіді працівників вказують/);assert.doesNotMatch(x.alignment,/\bякщо\b/i)});
+test('semantic v2 alignment names concrete evidence from each available source',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E09:'S'},l:{L06:'S'},p:{P31:'G'}})),x=a.modules[2].aspects.find(x=>x.id==='M2-C3');assert.ok(x);assert.match(x.alignment,/навантаження враховують при визначенні завдань і строків/i);assert.match(x.alignment,/керівник має достатньо ресурсів/i);assert.match(x.alignment,/відстеження навантаження й реакція на системне перевантаження/i);assert.doesNotMatch(x.alignment,/пов’язаний сигнал у цьому аспекті/i)});
+test('semantic v2 visible interpretation avoids banned technical wording',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P08:'G',P16:'G',P33:'G',P34:'G'},l:{L17:'S'}})),visible=Object.values(a.modules).flatMap(m=>m.aspects).map(x=>x.alignment+' '+x.attention).join(' ');assert.doesNotMatch(visible,/блокер|ескалац|маршрутизац|управлінська спроможність/i);assert.match(visible,/порядок передавання питання на відповідний рівень/i);assert.match(visible,/спеціалізована психологічна, медична, кризова або інша професійна допомога/i)});
+test('semantic v2 L-only problem is retained',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/Відповіді керівників вказують/)});
+test('semantic v2 P-only gap is preventive',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P01:'G'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/превентивна організаційна прогалина/)});
+test('semantic v2 E problem plus favorable P describes discrepancy',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},p:{P01:'N',P06:'N'}}));assert.match(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Досвід працівників відрізняється від результату організаційного чекапу/)});
+test('P gap A: problematic E remains actionable with favorable L and corporate P',async()=>{
   setRuntimeScenario({eOverrides:{E01:1}});
   const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
   const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
@@ -745,7 +765,7 @@ test('P gap A: problematic E remains actionable with favorable L and corporate P
   assert.match(aspect.alignment,/мають реальний доступ/);assert.match(aspect.alignment,/дає очікуваний результат/);
   assert.ok(analysis.modules[1].actions.some(action=>action.basis_codes.includes('E01')));
 });
-test('P gap B: problematic L is retained and manager access is checked despite favorable E and P',()=>{
+test('P gap B: problematic L is retained and manager access is checked despite favorable E and P',async()=>{
   setRuntimeScenario({lOverrides:{L01:1}});
   const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
   const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
@@ -754,7 +774,7 @@ test('P gap B: problematic L is retained and manager access is checked despite f
   for(const term of ['час','інформацію','ресурси','повноваження','доступ до потрібного рішення або фахівця'])assert.ok(aspect.alignment.includes(term));
   assert.ok(analysis.modules[1].actions.some(action=>action.basis_codes.includes('L01')));
 });
-test('P gap C: problematic E and L give a stronger local signal without claiming a proved cause',()=>{
+test('P gap C: problematic E and L give a stronger local signal without claiming a proved cause',async()=>{
   setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L01:1}});
   const row=portal.api.actualResultModel()[0],analysis=portal.api.barometerSemanticInterpretation();
   const aspect=analysis.modules[1].aspects.find(x=>x.id==='M1-C1');
@@ -766,7 +786,7 @@ test('P gap C: problematic E and L give a stronger local signal without claiming
   assert.doesNotMatch(aspect.alignment,/практика існує лише формально|доведено, що практика/);
   assert.ok(analysis.modules[1].actions.some(action=>['E01','L01'].every(code=>action.basis_codes.includes(code))));
 });
-test('P gap D: one checkup serves two environments and only the weaker environment shows a local gap',()=>{
+test('P gap D: one checkup serves two environments and only the weaker environment shows a local gap',async()=>{
   setRuntimeScenario();
   const state=portal.api.getState(),checkup=state.r.periods[0].checkup;
   const second={id:'env-second',name:'Друге середовище',emp:20,man:10,invE:20,invL:10,
@@ -786,7 +806,7 @@ test('P gap D: one checkup serves two environments and only the weaker environme
   assert.equal(first.modules[1].aspects.length,0);
   assert.match(other.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/сильним сигналом можливого розриву/);
 });
-test('P gap at module level: diffuse cloudy E and L remain visible even without a problem item',()=>{
+test('P gap at module level: diffuse cloudy E and L remain visible even without a problem item',async()=>{
   setRuntimeScenario();
   const state=portal.api.getState(),environment=state.r.periods[0].envs[0];
   for(const [source,count] of [['E',20],['L',10]]){
@@ -809,7 +829,7 @@ test('P gap at module level: diffuse cloudy E and L remain visible even without 
   assert.match(portal.api.barometerSemanticInterpretation().modules[1].lead,/Результат керівників менш сприятливий/);
   environment.survey.results.e=cloudyE;
 });
-test('P gap across different aspects: E and L together warrant a module check, not an assumed shared cause',()=>{
+test('P gap across different aspects: E and L together warrant a module check, not an assumed shared cause',async()=>{
   setRuntimeScenario({eOverrides:{E01:1},lOverrides:{L02:1}});
   const row=portal.api.actualResultModel()[0],module=portal.api.barometerSemanticInterpretation().modules[1];
   assert.equal(row.e,'Хмарно');assert.equal(row.l,'Буря');assert.equal(row.p,'Ясно');
@@ -819,8 +839,8 @@ test('P gap across different aspects: E and L together warrant a module check, n
   assert.match(module.lead,/кожного аспекту окремо/);
   assert.doesNotMatch(module.lead,/спільну причину встановлено/);
 });
-test('semantic v2 fog does not close active issue',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'T'},l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/недостатньо застосовних даних/);assert.match(x.alignment,/Відповіді керівників вказують/)});
-test('fog-only module gives one data-limitation conclusion and no aspect cards or actions',()=>{
+test('semantic v2 fog does not close active issue',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'T'},l:{L01:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(x);assert.match(x.alignment,/недостатньо застосовних даних/);assert.match(x.alignment,/Відповіді керівників вказують/)});
+test('fog-only module gives one data-limitation conclusion and no aspect cards or actions',async()=>{
   const pOverrides=Object.fromEntries(portal.api.P_LIST.filter(item=>item.module===1).map(item=>[item.code,'insufficient']));
   const {environment}=setRuntimeScenario({eAnswer:'NA',lAnswer:'NA',pOverrides});
   const analysis=portal.api.barometerSemanticInterpretation(),module=analysis.modules[1],row=portal.api.actualResultModel()[0];
@@ -830,24 +850,25 @@ test('fog-only module gives one data-limitation conclusion and no aspect cards o
   assert.match(module.lead,/застосовних відповідей працівників та керівників/);
   assert.match(module.lead,/підтвердіть дані організаційного чекапу/);
   const markup=portal.api.barometerSemanticModuleMarkup(row);
-  assert.doesNotMatch(markup,/Аспекти, що потребують уваги|semantic-aspect-card|data-a="add-routed-action"/);
+  assert.doesNotMatch(markup,/Аспекти, що потребують уваги|data-aspect-id=|class="evidence-action"/);
   assert.match(portal.api.buildReportHtml(environment),/Недостатньо даних, щоб надійно оцінити/);
+  assert.ok(portal.api.barometerModuleActions(1).every(a=>a.answer==='insufficient'));
 });
-test('a real problem or P gap remains visible beside fog',()=>{
+test('a real problem or P gap remains visible beside fog',async()=>{
   const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'T'},l:{L01:'S'},p:{P01:'G'}}));
   assert.ok(a.modules[1].aspects.some(item=>item.id==='M1-C1'));
   assert.ok(a.modules[1].actions.length>0);
   assert.match(a.modules[1].aspects.find(item=>item.id==='M1-C1').alignment,/недостатньо застосовних даних/);
 });
-test('semantic v2 insufficient E sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({eEligible:false,l:{L01:'S'},p:{P01:'G'}}));assert.match(a.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);const x=a.modules[1].clusters.find(x=>x.eCodes.includes('E01'));assert.equal(x.e,'X');assert.doesNotMatch(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Туман/)});
-test('semantic v2 insufficient L sample is excluded, not fog',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({lEligible:false,e:{E01:'S'}}));assert.match(a.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/)});
-test('semantic v2 source not measured is not favorable',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C4');assert.ok(x);assert.equal(x.l,'M')});
-test('semantic v2 E20 alone does not trigger M4-A3',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E20:'S'}}));assert.ok(a.modules[4].aspects.some(x=>x.id==='M4-C5'));assert.ok(!a.actions.some(x=>x.id==='M4-A3'))});
-test('semantic v2 E31 alone requests pulse study and no routed action',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E31:'S'}})),x=a.modules[7].aspects.find(x=>x.id==='M7-C2');assert.ok(x);assert.match(x.alignment,/цільове пульс-опитування/);assert.ok(!a.actions.some(x=>['M3-A3','M4-A3','M7-A3'].includes(x.id)))});
-test('semantic v2 L16 alone produces narrow manager action',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L16:'S'}})),x=a.actions.find(x=>x.id==='M6-A1');assert.ok(x);assert.equal(x.variant,'L16');assert.equal(x.steps.length,3);assert.match(x.title,/можливість реагувати/)});
-test('semantic v2 L21 alone produces narrow change-risk action',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L21:'S'}})),x=a.actions.find(x=>x.id==='M7-A2');assert.ok(x);assert.equal(x.variant,'L21');assert.equal(x.steps.length,3);assert.match(x.title,/Залучати керівників/)});
-test('semantic v2 P40 requires confirmed applicability',()=>{const no=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P40:'G'},p40Applicable:false}));assert.ok(!no.actions.some(x=>x.id==='M7-A3'));assert.ok(no.modules[7].aspects.some(x=>x.id==='M7-C3'));const yes=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P40:'G'},p40Applicable:true})),x=yes.actions.find(x=>x.id==='M7-A3');assert.ok(x);assert.match(x.title,/третіх осіб/)});
-test('one corporate P40 result yields local action only where applicability is confirmed',()=>{
+test('semantic v2 insufficient E sample is excluded, not fog',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({eEligible:false,l:{L01:'S'},p:{P01:'G'}}));assert.match(a.modules[1].dataNotes.join(' '),/Працівники: отримано 19 валідних анкет/);const x=a.modules[1].clusters.find(x=>x.eCodes.includes('E01'));assert.equal(x.e,'X');assert.doesNotMatch(a.modules[1].aspects.find(x=>x.id==='M1-C1').alignment,/Туман/)});
+test('semantic v2 insufficient L sample is excluded, not fog',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({lEligible:false,e:{E01:'S'}}));assert.match(a.modules[1].dataNotes.join(' '),/Керівники: отримано 9 валідних анкет/)});
+test('semantic v2 source not measured is not favorable',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S'}})),x=a.modules[1].aspects.find(x=>x.id==='M1-C4');assert.ok(x);assert.equal(x.l,'M')});
+test('semantic v2 E20 alone does not trigger M4-A3',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E20:'S'}}));assert.ok(a.modules[4].aspects.some(x=>x.id==='M4-C5'));assert.ok(!a.actions.some(x=>x.id==='M4-A3'))});
+test('semantic v2 E31 alone requests pulse study and no routed action',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E31:'S'}})),x=a.modules[7].aspects.find(x=>x.id==='M7-C2');assert.ok(x);assert.match(x.alignment,/цільове пульс-опитування/);assert.ok(!a.actions.some(x=>['M3-A3','M4-A3','M7-A3'].includes(x.id)))});
+test('semantic v2 L16 alone produces narrow manager action',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L16:'S'}})),x=a.actions.find(x=>x.id==='M6-A1');assert.ok(x);assert.equal(x.variant,'L16');assert.equal(x.steps.length,3);assert.match(x.title,/можливість реагувати/)});
+test('semantic v2 L21 alone produces narrow change-risk action',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L21:'S'}})),x=a.actions.find(x=>x.id==='M7-A2');assert.ok(x);assert.equal(x.variant,'L21');assert.equal(x.steps.length,3);assert.match(x.title,/Залучати керівників/)});
+test('semantic v2 P40 requires confirmed applicability',async()=>{const no=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P40:'G'},p40Applicable:false}));assert.ok(!no.actions.some(x=>x.id==='M7-A3'));assert.ok(no.modules[7].aspects.some(x=>x.id==='M7-C3'));const yes=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P40:'G'},p40Applicable:true})),x=yes.actions.find(x=>x.id==='M7-A3');assert.ok(x);assert.match(x.title,/третіх осіб/)});
+test('one corporate P40 result yields local action only where applicability is confirmed',async()=>{
   setRuntimeScenario({pOverrides:{P40:'no'}});
   const state=portal.api.getState(),researchState=state.r,cp=researchState.periods[0].checkup;
   const first=researchState.periods[0].envs[0],second={...first,id:'env-second',name:'Інше середовище'};
@@ -878,25 +899,25 @@ test('one corporate P40 result yields local action only where applicability is c
   assert.equal(evaluate(second.id).input.P.p40Applicable,false);
   assert.equal(cp.results.modules[7].status,'Буря');
 });
-test('semantic v2 keeps five active aspects in one module',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E16:'S',E18:'S',E20:'S'},l:{L10:'S',L11:'S'}}));assert.equal(a.modules[4].aspects.length,5)});
-test('semantic v2 C01 replaces duplicate change actions',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S'}}));assert.ok(a.actions.some(x=>x.id==='C01'));assert.ok(!a.actions.some(x=>x.id==='M1-A3'));assert.ok(!a.actions.some(x=>x.id==='M5-A3'))});
-test('H01 C01 preserves independent emergency action M7-A3',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S',E34:'S'}}));const ids=a.actions.map(x=>x.id);assert.ok(ids.includes('C01'));assert.ok(ids.includes('M7-A3'),'Do not lose emergency action when merging change actions');assert.ok(!ids.includes('M1-A3'));assert.ok(!ids.includes('M5-A3'))});
-test('H01 C01 preserves other independent actions as well',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S',E16:'S',E34:'S'}}));const ids=a.actions.map(x=>x.id);assert.ok(ids.includes('C01'));assert.ok(ids.includes('M4-A1'),'Do not lose fairness action');assert.ok(ids.includes('M7-A3'),'Do not lose emergency action');assert.ok(!ids.includes('M1-A3'));assert.ok(!ids.includes('M5-A3'))});
-test('semantic v2 adaptive M4-A1 shows only relevant E17 steps',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E17:'S'}})),x=a.actions.find(x=>x.id==='M4-A1');assert.ok(x);assert.ok(x.steps.some(s=>/визнання внеску/.test(s)));assert.ok(!x.steps.some(s=>/оплати і преміювання/.test(s)))});
-test('semantic v2 P35 and P36 keep their action subsets separate',()=>{const p35=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P35:'G'}})).actions.find(x=>x.id==='M6-A3');assert.ok(p35);assert.ok(!p35.steps.some(s=>/травматич/.test(s)));const p36=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P36:'G'}})).actions.find(x=>x.id==='M6-A3');assert.ok(p36);assert.ok(!p36.steps.some(s=>/тривалої відсутності/.test(s)))});
-test('semantic v2 E28 does not add overload steps',()=>{const x=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E28:'S'}})).actions.find(x=>x.id==='M6-A1');assert.ok(x);assert.ok(x.steps.some(s=>/поза звичайним робочим часом/.test(s)));assert.ok(!x.steps.some(s=>/повторюваного надмірного навантаження/.test(s)))});
-test('semantic v2 E31 and confirmed P40 stay separate',()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E31:'S'},p:{P40:'G'},p40Applicable:true})),e31=a.modules[7].aspects.find(x=>x.id==='M7-C2'),p40=a.modules[7].aspects.find(x=>x.id==='M7-C3');assert.ok(e31&&p40);assert.doesNotMatch(e31.alignment,/клієнт|пасажир|пацієнт/i);assert.ok(a.actions.some(x=>x.id==='M7-A3'))});
-test('semantic v2 action cards use bullets and omit legacy sections',()=>{setRuntimeScenario({eOverrides:{E17:1}});const markup=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[3]);assert.match(markup,/Що зробити/);assert.match(markup,/<ul>/);assert.doesNotMatch(markup,/Чому це рекомендовано/);assert.doesNotMatch(markup,/Що уточнити/)});
-test('semantic UX renders independent accordion cards for 1, 2 and 5 active aspects',()=>{
+test('semantic v2 keeps five active aspects in one module',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E16:'S',E18:'S',E20:'S'},l:{L10:'S',L11:'S'}}));assert.equal(a.modules[4].aspects.length,5)});
+test('semantic v2 C01 replaces duplicate change actions',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S'}}));assert.ok(a.actions.some(x=>x.id==='C01'));assert.ok(!a.actions.some(x=>x.id==='M1-A3'));assert.ok(!a.actions.some(x=>x.id==='M5-A3'))});
+test('H01 C01 preserves independent emergency action M7-A3',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S',E34:'S'}}));const ids=a.actions.map(x=>x.id);assert.ok(ids.includes('C01'));assert.ok(ids.includes('M7-A3'),'Do not lose emergency action when merging change actions');assert.ok(!ids.includes('M1-A3'));assert.ok(!ids.includes('M5-A3'))});
+test('H01 C01 preserves other independent actions as well',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E05:'S',E24:'S',E16:'S',E34:'S'}}));const ids=a.actions.map(x=>x.id);assert.ok(ids.includes('C01'));assert.ok(ids.includes('M4-A1'),'Do not lose fairness action');assert.ok(ids.includes('M7-A3'),'Do not lose emergency action');assert.ok(!ids.includes('M1-A3'));assert.ok(!ids.includes('M5-A3'))});
+test('semantic v2 adaptive M4-A1 shows only relevant E17 steps',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E17:'S'}})),x=a.actions.find(x=>x.id==='M4-A1');assert.ok(x);assert.ok(x.steps.some(s=>/визнання внеску/.test(s)));assert.ok(!x.steps.some(s=>/оплати і преміювання/.test(s)))});
+test('semantic v2 P35 and P36 keep their action subsets separate',async()=>{const p35=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P35:'G'}})).actions.find(x=>x.id==='M6-A3');assert.ok(p35);assert.ok(!p35.steps.some(s=>/травматич/.test(s)));const p36=portal.api.barometerSemanticInterpretation(semanticFixture({p:{P36:'G'}})).actions.find(x=>x.id==='M6-A3');assert.ok(p36);assert.ok(!p36.steps.some(s=>/тривалої відсутності/.test(s)))});
+test('semantic v2 E28 does not add overload steps',async()=>{const x=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E28:'S'}})).actions.find(x=>x.id==='M6-A1');assert.ok(x);assert.ok(x.steps.some(s=>/поза звичайним робочим часом/.test(s)));assert.ok(!x.steps.some(s=>/повторюваного надмірного навантаження/.test(s)))});
+test('semantic v2 E31 and confirmed P40 stay separate',async()=>{const a=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E31:'S'},p:{P40:'G'},p40Applicable:true})),e31=a.modules[7].aspects.find(x=>x.id==='M7-C2'),p40=a.modules[7].aspects.find(x=>x.id==='M7-C3');assert.ok(e31&&p40);assert.doesNotMatch(e31.alignment,/клієнт|пасажир|пацієнт/i);assert.ok(a.actions.some(x=>x.id==='M7-A3'))});
+test('semantic v2 action cards use bullets and omit legacy sections',async()=>{setRuntimeScenario({eOverrides:{E17:1}});const markup=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[3]);assert.match(markup,/Що зробити/);assert.match(markup,/<ol>/);assert.doesNotMatch(markup,/Чому це рекомендовано/);assert.doesNotMatch(markup,/Що уточнити/)});
+test('semantic UX renders independent accordion cards for 1, 2 and 5 active aspects',async()=>{
   const one=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'}})).modules[1].aspects;
   const two=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S',E02:'S'}})).modules[1].aspects;
   const five=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E16:'S',E18:'S',E20:'S'},l:{L10:'S',L11:'S'}})).modules[4].aspects;
   assert.equal(one.length,1);assert.equal(two.length,2);assert.equal(five.length,5);
   for(const aspects of [one,two,five]){const markup=portal.api.barometerV2AspectsMarkup(aspects);assert.match(markup,/Аспекти, що потребують уваги/);assert.equal((markup.match(/<details class="semantic-aspect-card"/g)||[]).length,aspects.length);assert.equal((markup.match(/<summary>/g)||[]).length,aspects.length);assert.equal((markup.match(/Як узгоджуються джерела/g)||[]).length,aspects.length);assert.equal((markup.match(/На що звернути увагу/g)||[]).length,aspects.length);assert.doesNotMatch(markup,/Наступний аспект/);assert.doesNotMatch(markup,/<details[^>]+name=/);for(const aspect of aspects)assert.ok(markup.includes(aspect.title));}
 });
-test('semantic v2 visible wording contains no складов and no mechanical colon lists',()=>{const fixtures=[semanticFixture({e:{E01:'S'}}),semanticFixture({l:{L01:'S'}}),semanticFixture({p:{P01:'G'}}),semanticFixture({e:{E09:'S'},l:{L06:'S'},p:{P31:'G'}}),semanticFixture({e:{E31:'S'}}),semanticFixture({e:{E20:'S'}})];const visible=fixtures.flatMap(f=>Object.values(portal.api.barometerSemanticInterpretation(f).modules).flatMap(m=>m.aspects)).map(x=>x.alignment+' '+x.attention).join(' ');assert.doesNotMatch(visible,/складов/i);assert.doesNotMatch(visible,/щодо таких\s+[^.]*:/i);assert.doesNotMatch(visible,/за такими\s+[^.]*:/i);assert.doesNotMatch(visible,/\b(DIRECT|SUPPORT|ROUTE|NOT_MEASURED|AVAILABLE|semantic layer|active code|trigger|source combination)\b/i);});
-test('semantic v2 dynamic signal wording is grammatically integrated',()=>{const mixed=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},l:{L01:'N'},p:{P01:'N',P06:'N'}})).modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(mixed);assert.match(mixed.alignment,/Відповіді працівників вказують на труднощі в таких питаннях, як /);assert.match(mixed.alignment,/Відповіді керівників не вказують на виражені проблеми в таких питаннях, як /);const fog=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L21:'S'},p:{P37:'T'}})).modules[7].aspects.find(x=>x.id==='M7-C2');assert.ok(fog);assert.match(fog.alignment,/недостатньо підтверджених даних для надійної оцінки таких питань, як інтеграція психосоціальних ризиків/i);assert.doesNotMatch(fog.alignment,/оцінити інтеграція/i);});
-test('public example shows only a conclusion for clear and fog-only combinations',()=>{
+test('semantic v2 visible wording contains no складов and no mechanical colon lists',async()=>{const fixtures=[semanticFixture({e:{E01:'S'}}),semanticFixture({l:{L01:'S'}}),semanticFixture({p:{P01:'G'}}),semanticFixture({e:{E09:'S'},l:{L06:'S'},p:{P31:'G'}}),semanticFixture({e:{E31:'S'}}),semanticFixture({e:{E20:'S'}})];const visible=fixtures.flatMap(f=>Object.values(portal.api.barometerSemanticInterpretation(f).modules).flatMap(m=>m.aspects)).map(x=>x.alignment+' '+x.attention).join(' ');assert.doesNotMatch(visible,/складов/i);assert.doesNotMatch(visible,/щодо таких\s+[^.]*:/i);assert.doesNotMatch(visible,/за такими\s+[^.]*:/i);assert.doesNotMatch(visible,/\b(DIRECT|SUPPORT|ROUTE|NOT_MEASURED|AVAILABLE|semantic layer|active code|trigger|source combination)\b/i);});
+test('semantic v2 dynamic signal wording is grammatically integrated',async()=>{const mixed=portal.api.barometerSemanticInterpretation(semanticFixture({e:{E01:'S'},l:{L01:'N'},p:{P01:'N',P06:'N'}})).modules[1].aspects.find(x=>x.id==='M1-C1');assert.ok(mixed);assert.match(mixed.alignment,/Відповіді працівників вказують на труднощі в таких питаннях, як /);assert.match(mixed.alignment,/Відповіді керівників не вказують на виражені проблеми в таких питаннях, як /);const fog=portal.api.barometerSemanticInterpretation(semanticFixture({l:{L21:'S'},p:{P37:'T'}})).modules[7].aspects.find(x=>x.id==='M7-C2');assert.ok(fog);assert.match(fog.alignment,/недостатньо підтверджених даних для надійної оцінки таких питань, як інтеграція психосоціальних ризиків/i);assert.doesNotMatch(fog.alignment,/оцінити інтеграція/i);});
+test('public example shows only a conclusion for clear and fog-only combinations',async()=>{
   const clear=renderPublicExample('Ясно','Ясно','Ясно');
   assert.equal((clear.statuses.match(/status-chip/g)||[]).length,3);
   assert.match(clear.interpretation,/сприятливому рівні/);
@@ -911,7 +932,7 @@ test('public example shows only a conclusion for clear and fog-only combinations
   assert.equal((problem.detail.match(/class="example-aspect-card"/g)||[]).length,1);
   assert.equal((problem.detail.match(/class="example-action-card"/g)||[]).length,1);
 });
-test('embedded local portal is byte-for-byte synchronized after base64 decoding',()=>{const match=publicHtml.match(/const embeddedLocalPortal = '([A-Za-z0-9+/=]+)';/);assert.ok(match);const decoded=Buffer.from(match[1],'base64'),localBytes=fs.readFileSync(new URL('../local/index.html',import.meta.url));assert.equal(Buffer.compare(decoded,localBytes),0);});
+test('embedded local portal is byte-for-byte synchronized after base64 decoding',async()=>{const match=publicHtml.match(/const embeddedLocalPortal = '([A-Za-z0-9+/=]+)';/);assert.ok(match);const decoded=Buffer.from(match[1],'base64'),localBytes=fs.readFileSync(new URL('../local/index.html',import.meta.url));assert.equal(Buffer.compare(decoded,localBytes),0);});
 
 // Corrective patch F01/F02/F03/F04/F06: exercise the final runtime.
 for(const boundary of [15,30,55,75])test(`F01 stable comparison on both sides of ${boundary}%`,()=>{
@@ -962,12 +983,12 @@ for(const [name,overrides,positive,negative,missing] of [
   if(negative.includes('E13')){assert.doesNotMatch(positiveSentence,/допомог/i);assert.match(negativeSentence,/допомог/i)}
   if(overrides.E14==='NA')assert.doesNotMatch(a.alignment,/Додатково відповіді працівників/);
 });
-test('F02 partial NA remains visible even with no adverse signals',()=>{
+test('F02 partial NA remains visible even with no adverse signals',async()=>{
   const {environment}=setRuntimeScenario({eOverrides:{E13:'NA'}});
   const m=portal.api.barometerSemanticInterpretation().modules[3];
   assert.ok(m.aspects.some(a=>a.id==='M3-C1'));
   assert.match(m.lead,/висновок не поширюється/);
-  assert.match(portal.api.buildReportHtml(environment),/недостатньо застосовних даних/);
+  assert.match(portal.api.buildReportHtml(environment),/недостатньо застосовних (?:даних|відповідей)/);
 });
 for(const [code,id,terms] of [
   ['E09','M2-D1',[/поточне навантаження/,/строк, пріоритет, обсяг або розподіл/]],
@@ -986,12 +1007,12 @@ for(const [code,id,terms] of [
   if(code==='E14')assert.ok(!a.actions.some(x=>x.id==='M3-A1'));
   const button={dataset:{a:'add-routed-action',m:String(action.module),target:id},replaceWith(){}};
   await portal.listeners.get('click')({target:{closest(){return button}}});
-  const plan=portal.api.getState().r.plan;assert.equal(plan.length,1);assert.equal(plan[0].sourceTarget,id);assert.equal(plan[0].description,action.action);
+  const plan=portal.api.getState().r.plan;assert.equal(plan.length,1);assert.equal(plan[0].sourceTarget,id);assert.equal(plan[0].description,portal.api.barometerModuleActions(action.module,a).find(x=>x.id===id).action);
   await portal.listeners.get('click')({target:{closest(){return button}}});assert.equal(plan.length,1);
   const saved=JSON.parse([...portal.storage.values()].at(-1));assert.equal(saved.plan[0].sourceTarget,id);
   assert.ok(portal.api.planXlsxBytes(portal.api.planRows()).length>1000);
 });
-test('F03 L17 and L18 deduplicate and do not duplicate an existing help action',()=>{
+test('F03 L17 and L18 deduplicate and do not duplicate an existing help action',async()=>{
   setRuntimeScenario({lOverrides:{L17:1,L18:1}});
   let actions=portal.api.barometerSemanticInterpretation().actions;
   assert.equal(actions.filter(x=>x.id==='M6-D1').length,1);
@@ -1020,12 +1041,12 @@ for(const value of ['Важко відповісти','Не погоджуюся
   const v=portal.api.validateTableRows(table,'legacy.csv');
   assert.ok(v.errors.some(x=>x.includes(value)&&x.includes('шкалі Барометра v1.0')&&x.includes('не перекодовано')));
 });
-test('F06 blank stays absent, not neutral or NA',()=>{
+test('F06 blank stays absent, not neutral or NA',async()=>{
   assert.equal(portal.api.parseResponseValue(''),null);
   const table=[[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>`${x.code}. ${x.text}`)],['Ні',...portal.api.SURVEY_ITEMS.map(x=>x.source==='L'?'':x.code==='E01'?'':'5')]];
   const v=portal.api.validateTableRows(table,'blank.csv');assert.ok(v.errors.some(x=>x.includes('E01')&&x.includes('відсутнє')));assert.ok(!v.errors.some(x=>/L\d\d/.test(x)));
 });
-test('old backup keeps cached weather until source file is reimported',()=>{
+test('old backup keeps cached weather until source file is reimported',async()=>{
   const {environment}=setRuntimeScenario();
   const rows=moduleRows('L',10,1,(r,i)=>r<9&&i===r%3?1:5);
   const result=portal.api.aggregateSource(rows,'L');result.modules[1].status='Хмарно';
@@ -1042,7 +1063,7 @@ test('old backup keeps cached weather until source file is reimported',()=>{
 for(const [f,u,expected] of [[85,15,'Хмарно'],[70,30,'Буря'],[75,10,'Ясно'],[55,10,'Хмарно']])test(`F01 exact literal weather ${f}/${u}`,()=>{
   assert.equal(portal.api.weatherStatus(f,u),expected);
 });
-test('F01 exact literal 55 is not a problem without 30 unfavorable',()=>{
+test('F01 exact literal 55 is not a problem without 30 unfavorable',async()=>{
   assert.equal(portal.api.isProblemSurveyItem({adequate:true,favorable:55,unfavorable:29}),false);
   assert.equal(portal.api.isProblemSurveyItem({adequate:true,favorable:55,unfavorable:30}),true);
 });
@@ -1060,7 +1081,7 @@ test('existing study load and JSON restore preserve cached status but use curren
   environment.survey.results.l=portal.api.aggregateSource(rows,'L');
   environment.survey.results.l.modules[1].status='Хмарно';
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
-  portal.storage.set(portal.api.STORE,JSON.stringify(original));
+  await portal.api.save();
   const loaded=portal.api.load();
   assert.equal(loaded.periods[0].envs[0].survey.results.l.modules[1].status,'Хмарно');
   const query=portal.document.querySelector;
@@ -1100,7 +1121,7 @@ function progressButton(html,action,id){
 }
 async function clickProgress(html,action,id){const button=progressButton(html,action,id);await portal.listeners.get('click')({target:{closest(){return button}}});}
 
-test('study progress replaces three questions and has five steps without persistent writes',()=>{
+test('study progress replaces three questions and has five steps without persistent writes',async()=>{
   const {r}=progressScenario({envCount:0});const before=JSON.stringify(r),saved=JSON.stringify([...portal.storage]);
   portal.api.render();
   assert.equal((portal.app.innerHTML.match(/class="study-step(?: is-done)?"/g)||[]).length,5);
@@ -1114,22 +1135,22 @@ test('study progress replaces three questions and has five steps without persist
 for(const field of ['company','owner'])test(`study progress settings require ${field}`,()=>{
   const {r}=progressScenario();r[field]=' ';assert.doesNotMatch(progressStep(portal.api.studyProgress(),1),/✓ Завершено/);
 });
-test('study progress empty checkup and survey remain independently accessible',()=>{
+test('study progress empty checkup and survey remain independently accessible',async()=>{
   const {html}=progressScenario();assert.match(progressStep(html,1),/✓ Завершено/);
   assert.match(progressStep(html,2),/Не розпочато/);assert.match(progressStep(html,3),/>Доступно</);
   progressButton(html,'checkup');progressButton(html,'upload','progress-0');progressButton(html,'plan');
   assert.match(progressStep(html,4),/Ще недоступно/);assert.doesNotMatch(progressStep(html,4),/data-a="dash"/);
 });
-test('study progress partial checkup counts actual complete modules',()=>{
+test('study progress partial checkup counts actual complete modules',async()=>{
   const {p}=progressScenario();p.checkup.answers=Object.fromEntries([1,2,3].flatMap(m=>portal.api.P[m]).map(x=>[x.code,'full']));
   const html=portal.api.studyProgress();assert.match(progressStep(html,2),/У процесі, 3 із 7 модулів/);
   assert.match(html,/продовжте організаційний чекап. Завершено 3 із 7 модулів/);
 });
-test('study progress complete checkup recommends missing import',()=>{
+test('study progress complete checkup makes P results available before import',async()=>{
   const {html}=progressScenario({done:true});assert.match(progressStep(html,2),/✓ Завершено/);
-  assert.match(progressStep(html,3),/aria-current="step"/);assert.match(html,/«Середовище 1»/);
+  assert.match(progressStep(html,4),/aria-current="step"/);assert.match(html,/результати організаційного чекапу вже доступні/);
 });
-test('study progress survey import before P does not claim results ready',()=>{
+test('study progress survey import before P does not claim results ready',async()=>{
   const {html}=progressScenario({imported:1});assert.match(progressStep(html,3),/✓ Завершено/);
   assert.match(progressStep(html,4),/Ще недоступно/);progressButton(html,'upload','progress-0');
 });
@@ -1138,7 +1159,7 @@ for(const imported of [1,2,3])test(`study progress shows ${imported} of three in
   assert.match(html,new RegExp(`Завантажено дані для ${imported} із 3`));
   assert.match(progressStep(html,3),imported===3?/✓ Завершено/:/У процесі/);
   assert.equal((progressStep(html,3).match(/data-a="upload"/g)||[]).length,3);
-  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,imported);
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,3);
   assert.doesNotMatch(progressStep(html,4),/Завершено/);assert.doesNotMatch(progressStep(html,5),/Завершено/);
 });
 test('study progress import replacement uses correct environment and preserves other data',async()=>{
@@ -1147,18 +1168,18 @@ test('study progress import replacement uses correct environment and preserves o
   assert.equal(portal.api.getState().modal.e.id,'progress-1');
   assert.equal(portal.api.getState().modal.step,1);assert.equal(JSON.stringify(p.envs[0]),other);
 });
-test('study progress new environment reopens import stage',()=>{
+test('study progress new environment reopens import stage',async()=>{
   const {p}=progressScenario({imported:1,done:true});p.envs.push({id:'later',name:'Нове',survey:{}});
   const html=portal.api.studyProgress();assert.match(html,/Завантажено дані для 1 із 2/);
-  assert.match(progressStep(html,3),/У процесі/);assert.match(html,/«Нове»/);
+  assert.match(progressStep(html,3),/У процесі/);progressButton(html,'upload','later');progressButton(html,'dash','later');
 });
-test('study progress obeys production canDashboard even for insufficient sample',()=>{
+test('study progress obeys production canDashboard even for insufficient sample',async()=>{
   const {p}=progressScenario({envCount:2,imported:1,done:true});
   p.envs[0].survey.results.e=portal.api.aggregateSource(surveyRows('E',5),'E');
   assert.equal(portal.api.canDashboard(p.envs[0]),true);
   const html=portal.api.studyProgress();progressButton(html,'dash','progress-0');
-  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,1);
-  assert.match(progressStep(html,4),/Результати ще недоступні/);
+  assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,2);
+  assert.doesNotMatch(progressStep(html,4),/Результати ще недоступні/);
 });
 test('study progress dashboard buttons select the requested environment',async()=>{
   const {html}=progressScenario({envCount:3,imported:3,done:true});
@@ -1176,17 +1197,17 @@ test('study progress follows period switching and persisted restore',async()=>{
   r.periods.push(next);r.current=next.id;let html=portal.api.studyProgress();
   assert.match(html,/Завантажено дані для 0 із 0/);assert.doesNotMatch(progressStep(html,5),/У Плані:/);
   const button={dataset:{a:'switch-period',id:p.id}};await portal.listeners.get('click')({target:{closest(){return button}}});
-  portal.api.save();const loaded=portal.api.load();portal.api.setState({...portal.api.getState(),r:loaded});
+  await portal.api.save();const loaded=portal.api.load();portal.api.setState({...portal.api.getState(),r:loaded});
   html=portal.api.studyProgress();assert.match(html,/Завантажено дані для 1 із 1/);assert.match(html,/У Плані: 4 дії/);
 });
-test('study progress safely renders imported environment names',()=>{
+test('study progress safely renders imported environment names',async()=>{
   const {p}=progressScenario({imported:1,done:true});p.envs[0].name='<img src=x onerror=alert(1)>';
   const html=portal.api.studyProgress();assert.doesNotMatch(html,/<img src=x/);assert.match(html,/&lt;img/);
 });
 
 
 // Regression cases limited to M02 JSON restore and M03 CSV preamble.
-test('M02 validates nested E/L and organizational checkup results',()=>{
+test('M02 validates nested E/L and organizational checkup results',async()=>{
   setRuntimeScenario();
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
   assert.equal(portal.api.validateBackupResearch(original),true);
@@ -1206,9 +1227,9 @@ test('M02 validates nested E/L and organizational checkup results',()=>{
 });
 test('M02 restore rejects malformed aggregates without changing existing research',async()=>{
   setRuntimeScenario();
+  await portal.api.save(); // Seed through the protected writer before taking the fixture baseline.
   const initial=JSON.parse(JSON.stringify(portal.api.getState().r));
   const corrupted=JSON.parse(JSON.stringify(initial));corrupted.periods[0].envs[0].survey.results.e.modules=null;
-  portal.storage.set(portal.api.STORE,JSON.stringify(initial));
   const query=portal.document.querySelector;
   portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:query(selector);
   try{
@@ -1218,7 +1239,7 @@ test('M02 restore rejects malformed aggregates without changing existing researc
   }finally{portal.document.querySelector=query}
 });
 for(const delim of [',',';','\t'])for(const prefix of [[],['Службова інформація'],['Звіт; метадані; період','Експорт, дата, джерело']]){
-  test('M03 CSV prefix '+prefix.length+' and delimiter '+JSON.stringify(delim),()=>{
+  test('M03 CSV prefix '+prefix.length+' and delimiter '+JSON.stringify(delim),async()=>{
     const cell=x=>{const t=String(x??'');return t.includes(delim)||t.includes('"')||t.includes('\n')?'"'+t.replace(/"/g,'""')+'"':t};
     const headers=[portal.api.ROLE_QUESTION,...portal.api.SURVEY_ITEMS.map(x=>x.code+'. '+x.text)];
     const data=Array.from({length:24},(_,i)=>[i<12?'Так':'Ні',...portal.api.SURVEY_ITEMS.map(x=>x.source==='E'||i<12?'5':'')]);
@@ -1232,7 +1253,7 @@ for(const delim of [',',';','\t'])for(const prefix of [[],['Службова і�
 }
 
 
-test('M02 allows legacy checkup results to be migrated instead of rejecting the old schema',()=>{
+test('M02 allows legacy checkup results to be migrated instead of rejecting the old schema',async()=>{
   setRuntimeScenario();
   const r=JSON.parse(JSON.stringify(portal.api.getState().r));
   r.periods[0].checkup.schemaVersion='legacy-checkup';
@@ -1240,7 +1261,7 @@ test('M02 allows legacy checkup results to be migrated instead of rejecting the 
   assert.equal(portal.api.validateBackupResearch(r),true);
 });
 
-test('M02 backup rejects invalid current-schema P values and unknown P codes',()=>{
+test('M02 backup rejects invalid current-schema P values and unknown P codes',async()=>{
   setRuntimeScenario();
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
   for(const [code,value] of [['P01','INVALID'],['P01',42],['P01','yes'],['P99','full']]){
@@ -1254,7 +1275,7 @@ test('M02 backup rejects invalid current-schema P values and unknown P codes',()
     assert.throws(()=>portal.api.validateBackupResearch(invalid),/Некоректні відповіді організаційного чекапу/);
   }
 });
-test('M02 backup recognizes every supported current-schema P answer, including partial drafts',()=>{
+test('M02 backup recognizes every supported current-schema P answer, including partial drafts',async()=>{
   setRuntimeScenario();
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
   for(const choice of ['full','partial','no','insufficient']){
@@ -1267,7 +1288,7 @@ test('M02 backup recognizes every supported current-schema P answer, including p
   draft.periods[0].checkup.answers={P01:null,P02:''};
   assert.equal(portal.api.validateBackupResearch(draft),true);
 });
-test('M02 backup rejects invalid calendar dates in periods and current checkup',()=>{
+test('M02 backup rejects invalid calendar dates in periods and current checkup',async()=>{
   setRuntimeScenario();
   const original=JSON.parse(JSON.stringify(portal.api.getState().r));
   for(const date of ['2026-02-30','2025-02-29','2026-13-01','2026-10-32','2026-1-01']){
@@ -1287,12 +1308,12 @@ test('M02 backup rejects invalid calendar dates in periods and current checkup',
 });
 test('M02 restore invalid P answer or date does not change existing research and storage',async()=>{
   setRuntimeScenario();
+  await portal.api.save(); // Seed through the protected writer before taking the fixture baseline.
   const before=JSON.parse(JSON.stringify(portal.api.getState().r));
   const beforeText=JSON.stringify(before),oldQuery=portal.document.querySelector;
-  portal.storage.set(portal.api.STORE,beforeText);
   try{
     for(const change of [r=>{r.periods[0].checkup.answers.P01='INVALID'},r=>{r.periods[0].start='2026-02-30'}]){
-      const corrupted=JSON.parse(beforeText);change(corrupted);
+      const corrupted=JSON.parse(beforeText);await change(corrupted);
       portal.document.querySelector=selector=>selector==='#restore-file'?{files:[{text:async()=>JSON.stringify({format:'barometr-backup',data:corrupted})}]}:oldQuery(selector);
       await portal.listeners.get('click')({target:{closest(){return {dataset:{a:'restore-backup'}}}}});
       assert.equal(portal.storage.get(portal.api.STORE),beforeText);
@@ -1300,7 +1321,7 @@ test('M02 restore invalid P answer or date does not change existing research and
     }
   }finally{portal.document.querySelector=oldQuery}
 });
-test('M02 keeps legacy schema backup compatible with checkup migration',()=>{
+test('M02 keeps legacy schema backup compatible with checkup migration',async()=>{
   setRuntimeScenario();
   const valid=JSON.parse(JSON.stringify(portal.api.getState().r));
   valid.periods[0].checkup.schemaVersion='legacy-checkup';
@@ -1319,7 +1340,7 @@ function checkTruncatedE20Export(e20Header){
     i<8?'Так':'Ні',...Array(21).fill(i<8?'5':'')]);
   return portal.api.validateTableRows([headers,...rows],'microsoft-forms-export.xlsx');
 }
-test('F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning',()=>{
+test('F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning',async()=>{
   const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
   const exported=e20.slice(0,196)+'...';
   assert.equal(exported.length,199);
@@ -1330,7 +1351,7 @@ test('F07 shortened Microsoft Forms E20 is uniquely recognized with an audit war
   assert.equal(parsed.found.length,56);
   assert.equal(parsed.warnings.filter(x=>x.includes('E20')).length,1);
 });
-test('F07 a unicode ellipsis and unchanged full E20 still import correctly',()=>{
+test('F07 a unicode ellipsis and unchanged full E20 still import correctly',async()=>{
   const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
   for(const heading of [e20,e20.slice(0,196)+'…']){
     const parsed=checkTruncatedE20Export(heading);
@@ -1339,7 +1360,7 @@ test('F07 a unicode ellipsis and unchanged full E20 still import correctly',()=>
     assert.equal(parsed.warnings.some(x=>x.includes('E20')),heading.endsWith('…'));
   }
 });
-test('F07 rejects unmarked, short, changed and coded truncated E20 headings',()=>{
+test('F07 rejects unmarked, short, changed and coded truncated E20 headings',async()=>{
   const e20=portal.api.SURVEY_ITEMS.find(x=>x.code==='E20').text;
   for(const [label,heading,expectedError] of [
     ['unmarked',e20.slice(0,196),'Відсутнє твердження E20'],
@@ -1350,4 +1371,270 @@ test('F07 rejects unmarked, short, changed and coded truncated E20 headings',()=
     const parsed=checkTruncatedE20Export(heading);
     assert.ok(parsed.errors.some(error=>error.startsWith(expectedError)),label+' unexpectedly accepted: '+parsed.errors.join('; '));
   }
+});
+
+
+// Checkup-only results and read-only practice verification, 2026-10-20.
+function checkupOnlyScenario({eCount=0,lCount=0,done=true,overrides={}}={}){
+  const x=setRuntimeScenario({eCount,lCount,pOverrides:overrides});
+  if(!eCount&&!lCount)delete x.environment.survey;
+  const state=portal.api.getState();state.r.periods[0].checkup.done=done;
+  return {...x,state,cp:state.r.periods[0].checkup};
+}
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`checkup-only source availability E=${eCount} L=${lCount}`,()=>{
+  const {environment,state}=checkupOnlyScenario({eCount,lCount,overrides:{P31:'partial'}});
+  assert.equal(portal.api.canDashboard(environment),true);
+  const rows=portal.api.actualResultModel();assert.equal(rows.length,7);
+  for(const row of rows){assert.equal(row.e,eCount===0?'Немає даних':eCount<20?'Недостатня вибірка':'Ясно');assert.equal(row.l,lCount===0?'Немає даних':lCount<10?'Недостатня вибірка':'Ясно');}
+  assert.equal(rows[5].p,'Хмарно');portal.api.render();assert.match(portal.app.innerHTML,/Карта організаційної погоди/);
+  const analysis=portal.api.barometerSemanticInterpretation();assert.ok(analysis.actions.some(x=>x.final_action_id==='M6-A1'));
+  if(eCount<20&&lCount<10)for(const module of Object.values(analysis.modules)){assert.match(module.lead,/Повністю реалізовано/);assert.doesNotMatch(module.lead,/не суперечать одне одному|працівники повідомляють|керівники вказують/i);}
+  const report=portal.api.buildReportHtml(environment);assert.doesNotMatch(report,/checkup-verification-appendix|P\d{2}-C[1-4]/);assert.equal((report.match(/class="module-head"/g)||[]).length+(report.match(/data-favourable-module=/g)||[]).length,7);
+  assert.equal(state.r.plan.length,0);
+});
+test('unfinished P with no survey has no results or criteria',async()=>{
+  const {environment}=checkupOnlyScenario({done:false});assert.equal(portal.api.canDashboard(environment),false);assert.equal(portal.api.actualResultModel().length,0);assert.equal(portal.api.barometerPVerificationMarkup(1),'');assert.equal(portal.api.buildReportHtml(environment),'');
+});
+test('company-only context is derived and not persisted as environment',async()=>{
+  const {state}=checkupOnlyScenario();state.r.periods[0].envs=[];state.env=null;
+  const before=JSON.stringify(state.r),company=portal.api.barometerCompanyContext();assert.equal(company.id,null);assert.equal(portal.api.canDashboard(company),true);
+  portal.api.render();assert.match(portal.app.innerHTML,/Організаційний чекап компанії/);assert.match(portal.api.buildReportHtml(company),/Карта організаційної погоди/);assert.equal(JSON.stringify(state.r),before);
+});
+for(const practice of portal.api.P_LIST)for(const answer of ['full','partial','no','insufficient'])test(`verification ${practice.code} / ${answer}: exact practice, valid state, no scoring or writes`,()=>{
+  const {cp,state}=checkupOnlyScenario({overrides:{[practice.code]:answer}}),before=JSON.stringify(state.r),storage=JSON.stringify([...portal.storage]);
+  const score=JSON.stringify(portal.api.calculatePResults(cp)),view=portal.api.barometerPracticeVerification(practice.code);
+  assert.equal(view.code,practice.code);assert.equal(view.answer,answer);assert.equal(view.label,portal.api.BAROMETER_P_ANSWER_LABELS[answer]);assert.match(view.conclusion,new RegExp(view.title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.ok(view.checks.length>=1);assert.ok(view.steps.length>=1);assert.equal(view.sources.length,2);
+  if(answer==='full'){assert.equal(view.checks.length,4);assert.match(view.heading,/Критерії повної реалізації/);assert.match(view.steps.join(' '),/Якщо умова й результат/);assert.doesNotMatch(view.conclusion,/ефективно працює/);}
+  if(answer==='partial'){assert.ok(view.results.length===4);assert.match(view.conclusion,/частково або нерівномірно/);}
+  if(answer==='no'){assert.equal(view.checks.length,4);assert.match(view.conclusion,/не реалізована або фактично не працює/);}
+  if(answer==='insufficient'){assert.match(view.conclusion,/не може бути достовірно підтверджений/);assert.equal(view.results.length,4);}
+  const markup=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel().find(r=>r.m===practice.module));
+  assert.equal(portal.api.barometerPVerificationMarkup(practice.module),'');
+  if(answer==='full')assert.doesNotMatch(markup,new RegExp('data-practice-code="'+practice.code+'"'));
+  else assert.match(markup,new RegExp('data-practice-code="'+practice.code+'"'));
+  assert.doesNotMatch(markup,/P\d{2}-C[1-4]/);
+  assert.equal(JSON.stringify(portal.api.calculatePResults(cp)),score);assert.equal(JSON.stringify(state.r),before);assert.equal(JSON.stringify([...portal.storage]),storage);
+});
+test('42 practice criteria have distinct factual checks, gaps, steps, outcomes and sources',async()=>{
+  for(const key of ['title','criteria','sources']){
+    const values=Object.values(portal.api.BAROMETER_P_VERIFICATION).map(x=>JSON.stringify(x[key]));assert.equal(new Set(values).size,42,key);
+  }
+});
+test('all full P gives seven favorable statuses and no automatic corrective actions',async()=>{
+  checkupOnlyScenario();assert.ok(portal.api.actualResultModel().every(x=>x.p==='Ясно'));assert.equal(portal.api.barometerSemanticInterpretation().actions.length,0);
+  assert.ok(portal.api.barometerSemanticAction('VERIFY:P01',1));assert.equal(portal.api.barometerSemanticInterpretation().actions.length,0);
+});
+test('verification reflects changed response immediately without changing saved answers',async()=>{
+  const {cp}=checkupOnlyScenario();assert.equal(portal.api.barometerPracticeVerification('P01').answer,'full');
+  cp.answers.P01='partial';const view=portal.api.barometerPracticeVerification('P01');assert.equal(view.answer,'partial');assert.match(view.heading,/покращити/);assert.equal(cp.answers.P01,'partial');assert.equal(portal.api.barometerSemanticAction('VERIFY:P01',1),null);
+});
+test('critical P storm, two missing practices, partial and fog keep original rules',async()=>{
+  for(const [overrides,status] of [[{P04:'no'},'Буря'],[{P01:'no',P02:'no'},'Буря'],[{P01:'partial'},'Хмарно'],[{P01:'insufficient',P02:'insufficient',P03:'insufficient'},'Туман']]){
+    checkupOnlyScenario({overrides});assert.equal(portal.api.actualResultModel()[0].p,status);
+  }
+});
+test('P40 verification is conditional and does not create a local protection action without confirmed applicability',async()=>{
+  const {cp}=checkupOnlyScenario({overrides:{P40:'no'}});cp.p40Risk='confirmed';cp.p40ApplicabilityByEnvironment={};
+  let a=portal.api.barometerSemanticInterpretation();assert.ok(!a.actions.some(x=>x.basis_codes.includes('P40')));
+  assert.match(portal.api.barometerPracticeVerification('P40').steps.join(' '),/Лише за підтвердженого ризику/);
+  cp.p40ApplicabilityByEnvironment['env-runtime']='confirmed';a=portal.api.barometerSemanticInterpretation();const action=a.actions.find(x=>x.basis_codes.includes('P40'));assert.ok(action);assert.equal(portal.api.barometerActionScope(action),'env-runtime');
+});
+test('P-only actions and voluntary strong-practice checks deduplicate at company scope',async()=>{
+  const {state}=checkupOnlyScenario({overrides:{P31:'partial'}});const first=state.env;
+  const click=async(target,m)=>{const b={dataset:{a:'add-routed-action',target,m:String(m)},replaceWith(){}};await portal.listeners.get('click')({target:{closest:()=>b}})};
+  await click('M6-A1',6);await click('VERIFY:P01',1);assert.equal(state.r.plan.length,2);assert.ok(state.r.plan.every(x=>x.envId===null));
+  state.r.periods[0].envs.push({id:'other',name:'Other',survey:{}});state.env='other';await click('M6-A1',6);await click('VERIFY:P01',1);assert.equal(state.r.plan.length,2);
+  assert.equal(first,'env-runtime');
+});
+test('questionnaire has no verification controls and retains exactly 42 original practices',async()=>{
+  const {state}=checkupOnlyScenario();state.screen='checkup';state.module=1;
+  const html=portal.api.checkup();assert.equal((html.match(/class="practice"/g)||[]).length,6);assert.doesNotMatch(html,/data-practice-code|VERIFY:|Критерії перевірки організаційних/);
+});
+test('public portal outside embedded local copy and XLSX stays byte-identical to reviewed baseline',async()=>{
+  const strip=html=>html.replace(/(const embeddedLocalPortal\s*=\s*["'])[^"']*(["'])/,'$1LOCAL$2');
+  // Hash pins all public content, calculator, scripts, styles, embedded XLSX and images.
+  assert.equal(createHash('sha256').update(strip(publicHtml)).digest('hex'),'885e92a3a4ee7f27341fe15d4982887d811229081161b8977e1075f414cd6663');
+});
+
+const protectedBaselineHashes={"aggregateSource": "695e76cb37ca7e94f1afa741b74e82ca8ed54e17a2f472ff7faa5f2f57b4765c", "calculatePResults": "549aa9222e9af58a164eec902e0165aad7aadc2cce2c69d7abe44850eb1ec61b", "parseCSV": "acf9f984a969598d100007c8e6a8dcfde9f20635f54d34bbb95913f84f00b82a", "validateTableRows": "fe3fa9cdb97a9c2e08027dc18204ff1cffb1c95c423754fb30d0ecd17304f02d", "validateBackupResearch": "77e8629332abdfc94bcacf9eae1e1319e251ad1b773814a3f4870a3db8238e2b", "weatherStatus": "f80774c17408ec7b2d64b8ec4f41bbb418f9bae3f0023d55b065475f04e6fccf", "planXlsxBytes": "9b560caddbac4e3d9456c48601d614f1ace028e33839b8905db68d432e9abf91"};
+for(const [name,expected] of Object.entries(protectedBaselineHashes))test(`protected baseline function remains byte-identical: ${name}`,()=>{assert.equal(createHash('sha256').update(portal.api[name].toString()).digest('hex'),expected)});
+test('local portal retains exact baseline CSS and original questionnaire data',async()=>{
+ assert.equal(createHash('sha256').update(localHtml.match(/<style>([\s\S]*?)<\/style>/)[1]).digest('hex'),'895a5bc8cc4f9647bc9b2813b1263fe9526b78d354706160b2a11b8a980d0ad6');
+ assert.equal(createHash('sha256').update(JSON.stringify(portal.api.P_LIST)).digest('hex'),'2fa16e0311e95eeae173f47db68d4d0ec71d6b3727196cd83f6c79aa359c2050');
+ assert.equal(createHash('sha256').update(JSON.stringify(portal.api.SURVEY_ITEMS)).digest('hex'),'08343b921cb972ccbe11dbe73351ea31b0558645afaed86286bd2be415f62445');
+});
+test('existing environment-scoped P action stays usable without duplication or migration',async()=>{
+  const {state}=checkupOnlyScenario({overrides:{P31:'partial'}});
+  state.r.plan.push({id:'existing-action',periodId:'period-1',envId:'env-runtime',sourceTarget:'M6-A1',module:portal.api.M[5],action:'Existing user-edited title',description:'Preserved user notes',priority:'Високий',status:'У роботі',indicator:'User-defined criterion'});
+  const before=JSON.stringify(state.r.plan),button={dataset:{a:'add-routed-action',m:'6',target:'M6-A1'},replaceWith(){}};
+  await portal.listeners.get('click')({target:{closest:()=>button}});
+  assert.equal(state.r.plan.length,1);assert.equal(JSON.stringify(state.r.plan),before);assert.equal(button.disabled,true);
+});
+
+// Stable criteria and individual Plan actions refine the reviewed implementation.
+const answersForCriteria=['full','partial','no','insufficient'];
+for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)test(`stable criterion set and one-click persistence: ${practice.code}/${answer}`,async()=>{
+ const {cp,state}=checkupOnlyScenario({overrides:{[practice.code]:answer}});
+ const expected=portal.api.barometerPracticeVerification(practice.code,'full').criteria.map(c=>[c.id,c.criterion]);
+ const view=portal.api.barometerPracticeVerification(practice.code);
+ assert.deepEqual(view.criteria.map(c=>[c.id,c.criterion]),expected);
+ for(const criterion of view.criteria){
+  assert.match(criterion.title,/^(Перевірити|Уточнити|Зібрати дані про) /);
+  const b={dataset:{a:'add-routed-action',m:String(practice.module),target:criterion.target},replaceWith(){throw Error('Criterion button must remain visible')}};
+  portal.api.normalizeResearch(state.r);const before=JSON.stringify(cp);await portal.listeners.get('click')({target:{closest:()=>b}});
+  assert.equal(b.textContent,'Додано до Плану');assert.equal(b.disabled,true);
+  const action=state.r.plan.at(-1);assert.equal(action.sourceTarget,criterion.target);assert.equal(action.envId,null);
+  assert.equal(action.action,criterion.title);assert.equal(action.indicator,criterion.result);assert.match(action.description,new RegExp(criterion.id));assert.equal(action.owner,undefined);assert.equal(action.due,undefined);
+  assert.equal(JSON.stringify(cp),before);
+  await portal.listeners.get('click')({target:{closest:()=>b}});
+  assert.equal(state.r.plan.filter(x=>x.sourceTarget===criterion.target).length,1);
+  assert.ok(JSON.parse(portal.storage.get(portal.api.STORE)).plan.some(x=>x.sourceTarget===criterion.target));
+ }
+ assert.equal(state.r.plan.length,4);
+});
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test(`criterion availability and P-only presentation: ${eCount}/${lCount}`,()=>{
+ checkupOnlyScenario({eCount,lCount,overrides:{P01:'partial'}});
+ for(const practice of portal.api.P_LIST)assert.equal(portal.api.barometerPracticeVerification(practice.code).criteria.length,4);
+ const markup=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]);
+ assert.match(markup,/Рекомендовані організаційні дії/);
+ assert.doesNotMatch(markup,/Організаційні практики: критерії повної реалізації/);
+ assert.doesNotMatch(markup,/Критерії не змінюють оцінок автоматично|Відповідь власника дослідження, фактичне застосування/);
+ if(eCount<20&&lCount<10)assert.doesNotMatch(markup,/Аспекти, що потребують уваги|Як узгоджуються джерела/);
+ const report=portal.api.buildReportHtml(portal.api.getState().r.periods[0].envs[0]);
+ assert.match(report,/Перевірка результату/);assert.doesNotMatch(report,/Підтвердження застосування:/);
+ if(eCount<20&&lCount<10)assert.match(report,/Рівень оцінювання: компанія/);
+ else assert.match(report,/Рівень опитування: робоче середовище/);
+});
+test('criterion scope, exact dedup, edits, response changes and JSON compatibility',async()=>{
+ const {state,cp}=checkupOnlyScenario();state.r.periods[0].envs.push({id:'branch-2',name:'Філія 2'});
+ const click=async(id)=>await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:id},replaceWith(){}})}});
+ await click('CRITERION:P01-C1');const first=state.r.plan[0];
+ const change=(id,field,value)=>portal.api.updatePlanField({target:{dataset:{f:field},value,closest:()=>({dataset:{p:id}})}});
+ await change(first.id,'action','Змінений власником захід');await change(first.id,'description','Власні кроки');await change(first.id,'indicator','Власний результат');await change(first.id,'owner','Власниця');await change(first.id,'due','2026-12-01');await change(first.id,'priority','Високий');await change(first.id,'status','У роботі');await change(first.id,'envId','branch-2');
+ assert.equal(first.envId,'branch-2');await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,2);assert.equal(state.r.plan[1].envId,null);
+ await change(state.r.plan[1].id,'envId','branch-2');assert.equal(state.r.plan[1].envId,null,'scope collision rejected without losing action');
+ const before=JSON.stringify(first);for(const answer of answersForCriteria){cp.answers.P01=answer;portal.api.render();await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,2);assert.equal(JSON.stringify(first),before)}
+ assert.equal(portal.api.validateBackupResearch(JSON.parse(JSON.stringify(state.r))),true);
+ assert.ok(portal.api.plan().includes('data-f="envId"'));assert.ok(portal.api.planRows().some(row=>row.includes('Компанія загалом')));
+ state.r.current='period-2';state.r.periods.push({...JSON.parse(JSON.stringify(state.r.periods[0])),id:'period-2'});await click('CRITERION:P01-C1');assert.equal(state.r.plan.length,3,'other period can have same criterion');
+});
+test('genuinely equivalent semantic record deduplicates; broad route and other criterion remain distinct',async()=>{
+ const {state}=checkupOnlyScenario();const target='CRITERION:P01-C2',candidate=portal.api.barometerSemanticAction(target);
+ state.r.plan.push({id:'semantic-equivalent',periodId:state.r.current,envId:null,sourceTarget:'M1-A1',action:candidate.title,description:candidate.action,indicator:candidate.check});
+ assert.equal(portal.api.planAction(target).id,'semantic-equivalent');assert.equal(portal.api.planAction('CRITERION:P01-C1'),null);
+ state.r.plan[0].description='Інші кроки за тим самим заголовком';assert.equal(portal.api.planAction(target),null);state.r.plan[0].description=candidate.action;
+ state.r.plan[0].action='Ширша інша дія';assert.equal(portal.api.planAction(target),null);
+ state.r.plan[0].action=candidate.title;state.r.plan[0].envId='env-runtime';assert.equal(portal.api.planAction(target),null);
+});
+test('P01 and P03 editorial fixes and 2–4 sentence P-only summaries',async()=>{
+ checkupOnlyScenario({overrides:{P01:'partial',P02:'no',P03:'insufficient'}});
+ const p1=portal.api.barometerPracticeVerification('P01').checks.join(' '),p3=portal.api.barometerPracticeVerification('P03').checks.join(' ');
+ assert.match(p1,/тимчасовим заміщенням/);assert.match(p1,/суміщенн/);assert.match(p3,/різних робочих змін/);assert.doesNotMatch(p3,/до всіх змін/);
+ for(let m=1;m<=7;m++){const lead=portal.api.barometerPModuleLead(m);assert.ok((lead.match(/[.!?](?: |$)/g)||[]).length>=2);assert.ok((lead.match(/[.!?](?: |$)/g)||[]).length<=4);}
+});
+
+// 2026-10-20: updated presentation assertions above follow the authorised removal
+// of criterion cards/appendix. Legacy 672 criterion handler calls remain tested.
+for(const practice of portal.api.P_LIST)for(const answer of answersForCriteria)test(`organisational recommendation ${practice.code}/${answer}`,async()=>{
+ const {state,cp}=checkupOnlyScenario({overrides:{[practice.code]:answer}});
+ portal.api.normalizeResearch(state.r);const before=JSON.stringify(cp),action=portal.api.barometerPracticeAction(practice.code);
+ if(answer==='full'){assert.equal(action,null);return;}
+ assert.equal(action.code,practice.code);assert.ok(action.steps.length>=((practice.code==='P35'||practice.code==='P38'&&answer==='insufficient')?3:6));
+ assert.equal(action.sources.join(''),'P');assert.equal(portal.api.barometerActionScope(action),null);
+ assert.doesNotMatch(action.action+action.check,/P\d{2}-C[1-4]|Зіставте приклади застосування з очікуваним результатом/);
+ const model=portal.api.BAROMETER_P_ACTION_LIBRARY[practice.code];
+ assert.equal(Object.keys(model.coverage).length,4);
+ for(const [id,step] of Object.entries(model.coverage)){assert.equal(model.steps[step-1].length>30,true,id);assert.ok(portal.api.BAROMETER_P_VERIFICATION[practice.code].criteria.some(c=>c.id===id));}
+ if(answer==='no'){for(const step of model.steps)assert.ok(action.steps.includes(step));assert.match(action.action,/відсутній.*існує, але не працює/);}
+ if(answer==='partial'){for(const step of model.partial.steps)assert.ok(action.steps.includes(step));assert.equal(action.title,model.partial.title);assert.doesNotMatch(action.action,/Перевірити, чи виконується така умова/);assert.doesNotMatch(action.title,/Уточнити та вдосконалити практику:/);}
+ if(answer==='insufficient'&&!['P35','P38'].includes(practice.code)){assert.match(action.action,/брак підтверджень не доводить відсутності/i);for(const source of portal.api.BAROMETER_P_VERIFICATION[practice.code].sources)assert.ok(action.action.includes(source));}
+ const click=async()=>await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:String(practice.module),target:action.id},replaceWith(){}})}});
+ await click();await click();assert.equal(state.r.plan.length,1);const saved=state.r.plan[0];
+ assert.equal(saved.description,action.action);assert.equal(saved.indicator,action.check);assert.equal(saved.priority,action.priority);assert.equal(saved.envId,null);
+ assert.equal(JSON.stringify(cp),before);assert.equal(JSON.parse(portal.storage.get(portal.api.STORE)).plan.length,1);
+ assert.equal(portal.api.validateBackupResearch(JSON.parse(JSON.stringify(state.r))),true);
+});
+test('P15 critical cause, positives, P31 provenance and all-full outputs',async()=>{
+ checkupOnlyScenario({overrides:{P15:'no',P31:'partial'}});
+ const rows=portal.api.actualResultModel(),a=portal.api.barometerSemanticInterpretation();
+ assert.equal(rows[2].p,'Буря');assert.match(portal.api.barometerModuleSummary(rows[2],a),/5 із 6.*Буря.*P15/);
+ assert.equal(rows[1].p,'Ясно');assert.match(portal.api.barometerModuleSummary(rows[1],a),/P31.*модулі 6/);
+ assert.equal(portal.api.barometerModuleActions(2).length,0);assert.equal(portal.api.barometerModuleActions(3)[0].priority,'Високий');
+ checkupOnlyScenario();for(const row of portal.api.actualResultModel()){assert.equal(portal.api.barometerModuleActions(row.m).length,0);assert.doesNotMatch(portal.api.barometerSemanticModuleMarkup(row),/recommendation-empty|data-action-id=|підтверджені сильні/i);}
+});
+test('exact practice targets block duplicates while legacy criterion, VERIFY and broad routes preserve optional completion',async()=>{
+ const {state}=checkupOnlyScenario({overrides:{P03:'partial'}});
+ for(const target of ['CRITERION:P03-C2','VERIFY:P03','PRACTICE:P03','M1-A2']){
+  const legacy={id:'legacy',periodId:state.r.current,envId:target==='M1-A2'?null:'env-runtime',sourceTarget:target,action:'Авторська назва',description:'Авторські кроки',indicator:'Авторські критерії',owner:'Авторка',due:'2026-12-01',status:'У роботі',priority:'Високий'};
+  if(target==='M1-A2')legacy.final_action_id=target;
+  state.r.plan=[legacy];const before=JSON.stringify(legacy);
+  assert.equal(portal.api.planAction('PRACTICE:P03')?.id||null,target==='PRACTICE:P03'?'legacy':null);
+  const click=()=>portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:'PRACTICE:P03'},replaceWith(){}})}});
+  await click();assert.equal(state.r.plan.length,target==='PRACTICE:P03'?1:2);assert.equal(JSON.stringify(state.r.plan[0]),before);
+  await click();assert.equal(state.r.plan.length,target==='PRACTICE:P03'?1:2);assert.equal(JSON.stringify(state.r.plan[0]),before);
+ }
+});
+
+test('C01 presentation preserves one complete action across P-only and E/L/P',async()=>{
+ for(const [eCount,lCount] of [[0,0],[20,10]]){
+  const {state}=checkupOnlyScenario({eCount,lCount,overrides:{P05:'partial',P29:'no'}});
+  const a=portal.api.barometerSemanticInterpretation(),c=portal.api.barometerModuleActions(1,a).find(x=>x.id==='C01');assert.ok(c);
+  assert.ok(c.steps.some(s=>s.startsWith('P05:')));assert.ok(c.steps.some(s=>s.startsWith('P29:')));
+  assert.equal(portal.api.barometerModuleActions(5,a).filter(x=>x.code==='P29'||x.id==='C01').length,0);
+  const expected=portal.api.barometerSemanticAction('C01',1);assert.equal(expected.action,c.action);
+  await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:'C01'},replaceWith(){}})}});
+  assert.equal(state.r.plan.length,1);assert.equal(state.r.plan[0].description,c.action);assert.equal(state.r.plan[0].envId,null);
+ }
+});
+
+test('all 84 editorial variants have individual titles and four preserved review questions',async()=>{
+ for(const answer of ['partial','insufficient']){
+  const titles=portal.api.P_LIST.map(p=>portal.api.BAROMETER_P_ACTION_LIBRARY[p.code][answer].title);assert.equal(new Set(titles).size,42);
+  for(const p of portal.api.P_LIST){const model=portal.api.BAROMETER_P_ACTION_LIBRARY[p.code];checkupOnlyScenario({overrides:{[p.code]:answer}});
+   const a=portal.api.barometerPracticeAction(p.code);const grammatical=t=>t.replace(/^Перевірити/, 'Перевірте').replace(/^З’ясувати/, 'З’ясуйте').replace(/^Уточнити/, 'Уточніть').replace(/^Переглянути/, 'Перегляньте').replace(/^Зіставити/, 'Зіставте').replace(/^Безпечно перевірити/, 'Безпечно перевірте').replace(/^Попросити/, 'Попросіть');for(const question of (answer==='insufficient'&&['P35','P38'].includes(p.code)?model.insufficient.steps:model.partial.steps.slice(0,4)))assert.ok(a.steps.some(step=>grammatical(step)===grammatical(question)),p.code+'/'+answer+': '+question);
+   assert.doesNotMatch(a.action,/З’ясувати й зафіксувати підтвердження або відхилення:|Перевірити, чи виконується така умова:/);
+  }
+ }
+});
+for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test('report sources and one methodology block '+eCount+'/'+lCount,()=>{
+ const {environment}=checkupOnlyScenario({eCount,lCount,overrides:{P03:'partial',P15:'no',P24:'insufficient',P31:'partial'}});
+ const html=portal.api.buildReportHtml(environment);
+ assert.equal((html.match(/id="report-source-scope"/g)||[]).length,1);assert.equal((html.match(/id="report-methodology"/g)||[]).length,1);
+ assert.equal((html.match(/позитивна відповідь сама по собі/g)||[]).length,1);
+ assert.doesNotMatch(html,/Усі кроки доступні в дашборді|переносяться до Плану|<b>Як читати статуси\.<\/b>/);
+ assert.ok(html.indexOf('id="report-source-scope"')<html.indexOf('<section class="summary-card">'));
+ assert.ok(html.indexOf('id="report-methodology"')>html.lastIndexOf('class="module-head"'));
+ if(eCount===20&&lCount===10)assert.match(html,/досвід працівників, оцінку керівників та організаційний чекап/);
+ else if(eCount===20)assert.match(html,/Без достатніх даних керівників/);
+ else if(lCount===10)assert.match(html,/Без достатніх даних працівників/);
+ else assert.match(html,/Результати організаційного чекапу на рівні компанії/);
+ if(eCount===9)assert.match(html,/недостатня вибірка \(9 із потрібних 20\)/);
+ assert.ok(html.includes('P40'));for(const threshold of ['75%','15%','30%','55%'])assert.equal(html.includes(threshold),eCount>=20||lCount>=10);assert.equal(html.includes('20 валідних'),eCount>=20);assert.equal(html.includes('10 валідних'),lCount>=10);
+});
+test('updated content notice covers an old practice record without rewriting manual edits',async()=>{
+ const {state}=checkupOnlyScenario({overrides:{P03:'partial'}});
+ state.r.plan=[{id:'old-practice',periodId:state.r.current,envId:null,sourceTarget:'PRACTICE:P03',action:'Ручна назва',description:'Старі ручні кроки',indicator:'Ручний показник'}];
+ const before=JSON.stringify(state.r.plan),html=portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]);
+ assert.match(html,/Цю дію додано раніше\. Перевірте, чи її опис містить усі потрібні кроки\. Ми не змінювали її автоматично\./);
+ assert.equal(JSON.stringify(state.r.plan),before);
+ state.r.plan=[];assert.doesNotMatch(portal.api.barometerSemanticModuleMarkup(portal.api.actualResultModel()[0]),/Цю дію додано раніше/);
+});
+
+test('cloudy P solely from one or two unknown practices has an evidence explanation',async()=>{
+ for(const count of [1,2]){
+  const {environment}=checkupOnlyScenario({overrides:Object.fromEntries(['P01','P02'].slice(0,count).map(c=>[c,'insufficient']))});
+  const row=portal.api.actualResultModel()[0];assert.equal(row.p,'Хмарно');
+  const badge=portal.api.mapStatusBadge(row.p,'P',1,null);assert.match(badge,/Хмарно \(бракує підтверджень\)/);assert.doesNotMatch(badge,/є окремі прогалини/);
+  assert.match(portal.api.buildReportHtml(environment),/Хмарно \(бракує підтверджень\)/);
+ }
+ checkupOnlyScenario({overrides:{P01:'partial',P02:'insufficient'}});
+ assert.match(portal.api.mapStatusBadge('Хмарно','P',1,null),/є окремі прогалини/);
+});
+test('critical PDF summaries preserve protective intent and do not alter complete Plan steps',async()=>{
+ checkupOnlyScenario({overrides:{P15:'no'}});
+ const a=portal.api.barometerPracticeAction('P15'),summary=portal.api.BAROMETER_P_ACTION_LIBRARY.P15.summary;
+ for(const term of [/поза безпосереднім керівником/,/уповноважених/,/обмежений доступ/,/строки/,/конфлікті інтересів/,/помсти/,/межі конфіденційності/,/контрольним зверненням/])assert.match(summary,term);
+ assert.ok(a.steps.some(x=>x.includes('переслідуванню')));assert.ok(a.steps.some(x=>x.includes('анонімності')));
+ assert.equal(portal.api.BAROMETER_P_ACTION_LIBRARY.P40.steps.length,4);
 });

@@ -1,0 +1,144 @@
+// Actual Playwright engines, isolated HTTP origin/profile, synthetic data only.
+const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict'),os=require('os');
+const {execFileSync,spawn}=require('child_process');
+const pw=require(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'playwright'):'playwright');
+const repo=path.resolve(__dirname,'..'),out=process.env.BAROMETER_QA_OUTPUT||path.join(os.tmpdir(),'barometer-storage-qa');fs.mkdirSync(out,{recursive:true});
+const old=execFileSync('git',['show','15eea99fcabd0a22f7615311deda281949a9e716:local/index.html'],{cwd:repo,maxBuffer:12e6}),fresh=fs.readFileSync(repo+'/local/index.html');
+const checks=[],errors=[],engines={};let origin;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const ready=p=>p.waitForFunction(()=>typeof StorageSafety!=='undefined'&&StorageSafety.mode==='editor');
+const mode=(p,m)=>p.waitForFunction(m=>typeof StorageSafety!=='undefined'&&StorageSafety.mode===m,m);
+async function open(ctx,version='new'){const p=await ctx.newPage();p.on('dialog',d=>d.accept());await p.goto(origin+'/'+version);if(version==='new')await ready(p);return p}
+async function seed(p,count=12,multiple=false){return p.evaluate(async ({count,multiple})=>{
+ const mk=(id,n)=>({id,label:'Вересень 2026',start:'2026-09-01',end:'2026-09-30',envs:[{id:id+'a',name:'Офіс QA',survey:{}},{id:id+'b',name:'Зміна QA',survey:{}}],checkup:{answers:Object.fromEntries(P_LIST.slice(0,n).map((x,i)=>[x.code,['full','partial','insufficient','no'][i%4]])),notes:{P01:'Примітка QA'},done:n===42,asOfDate:'2026-09-30',schemaVersion:CHECKUP_SCHEMA_VERSION,p40Risk:'confirmed'}});
+ const r={company:'Синтетична компанія',owner:'Власниця QA',current:'p1',periods:[mk('p1',count),...(multiple?[mk('p2',27)]:[])],plan:[{id:'a1',periodId:'p1',envId:'p1a',module:M[2],action:'Дія QA',description:'Повний опис',indicator:'Показник',owner:'Особа 1',due:'2026-12-10',priority:'Високий',status:'Не розпочато'}]};
+ if(multiple){const rows=Array.from({length:30},(_,i)=>({isManager:i<12,answers:Object.fromEntries(SURVEY_ITEMS.map(x=>[x.code,x.source==='E'||i<12?5:null]))}));r.periods[0].envs[0].survey={ok:true,e:30,l:12,leaders:true,results:{e:aggregateSource(rows,'E'),l:aggregateSource(rows.slice(0,12),'L')},importMeta:{filename:'synthetic-fixture.csv',warnings:[]}};}
+ S={r,screen:'home',env:null,module:3,modal:null,demo:false,returnResearch:null};await save();render();return JSON.parse(localStorage.getItem(STORE));
+ },{count,multiple})}
+async function state(p){return p.evaluate(async ()=>{let vault=null;try{if(typeof StorageSafety!=='undefined')vault=await StorageSafety.inspect()}catch(e){vault={error:e.message}}return {raw:localStorage.getItem(STORE),journal:localStorage.getItem(STORE+'_safety_v1'),vault,mode:typeof StorageSafety==='undefined'?'old':StorageSafety.mode}})}
+async function edit(p,code,value,field,fieldValue){return p.evaluate(async ({code,value,field,fieldValue})=>{if(code)period().checkup.answers[code]=value;if(field)S.r.plan[0][field]=fieldValue;let error=null;try{await save()}catch(e){error=e.message}render();return {error,raw:localStorage.getItem(STORE)}},{code,value,field,fieldValue})}
+async function settled(p){await p.evaluate(async()=>{if(typeof storageEvents!=='undefined')await storageEvents;if(typeof StorageSafety!=='undefined')await StorageSafety.whenIdle()})}
+async function reloadAndRead(p){await settled(p);await p.reload();await ready(p);await p.locator('[data-a="continue"]').click();return JSON.parse((await state(p)).raw)}
+async function evidence(engine,id,name,p,before,actions,extra={}){
+ const after=p?await state(p):null;const row={engine,id,name,status:'PASS',before,actions,after,...extra};checks.push(row);
+ fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.log('STORAGE_PASS',engine,id,name);
+}
+async function choose(p,code,value){const radio=p.locator('input[name="'+code+'"][value="'+value+'"]');await radio.evaluate(el=>el.closest('.practice').scrollIntoView({block:'center',behavior:'instant'}));await radio.check()}
+async function recoverHead(p){
+ await p.locator('[data-safety="recover"][data-version="0"]').click();await mode(p,'review');
+ await p.locator('[data-safety="confirm"]').click();await ready(p);
+}
+async function run(engine){
+ const browser=await pw[engine].launch({headless:true,args:engine==='chromium'?['--no-sandbox']:[]});engines[engine]=browser.version();
+ async function scenario(id,name,fn){const ctx=await browser.newContext({acceptDownloads:true,viewport:{width:1280,height:900}});ctx.setDefaultTimeout(15000);try{await fn(ctx)}catch(e){errors.push({engine,id,name,error:String(e.stack||e)});fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));console.error('STORAGE_FAIL',engine,id,name,e);throw e}finally{await ctx.close()}}
+ try{
+ await scenario(34,'Actual create forms and checkup autosave',async ctx=>{
+  const p=await open(ctx),url=p.url();await p.locator('[data-a="new"]').click();await p.locator('#company').fill('Створена через форму QA');await p.locator('#owner').fill('Власниця через форму');await p.locator('#ps').fill('2026-09-01');await p.locator('#pe').fill('2026-09-30');await p.locator('#setup button[type="submit"]').click();await p.locator('.study-progress').waitFor();assert.equal(p.url(),url);
+  await p.locator('#fen').fill('Додане середовище QA');await p.locator('#first-env button[type="submit"]').click();await settled(p);assert.equal(await p.evaluate(async()=>period().envs[0].name),'Додане середовище QA');await p.locator('[data-a="checkup"]').first().click();
+  for(let module=1;module<=2;module++){const codes=await p.evaluate(async module=>P[module].map(x=>x.code),module);for(const code of codes)await choose(p,code,'full');await p.locator('[data-a="next"]').click();}
+  await choose(p,'P13','partial');await choose(p,'P14','full');await settled(p);const before=await state(p);assert.equal(JSON.parse(before.raw).periods[0].checkup.answers.P13,'partial');assert.deepEqual(await reloadAndRead(p),JSON.parse(before.raw));await evidence(engine,34,'Native forms and real radio autosave preserve data',p,before,'Submit actual study and environment forms without navigation; fill twelve answers and P13/P14 using actual controls; await confirmed save and reload');
+ });
+ await scenario(35,'Explicit deletion also clears protective versions',async ctx=>{
+  const p=await open(ctx);await seed(p);const legacy=await open(ctx,'old');await legacy.locator('[data-a="continue"]').click();await edit(p,'P13','full');await edit(legacy,'P14','no');await mode(p,'conflict');await legacy.close();await recoverHead(p);await p.locator('[data-a="continue"]').click();const before=await state(p);await p.evaluate(async()=>localStorage.setItem(LEGACY_STORES[0],JSON.stringify(S.r)));await p.locator('[data-a="delete-research"]').click();await p.locator('[data-a="confirm-delete"]').click();await settled(p);const after=await state(p),vault=JSON.parse(after.vault);assert.equal(after.raw,null);assert.equal(vault.head.raw,null);assert.equal(vault.previous,null);assert.deepEqual(vault.versions,[]);assert.equal(await p.evaluate(async()=>LEGACY_STORES.some(key=>localStorage.getItem(key)!==null)),false);await p.reload();await ready(p);assert.equal(await p.locator('[data-a="continue"]').count(),0);await evidence(engine,35,'Intentional deletion leaves a durable empty tombstone',p,before,'Confirm deletion through actual UI; verify primary, strict vault, archives and legacy keys; reload without resurrecting data');
+ });
+ await scenario('01-09,12','New/new lifetime lock, all writes, transfer',async ctx=>{
+  const a=await open(ctx);await seed(a);const before=await state(a),b=await ctx.newPage();await b.goto(origin+'/new');await mode(b,'waiting');
+  assert.match(await b.locator('#storage-safety').innerText(),/Це дослідження вже відкрите в іншій вкладці/);
+  const race=await Promise.all([edit(a,'P13','partial','owner','Нова відповідальна'),b.evaluate(async raw=>{const attempts=[];for(const variant of ['different-answer','same-answer','different-plan-fields']){const stale=JSON.parse(raw);if(variant==='different-answer')stale.periods[0].checkup.answers.P14='no';if(variant==='same-answer')stale.periods[0].checkup.answers.P13='no';if(variant==='different-plan-fields'){stale.plan[0].indicator='Зміна іншого поля із застарілої вкладки';stale.plan[0].due='2026-12-31'}let error=null;try{await StorageSafety.persist(JSON.stringify(stale))}catch(e){error=e.message}attempts.push({variant,payload:stale,error,raw:localStorage.getItem(STORE)})}return {attempts}},before.raw)]);
+  assert.ok(race[1].attempts.every(x=>x.error));assert.equal(JSON.parse((await state(a)).raw).plan[0].owner,'Нова відповідальна');
+  for(const action of ['confirm-delete','backup-existing','restore-backup','save-period','save-env','save-plan'])await b.evaluate(async action=>{const button=document.createElement('button');button.dataset.a=action;document.getElementById('app').appendChild(button);button.click();button.remove()},action);
+  await b.reload();await mode(b,'waiting');await a.close();await ready(b);await b.locator('[data-a="continue"]').click();
+  await edit(b,'P14','no','indicator','Новий показник');const r=await reloadAndRead(b);assert.equal(r.periods[0].checkup.answers.P13,'partial');assert.equal(r.periods[0].checkup.answers.P14,'no');assert.equal(r.plan[0].owner,'Нова відповідальна');assert.equal(r.plan[0].indicator,'Новий показник');
+  await b.screenshot({path:out+'/'+engine+'-transferred.png',fullPage:true});
+  for(const id of [1,5,6,7,8,9,12])await evidence(engine,id,'Exclusive editing and fresh handover',b,before,'A saves P13 and owner; B cannot write, reloads; close A; B saves P14 and indicator; reload and compare',{attempted:race});
+ });
+ await scenario(4,'Near-simultaneous opens',async ctx=>{
+  const a=await ctx.newPage(),b=await ctx.newPage();await Promise.all([a.goto(origin+'/new'),b.goto(origin+'/new')]);
+  await a.waitForFunction(()=>['editor','waiting'].includes(StorageSafety.mode));await b.waitForFunction(()=>['editor','waiting'].includes(StorageSafety.mode));
+  const roles=await Promise.all([a.evaluate(async ()=>StorageSafety.mode),b.evaluate(async ()=>StorageSafety.mode)]);assert.deepEqual([...roles].sort(),['editor','waiting']);const active=roles[0]==='editor'?a:b;await seed(active);const expected=(await state(active)).raw;await active.reload();await sleep(200);const rolesAfter=await Promise.all([a.evaluate(async ()=>StorageSafety.mode),b.evaluate(async ()=>StorageSafety.mode)]);assert.equal(rolesAfter.filter(x=>x==='editor').length,1);assert.equal((await state(a)).raw,expected);await evidence(engine,4,'Exactly one writer under simultaneous startup',a,null,'Parallel navigation, lock inspection, seed and reload',{roles,rolesAfter});
+ });
+ await scenario('02,13,31,32','Old/new repeated writes and UI recovery',async ctx=>{
+  const oldPage=await open(ctx,'old');await seed(oldPage,42,true);const a=await open(ctx);await a.locator('[data-a="continue"]').click();
+  await edit(a,'P13','partial','owner','Захищена відповідальна');const protectedRaw=(await state(a)).raw;
+  await edit(oldPage,'P14','no','indicator','Стара версія');await mode(a,'conflict');
+  assert.equal(JSON.parse((await state(a)).journal).head.raw,protectedRaw);const bundleEvent=a.waitForEvent('download');await a.locator('[data-safety="download-all"]').click();const bundleDownload=await bundleEvent;const bundleFile=out+'/'+engine+'-conflict-copies.json';await bundleDownload.saveAs(bundleFile);await a.screenshot({path:out+'/'+engine+'-conflict.png',fullPage:true});
+  for(let i=0;i<3;i++)await edit(oldPage,'P14','no','due','old-'+i);
+  await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);await edit(oldPage,'P14','no','due','repeat-after-recovery');
+  await mode(a,'conflict');await oldPage.close();await a.reload();await mode(a,'conflict');
+  const before=await state(a);await recoverHead(a);assert.equal((await state(a)).raw,protectedRaw);const r=await reloadAndRead(a);assert.deepEqual(r,JSON.parse(protectedRaw));
+  assert.ok(JSON.parse((await state(a)).journal).versions.length>=2);
+  await a.evaluate(async()=>{S.r=null;S.screen='start';render()});await a.locator('[data-a="restore-open"]').click();await a.locator('#restore-file').setInputFiles(bundleFile);await a.locator('[data-a="restore-backup"]').click();await mode(a,'conflict');await recoverHead(a);assert.deepEqual(await reloadAndRead(a),JSON.parse(protectedRaw));
+  await a.screenshot({path:out+'/'+engine+'-recovered.png',fullPage:true});
+  for(const id of [2,13,31,32])await evidence(engine,id,'Full protected state survives old tab and explicit recovery',a,before,'Old production page writes repeatedly; protected full snapshot retained; close old; reload; choose version 0 and confirm; reload equality',{protectedRaw,recovered:r});
+ });
+ await scenario(3,'Old/old reproduces control defect',async ctx=>{
+  const a=await open(ctx,'old');await seed(a);const b=await open(ctx,'old');await b.locator('[data-a="continue"]').click();await edit(a,'P13','partial','owner','Нова');const before=await state(a);await edit(b,'P14','no');const r=JSON.parse((await state(a)).raw);assert.equal(r.periods[0].checkup.answers.P13,undefined);assert.equal(r.plan[0].owner,'Особа 1');await evidence(engine,3,'Control reproduces STORAGE-STALE-TAB',b,before,'Two actual old pages: A writes P13/owner, stale B writes P14',{expectedControlDefect:true});
+ });
+ for(const count of [12,27,42])await scenario(14+([12,27,42].indexOf(count)),'Partial and complete state '+count,async ctx=>{
+  const p=await open(ctx);const expected=await seed(p,count,true),before=await state(p);const actual=await reloadAndRead(p);assert.deepEqual(actual,expected);await evidence(engine,14+([12,27,42].indexOf(count)),'All fields preserved '+count+'/42',p,before,'Seed two periods and environments, reload, compare entire payload');
+ });
+ await scenario('17-24','EL/import/export/backup/autosave integrity',async ctx=>{
+  const p=await open(ctx);await seed(p,42,true);
+  const tables=await p.evaluate(async ()=>{const table=[[ROLE_QUESTION,...SURVEY_ITEMS.map(x=>x.code+' '+x.text)],...Array.from({length:30},(_,i)=>[i<12?'Так':'Ні',...SURVEY_ITEMS.map(x=>x.source==='E'||i<12?'5':'')])];return {csv:table.map(x=>x.join('\t')).join('\n'),xlsx:Array.from(planXlsxBytes(table))}});
+  for(const type of ['csv','xlsx']){
+   await p.locator('[data-a="upload"][data-id="p1a"]').first().click();await p.locator('#file').setInputFiles({name:'synthetic.'+type,mimeType:'application/octet-stream',buffer:type==='csv'?Buffer.from(tables.csv):Buffer.from(tables.xlsx)});await p.locator('[data-a="validate"]').click();await p.locator('[data-a="accept"]').click();
+  }
+  await p.evaluate(async ()=>{for(let i=0;i<50;i++){period().checkup.notes.P01='Швидкий запис '+i;await save()}S.screen='plan';render()});
+  for(const [field,value] of Object.entries({action:'Нова назва',description:'Новий повний опис',owner:'Відповідальна QA',due:'2026-12-01',indicator:'Новий критерій'}))await p.locator('[data-f="'+field+'"]').first().fill(value);
+  await p.locator('[data-f="priority"]').first().selectOption('Середній');await p.locator('[data-f="status"]').first().selectOption('У роботі');await p.locator('[data-f="envId"]').first().selectOption('p1b');
+  await settled(p);const expected=await p.evaluate(async ()=>JSON.parse(JSON.stringify(S.r)));assert.equal(expected.periods[0].envs[0].survey.e,30);assert.equal(expected.periods[0].envs[0].survey.l,12);
+  const xlsxEvent=p.waitForEvent('download');await p.locator('[data-a="export"]').click();const xd=await xlsxEvent;await xd.saveAs(out+'/'+engine+'-plan.xlsx');
+  await p.locator('[data-a="home"]').first().click();await p.locator('[data-a="backup-info"]').first().click();const event=p.waitForEvent('download');await p.locator('[data-a="backup-download"]').click();const d=await event;const file=out+'/'+engine+'-backup.json';await d.saveAs(file);const backup=JSON.parse(fs.readFileSync(file)).data;
+  await p.evaluate(async ()=>{S.r=null;S.screen='start';render()});await p.locator('[data-a="restore-open"]').click();await p.locator('#restore-file').setInputFiles(file);await p.locator('[data-a="restore-backup"]').click();assert.deepEqual(await reloadAndRead(p),backup);
+  const before=await state(p);await p.evaluate(async ()=>{S.r.current='p2';await save();S.r.current='p1';await save()});assert.equal((await state(p)).raw,before.raw);
+  for(const id of [17,18,19,20,21,22,23,24])await evidence(engine,id,'EL, periods, Plan, backup and rapid writes intact',p,before,'Real CSV and XLSX import; edit all Plan fields; 50 saves; actual XLSX/JSON download; JSON restore; switch periods; full reload equality',{expected:backup});
+ });
+ await scenario(33,'Safe rollout procedure with old tabs closed',async ctx=>{
+  const p=await open(ctx,'old');await seed(p,27,true);await p.locator('[data-a="backup-info"]').first().click();const event=p.waitForEvent('download');await p.locator('[data-a="backup-download"]').click();const d=await event,file=out+'/'+engine+'-rollout-backup.json';await d.saveAs(file);const expected=JSON.parse(fs.readFileSync(file)).data,before=await state(p);await p.close();const next=await open(ctx);await next.locator('[data-a="continue"]').click();assert.deepEqual(await next.evaluate(async ()=>S.r),expected);await edit(next,'P28','full');const final=await reloadAndRead(next);assert.equal(final.periods[0].checkup.answers.P28,'full');assert.deepEqual(final.periods[1],expected.periods[1]);assert.deepEqual(final.plan,expected.plan);await evidence(engine,33,'Rollout: backup, close old, open new, verify, edit',next,before,'Actual old backup download; close all legacy pages in isolated profile; open new; full equality; edit P28 and reload');
+ });
+ await scenario(25,'Missing Web Locks fails closed',async ctx=>{
+  const oldPage=await open(ctx,'old');await seed(oldPage);const before=await state(oldPage);await oldPage.close();await ctx.addInitScript(()=>Object.defineProperty(navigator,'locks',{value:undefined}));const p=await ctx.newPage();await p.goto(origin+'/new');await mode(p,'error');assert.equal((await state(p)).raw,before.raw);assert.equal((await state(p)).journal,null);await p.reload();await mode(p,'error');assert.equal((await state(p)).raw,before.raw);await evidence(engine,25,'Unsupported browser cannot change data',p,before,'Remove Web Locks before boot; verify primary and no journal; reload');
+ });
+ await scenario(26,'Unavailable IndexedDB fails closed',async ctx=>{
+  const oldPage=await open(ctx,'old');await seed(oldPage);const before=await state(oldPage);await oldPage.close();await ctx.addInitScript(()=>Object.defineProperty(window,'indexedDB',{get(){throw new DOMException('Denied','SecurityError')}}));const p=await ctx.newPage();await p.goto(origin+'/new');await mode(p,'error');assert.equal((await state(p)).raw,before.raw);assert.equal((await state(p)).journal,null);await p.reload();await mode(p,'error');assert.equal((await state(p)).raw,before.raw);await evidence(engine,26,'Unavailable durable store cannot change primary',p,before,'Deny native IndexedDB before bootstrap; verify no primary or local journal writes; reload');
+ });
+ await scenario(27,'Native IndexedDB quota failure',async ctx=>{
+  const p=await open(ctx);await seed(p);const before=await state(p);await p.evaluate(async()=>{const original=IDBDatabase.prototype.transaction;IDBDatabase.prototype.transaction=function(name,mode,options){if(mode==='readwrite')throw new DOMException('Native quota injection','QuotaExceededError');return original.call(this,name,mode,options)}});await edit(p,'P13','full');await mode(p,'error');const failed=await state(p);assert.equal(failed.raw,before.raw);assert.equal(failed.vault,before.vault);await p.reload();await ready(p);assert.equal((await state(p)).raw,before.raw);await evidence(engine,27,'Durable transaction refusal preserves committed data',p,before,'Native IndexedDB readwrite transaction throws quota failure; verify both stores; reload',{failed});
+ });
+ for(const phase of ['prepare','mirror','confirm'])await scenario(phase==='prepare'?27:28,'Write interruption '+phase,async ctx=>{
+  const p=await open(ctx);await seed(p);const before=await state(p);
+  await p.evaluate(async phase=>{const original=Storage.prototype.setItem;let journalWrites=0;Storage.prototype.setItem=function(k,v){if(k===STORE+'_safety_v1')journalWrites++;if((phase==='prepare'&&k===STORE+'_safety_v1')||(phase==='mirror'&&k===STORE)||(phase==='confirm'&&k===STORE+'_safety_v1'&&journalWrites===2))throw new DOMException('QA interruption','QuotaExceededError');return original.call(this,k,v)}},phase);
+  await edit(p,'P13','full','owner','Нова збережена');await mode(p,'error');const interrupted=await state(p);
+  if(phase==='prepare'){assert.equal(interrupted.raw,before.raw);assert.equal(interrupted.journal,before.journal)}{const head=JSON.parse(interrupted.vault).head.raw;assert.equal(JSON.parse(head).periods[0].checkup.answers.P13,'full');await p.reload();await mode(p,'conflict');await recoverHead(p);assert.equal((await state(p)).raw,head);await reloadAndRead(p)}
+  await evidence(engine,phase==='prepare'?27:28,'Interruption detected '+phase,p,before,'Inject real Storage.setItem failure in selected phase; reload; explicit recovery if pending',{interrupted});
+ });
+ await scenario(29,'Cached old code is legacy writer',async ctx=>{
+  const p=await open(ctx,'cached-old');await seed(p);const a=await open(ctx);await a.locator('[data-a="continue"]').click();await edit(a,'P13','partial');const protectedRaw=(await state(a)).raw;await edit(p,'P14','no');await mode(a,'conflict');assert.equal(JSON.parse((await state(a)).journal).head.raw,protectedRaw);await evidence(engine,29,'Stale cached page cannot destroy protected copy',a,null,'Serve cacheable exact production code; open fresh code on same origin; stale write',{cacheControl:'public, max-age=600',protectedRaw});
+ });
+ await scenario(30,'Actual autonomous HTML',async ctx=>{
+  const p=await ctx.newPage();p.on('dialog',d=>d.accept());await p.goto('file://'+repo+'/local/index.html');await p.waitForFunction(()=>['editor','error'].includes(StorageSafety.mode));const before=await state(p);
+  if(before.mode==='editor'){const r=await seed(p,27);assert.deepEqual(await reloadAndRead(p),r);await evidence(engine,30,'Autonomous file persistence and reload',p,before,'Load actual file URL; seed 27/42; reload and full comparison')}
+  else{assert.match(await p.locator('#storage-safety').innerText(),/недоступне|сховищ|заблоковано|доступ|denied/i);await evidence(engine,30,'Autonomous environment fails closed',p,before,'Actual file URL lacks supported storage or lock; no edit permitted',{limitation:true})}
+ });
+ }finally{await browser.close()}
+ // Real browser restart with the same on-disk profile, not storageState emulation.
+ const profile=fs.mkdtempSync(path.join(os.tmpdir(),'barometer-'+engine+'-'));
+ let persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);let p=await open(persistent);await seed(p,42,true);const expected=(await state(p)).raw;await persistent.close();persistent=await pw[engine].launchPersistentContext(profile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);p=await open(persistent);assert.equal((await state(p)).raw,expected);await evidence(engine,11,'Browser process restart preserves full state',p,{raw:expected},'Close browser; relaunch same actual profile; compare raw');await persistent.close();
+ // Abruptly kill worker and browser process group immediately after acknowledged save.
+ const crashProfile=fs.mkdtempSync(path.join(os.tmpdir(),'barometer-crash-'+engine+'-'));
+ const child=spawn(process.execPath,[__filename,'crash-worker',engine,crashProfile,origin],{detached:true,stdio:['ignore','pipe','pipe'],env:process.env});
+ let output='',stderr='';child.stdout.setEncoding('utf8');child.stderr.setEncoding('utf8');const acknowledgment=await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Crash worker timeout '+output)),45000);child.stdout.on('data',b=>{output+=b.toString();const line=output.slice(0,output.lastIndexOf('\n')).split('\n').find(x=>x.startsWith('ACK '));if(line){clearTimeout(timer);resolve(JSON.parse(line.slice(4)))}});child.stderr.on('data',b=>stderr+=b.toString());child.on('exit',code=>{if(code)reject(new Error('Crash worker exited '+output))})});
+ for(const pid of acknowledgment.browserPids){try{process.kill(-pid,'SIGKILL')}catch{try{process.kill(pid,'SIGKILL')}catch{}}}
+ process.kill(-child.pid,'SIGKILL');await new Promise(resolve=>child.once('exit',resolve));
+ const result={...JSON.parse(fs.readFileSync(acknowledgment.stateFile)),browserPids:acknowledgment.browserPids};
+ persistent=await pw[engine].launchPersistentContext(crashProfile,{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});persistent.setDefaultTimeout(15000);
+ try{p=await persistent.newPage();p.on('dialog',d=>d.accept());await p.goto(origin+'/new');await p.waitForFunction(()=>['editor','conflict','review','error'].includes(StorageSafety.mode));const atRestart=await state(p);if(atRestart.mode==='conflict'){assert.equal(JSON.parse(atRestart.vault).head.raw,result.raw,'Crash recovery copy must retain the last confirmed state');await recoverHead(p)}assert.equal((await state(p)).raw,result.raw,'Immediate process crash must retain confirmed state');await p.reload();await ready(p);assert.equal((await state(p)).raw,result.raw);await evidence(engine,10,'Immediate process-group crash after save',p,result,'SIGKILL worker and browser immediately after ACK; relaunch same actual profile; compare all bytes',{atRestart})}finally{await persistent.close()}
+}
+(async()=>{
+ if(process.argv[2]==='crash-worker'){
+  const engine=process.argv[3];origin=process.argv[5];const ctx=await pw[engine].launchPersistentContext(process.argv[4],{headless:true,args:engine==='chromium'?['--no-sandbox']:[]});const p=await open(ctx);await seed(p,42,true);const browserPids=execFileSync('ps',['-eo','pid,ppid'],{encoding:'utf8'}).trim().split('\n').slice(1).map(x=>x.trim().split(/\s+/).map(Number)).filter(x=>x[1]===process.pid).map(x=>x[0]);const stateFile=process.argv[4]+'.expected.json';fs.writeFileSync(stateFile,JSON.stringify(await state(p)));console.log('ACK '+JSON.stringify({stateFile,browserPids}));await new Promise(()=>{});return;
+ }
+ const server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html;charset=utf-8');res.setHeader('Cache-Control',req.url==='/cached-old'?'public, max-age=600':'no-store');res.end(req.url==='/old'||req.url==='/cached-old'?old:fresh)});await new Promise(r=>server.listen(0,'127.0.0.1',r));origin='http://127.0.0.1:'+server.address().port;
+ try{for(const engine of ['chromium','firefox','webkit']){try{await run(engine)}catch(e){errors.push({engine,error:String(e.stack||e)});console.error(e)}}}finally{server.close();fs.writeFileSync(out+'/storage-browser-results.json',JSON.stringify({engines,checks,errors},null,2));}
+ if(errors.length)process.exitCode=1;
+})().catch(e=>{console.error(e);process.exit(1)});

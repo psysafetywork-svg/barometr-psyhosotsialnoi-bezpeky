@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const html=fs.readFileSync(new URL('../local/index.html',import.meta.url),'utf8');
+const source=html.slice(html.indexOf('const StorageSafety=(()=>{'),html.indexOf('/* BAROMETER_STORAGE_SAFETY_2026_10_21_END */'));
+const helpers=fs.readFileSync(new URL('./portal-regression.mjs',import.meta.url),'utf8');
+const fixtureIndexedDB=new Function(helpers.slice(helpers.indexOf('function fixtureIndexedDB(){'),helpers.indexOf('function loadLocalPortal(){'))+';return fixtureIndexedDB')();
+async function fixture({locks=true,initial=null,deny=null}={}){
+ const STORE='barometer_v2_final',map=new Map(initial===null?[]:[[STORE,initial]]),events=new Map();
+ const app={inert:false},panel={innerHTML:'',remove(){}},document={getElementById(id){return id==='app'?app:panel},createElement(){return {click(){}}},body:{appendChild(){}}};
+ const localStorage={getItem:k=>map.get(k)??null,setItem(k,v){if(deny?.(k,v))throw new Error('storage failure');map.set(k,String(v))},removeItem:k=>map.delete(k)};
+ const context=vm.createContext({STORE,LEGACY_STORES:[],BAROMETER_P_ANSWER_LABELS:{full:'Повністю',partial:'Частково',no:'Не працює'},document,localStorage,indexedDB:fixtureIndexedDB(),S:{r:null,demo:false},h:String,$:()=>null,render(){},navigator:locks?{locks:{request:(_,_o,cb)=>Promise.resolve(cb())}}:{},window:{addEventListener:(name,fn)=>events.set(name,fn)},console,setTimeout,Blob,URL});
+ vm.runInContext(source+';globalThis.safety=StorageSafety;',context);context.safety.start();await context.safety.ready;return {context,map,app,panel,events,api:context.safety,localStorage,STORE};
+}
+const raw=JSON.stringify({company:'QA',owner:'QA',current:'p',periods:[{id:'p',checkup:{answers:{P01:'full'}}}],plan:[]});
+test('storage safety: no Locks means no writes',async()=>{const f=await fixture({locks:false,initial:raw});assert.equal(f.api.mode,'error');await assert.rejects(()=>f.api.persist('{}'));assert.equal(f.map.get(f.STORE),raw);assert.equal(f.map.size,1);assert.equal(f.app.inert,true)});
+test('storage safety: bootstrap is byte-preserving and load does not write',async()=>{const f=await fixture({initial:raw});assert.equal(f.api.mode,'editor');const text=JSON.stringify([...f.map]);assert.equal(f.api.read(),raw);assert.equal(JSON.stringify([...f.map]),text)});
+test('storage safety: full envelope precedes mirror and confirmed acknowledgement',async()=>{const f=await fixture({initial:raw}),next=raw.replace('full','partial');assert.equal(await f.api.persist(next),true);const j=JSON.parse(f.map.get(f.api.KEY));assert.equal(j.head.raw,next);assert.equal(j.previous.raw,raw);assert.equal(j.pending,false);assert.equal(f.map.get(f.STORE),next)});
+test('storage safety: stale external mirror cannot destroy protected head',async()=>{const f=await fixture({initial:raw}),next=raw.replace('full','partial');await f.api.persist(next);f.localStorage.setItem(f.STORE,raw);await assert.rejects(()=>f.api.persist(next.replace('partial','no')),/Збереження призупинено через різні версії/);assert.equal(f.api.mode,'conflict');await f.api.whenIdle();const j=JSON.parse(f.map.get(f.api.KEY));assert.equal(j.head.raw,next);assert.ok(j.versions.some(x=>x.raw===raw));assert.ok(j.versions.some(x=>x.raw===next));assert.equal(f.app.inert,true)});
+test('storage safety: quota leaves previous committed copy unchanged',async()=>{let fail=false;const f=await fixture({initial:raw,deny:k=>fail&&k.endsWith('_safety_v1')});const before=JSON.stringify([...f.map]);fail=true;await assert.rejects(()=>f.api.persist(raw.replace('full','no')));assert.equal(f.api.mode,'error');assert.equal(JSON.stringify([...f.map]),before)});
+test('storage safety: mirror failure leaves recoverable pending full payload',async()=>{let fail=false;const f=await fixture({initial:raw,deny:k=>fail&&k==='barometer_v2_final'});fail=true;const next=raw.replace('full','no');await assert.rejects(()=>f.api.persist(next));const j=JSON.parse(f.map.get(f.api.KEY));assert.equal(j.pending,true);assert.equal(j.head.raw,next);assert.equal(j.previous.raw,raw);assert.equal(f.map.get(f.STORE),raw)});
+test('storage safety: tombstone is guarded and preserves prior full version',async()=>{const f=await fixture({initial:raw});await f.api.persist(null,{preserve:true});assert.equal(f.api.read(),null);assert.equal(f.map.has(f.STORE),false);const j=JSON.parse(f.map.get(f.api.KEY));assert.equal(j.head.raw,null);assert.ok(j.versions.some(x=>x.raw===raw))});
+test('storage safety: all direct primary writes live inside guard',async()=>{const remaining=html.replace(source,'');assert.doesNotMatch(remaining,/localStorage\.(?:setItem|removeItem)\(STORE/);assert.match(remaining,/StorageSafety.persist\(JSON.stringify\(r\),\{preserve:true\}\)/)});
+
+test('storage safety: explicit deletion erases data and archived versions',async()=>{const f=await fixture({initial:raw});await f.api.persist(raw.replace('full','partial'),{preserve:true});await f.api.erase();assert.equal(f.map.has(f.STORE),false);const j=JSON.parse(await f.api.inspect());assert.equal(j.head.raw,null);assert.equal(j.previous,null);assert.equal(j.versions.length,0);assert.equal(j.pending,false)});
