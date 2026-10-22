@@ -1563,14 +1563,16 @@ test('P15 critical cause, positives, P31 provenance and all-full outputs',async(
  assert.equal(portal.api.barometerModuleActions(2).length,0);assert.equal(portal.api.barometerModuleActions(3)[0].priority,'Високий');
  checkupOnlyScenario();for(const row of portal.api.actualResultModel()){assert.equal(portal.api.barometerModuleActions(row.m).length,0);assert.doesNotMatch(portal.api.barometerSemanticModuleMarkup(row),/recommendation-empty|data-action-id=|підтверджені сильні/i);}
 });
-test('previous edited criterion and VERIFY records prevent new duplicate without rewriting',async()=>{
+test('exact practice targets block duplicates while legacy criterion, VERIFY and broad routes preserve optional completion',async()=>{
  const {state}=checkupOnlyScenario({overrides:{P03:'partial'}});
  for(const target of ['CRITERION:P03-C2','VERIFY:P03','PRACTICE:P03','M1-A2']){
-  state.r.plan=[{id:'legacy',periodId:state.r.current,envId:'env-runtime',sourceTarget:target,action:'Авторська назва',description:'Авторські кроки',indicator:'Авторські критерії'}];
-  if(target==='M1-A2')state.r.plan[0].envId=null;
-  const before=JSON.stringify(state.r.plan);assert.equal(portal.api.planAction('PRACTICE:P03').id,'legacy');
-  await portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:'PRACTICE:P03'},replaceWith(){}})}});
-  assert.equal(JSON.stringify(state.r.plan),before);
+  const legacy={id:'legacy',periodId:state.r.current,envId:target==='M1-A2'?null:'env-runtime',sourceTarget:target,action:'Авторська назва',description:'Авторські кроки',indicator:'Авторські критерії',owner:'Авторка',due:'2026-12-01',status:'У роботі',priority:'Високий'};
+  if(target==='M1-A2')legacy.final_action_id=target;
+  state.r.plan=[legacy];const before=JSON.stringify(legacy);
+  assert.equal(portal.api.planAction('PRACTICE:P03')?.id||null,target==='PRACTICE:P03'?'legacy':null);
+  const click=()=>portal.listeners.get('click')({target:{closest:()=>({dataset:{a:'add-routed-action',m:'1',target:'PRACTICE:P03'},replaceWith(){}})}});
+  await click();assert.equal(state.r.plan.length,target==='PRACTICE:P03'?1:2);assert.equal(JSON.stringify(state.r.plan[0]),before);
+  await click();assert.equal(state.r.plan.length,target==='PRACTICE:P03'?1:2);assert.equal(JSON.stringify(state.r.plan[0]),before);
  }
 });
 
@@ -1590,7 +1592,7 @@ test('all 84 editorial variants have individual titles and four preserved review
  for(const answer of ['partial','insufficient']){
   const titles=portal.api.P_LIST.map(p=>portal.api.BAROMETER_P_ACTION_LIBRARY[p.code][answer].title);assert.equal(new Set(titles).size,42);
   for(const p of portal.api.P_LIST){const model=portal.api.BAROMETER_P_ACTION_LIBRARY[p.code];checkupOnlyScenario({overrides:{[p.code]:answer}});
-   const a=portal.api.barometerPracticeAction(p.code);for(const question of model.partial.steps.slice(0,4))assert.ok(a.steps.includes(question));
+   const a=portal.api.barometerPracticeAction(p.code);const grammatical=t=>t.replace(/^Перевірити/, 'Перевірте').replace(/^З’ясувати/, 'З’ясуйте').replace(/^Уточнити/, 'Уточніть').replace(/^Переглянути/, 'Перегляньте').replace(/^Зіставити/, 'Зіставте').replace(/^Безпечно перевірити/, 'Безпечно перевірте').replace(/^Попросити/, 'Попросіть');for(const question of model.partial.steps.slice(0,4))assert.ok(a.steps.some(step=>grammatical(step)===grammatical(question)),p.code+'/'+answer+': '+question);
    assert.doesNotMatch(a.action,/З’ясувати й зафіксувати підтвердження або відхилення:|Перевірити, чи виконується така умова:/);
   }
  }
