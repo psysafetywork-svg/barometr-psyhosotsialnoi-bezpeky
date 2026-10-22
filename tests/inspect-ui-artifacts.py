@@ -8,7 +8,7 @@ for p in sorted(out.glob('*.pdf')):
  d=fitz.open(p);texts=[x.get_text()for x in d];text=norm(' '.join(texts));assert all(len(t.strip())>60 for t in texts),(p.name,'blank page');last=norm(texts[-1]);assert not(len(d)>1 and last.startswith('Використання результатів.')),(p.name,'orphan usage');words=d[-1].get_text('words');span=max(w[3]for w in words)-min(w[1]for w in words);assert len(d)==1 or span>=150,(p.name,'nearly empty final page',span)
  for page in d:
   for w in page.get_text('words'):assert w[0]>=-1 and w[1]>=-1 and w[2]<=page.rect.width+1 and w[3]<=page.rect.height+1,(p.name,page.number,w)
- html=(out/(p.stem+'.html')).read_text();method=norm(re.search(r'id="report-methodology"[^>]*>([\s\S]*?)</div>',html)[1]);eligible=any(x in p.stem for x in ['ui-E20','ui-E31','ui-elp-main','ui-neither','ui-C01','ui-e-only','ui-l-only'])
+ html=(out/(p.stem+'.html')).read_text();method=norm(re.search(r'id="report-methodology"[^>]*>([\s\S]*?)</div>',html)[1]);eligible=any(x in p.stem for x in ['ui-partial-na','ui-E20','ui-E31','ui-elp-main','ui-neither','ui-C01','ui-e-only','ui-l-only'])
  for n in ['75%','15%','30%','55%']:assert (n in method)==eligible,(p.name,n)
  if p.stem=='ui-e-only':assert '20 валідних' in method and '10 валідних' not in method
  if p.stem=='ui-l-only':assert '10 валідних' in method and '20 валідних' not in method

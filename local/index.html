@@ -177,7 +177,7 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:400;letter-spacing:-.03em;margin:0
 .semantic-aspect-section p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
 @media(max-width:760px){.semantic-aspect-card summary{padding:15px 16px}.semantic-aspect-body{padding:2px 16px 16px}.semantic-aspect-title{font-size:17px}}
 </style>
-<style id="ui-refinements-style">.recommendation-columns{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,.8fr);border:1px solid #dfd4c8;border-radius:9px;overflow:hidden;background:#fbf8f4;margin:14px 0}.recommendation-main,.recommendation-check{padding:14px 16px;min-width:0;overflow-wrap:anywhere}.recommendation-check{background:#f2eee8;border-left:1px solid #dfd4c8}.recommendation-columns h5{font-size:14px;line-height:1.4;margin:0 0 9px}.recommendation-check h5{font-size:12px;text-transform:uppercase;color:#657174}.recommendation-columns ol{margin:0;padding-left:20px}.recommendation-columns li{margin:0 0 7px}.recommendation-check p{margin:0 0 10px}.attention-modules-heading{font-size:20px;margin:30px 0 8px;color:var(--ink)}@media(max-width:760px){.recommendation-columns{grid-template-columns:1fr}.recommendation-check{border-left:0;border-top:1px solid #dfd4c8}}</style>
+<style id="ui-refinements-style">.grouped-module-detail,.grouped-module-note{margin-top:16px}.grouped-module-note{font-size:12px}.recommendation-columns{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,.8fr);border:1px solid #dfd4c8;border-radius:9px;overflow:hidden;background:#fbf8f4;margin:14px 0}.recommendation-main,.recommendation-check{padding:14px 16px;min-width:0;overflow-wrap:anywhere}.recommendation-check{background:#f2eee8;border-left:1px solid #dfd4c8}.recommendation-columns h5{font-size:14px;line-height:1.4;margin:0 0 9px}.recommendation-check h5{font-size:12px;text-transform:uppercase;color:#657174}.recommendation-columns ol{margin:0;padding-left:20px}.recommendation-columns li{margin:0 0 7px}.recommendation-check p{margin:0 0 10px}.attention-modules-heading{font-size:20px;margin:30px 0 8px;color:var(--ink)}@media(max-width:760px){.recommendation-columns{grid-template-columns:1fr}.recommendation-check{border-left:0;border-top:1px solid #dfd4c8}}</style>
 </head>
 <body>
 <div id="app">
@@ -6805,19 +6805,23 @@ function barometerFavourableModuleRows(rows,analysis){
     return true;
   });
 }
-function barometerFavourableModuleMarkup(rows,analysis){
+function barometerFavourableModuleMarkup(rows,analysis,interactive=false){
   const survey=['E','L'].filter(source=>analysis.input[source].eligible),hasResponses=['E','L'].some(source=>analysis.input[source].total>0);
   const paragraphs=['За результатами організаційного чекапу всі шість практик у кожному із зазначених модулів оцінено як повністю реалізовані.'];
   if(survey.length)paragraphs.push('Достатні результати опитування '+survey.map(source=>source==='E'?'працівників':'керівників').join(' та ')+' у цих модулях мають статус «Ясно». Окремих проблемних сигналів за цими даними не виявлено.');
   if(hasResponses)for(const source of ['E','L'])if(!analysis.input[source].eligible)paragraphs.push((source==='E'?'Досвід працівників':'Можливості керівників')+' за опитуванням не оцінено: '+(analysis.input[source].total?'недостатня вибірка.':'немає даних.'));
   paragraphs.push('Рекомендуємо підтримувати ці практики та періодично перевіряти їхнє застосування, зокрема під час змін в організації роботи.');
-  return `<section class="favourable-modules" aria-label="Модулі зі сприятливими результатами"><h3>Модулі зі сприятливими результатами</h3><div class="favourable-cols"><div>${paragraphs.map(text=>'<p>'+h(text)+'</p>').join('')}</div><ul>${rows.map(row=>`<li data-favourable-module="${row.m}"><span class="favourable-icon" aria-label="Ясно">${statusIcon('Ясно')}</span><span>${row.m}. ${h(M[row.m-1])}</span></li>`).join('')}</ul></div></section>`;
+  const explanations=rows.filter(row=>analysis.modules[row.m]?.aspects?.length).map(row=>{
+    const aspects=analysis.modules[row.m].aspects;
+    return interactive?`<details class="grouped-module-detail semantic-aspect-card" data-grouped-module="${row.m}"><summary><span>${row.m}. ${h(M[row.m-1])}: переглянути інтерпретацію</span></summary><div class="semantic-aspect-body">${barometerV2AspectsMarkup(aspects)}</div></details>`:`<div class="grouped-module-note"><b>${row.m}. ${h(M[row.m-1])}.</b>${aspects.map(aspect=>'<p>'+h(aspect.alignment)+'</p><p>'+h(aspect.attention)+'</p>').join('')}</div>`;
+  }).join('');
+  return `<section class="favourable-modules" aria-label="Модулі зі сприятливими результатами"><h3>Модулі зі сприятливими результатами</h3><div class="favourable-cols"><div>${paragraphs.map(text=>'<p>'+h(text)+'</p>').join('')}</div><ul>${rows.map(row=>`<li data-favourable-module="${row.m}"><span class="favourable-icon" aria-label="Ясно">${statusIcon('Ясно')}</span><span>${row.m}. ${h(M[row.m-1])}</span></li>`).join('')}</ul></div>${explanations}</section>`;
 }
 function barometerAttentionHeading(group,remaining){return group.length&&remaining.length?'<h3 class="attention-modules-heading">Модулі, які потребують уваги</h3>':''}
 function barometerProfileModules(rows){
   const analysis=barometerSemanticInterpretation(),favourable=barometerFavourableModuleRows(rows,analysis),group=favourable.length>=2?favourable:[],ids=new Set(group.map(row=>row.m));
   const remaining=rows.filter(row=>!ids.has(row.m));
-  return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+barometerAttentionHeading(group,remaining)+remaining.map(row=>matrixModule(row)).join('');
+  return (group.length?barometerFavourableModuleMarkup(group,analysis,true):'')+barometerAttentionHeading(group,remaining)+remaining.map(row=>matrixModule(row)).join('');
 }
 function barometerActionParagraphs(text){return String(text).split(/\n\s*\n/).map(part=>'<p>'+h(part)+'</p>').join('')}
 function barometerReportActionMarkup(action){
