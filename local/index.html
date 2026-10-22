@@ -6851,7 +6851,7 @@ function barometerReportMethodology(input){
   paragraphs.push('Якщо відповідних випадків у періоді оцінювання не було, перевірте готовність: порядок дій, відповідальних, ресурси, доступність для відповідних працівників і результати безпечного сценарію. Сценарій підтверджує готовність, а не результативність у реальній події. Якщо недоліків або потреби в коригуванні не встановлено, штучних випадків чи змін не потрібно. Відсутність подій сама по собі не підтверджує повної реалізації.');
   return '<div class="legend" id="report-methodology" style="font-size:12px;line-height:1.5;break-inside:avoid;page-break-inside:avoid"><b>Як читати карту і статуси.</b>'+paragraphs.map(text=>'<p>'+h(text)+'</p>').join('')+'</div>';
 }
-function barometerReportSpacingStyles(){return '<style id="report-ui-refinements">#report-content .module{margin-top:30px;padding-top:18px;border-top-width:1px}.attention-modules-heading{font-size:18px;margin:32px 0 8px;break-after:avoid;page-break-after:avoid}#report-content h5{break-after:avoid;page-break-after:avoid}</style>'}
+function barometerReportSpacingStyles(){return '<style id="report-ui-refinements">#report-content .module{margin-top:30px;padding-top:18px;border-top-width:1px}.attention-modules-heading{font-size:18px;margin:32px 0 8px;break-after:avoid;page-break-after:avoid}#report-content h5{break-after:avoid;page-break-after:avoid}#report-methodology{break-after:avoid;page-break-after:avoid}</style>'}
 
 StorageSafety.start();
 render();
