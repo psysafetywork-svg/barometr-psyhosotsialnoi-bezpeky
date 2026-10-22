@@ -1,0 +1,66 @@
+name: Final interface QA 2026-10-22
+on:
+  push:
+    branches: [feature/checkup-only-verification-2026-10-20]
+    paths: [local/index.html, index.html, 'tests/**', .github/workflows/ui-final-qa.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated QA dependencies
+        run: |
+          npm install --no-save playwright
+          if command -v google-chrome >/dev/null 2>&1; then
+            echo "BAROMETER_CHROMIUM_PATH=$(command -v google-chrome)" >> "$GITHUB_ENV"
+          else
+            npx playwright install --with-deps chromium
+          fi
+          pip install pymupdf pillow openpyxl
+      - name: Existing and targeted Node tests
+        run: |
+          mkdir -p /tmp/barometer-ui /tmp/barometer-profile /tmp/barometer-current-browser /tmp/barometer-final-qa
+          node --test --test-reporter=tap tests/portal-regression.mjs tests/storage-safety-unit.mjs tests/final-refinements-unit.mjs tests/profile-presentation-unit.mjs tests/ui-final-unit.mjs > /tmp/barometer-ui/node-tests.tap 2>&1
+          tail -12 /tmp/barometer-ui/node-tests.tap
+      - name: Existing actual browser regressions
+        env:
+          BAROMETER_QA_OUTPUT: /tmp/barometer-current-browser
+        run: node tests/checkup-browser.cjs
+      - name: Previous targeted actual browser scenarios
+        env:
+          BAROMETER_FINAL_OUTPUT: /tmp/barometer-final-qa
+        run: node tests/final-refinements-browser.cjs
+      - name: Actual profile grouping, full copy, native exports and upgrade
+        env:
+          BAROMETER_PROFILE_OUTPUT: /tmp/barometer-profile
+        run: node tests/profile-presentation-browser.cjs
+      - name: Actual interactive UI, source scopes, controls and exports
+        env:
+          BAROMETER_UI_OUTPUT: /tmp/barometer-ui
+        run: node tests/ui-final-browser.cjs
+      - name: Inspect actual source-specific PDF layout and six-row XLSX
+        env:
+          BAROMETER_UI_OUTPUT: /tmp/barometer-ui
+        run: python tests/inspect-ui-artifacts.py
+      - name: Upload QA evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: barometer-ui-final-qa
+          path: |
+            /tmp/barometer-ui/
+            /tmp/barometer-profile/
+            /tmp/barometer-current-browser/
+            /tmp/barometer-final-qa/
+          retention-days: 30

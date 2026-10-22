@@ -1610,7 +1610,7 @@ for(const [eCount,lCount] of [[0,0],[9,3],[20,0],[0,10],[20,10]])test('report so
  else if(lCount===10)assert.match(html,/Без достатніх даних працівників/);
  else assert.match(html,/Результати організаційного чекапу на рівні компанії/);
  if(eCount===9)assert.match(html,/недостатня вибірка \(9 із потрібних 20\)/);
- for(const threshold of ['75%','15%','30%','55%','20 валідних','10 валідних','P40'])assert.ok(html.includes(threshold));
+ assert.ok(html.includes('P40'));for(const threshold of ['75%','15%','30%','55%'])assert.equal(html.includes(threshold),eCount>=20||lCount>=10);assert.equal(html.includes('20 валідних'),eCount>=20);assert.equal(html.includes('10 валідних'),lCount>=10);
 });
 test('updated content notice covers an old practice record without rewriting manual edits',async()=>{
  const {state}=checkupOnlyScenario({overrides:{P03:'partial'}});

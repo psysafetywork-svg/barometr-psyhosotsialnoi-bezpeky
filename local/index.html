@@ -177,6 +177,7 @@ h2{font-size:clamp(30px,4vw,46px);font-weight:400;letter-spacing:-.03em;margin:0
 .semantic-aspect-section p{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
 @media(max-width:760px){.semantic-aspect-card summary{padding:15px 16px}.semantic-aspect-body{padding:2px 16px 16px}.semantic-aspect-title{font-size:17px}}
 </style>
+<style id="ui-refinements-style">.recommendation-columns{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,.8fr);border:1px solid #dfd4c8;border-radius:9px;overflow:hidden;background:#fbf8f4;margin:14px 0}.recommendation-main,.recommendation-check{padding:14px 16px;min-width:0;overflow-wrap:anywhere}.recommendation-check{background:#f2eee8;border-left:1px solid #dfd4c8}.recommendation-columns h5{font-size:14px;line-height:1.4;margin:0 0 9px}.recommendation-check h5{font-size:12px;text-transform:uppercase;color:#657174}.recommendation-columns ol{margin:0;padding-left:20px}.recommendation-columns li{margin:0 0 7px}.recommendation-check p{margin:0 0 10px}.attention-modules-heading{font-size:20px;margin:30px 0 8px;color:var(--ink)}@media(max-width:760px){.recommendation-columns{grid-template-columns:1fr}.recommendation-check{border-left:0;border-top:1px solid #dfd4c8}}</style>
 </head>
 <body>
 <div id="app">
@@ -4789,8 +4790,8 @@ buildReportHtml=function(eobj){
   html=html.replace(/(<section class="summary-card">)([\s\S]*?)(<\/section>)/,(_,open,body,close)=>open+body.replace(/<p class="(?:small-note|weather-map-note)">([\s\S]*?)<\/p>/g,(_,note)=>{mapNotes.push(note);return ''})+close);
   methodology=methodology.replaceAll(' — ',' - ').replace(' Окреме твердження','<br><br>Окреме твердження').replace(' Для аналізу результатів','<br><br>Для аналізу результатів').replace(' Для організаційних практик','<br><br>Для організаційних практик').replace(' P40 є критичним','<br><br>P40 є критичним');
   const numbers=mapNotes.find(note=>note.startsWith('У дужках'))||'У дужках показано показник, який пояснює статус опитувального джерела: для «Ясно» - частку сприятливих відповідей, для «Хмарно» - частку нейтральних або несприятливих відповідей, для «Буря» - частку несприятливих відповідей.';
-  const block='<div class="legend" id="report-methodology" style="font-size:12px;line-height:1.5;break-inside:avoid;page-break-inside:avoid"><b>Як читати карту і статуси.</b>'+methodology+'<br><br>'+numbers.replace(' «Туман» означає, що для надійного висновку недостатньо застосовних даних.','')+'<br><br>Для організаційного чекапу «Хмарно» охоплює інші завершені комбінації відповідей, які не відповідають умовам «Ясно», «Буря» або «Туман». Чекап відображає самооцінку компанії: позитивна відповідь сама по собі не доводить результативності практики; її підтверджують фактичне застосування та результат. Якщо відповідних випадків у періоді оцінювання не було, перевірте готовність: порядок дій, відповідальних, ресурси, доступність для відповідних працівників і результати безпечного сценарію. Сценарій підтверджує готовність, а не результативність у реальній події. Якщо недоліків або потреби в коригуванні не встановлено, штучних випадків чи змін не потрібно. Відсутність подій сама по собі не підтверджує повної реалізації.</div>';
-  return html.replace('<div class="usage">',block+'<div class="usage">').replace('</div></body></html>',barometerPReportAppendix()+'</div></body></html>');
+  const block=barometerReportMethodology(input);
+  return html.replace('<div class="usage">',block+'<div class="usage">').replace('</div></body></html>',barometerPReportAppendix()+'</div></body></html>').replace('</head>',barometerReportSpacingStyles()+'</head>');
 };
 /* BAROMETER_CHECKUP_VERIFICATION_2026_10_20_END */
 
@@ -6169,7 +6170,7 @@ const BAROMETER_P_ACTION_LIBRARY={
         "Уточніть відповідальних за робочий час і перегляд порушень та фактичну можливість перерв для різних змін.",
         "Зіставте ситуацію до і після зміни: чи стали реально доступними перерви й заплановані відпустки, чи зменшилася робота у час відпочинку та чи не перенесено навантаження на інших працівників.",
         "Виправте лише підтверджені причини недоступних перерв або роботи під час відпочинку, погодивши зміни з виконавцями.",
-        "Повторно перевірте ті самі робочі ситуації після змін і оцінити результат за наведеними нижче ознаками."
+        "Повторно перевірте ті самі робочі ситуації після змін та оцініть результат за наведеними нижче ознаками."
       ],
       "check": "У відповідних групах фактично доступні погоджені перерви та заплановані відпустки; за раніше встановленої проблеми рідше працюють у час відпочинку. Перевірка не виявляє перенесення цього навантаження на інших працівників. Якщо перешкод не встановлено, достатньо підтримувати дієві домовленості.",
       "summary": "З’ясуйте, що заважає перервам, відпусткам або завершенню роботи в погоджений час; сама відповідь чекапу причини не встановлює. Усуньте підтверджені перешкоди й перевірте фактичне використання відпочинку."
@@ -6756,7 +6757,7 @@ function barometerModuleActions(moduleId,analysis=barometerSemanticInterpretatio
 }
 function barometerRecommendedActionMarkup(action,moduleId){
   const existing=planAction(action.final_action_id),related=(action.code||action.practiceCodes?.length)?barometerRelatedPlanRecords(action):[];
-  const other=related.filter(saved=>saved!==existing),open=saved=>`<button class="btn ghost small" data-a="open-plan-action" data-id="${h(saved.id)}">Відкрити: ${h(saved.action||saved.sourceTarget||'захід')}</button>`;
+  const other=related.filter(saved=>saved!==existing),open=saved=>`<button class="btn ghost small" data-a="open-plan-action" data-id="${h(saved.id)}">Відкрити у Плані: ${h(saved.action||saved.sourceTarget||'захід')}</button>`;
   const add=(target,m,disabled,label)=>`<button class="btn ghost small" data-a="add-routed-action" data-m="${m}" data-target="${h(target)}"${disabled?' disabled':''}>${h(label)}</button>`;
   let notice='',controls='';
   if(action.practiceCodes?.length&&(related.length||existing)){
@@ -6766,9 +6767,9 @@ function barometerRecommendedActionMarkup(action,moduleId){
   }else{
     if(other.length)notice='<p class="data-quality">У Плані вже є окремий або раніше відредагований захід за цією практикою. Він може не охоплювати всіх рекомендованих кроків. Перегляньте запис або додайте повну дію, врахувавши можливий змістовий перетин. Раніше внесені зміни буде збережено.</p>';
     if(existing&&(action.code||action.practiceCodes?.length)&&(existing.description!==action.action||existing.indicator!==action.check))notice+='<p class="data-quality">Цю дію додано раніше. Перевірте, чи її опис містить усі потрібні кроки. Ми не змінювали її автоматично.</p>';
-    controls=add(action.final_action_id,moduleId,!!existing,existing?'Додано до Плану':'Додати до Плану')+[existing,...other].filter(Boolean).map(open).join('');
+    controls=add(action.final_action_id,moduleId,!!existing,existing?'Додано до Плану':'Додати до Плану організаційних дій')+[existing,...other].filter(Boolean).map(open).join('');
   }
-  return `<details class="semantic-aspect-card" data-practice-code="${h(action.code||'')}" data-action-id="${h(action.final_action_id)}"><summary><span class="semantic-aspect-title">${h(action.code?action.code+'. ':'')}${h(action.title)}${action.priority==='Високий'?' · Високий пріоритет':''}</span></summary><div class="semantic-aspect-body"><p>${h(action.basisLabel||(action.answer?BAROMETER_P_ANSWER_LABELS[action.answer]:'За сигналами опитування'))}</p><div class="semantic-aspect-section"><h5>Що зробити</h5><ol>${action.steps.map(step=>`<li>${h(step)}</li>`).join('')}</ol></div><div class="semantic-aspect-section"><h5>Як перевірити результат</h5><p>${h(action.check)}</p></div>${notice}<div class="card-actions">${controls}</div></div></details>`;
+  return `<details class="semantic-aspect-card" data-practice-code="${h(action.code||'')}" data-action-id="${h(action.final_action_id)}"><summary><span class="semantic-aspect-title">${h(action.code?action.code+'. ':'')}${h(action.title)}${action.priority==='Високий'?' · Високий пріоритет':''}</span></summary><div class="semantic-aspect-body"><p>${h(action.basisLabel||(action.answer?BAROMETER_P_ANSWER_LABELS[action.answer]:'За сигналами опитування'))}</p><div class="recommendation-columns"><div class="recommendation-main"><h5>Що зробити</h5><ol>${action.steps.map(step=>`<li>${h(step)}</li>`).join('')}</ol></div><div class="recommendation-check"><h5>Як перевірити результат</h5>${barometerActionParagraphs(action.check)}</div></div>${notice}<div class="card-actions">${controls}</div></div></details>`;
 }
 function barometerCompactActionText(action){
   const practiceSummary=code=>{const model=BAROMETER_P_ACTION_LIBRARY[code],answer=period()?.checkup?.answers?.[code];if(!model||answer==='full')return '';return answer==='partial'?model.partial.summary:answer==='insufficient'?model.insufficient.summary:model.summary||model.steps[0]};
@@ -6781,8 +6782,11 @@ barometerPReportAppendix=function(){return ''};
 barometerPReportSummary=function(){return ''};
 barometerSemanticModuleMarkup=function(row){
   const analysis=barometerSemanticInterpretation(),semantic=analysis.modules[row.m];if(!semantic)return '';
-  const actions=barometerModuleActions(row.m,analysis);
-  return `<article class="module-card matrix" id="matrix-${row.m}"><div class="matrix-row"><div class="matrix-title"><h3>${row.m}. ${h(M[row.m-1])}</h3><h4>Підсумок за модулем</h4>${barometerSummaryMarkup(row,analysis,'muted')}</div><div class="matrix-top-statuses">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div>${actions.length?`<div class="matrix-actions"><button class="btn ghost small" data-a="toggle-detail" data-m="${row.m}">Переглянути рекомендовані дії</button></div><div class="matrix-detail" id="matrix-detail-${row.m}"><section class="semantic-aspects"><h4>Рекомендовані організаційні дії</h4><div class="semantic-aspects-list">${actions.map(a=>barometerRecommendedActionMarkup(a,row.m)).join('')}</div></section></div>`:''}</article>`;
+  const survey=analysis.input.E.eligible||analysis.input.L.eligible,actions=barometerModuleActions(row.m,analysis);
+  const aspects=survey?barometerV2AspectsMarkup(semantic.aspects):'';
+  const cross=semantic.crossRefs.length?`<div class="semantic-aspect-section"><h4>Пов’язані дії</h4><ul>${semantic.crossRefs.map(item=>'<li>'+h(item.text)+'</li>').join('')}</ul></div>`:'';
+  const detail=survey||actions.length||cross;
+  return `<article class="module-card matrix" id="matrix-${row.m}"><div class="matrix-row"><div class="matrix-title"><h3>${row.m}. ${h(M[row.m-1])}</h3><h4>Підсумок за модулем</h4>${barometerSummaryMarkup(row,analysis,'muted')}</div><div class="matrix-top-statuses">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div>${detail?`<div class="matrix-actions"><button class="btn ghost small" data-a="toggle-detail" data-m="${row.m}">${survey?'Переглянути інтерпретацію':'Переглянути рекомендовані дії'}</button></div><div class="matrix-detail" id="matrix-detail-${row.m}">${aspects}${cross}${actions.length?`<section class="semantic-aspects"><h4>Рекомендовані організаційні дії</h4><div class="semantic-aspects-list">${actions.map(action=>barometerRecommendedActionMarkup(action,row.m)).join('')}</div></section>`:''}</div>`:''}</article>`;
 };
 function barometerFavourableModuleRows(rows,analysis){
   const cp=period()?.checkup;if(!cp?.done)return [];
@@ -6809,9 +6813,11 @@ function barometerFavourableModuleMarkup(rows,analysis){
   paragraphs.push('Рекомендуємо підтримувати ці практики та періодично перевіряти їхнє застосування, зокрема під час змін в організації роботи.');
   return `<section class="favourable-modules" aria-label="Модулі зі сприятливими результатами"><h3>Модулі зі сприятливими результатами</h3><div class="favourable-cols"><div>${paragraphs.map(text=>'<p>'+h(text)+'</p>').join('')}</div><ul>${rows.map(row=>`<li data-favourable-module="${row.m}"><span class="favourable-icon" aria-label="Ясно">${statusIcon('Ясно')}</span><span>${row.m}. ${h(M[row.m-1])}</span></li>`).join('')}</ul></div></section>`;
 }
+function barometerAttentionHeading(group,remaining){return group.length&&remaining.length?'<h3 class="attention-modules-heading">Модулі, які потребують уваги</h3>':''}
 function barometerProfileModules(rows){
   const analysis=barometerSemanticInterpretation(),favourable=barometerFavourableModuleRows(rows,analysis),group=favourable.length>=2?favourable:[],ids=new Set(group.map(row=>row.m));
-  return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+rows.filter(row=>!ids.has(row.m)).map(row=>matrixModule(row)).join('');
+  const remaining=rows.filter(row=>!ids.has(row.m));
+  return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+barometerAttentionHeading(group,remaining)+remaining.map(row=>matrixModule(row)).join('');
 }
 function barometerActionParagraphs(text){return String(text).split(/\n\s*\n/).map(part=>'<p>'+h(part)+'</p>').join('')}
 function barometerReportActionMarkup(action){
@@ -6821,11 +6827,27 @@ function barometerReportActionMarkup(action){
 }
 barometerReportModules=function(analysis,rows){
   const favourable=barometerFavourableModuleRows(rows,analysis),group=favourable.length>=2?favourable:[],ids=new Set(group.map(row=>row.m));
-  return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+rows.filter(row=>!ids.has(row.m)).map(row=>{
+  const remaining=rows.filter(row=>!ids.has(row.m));
+  return (group.length?barometerFavourableModuleMarkup(group,analysis):'')+barometerAttentionHeading(group,remaining)+remaining.map(row=>{
   const actions=barometerModuleActions(row.m,analysis);
   return `<section class="module" data-report-module="${row.m}"><div style="break-inside:avoid;page-break-inside:avoid"><div class="module-head"><h3>${row.m}. ${h(M[row.m-1])}</h3><div class="status-row">${chip(row.e,'Працівники')}${chip(row.l,'Керівники')}${chip(row.p,'Організаційний чекап')}</div></div>${barometerSummaryMarkup(row,analysis)}</div>${actions.length?`<div class="actions-section"><h4>Пріоритетні рекомендовані організаційні дії</h4>${actions.map(action=>barometerReportActionMarkup(action)).join('')}</div>`:''}</section>`;
 }).join('')};
 /* BAROMETER_ORGANISATIONAL_ACTIONS_2026_10_20_END */
+
+function barometerReportMethodology(input){
+  const paragraphs=[];
+  if(input.E.eligible||input.L.eligible){
+    paragraphs.push('Для використаних опитувальних джерел «Ясно» означає щонайменше 75% сприятливих і менше 15% несприятливих відповідей; «Буря» - щонайменше 30% несприятливих; «Хмарно» - змішаний профіль відповідей або наявність окремого проблемного аспекту. Окреме твердження вважається проблемним, якщо сприятливих відповідей менше 55% або несприятливих щонайменше 30%.');
+    paragraphs.push('Для аналізу використаних опитувальних джерел потрібно '+[input.E.eligible?'щонайменше 20 валідних анкет працівників':'',input.L.eligible?'щонайменше 10 валідних анкет керівників':''].filter(Boolean).join(' та ')+'. За достатньої мінімальної вибірки «Туман» означає, що у відповідному модулі недостатньо застосовних відповідей.');
+    paragraphs.push('У дужках на Карті показано показник відповідного опитувального джерела: для «Ясно» - частку сприятливих відповідей, для «Хмарно» - частку нейтральних або несприятливих, для «Буря» - частку несприятливих. Результати різних джерел не усереднюються.');
+  }
+  paragraphs.push('Для організаційного чекапу «Ясно» означає, що всі шість практик модуля оцінено як повністю реалізовані. «Буря» - щонайменше одна нереалізована критична практика або щонайменше дві нереалізовані практики. «Туман» - щонайменше три відповіді «Недостатньо підтверджених даних», якщо умова «Бурі» не спрацювала. «Хмарно» охоплює інші завершені комбінації відповідей.');
+  paragraphs.push('Критичні практики: P04, P13, P15, P16, P21, P28, P31, P36, P38 та P42. P40 є критичною лише за підтвердженого актуального ризику з боку третіх осіб.');
+  paragraphs.push('Чекап є самооцінкою організаційних практик компанії за період. Наявність практики, її фактичне застосування та результативність перевіряють окремо: позитивна відповідь сама по собі не доводить результативності практики; її підтверджують фактичне застосування та результат.');
+  paragraphs.push('Якщо відповідних випадків у періоді оцінювання не було, перевірте готовність: порядок дій, відповідальних, ресурси, доступність для відповідних працівників і результати безпечного сценарію. Сценарій підтверджує готовність, а не результативність у реальній події. Якщо недоліків або потреби в коригуванні не встановлено, штучних випадків чи змін не потрібно. Відсутність подій сама по собі не підтверджує повної реалізації.');
+  return '<div class="legend" id="report-methodology" style="font-size:12px;line-height:1.5;break-inside:avoid;page-break-inside:avoid"><b>Як читати карту і статуси.</b>'+paragraphs.map(text=>'<p>'+h(text)+'</p>').join('')+'</div>';
+}
+function barometerReportSpacingStyles(){return '<style id="report-ui-refinements">#report-content .module{margin-top:30px;padding-top:18px;border-top-width:1px}.attention-modules-heading{font-size:18px;margin:32px 0 8px;break-after:avoid;page-break-after:avoid}#report-content h5{break-after:avoid;page-break-after:avoid}</style>'}
 
 StorageSafety.start();
 render();
