@@ -1,0 +1,30 @@
+{
+  "tests": 2083,
+  "passed": 2083,
+  "files": {
+    "index.html": "efb47a69ee91d994a00930361f10f7d70c482782e8e0066e529f1bd913e2cc1c",
+    "local/index.html": "024aeca11202dbc3376ff93a8fa936fd7cecf12251c0ddbe15f91c40df2e786d",
+    "scripts/build-profile-v45.py": "ba4aeb1ddc19153d26ae14f532be562fccc0c659b4d32e675f83eee5ed262fde",
+    "scripts/prepare-manual-preview.mjs": "97d5b37a987b9d08685668111c133d3e1126ed97369bd55b09849587203df8d6",
+    "src/profile-v45/EDITORIAL_RULES.md": "b8d5fbd2cdd9aa6607a83ca772740e242913631b0e6d0374acc26540fe1476db",
+    "src/profile-v45/PLAN_MAPPING_RULES.md": "4935a833896d8ab81266112695905078f6b8c082efb5d5c6d3efcad50953733d",
+    "src/profile-v45/approved-copy.json": "e593c1176cbe0573ae2347c12fcc56fdd159a6abdfa89c06e84c2bdce08a22f3",
+    "src/profile-v45/availability.js": "09ac777715a5dfebee348af0f55c3d29c5338a70a17a705cfa9b83a43d7267fa",
+    "src/profile-v45/engine.js": "39bd397ddefa8454c41eb6bce088afd16bf5cac34aba6d04836e61cf43fe2cc4",
+    "src/profile-v45/grounded-copy.json": "67f2f1df11f3b68d6b51ec4f72022196843bf2c8ba24b165f4629a20a05c67c5",
+    "src/profile-v45/plan-text.js": "5fdf84783b2ce1b1e5b334a543e88a0d5967928d577a7cb074333cc350a1c7c4",
+    "src/profile-v45/report.css": "5fdc15c0e01ca4e8b1c4a63cba54a5254f3ab2f37e296ee0d3ad37b7146533ea",
+    "src/profile-v45/sample-copy.json": "d0e4f140d88900fa1b29db097bdefaeb37e3a9d7ac49686d419d59403f7ad83b",
+    "src/profile-v45/style.css": "33871c6e0588850aee5cea1a82b6d292b0cd200cca3107aa857c4d5e29d69810",
+    "src/profile-v45/view.js": "9569e9b5ebd2d1826e7629815aa751f17dfd5bc2bf92ab0f5f4549985346edfc",
+    "tests/manual-scenarios.mjs": "28af81d4efc7f23edb97db26990f037f4dda601069902e9c0864770fd15ec2d9",
+    "tests/portal-regression.mjs": "c271365d948ec802a060b88166d8b11987a0daa56e32f4a9d4c31adee78f5be9",
+    "tests/profile-availability.mjs": "c8741ec6759c157b5af6110e79e7d8a06688924a25d20231be5b7368bf4cb319",
+    "tests/profile-fixtures.mjs": "bf5e9a58a1dc5d869e335b39979f5877dc37b765bbbc56dd949466ca40d6c512",
+    "tests/profile-grounding.mjs": "1b9fba78a45927435877b75a8e2675e09a69c0969fd032e0ba9498cc87990673",
+    "tests/profile-harness.mjs": "a9f4a0ce95462b1a7d07e7988ea58ff9812c88d650e3b0a890f3c965bc67eee4",
+    "tests/profile-review.mjs": "4ccfba0aa8d31d0cc9fa1cbd25cf988343a01df824e2dc9448a5c335d0390bd5",
+    "tests/profile-v45.mjs": "a6dd5f8b10425be3b23de6c76cdca18d101f7e294015189f45cd5cd82ad7e3d9",
+    "tests/profile-wording.mjs": "af1c90f62cdc05e7c0c490908837190ba6342a62388dc7d7debdc598526850f3"
+  }
+}

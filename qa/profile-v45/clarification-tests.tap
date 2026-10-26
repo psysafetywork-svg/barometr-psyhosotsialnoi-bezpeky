@@ -1,0 +1,6826 @@
+TAP version 13
+# Subtest: all executable scripts parse
+ok 1 - all executable scripts parse
+  ---
+  duration_ms: 23.555003
+  type: 'test'
+  ...
+# Subtest: synthetic import accepts 2,400 E responses and 1,200 L responses
+ok 2 - synthetic import accepts 2,400 E responses and 1,200 L responses
+  ---
+  duration_ms: 268.658255
+  type: 'test'
+  ...
+# Subtest: a complete 2,400-response route produces seven results, a report, and an XLSX plan
+ok 3 - a complete 2,400-response route produces seven results, a report, and an XLSX plan
+  ---
+  duration_ms: 53.752017
+  type: 'test'
+  ...
+# Subtest: respondent-based E profiles give every valid person equal weight
+ok 4 - respondent-based E profiles give every valid person equal weight
+  ---
+  duration_ms: 0.837002
+  type: 'test'
+  ...
+# Subtest: E needs three applicable answers per person and L needs two
+ok 5 - E needs three applicable answers per person and L needs two
+  ---
+  duration_ms: 0.856052
+  type: 'test'
+  ...
+# Subtest: module profile minimum is half the E or L respondents, subject to the floor
+ok 6 - module profile minimum is half the E or L respondents, subject to the floor
+  ---
+  duration_ms: 1.953357
+  type: 'test'
+  ...
+# Subtest: module status can use respondent profiles even when no item meets its separate minimum
+ok 7 - module status can use respondent profiles even when no item meets its separate minimum
+  ---
+  duration_ms: 0.613846
+  type: 'test'
+  ...
+# Subtest: scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно
+ok 8 - scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно
+  ---
+  duration_ms: 0.512232
+  type: 'test'
+  ...
+# Subtest: scenario B: a sufficiently answered problem item masks nominal Ясно
+ok 9 - scenario B: a sufficiently answered problem item masks nominal Ясно
+  ---
+  duration_ms: 0.770453
+  type: 'test'
+  ...
+# Subtest: scenario C: two half-applicable problem items give 80/0/20 and Хмарно
+ok 10 - scenario C: two half-applicable problem items give 80/0/20 and Хмарно
+  ---
+  duration_ms: 1.528255
+  type: 'test'
+  ...
+# Subtest: report uses final semantic action wording when E and P support an action
+ok 11 - report uses final semantic action wording when E and P support an action
+  ---
+  duration_ms: 12.818567
+  type: 'test'
+  ...
+# Subtest: P40 follow-up renders immediately after selecting not implemented
+ok 12 - P40 follow-up renders immediately after selecting not implemented
+  ---
+  duration_ms: 1.158118
+  type: 'test'
+  ...
+# Subtest: P40 follow-up records applicability for each environment and survives normalization and backup
+ok 13 - P40 follow-up records applicability for each environment and survives normalization and backup
+  ---
+  duration_ms: 1.212148
+  type: 'test'
+  ...
+# Subtest: survey weather thresholds, badges and problem-item safeguard follow final E/L rules
+ok 14 - survey weather thresholds, badges and problem-item safeguard follow final E/L rules
+  ---
+  duration_ms: 12.817386
+  type: 'test'
+  ...
+# Subtest: the 55% item boundary stays separate from storm weather
+ok 15 - the 55% item boundary stays separate from storm weather
+  ---
+  duration_ms: 6.56317
+  type: 'test'
+  ...
+# Subtest: checkup status rules remain reproducible, including conditional P40
+ok 16 - checkup status rules remain reproducible, including conditional P40
+  ---
+  duration_ms: 1.154341
+  type: 'test'
+  ...
+# Subtest: P badges explain practices and never show a numerical percentage
+ok 17 - P badges explain practices and never show a numerical percentage
+  ---
+  duration_ms: 0.239301
+  type: 'test'
+  ...
+# Subtest: weather map and report omit visible boundary messages
+ok 18 - weather map and report omit visible boundary messages
+  ---
+  duration_ms: 10.725189
+  type: 'test'
+  ...
+# Subtest: public methodology describes weather statuses, E/L calculation, problem items and categorical P
+ok 19 - public methodology describes weather statuses, E/L calculation, problem items and categorical P
+  ---
+  duration_ms: 2.124585
+  type: 'test'
+  ...
+# Subtest: all 64 interpretation combinations remain available and recommendations stay capped at three
+ok 20 - all 64 interpretation combinations remain available and recommendations stay capped at three
+  ---
+  duration_ms: 3.686491
+  type: 'test'
+  ...
+# Subtest: E16 routes primarily to the new pay-equity thematic recommendation
+ok 21 - E16 routes primarily to the new pay-equity thematic recommendation
+  ---
+  duration_ms: 2.292258
+  type: 'test'
+  ...
+# Subtest: E22 routes primarily to the new time-and-pace flexibility recommendation
+ok 22 - E22 routes primarily to the new time-and-pace flexibility recommendation
+  ---
+  duration_ms: 2.04194
+  type: 'test'
+  ...
+# Subtest: E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary
+ok 23 - E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary
+  ---
+  duration_ms: 2.08832
+  type: 'test'
+  ...
+# Subtest: L21 routes to P38 and every runtime P38 copy uses the revised wording
+ok 24 - L21 routes to P38 and every runtime P38 copy uses the revised wording
+  ---
+  duration_ms: 0.191559
+  type: 'test'
+  ...
+# Subtest: COMBO64 situation hypothesis appears only with a weak situational practice in that module
+ok 25 - COMBO64 situation hypothesis appears only with a weak situational practice in that module
+  ---
+  duration_ms: 3.066396
+  type: 'test'
+  ...
+# Subtest: manager detail is never retained below ten responses
+ok 26 - manager detail is never retained below ten responses
+  ---
+  duration_ms: 0.43744
+  type: 'test'
+  ...
+# Subtest: E=19 has no status or problem items, while E=20 gets a weather status
+ok 27 - E=19 has no status or problem items, while E=20 gets a weather status
+  ---
+  duration_ms: 0.690402
+  type: 'test'
+  ...
+# Subtest: L=9 has no status or problem items, while L=10 gets a weather status
+ok 28 - L=9 has no status or problem items, while L=10 gets a weather status
+  ---
+  duration_ms: 0.345211
+  type: 'test'
+  ...
+# Subtest: eligible E and L with too few applicable answers receive Туман, not a sample warning
+ok 29 - eligible E and L with too few applicable answers receive Туман, not a sample warning
+  ---
+  duration_ms: 0.808349
+  type: 'test'
+  ...
+# Subtest: E=19 is excluded from final comparison while valid L and P still produce analysis
+ok 30 - E=19 is excluded from final comparison while valid L and P still produce analysis
+  ---
+  duration_ms: 1.480594
+  type: 'test'
+  ...
+# Subtest: L=9 is excluded from final comparison while valid E and P still produce analysis
+ok 31 - L=9 is excluded from final comparison while valid E and P still produce analysis
+  ---
+  duration_ms: 1.556158
+  type: 'test'
+  ...
+# Subtest: zero manager responses no longer block the final dashboard availability
+ok 32 - zero manager responses no longer block the final dashboard availability
+  ---
+  duration_ms: 0.190177
+  type: 'test'
+  ...
+# Subtest: plan is isolated by period and export contains action description
+ok 33 - plan is isolated by period and export contains action description
+  ---
+  duration_ms: 0.235986
+  type: 'test'
+  ...
+# Subtest: legacy plan actions are assigned to the period that owns their environment
+ok 34 - legacy plan actions are assigned to the period that owns their environment
+  ---
+  duration_ms: 0.365311
+  type: 'test'
+  ...
+# Subtest: backup validation rejects inconsistent structures before replacement
+ok 35 - backup validation rejects inconsistent structures before replacement
+  ---
+  duration_ms: 0.601067
+  type: 'test'
+  ...
+# Subtest: no-manager interpretation removes manager-specific hypotheses and checks
+ok 36 - no-manager interpretation removes manager-specific hypotheses and checks
+  ---
+  duration_ms: 0.334495
+  type: 'test'
+  ...
+# Subtest: report sentences start with capitals
+ok 37 - report sentences start with capitals
+  ---
+  duration_ms: 0.095484
+  type: 'test'
+  ...
+# Subtest: environment and period validation rejects inconsistent values
+ok 38 - environment and period validation rejects inconsistent values
+  ---
+  duration_ms: 0.06608
+  type: 'test'
+  ...
+# Subtest: public portal documents the previously hidden rules and four checkup answers
+ok 39 - public portal documents the previously hidden rules and four checkup answers
+  ---
+  duration_ms: 1.821017
+  type: 'test'
+  ...
+# Subtest: public example shows only a conclusion for clear and fog-only combinations
+ok 40 - public example shows only a conclusion for clear and fog-only combinations
+  ---
+  duration_ms: 3.278166
+  type: 'test'
+  ...
+# Subtest: embedded local portal is byte-for-byte synchronized after base64 decoding
+ok 41 - embedded local portal is byte-for-byte synchronized after base64 decoding
+  ---
+  duration_ms: 6.111009
+  type: 'test'
+  ...
+# Subtest: F01 stable comparison on both sides of 15%
+ok 42 - F01 stable comparison on both sides of 15%
+  ---
+  duration_ms: 0.16573
+  type: 'test'
+  ...
+# Subtest: F01 stable comparison on both sides of 30%
+ok 43 - F01 stable comparison on both sides of 30%
+  ---
+  duration_ms: 0.038808
+  type: 'test'
+  ...
+# Subtest: F01 stable comparison on both sides of 55%
+ok 44 - F01 stable comparison on both sides of 55%
+  ---
+  duration_ms: 0.040682
+  type: 'test'
+  ...
+# Subtest: F01 stable comparison on both sides of 75%
+ok 45 - F01 stable comparison on both sides of 75%
+  ---
+  duration_ms: 0.027722
+  type: 'test'
+  ...
+# Subtest: F01 weather 15 below
+ok 46 - F01 weather 15 below
+  ---
+  duration_ms: 0.054562
+  type: 'test'
+  ...
+# Subtest: F01 weather 15 exact
+ok 47 - F01 weather 15 exact
+  ---
+  duration_ms: 0.032569
+  type: 'test'
+  ...
+# Subtest: F01 weather 15 above
+ok 48 - F01 weather 15 above
+  ---
+  duration_ms: 0.030916
+  type: 'test'
+  ...
+# Subtest: F01 weather 30 below
+ok 49 - F01 weather 30 below
+  ---
+  duration_ms: 0.024848
+  type: 'test'
+  ...
+# Subtest: F01 weather 30 exact
+ok 50 - F01 weather 30 exact
+  ---
+  duration_ms: 0.028934
+  type: 'test'
+  ...
+# Subtest: F01 weather 30 above
+ok 51 - F01 weather 30 above
+  ---
+  duration_ms: 0.024547
+  type: 'test'
+  ...
+# Subtest: F01 weather 75 below
+ok 52 - F01 weather 75 below
+  ---
+  duration_ms: 0.026459
+  type: 'test'
+  ...
+# Subtest: F01 weather 75 exact
+ok 53 - F01 weather 75 exact
+  ---
+  duration_ms: 0.023355
+  type: 'test'
+  ...
+# Subtest: F01 weather 75 above
+ok 54 - F01 weather 75 above
+  ---
+  duration_ms: 0.028333
+  type: 'test'
+  ...
+# Subtest: F01 problem item 54.9999999/10
+ok 55 - F01 problem item 54.9999999/10
+  ---
+  duration_ms: 1.065387
+  type: 'test'
+  ...
+# Subtest: F01 problem item 54.99999999999999/10
+ok 56 - F01 problem item 54.99999999999999/10
+  ---
+  duration_ms: 0.812226
+  type: 'test'
+  ...
+# Subtest: F01 problem item 55.0000001/10
+ok 57 - F01 problem item 55.0000001/10
+  ---
+  duration_ms: 0.939006
+  type: 'test'
+  ...
+# Subtest: F01 problem item 70/29.9999999
+ok 58 - F01 problem item 70/29.9999999
+  ---
+  duration_ms: 0.875541
+  type: 'test'
+  ...
+# Subtest: F01 problem item 70/29.99999999999999
+ok 59 - F01 problem item 70/29.99999999999999
+  ---
+  duration_ms: 0.807368
+  type: 'test'
+  ...
+# Subtest: F01 problem item 70/30.0000001
+ok 60 - F01 problem item 70/30.0000001
+  ---
+  duration_ms: 0.737072
+  type: 'test'
+  ...
+# Subtest: F01 respondent profiles L n=10 negatives=9
+ok 61 - F01 respondent profiles L n=10 negatives=9
+  ---
+  duration_ms: 11.795944
+  type: 'test'
+  ...
+# Subtest: F01 respondent profiles L n=20 negatives=9
+ok 62 - F01 respondent profiles L n=20 negatives=9
+  ---
+  duration_ms: 7.645042
+  type: 'test'
+  ...
+# Subtest: F01 respondent profiles E n=20 negatives=18
+ok 63 - F01 respondent profiles E n=20 negatives=18
+  ---
+  duration_ms: 9.893595
+  type: 'test'
+  ...
+# Subtest: F02 measured evidence is scoped: N+NA
+ok 64 - F02 measured evidence is scoped: N+NA
+  ---
+  duration_ms: 1.541686
+  type: 'test'
+  ...
+# Subtest: F02 measured evidence is scoped: S+NA
+ok 65 - F02 measured evidence is scoped: S+NA
+  ---
+  duration_ms: 1.329645
+  type: 'test'
+  ...
+# Subtest: F02 measured evidence is scoped: N+S
+ok 66 - F02 measured evidence is scoped: N+S
+  ---
+  duration_ms: 2.527703
+  type: 'test'
+  ...
+# Subtest: F02 measured evidence is scoped: NA+NA
+ok 67 - F02 measured evidence is scoped: NA+NA
+  ---
+  duration_ms: 1.066108
+  type: 'test'
+  ...
+# Subtest: F02 measured evidence is scoped: direct measured/additional NA
+ok 68 - F02 measured evidence is scoped: direct measured/additional NA
+  ---
+  duration_ms: 1.740886
+  type: 'test'
+  ...
+# Subtest: F02 partial NA remains visible even with no adverse signals
+ok 69 - F02 partial NA remains visible even with no adverse signals
+  ---
+  duration_ms: 6.742441
+  type: 'test'
+  ...
+# Subtest: F03 isolated E09 has a concrete plan-ready diagnostic action
+ok 70 - F03 isolated E09 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 35.481526
+  type: 'test'
+  ...
+# Subtest: F03 isolated E10 has a concrete plan-ready diagnostic action
+ok 71 - F03 isolated E10 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 16.632099
+  type: 'test'
+  ...
+# Subtest: F03 isolated E14 has a concrete plan-ready diagnostic action
+ok 72 - F03 isolated E14 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 17.495313
+  type: 'test'
+  ...
+# Subtest: F03 isolated L04 has a concrete plan-ready diagnostic action
+ok 73 - F03 isolated L04 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 43.25421
+  type: 'test'
+  ...
+# Subtest: F03 isolated L06 has a concrete plan-ready diagnostic action
+ok 74 - F03 isolated L06 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 35.913757
+  type: 'test'
+  ...
+# Subtest: F03 isolated L17 has a concrete plan-ready diagnostic action
+ok 75 - F03 isolated L17 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 27.634888
+  type: 'test'
+  ...
+# Subtest: F03 isolated L18 has a concrete plan-ready diagnostic action
+ok 76 - F03 isolated L18 has a concrete plan-ready diagnostic action
+  ---
+  duration_ms: 20.553966
+  type: 'test'
+  ...
+# Subtest: F03 L17 and L18 deduplicate and do not duplicate an existing help action
+ok 77 - F03 L17 and L18 deduplicate and do not duplicate an existing help action
+  ---
+  duration_ms: 3.26805
+  type: 'test'
+  ...
+# Subtest: F04 E33 with favorable E32/L19/P41
+ok 78 - F04 E33 with favorable E32/L19/P41
+  ---
+  duration_ms: 1.251849
+  type: 'test'
+  ...
+# Subtest: F04 E33 with E32
+ok 79 - F04 E33 with E32
+  ---
+  duration_ms: 1.12694
+  type: 'test'
+  ...
+# Subtest: F04 E33 with P41
+ok 80 - F04 E33 with P41
+  ---
+  duration_ms: 1.076133
+  type: 'test'
+  ...
+# Subtest: F04 E33 with L19
+ok 81 - F04 E33 with L19
+  ---
+  duration_ms: 1.416727
+  type: 'test'
+  ...
+# Subtest: F06 current category 1 and numeric equivalent import
+ok 82 - F06 current category 1 and numeric equivalent import
+  ---
+  duration_ms: 9.528965
+  type: 'test'
+  ...
+# Subtest: F06 current category 2 and numeric equivalent import
+ok 83 - F06 current category 2 and numeric equivalent import
+  ---
+  duration_ms: 7.047962
+  type: 'test'
+  ...
+# Subtest: F06 current category 3 and numeric equivalent import
+ok 84 - F06 current category 3 and numeric equivalent import
+  ---
+  duration_ms: 7.487395
+  type: 'test'
+  ...
+# Subtest: F06 current category 4 and numeric equivalent import
+ok 85 - F06 current category 4 and numeric equivalent import
+  ---
+  duration_ms: 6.669051
+  type: 'test'
+  ...
+# Subtest: F06 current category 5 and numeric equivalent import
+ok 86 - F06 current category 5 and numeric equivalent import
+  ---
+  duration_ms: 6.551213
+  type: 'test'
+  ...
+# Subtest: F06 current category 6 and numeric equivalent import
+ok 87 - F06 current category 6 and numeric equivalent import
+  ---
+  duration_ms: 6.799738
+  type: 'test'
+  ...
+# Subtest: F06 rejects and names Важко відповісти
+ok 88 - F06 rejects and names Важко відповісти
+  ---
+  duration_ms: 3.668023
+  type: 'test'
+  ...
+# Subtest: F06 rejects and names Не погоджуюся
+ok 89 - F06 rejects and names Не погоджуюся
+  ---
+  duration_ms: 3.399568
+  type: 'test'
+  ...
+# Subtest: F06 rejects and names Погоджуюся
+ok 90 - F06 rejects and names Погоджуюся
+  ---
+  duration_ms: 3.507732
+  type: 'test'
+  ...
+# Subtest: F06 rejects and names Цілком погоджуюсь
+ok 91 - F06 rejects and names Цілком погоджуюсь
+  ---
+  duration_ms: 3.884741
+  type: 'test'
+  ...
+# Subtest: F06 rejects and names Невідома категорія
+ok 92 - F06 rejects and names Невідома категорія
+  ---
+  duration_ms: 3.65298
+  type: 'test'
+  ...
+# Subtest: F06 blank stays absent, not neutral or NA
+ok 93 - F06 blank stays absent, not neutral or NA
+  ---
+  duration_ms: 4.880913
+  type: 'test'
+  ...
+# Subtest: old backup keeps cached weather until source file is reimported
+ok 94 - old backup keeps cached weather until source file is reimported
+  ---
+  duration_ms: 1.846025
+  type: 'test'
+  ...
+# Subtest: F01 exact literal weather 85/15
+ok 95 - F01 exact literal weather 85/15
+  ---
+  duration_ms: 0.084518
+  type: 'test'
+  ...
+# Subtest: F01 exact literal weather 70/30
+ok 96 - F01 exact literal weather 70/30
+  ---
+  duration_ms: 0.041933
+  type: 'test'
+  ...
+# Subtest: F01 exact literal weather 75/10
+ok 97 - F01 exact literal weather 75/10
+  ---
+  duration_ms: 0.034382
+  type: 'test'
+  ...
+# Subtest: F01 exact literal weather 55/10
+ok 98 - F01 exact literal weather 55/10
+  ---
+  duration_ms: 0.031207
+  type: 'test'
+  ...
+# Subtest: F01 exact literal 55 is not a problem without 30 unfavorable
+ok 99 - F01 exact literal 55 is not a problem without 30 unfavorable
+  ---
+  duration_ms: 0.065519
+  type: 'test'
+  ...
+# Subtest: F02 L partial NA retains measured L17=5 and missing L18
+ok 100 - F02 L partial NA retains measured L17=5 and missing L18
+  ---
+  duration_ms: 2.173759
+  type: 'test'
+  ...
+# Subtest: F02 L partial NA retains measured L17=1 and missing L18
+ok 101 - F02 L partial NA retains measured L17=1 and missing L18
+  ---
+  duration_ms: 2.889769
+  type: 'test'
+  ...
+# Subtest: existing study load and JSON restore preserve cached status but use current interpretation
+ok 102 - existing study load and JSON restore preserve cached status but use current interpretation
+  ---
+  duration_ms: 4.603675
+  type: 'test'
+  ...
+# Subtest: study progress replaces three questions and has five steps without persistent writes
+ok 103 - study progress replaces three questions and has five steps without persistent writes
+  ---
+  duration_ms: 1.73633
+  type: 'test'
+  ...
+# Subtest: study progress settings require company
+ok 104 - study progress settings require company
+  ---
+  duration_ms: 1.341003
+  type: 'test'
+  ...
+# Subtest: study progress settings require owner
+ok 105 - study progress settings require owner
+  ---
+  duration_ms: 1.07402
+  type: 'test'
+  ...
+# Subtest: study progress empty checkup and survey remain independently accessible
+ok 106 - study progress empty checkup and survey remain independently accessible
+  ---
+  duration_ms: 1.023003
+  type: 'test'
+  ...
+# Subtest: study progress partial checkup counts actual complete modules
+ok 107 - study progress partial checkup counts actual complete modules
+  ---
+  duration_ms: 1.091116
+  type: 'test'
+  ...
+# Subtest: study progress complete checkup recommends missing import
+ok 108 - study progress complete checkup recommends missing import
+  ---
+  duration_ms: 0.906388
+  type: 'test'
+  ...
+# Subtest: study progress survey import before P does not claim results ready
+ok 109 - study progress survey import before P does not claim results ready
+  ---
+  duration_ms: 1.086759
+  type: 'test'
+  ...
+# Subtest: study progress shows 1 of three independent imports
+ok 110 - study progress shows 1 of three independent imports
+  ---
+  duration_ms: 1.518891
+  type: 'test'
+  ...
+# Subtest: study progress shows 2 of three independent imports
+ok 111 - study progress shows 2 of three independent imports
+  ---
+  duration_ms: 1.474124
+  type: 'test'
+  ...
+# Subtest: study progress shows 3 of three independent imports
+ok 112 - study progress shows 3 of three independent imports
+  ---
+  duration_ms: 1.695398
+  type: 'test'
+  ...
+# Subtest: study progress import replacement uses correct environment and preserves other data
+ok 113 - study progress import replacement uses correct environment and preserves other data
+  ---
+  duration_ms: 1.970162
+  type: 'test'
+  ...
+# Subtest: study progress new environment reopens import stage
+ok 114 - study progress new environment reopens import stage
+  ---
+  duration_ms: 1.127961
+  type: 'test'
+  ...
+# Subtest: study progress obeys production canDashboard even for insufficient sample
+ok 115 - study progress obeys production canDashboard even for insufficient sample
+  ---
+  duration_ms: 2.040358
+  type: 'test'
+  ...
+# Subtest: study progress dashboard buttons select the requested environment
+ok 116 - study progress dashboard buttons select the requested environment
+  ---
+  duration_ms: 13.707067
+  type: 'test'
+  ...
+# Subtest: study progress plan 0 has factual count without completion
+ok 117 - study progress plan 0 has factual count without completion
+  ---
+  duration_ms: 1.243546
+  type: 'test'
+  ...
+# Subtest: study progress plan 1 has factual count without completion
+ok 118 - study progress plan 1 has factual count without completion
+  ---
+  duration_ms: 0.930323
+  type: 'test'
+  ...
+# Subtest: study progress plan 4 has factual count without completion
+ok 119 - study progress plan 4 has factual count without completion
+  ---
+  duration_ms: 0.803252
+  type: 'test'
+  ...
+# Subtest: study progress plan 11 has factual count without completion
+ok 120 - study progress plan 11 has factual count without completion
+  ---
+  duration_ms: 0.862792
+  type: 'test'
+  ...
+# Subtest: study progress follows period switching and persisted restore
+ok 121 - study progress follows period switching and persisted restore
+  ---
+  duration_ms: 1.715598
+  type: 'test'
+  ...
+# Subtest: study progress safely renders imported environment names
+ok 122 - study progress safely renders imported environment names
+  ---
+  duration_ms: 0.928301
+  type: 'test'
+  ...
+# Subtest: M02 validates nested E/L and organizational checkup results
+ok 123 - M02 validates nested E/L and organizational checkup results
+  ---
+  duration_ms: 2.670879
+  type: 'test'
+  ...
+# Subtest: M02 restore rejects malformed aggregates without changing existing research
+ok 124 - M02 restore rejects malformed aggregates without changing existing research
+  ---
+  duration_ms: 1.39191
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 0 and delimiter ","
+ok 125 - M03 CSV prefix 0 and delimiter ","
+  ---
+  duration_ms: 29.412019
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 1 and delimiter ","
+ok 126 - M03 CSV prefix 1 and delimiter ","
+  ---
+  duration_ms: 26.38326
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 2 and delimiter ","
+ok 127 - M03 CSV prefix 2 and delimiter ","
+  ---
+  duration_ms: 25.675172
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 0 and delimiter ";"
+ok 128 - M03 CSV prefix 0 and delimiter ";"
+  ---
+  duration_ms: 26.554418
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 1 and delimiter ";"
+ok 129 - M03 CSV prefix 1 and delimiter ";"
+  ---
+  duration_ms: 26.311682
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 2 and delimiter ";"
+ok 130 - M03 CSV prefix 2 and delimiter ";"
+  ---
+  duration_ms: 25.673118
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 0 and delimiter "\\t"
+ok 131 - M03 CSV prefix 0 and delimiter "\\t"
+  ---
+  duration_ms: 27.325471
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 1 and delimiter "\\t"
+ok 132 - M03 CSV prefix 1 and delimiter "\\t"
+  ---
+  duration_ms: 27.681909
+  type: 'test'
+  ...
+# Subtest: M03 CSV prefix 2 and delimiter "\\t"
+ok 133 - M03 CSV prefix 2 and delimiter "\\t"
+  ---
+  duration_ms: 26.251361
+  type: 'test'
+  ...
+# Subtest: M02 allows legacy checkup results to be migrated instead of rejecting the old schema
+ok 134 - M02 allows legacy checkup results to be migrated instead of rejecting the old schema
+  ---
+  duration_ms: 1.337277
+  type: 'test'
+  ...
+# Subtest: M02 backup rejects invalid current-schema P values and unknown P codes
+ok 135 - M02 backup rejects invalid current-schema P values and unknown P codes
+  ---
+  duration_ms: 2.142112
+  type: 'test'
+  ...
+# Subtest: M02 backup recognizes every supported current-schema P answer, including partial drafts
+ok 136 - M02 backup recognizes every supported current-schema P answer, including partial drafts
+  ---
+  duration_ms: 2.15471
+  type: 'test'
+  ...
+# Subtest: M02 backup rejects invalid calendar dates in periods and current checkup
+ok 137 - M02 backup rejects invalid calendar dates in periods and current checkup
+  ---
+  duration_ms: 3.702406
+  type: 'test'
+  ...
+# Subtest: M02 restore invalid P answer or date does not change existing research and storage
+ok 138 - M02 restore invalid P answer or date does not change existing research and storage
+  ---
+  duration_ms: 2.406089
+  type: 'test'
+  ...
+# Subtest: M02 keeps legacy schema backup compatible with checkup migration
+ok 139 - M02 keeps legacy schema backup compatible with checkup migration
+  ---
+  duration_ms: 0.916202
+  type: 'test'
+  ...
+# Subtest: F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning
+ok 140 - F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning
+  ---
+  duration_ms: 15.082392
+  type: 'test'
+  ...
+# Subtest: F07 a unicode ellipsis and unchanged full E20 still import correctly
+ok 141 - F07 a unicode ellipsis and unchanged full E20 still import correctly
+  ---
+  duration_ms: 29.400802
+  type: 'test'
+  ...
+# Subtest: F07 rejects unmarked, short, changed and coded truncated E20 headings
+ok 142 - F07 rejects unmarked, short, changed and coded truncated E20 headings
+  ---
+  duration_ms: 57.065445
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/clear/clear
+ok 143 - weather M1 clear/clear/clear
+  ---
+  duration_ms: 47.159241
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/clear/cloudy
+ok 144 - weather M1 clear/clear/cloudy
+  ---
+  duration_ms: 10.450015
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/clear/storm
+ok 145 - weather M1 clear/clear/storm
+  ---
+  duration_ms: 4.709699
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/clear/fog
+ok 146 - weather M1 clear/clear/fog
+  ---
+  duration_ms: 4.012422
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/cloudy/clear
+ok 147 - weather M1 clear/cloudy/clear
+  ---
+  duration_ms: 4.530154
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/cloudy/cloudy
+ok 148 - weather M1 clear/cloudy/cloudy
+  ---
+  duration_ms: 4.802113
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/cloudy/storm
+ok 149 - weather M1 clear/cloudy/storm
+  ---
+  duration_ms: 4.889646
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/cloudy/fog
+ok 150 - weather M1 clear/cloudy/fog
+  ---
+  duration_ms: 4.543459
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/storm/clear
+ok 151 - weather M1 clear/storm/clear
+  ---
+  duration_ms: 4.10935
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/storm/cloudy
+ok 152 - weather M1 clear/storm/cloudy
+  ---
+  duration_ms: 4.767111
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/storm/storm
+ok 153 - weather M1 clear/storm/storm
+  ---
+  duration_ms: 5.260205
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/storm/fog
+ok 154 - weather M1 clear/storm/fog
+  ---
+  duration_ms: 4.729795
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/fog/clear
+ok 155 - weather M1 clear/fog/clear
+  ---
+  duration_ms: 4.925029
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/fog/cloudy
+ok 156 - weather M1 clear/fog/cloudy
+  ---
+  duration_ms: 3.447221
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/fog/storm
+ok 157 - weather M1 clear/fog/storm
+  ---
+  duration_ms: 7.349232
+  type: 'test'
+  ...
+# Subtest: weather M1 clear/fog/fog
+ok 158 - weather M1 clear/fog/fog
+  ---
+  duration_ms: 3.542393
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/clear/clear
+ok 159 - weather M1 cloudy/clear/clear
+  ---
+  duration_ms: 3.053035
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/clear/cloudy
+ok 160 - weather M1 cloudy/clear/cloudy
+  ---
+  duration_ms: 3.455173
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/clear/storm
+ok 161 - weather M1 cloudy/clear/storm
+  ---
+  duration_ms: 8.334813
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/clear/fog
+ok 162 - weather M1 cloudy/clear/fog
+  ---
+  duration_ms: 3.556396
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/cloudy/clear
+ok 163 - weather M1 cloudy/cloudy/clear
+  ---
+  duration_ms: 3.102049
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/cloudy/cloudy
+ok 164 - weather M1 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 3.786182
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/cloudy/storm
+ok 165 - weather M1 cloudy/cloudy/storm
+  ---
+  duration_ms: 3.606661
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/cloudy/fog
+ok 166 - weather M1 cloudy/cloudy/fog
+  ---
+  duration_ms: 3.673091
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/storm/clear
+ok 167 - weather M1 cloudy/storm/clear
+  ---
+  duration_ms: 4.155849
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/storm/cloudy
+ok 168 - weather M1 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.542464
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/storm/storm
+ok 169 - weather M1 cloudy/storm/storm
+  ---
+  duration_ms: 4.770527
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/storm/fog
+ok 170 - weather M1 cloudy/storm/fog
+  ---
+  duration_ms: 4.196902
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/fog/clear
+ok 171 - weather M1 cloudy/fog/clear
+  ---
+  duration_ms: 3.494301
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/fog/cloudy
+ok 172 - weather M1 cloudy/fog/cloudy
+  ---
+  duration_ms: 4.243341
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/fog/storm
+ok 173 - weather M1 cloudy/fog/storm
+  ---
+  duration_ms: 4.672528
+  type: 'test'
+  ...
+# Subtest: weather M1 cloudy/fog/fog
+ok 174 - weather M1 cloudy/fog/fog
+  ---
+  duration_ms: 3.194228
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/clear/clear
+ok 175 - weather M1 storm/clear/clear
+  ---
+  duration_ms: 4.130301
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/clear/cloudy
+ok 176 - weather M1 storm/clear/cloudy
+  ---
+  duration_ms: 4.546288
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/clear/storm
+ok 177 - weather M1 storm/clear/storm
+  ---
+  duration_ms: 4.16961
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/clear/fog
+ok 178 - weather M1 storm/clear/fog
+  ---
+  duration_ms: 4.218845
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/cloudy/clear
+ok 179 - weather M1 storm/cloudy/clear
+  ---
+  duration_ms: 3.889347
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/cloudy/cloudy
+ok 180 - weather M1 storm/cloudy/cloudy
+  ---
+  duration_ms: 4.281428
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/cloudy/storm
+ok 181 - weather M1 storm/cloudy/storm
+  ---
+  duration_ms: 3.794364
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/cloudy/fog
+ok 182 - weather M1 storm/cloudy/fog
+  ---
+  duration_ms: 3.734864
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/storm/clear
+ok 183 - weather M1 storm/storm/clear
+  ---
+  duration_ms: 4.124733
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/storm/cloudy
+ok 184 - weather M1 storm/storm/cloudy
+  ---
+  duration_ms: 4.684677
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/storm/storm
+ok 185 - weather M1 storm/storm/storm
+  ---
+  duration_ms: 3.930308
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/storm/fog
+ok 186 - weather M1 storm/storm/fog
+  ---
+  duration_ms: 3.877338
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/fog/clear
+ok 187 - weather M1 storm/fog/clear
+  ---
+  duration_ms: 3.755675
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/fog/cloudy
+ok 188 - weather M1 storm/fog/cloudy
+  ---
+  duration_ms: 4.068919
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/fog/storm
+ok 189 - weather M1 storm/fog/storm
+  ---
+  duration_ms: 4.168959
+  type: 'test'
+  ...
+# Subtest: weather M1 storm/fog/fog
+ok 190 - weather M1 storm/fog/fog
+  ---
+  duration_ms: 4.117321
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/clear/clear
+ok 191 - weather M1 fog/clear/clear
+  ---
+  duration_ms: 3.190202
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/clear/cloudy
+ok 192 - weather M1 fog/clear/cloudy
+  ---
+  duration_ms: 3.684628
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/clear/storm
+ok 193 - weather M1 fog/clear/storm
+  ---
+  duration_ms: 5.753019
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/clear/fog
+ok 194 - weather M1 fog/clear/fog
+  ---
+  duration_ms: 4.649344
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/cloudy/clear
+ok 195 - weather M1 fog/cloudy/clear
+  ---
+  duration_ms: 3.354209
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/cloudy/cloudy
+ok 196 - weather M1 fog/cloudy/cloudy
+  ---
+  duration_ms: 3.06928
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/cloudy/storm
+ok 197 - weather M1 fog/cloudy/storm
+  ---
+  duration_ms: 3.105736
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/cloudy/fog
+ok 198 - weather M1 fog/cloudy/fog
+  ---
+  duration_ms: 3.275381
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/storm/clear
+ok 199 - weather M1 fog/storm/clear
+  ---
+  duration_ms: 3.930394
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/storm/cloudy
+ok 200 - weather M1 fog/storm/cloudy
+  ---
+  duration_ms: 4.024912
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/storm/storm
+ok 201 - weather M1 fog/storm/storm
+  ---
+  duration_ms: 4.002448
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/storm/fog
+ok 202 - weather M1 fog/storm/fog
+  ---
+  duration_ms: 3.776026
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/fog/clear
+ok 203 - weather M1 fog/fog/clear
+  ---
+  duration_ms: 3.437606
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/fog/cloudy
+ok 204 - weather M1 fog/fog/cloudy
+  ---
+  duration_ms: 2.99641
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/fog/storm
+ok 205 - weather M1 fog/fog/storm
+  ---
+  duration_ms: 3.67248
+  type: 'test'
+  ...
+# Subtest: weather M1 fog/fog/fog
+ok 206 - weather M1 fog/fog/fog
+  ---
+  duration_ms: 3.034738
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/clear/clear
+ok 207 - weather M2 clear/clear/clear
+  ---
+  duration_ms: 3.677929
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/clear/cloudy
+ok 208 - weather M2 clear/clear/cloudy
+  ---
+  duration_ms: 4.020134
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/clear/storm
+ok 209 - weather M2 clear/clear/storm
+  ---
+  duration_ms: 3.562925
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/clear/fog
+ok 210 - weather M2 clear/clear/fog
+  ---
+  duration_ms: 3.142511
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/cloudy/clear
+ok 211 - weather M2 clear/cloudy/clear
+  ---
+  duration_ms: 2.81041
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/cloudy/cloudy
+ok 212 - weather M2 clear/cloudy/cloudy
+  ---
+  duration_ms: 3.08261
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/cloudy/storm
+ok 213 - weather M2 clear/cloudy/storm
+  ---
+  duration_ms: 3.78491
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/cloudy/fog
+ok 214 - weather M2 clear/cloudy/fog
+  ---
+  duration_ms: 3.20808
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/storm/clear
+ok 215 - weather M2 clear/storm/clear
+  ---
+  duration_ms: 4.366547
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/storm/cloudy
+ok 216 - weather M2 clear/storm/cloudy
+  ---
+  duration_ms: 5.597664
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/storm/storm
+ok 217 - weather M2 clear/storm/storm
+  ---
+  duration_ms: 5.416722
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/storm/fog
+ok 218 - weather M2 clear/storm/fog
+  ---
+  duration_ms: 3.856988
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/fog/clear
+ok 219 - weather M2 clear/fog/clear
+  ---
+  duration_ms: 3.471376
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/fog/cloudy
+ok 220 - weather M2 clear/fog/cloudy
+  ---
+  duration_ms: 3.741935
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/fog/storm
+ok 221 - weather M2 clear/fog/storm
+  ---
+  duration_ms: 3.839026
+  type: 'test'
+  ...
+# Subtest: weather M2 clear/fog/fog
+ok 222 - weather M2 clear/fog/fog
+  ---
+  duration_ms: 3.706411
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/clear/clear
+ok 223 - weather M2 cloudy/clear/clear
+  ---
+  duration_ms: 3.06228
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/clear/cloudy
+ok 224 - weather M2 cloudy/clear/cloudy
+  ---
+  duration_ms: 3.020006
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/clear/storm
+ok 225 - weather M2 cloudy/clear/storm
+  ---
+  duration_ms: 3.410635
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/clear/fog
+ok 226 - weather M2 cloudy/clear/fog
+  ---
+  duration_ms: 3.67579
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/cloudy/clear
+ok 227 - weather M2 cloudy/cloudy/clear
+  ---
+  duration_ms: 2.981678
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/cloudy/cloudy
+ok 228 - weather M2 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 3.347219
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/cloudy/storm
+ok 229 - weather M2 cloudy/cloudy/storm
+  ---
+  duration_ms: 3.169531
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/cloudy/fog
+ok 230 - weather M2 cloudy/cloudy/fog
+  ---
+  duration_ms: 2.815427
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/storm/clear
+ok 231 - weather M2 cloudy/storm/clear
+  ---
+  duration_ms: 3.789556
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/storm/cloudy
+ok 232 - weather M2 cloudy/storm/cloudy
+  ---
+  duration_ms: 4.206426
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/storm/storm
+ok 233 - weather M2 cloudy/storm/storm
+  ---
+  duration_ms: 4.199105
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/storm/fog
+ok 234 - weather M2 cloudy/storm/fog
+  ---
+  duration_ms: 3.408983
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/fog/clear
+ok 235 - weather M2 cloudy/fog/clear
+  ---
+  duration_ms: 2.944282
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/fog/cloudy
+ok 236 - weather M2 cloudy/fog/cloudy
+  ---
+  duration_ms: 3.023211
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/fog/storm
+ok 237 - weather M2 cloudy/fog/storm
+  ---
+  duration_ms: 3.119937
+  type: 'test'
+  ...
+# Subtest: weather M2 cloudy/fog/fog
+ok 238 - weather M2 cloudy/fog/fog
+  ---
+  duration_ms: 3.607893
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/clear/clear
+ok 239 - weather M2 storm/clear/clear
+  ---
+  duration_ms: 4.586999
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/clear/cloudy
+ok 240 - weather M2 storm/clear/cloudy
+  ---
+  duration_ms: 4.095678
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/clear/storm
+ok 241 - weather M2 storm/clear/storm
+  ---
+  duration_ms: 4.140316
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/clear/fog
+ok 242 - weather M2 storm/clear/fog
+  ---
+  duration_ms: 3.82491
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/cloudy/clear
+ok 243 - weather M2 storm/cloudy/clear
+  ---
+  duration_ms: 3.893193
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/cloudy/cloudy
+ok 244 - weather M2 storm/cloudy/cloudy
+  ---
+  duration_ms: 4.316732
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/cloudy/storm
+ok 245 - weather M2 storm/cloudy/storm
+  ---
+  duration_ms: 4.93835
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/cloudy/fog
+ok 246 - weather M2 storm/cloudy/fog
+  ---
+  duration_ms: 4.135658
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/storm/clear
+ok 247 - weather M2 storm/storm/clear
+  ---
+  duration_ms: 4.140116
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/storm/cloudy
+ok 248 - weather M2 storm/storm/cloudy
+  ---
+  duration_ms: 4.206726
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/storm/storm
+ok 249 - weather M2 storm/storm/storm
+  ---
+  duration_ms: 4.967934
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/storm/fog
+ok 250 - weather M2 storm/storm/fog
+  ---
+  duration_ms: 4.474951
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/fog/clear
+ok 251 - weather M2 storm/fog/clear
+  ---
+  duration_ms: 3.597267
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/fog/cloudy
+ok 252 - weather M2 storm/fog/cloudy
+  ---
+  duration_ms: 4.903888
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/fog/storm
+ok 253 - weather M2 storm/fog/storm
+  ---
+  duration_ms: 4.238614
+  type: 'test'
+  ...
+# Subtest: weather M2 storm/fog/fog
+ok 254 - weather M2 storm/fog/fog
+  ---
+  duration_ms: 4.256702
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/clear/clear
+ok 255 - weather M2 fog/clear/clear
+  ---
+  duration_ms: 2.975559
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/clear/cloudy
+ok 256 - weather M2 fog/clear/cloudy
+  ---
+  duration_ms: 2.925153
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/clear/storm
+ok 257 - weather M2 fog/clear/storm
+  ---
+  duration_ms: 2.987016
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/clear/fog
+ok 258 - weather M2 fog/clear/fog
+  ---
+  duration_ms: 2.816289
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/cloudy/clear
+ok 259 - weather M2 fog/cloudy/clear
+  ---
+  duration_ms: 2.708455
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/cloudy/cloudy
+ok 260 - weather M2 fog/cloudy/cloudy
+  ---
+  duration_ms: 3.280058
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/cloudy/storm
+ok 261 - weather M2 fog/cloudy/storm
+  ---
+  duration_ms: 5.424553
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/cloudy/fog
+ok 262 - weather M2 fog/cloudy/fog
+  ---
+  duration_ms: 2.976319
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/storm/clear
+ok 263 - weather M2 fog/storm/clear
+  ---
+  duration_ms: 3.504787
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/storm/cloudy
+ok 264 - weather M2 fog/storm/cloudy
+  ---
+  duration_ms: 3.508222
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/storm/storm
+ok 265 - weather M2 fog/storm/storm
+  ---
+  duration_ms: 3.53968
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/storm/fog
+ok 266 - weather M2 fog/storm/fog
+  ---
+  duration_ms: 4.088427
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/fog/clear
+ok 267 - weather M2 fog/fog/clear
+  ---
+  duration_ms: 3.445678
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/fog/cloudy
+ok 268 - weather M2 fog/fog/cloudy
+  ---
+  duration_ms: 2.935338
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/fog/storm
+ok 269 - weather M2 fog/fog/storm
+  ---
+  duration_ms: 3.323183
+  type: 'test'
+  ...
+# Subtest: weather M2 fog/fog/fog
+ok 270 - weather M2 fog/fog/fog
+  ---
+  duration_ms: 3.596675
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/clear/clear
+ok 271 - weather M3 clear/clear/clear
+  ---
+  duration_ms: 3.110362
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/clear/cloudy
+ok 272 - weather M3 clear/clear/cloudy
+  ---
+  duration_ms: 3.123071
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/clear/storm
+ok 273 - weather M3 clear/clear/storm
+  ---
+  duration_ms: 4.006273
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/clear/fog
+ok 274 - weather M3 clear/clear/fog
+  ---
+  duration_ms: 3.815385
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/cloudy/clear
+ok 275 - weather M3 clear/cloudy/clear
+  ---
+  duration_ms: 3.144665
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/cloudy/cloudy
+ok 276 - weather M3 clear/cloudy/cloudy
+  ---
+  duration_ms: 3.173688
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/cloudy/storm
+ok 277 - weather M3 clear/cloudy/storm
+  ---
+  duration_ms: 3.470275
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/cloudy/fog
+ok 278 - weather M3 clear/cloudy/fog
+  ---
+  duration_ms: 2.94369
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/storm/clear
+ok 279 - weather M3 clear/storm/clear
+  ---
+  duration_ms: 3.462794
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/storm/cloudy
+ok 280 - weather M3 clear/storm/cloudy
+  ---
+  duration_ms: 3.839332
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/storm/storm
+ok 281 - weather M3 clear/storm/storm
+  ---
+  duration_ms: 4.031521
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/storm/fog
+ok 282 - weather M3 clear/storm/fog
+  ---
+  duration_ms: 3.59237
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/fog/clear
+ok 283 - weather M3 clear/fog/clear
+  ---
+  duration_ms: 2.698892
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/fog/cloudy
+ok 284 - weather M3 clear/fog/cloudy
+  ---
+  duration_ms: 2.878402
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/fog/storm
+ok 285 - weather M3 clear/fog/storm
+  ---
+  duration_ms: 3.218014
+  type: 'test'
+  ...
+# Subtest: weather M3 clear/fog/fog
+ok 286 - weather M3 clear/fog/fog
+  ---
+  duration_ms: 3.522194
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/clear/clear
+ok 287 - weather M3 cloudy/clear/clear
+  ---
+  duration_ms: 2.911312
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/clear/cloudy
+ok 288 - weather M3 cloudy/clear/cloudy
+  ---
+  duration_ms: 2.942248
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/clear/storm
+ok 289 - weather M3 cloudy/clear/storm
+  ---
+  duration_ms: 3.445858
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/clear/fog
+ok 290 - weather M3 cloudy/clear/fog
+  ---
+  duration_ms: 2.875187
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/cloudy/clear
+ok 291 - weather M3 cloudy/cloudy/clear
+  ---
+  duration_ms: 2.685772
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/cloudy/cloudy
+ok 292 - weather M3 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 3.28763
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/cloudy/storm
+ok 293 - weather M3 cloudy/cloudy/storm
+  ---
+  duration_ms: 4.117371
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/cloudy/fog
+ok 294 - weather M3 cloudy/cloudy/fog
+  ---
+  duration_ms: 2.884451
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/storm/clear
+ok 295 - weather M3 cloudy/storm/clear
+  ---
+  duration_ms: 3.344155
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/storm/cloudy
+ok 296 - weather M3 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.630367
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/storm/storm
+ok 297 - weather M3 cloudy/storm/storm
+  ---
+  duration_ms: 4.226646
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/storm/fog
+ok 298 - weather M3 cloudy/storm/fog
+  ---
+  duration_ms: 3.484356
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/fog/clear
+ok 299 - weather M3 cloudy/fog/clear
+  ---
+  duration_ms: 3.906382
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/fog/cloudy
+ok 300 - weather M3 cloudy/fog/cloudy
+  ---
+  duration_ms: 2.897902
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/fog/storm
+ok 301 - weather M3 cloudy/fog/storm
+  ---
+  duration_ms: 3.239948
+  type: 'test'
+  ...
+# Subtest: weather M3 cloudy/fog/fog
+ok 302 - weather M3 cloudy/fog/fog
+  ---
+  duration_ms: 2.806864
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/clear/clear
+ok 303 - weather M3 storm/clear/clear
+  ---
+  duration_ms: 4.363602
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/clear/cloudy
+ok 304 - weather M3 storm/clear/cloudy
+  ---
+  duration_ms: 5.745287
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/clear/storm
+ok 305 - weather M3 storm/clear/storm
+  ---
+  duration_ms: 5.657905
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/clear/fog
+ok 306 - weather M3 storm/clear/fog
+  ---
+  duration_ms: 3.640001
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/cloudy/clear
+ok 307 - weather M3 storm/cloudy/clear
+  ---
+  duration_ms: 3.355012
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/cloudy/cloudy
+ok 308 - weather M3 storm/cloudy/cloudy
+  ---
+  duration_ms: 3.368531
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/cloudy/storm
+ok 309 - weather M3 storm/cloudy/storm
+  ---
+  duration_ms: 3.592649
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/cloudy/fog
+ok 310 - weather M3 storm/cloudy/fog
+  ---
+  duration_ms: 3.490766
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/storm/clear
+ok 311 - weather M3 storm/storm/clear
+  ---
+  duration_ms: 4.414249
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/storm/cloudy
+ok 312 - weather M3 storm/storm/cloudy
+  ---
+  duration_ms: 3.935116
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/storm/storm
+ok 313 - weather M3 storm/storm/storm
+  ---
+  duration_ms: 4.36163
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/storm/fog
+ok 314 - weather M3 storm/storm/fog
+  ---
+  duration_ms: 4.040305
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/fog/clear
+ok 315 - weather M3 storm/fog/clear
+  ---
+  duration_ms: 4.001502
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/fog/cloudy
+ok 316 - weather M3 storm/fog/cloudy
+  ---
+  duration_ms: 5.65507
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/fog/storm
+ok 317 - weather M3 storm/fog/storm
+  ---
+  duration_ms: 4.553539
+  type: 'test'
+  ...
+# Subtest: weather M3 storm/fog/fog
+ok 318 - weather M3 storm/fog/fog
+  ---
+  duration_ms: 3.830468
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/clear/clear
+ok 319 - weather M3 fog/clear/clear
+  ---
+  duration_ms: 3.091344
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/clear/cloudy
+ok 320 - weather M3 fog/clear/cloudy
+  ---
+  duration_ms: 2.990352
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/clear/storm
+ok 321 - weather M3 fog/clear/storm
+  ---
+  duration_ms: 3.323544
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/clear/fog
+ok 322 - weather M3 fog/clear/fog
+  ---
+  duration_ms: 3.123742
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/cloudy/clear
+ok 323 - weather M3 fog/cloudy/clear
+  ---
+  duration_ms: 3.326618
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/cloudy/cloudy
+ok 324 - weather M3 fog/cloudy/cloudy
+  ---
+  duration_ms: 2.952054
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/cloudy/storm
+ok 325 - weather M3 fog/cloudy/storm
+  ---
+  duration_ms: 3.159576
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/cloudy/fog
+ok 326 - weather M3 fog/cloudy/fog
+  ---
+  duration_ms: 3.222611
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/storm/clear
+ok 327 - weather M3 fog/storm/clear
+  ---
+  duration_ms: 3.939593
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/storm/cloudy
+ok 328 - weather M3 fog/storm/cloudy
+  ---
+  duration_ms: 3.644739
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/storm/storm
+ok 329 - weather M3 fog/storm/storm
+  ---
+  duration_ms: 4.672889
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/storm/fog
+ok 330 - weather M3 fog/storm/fog
+  ---
+  duration_ms: 3.573341
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/fog/clear
+ok 331 - weather M3 fog/fog/clear
+  ---
+  duration_ms: 2.657088
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/fog/cloudy
+ok 332 - weather M3 fog/fog/cloudy
+  ---
+  duration_ms: 3.164974
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/fog/storm
+ok 333 - weather M3 fog/fog/storm
+  ---
+  duration_ms: 3.345507
+  type: 'test'
+  ...
+# Subtest: weather M3 fog/fog/fog
+ok 334 - weather M3 fog/fog/fog
+  ---
+  duration_ms: 2.980476
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/clear/clear
+ok 335 - weather M4 clear/clear/clear
+  ---
+  duration_ms: 2.961748
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/clear/cloudy
+ok 336 - weather M4 clear/clear/cloudy
+  ---
+  duration_ms: 4.12324
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/clear/storm
+ok 337 - weather M4 clear/clear/storm
+  ---
+  duration_ms: 4.395841
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/clear/fog
+ok 338 - weather M4 clear/clear/fog
+  ---
+  duration_ms: 3.322211
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/cloudy/clear
+ok 339 - weather M4 clear/cloudy/clear
+  ---
+  duration_ms: 4.239625
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/cloudy/cloudy
+ok 340 - weather M4 clear/cloudy/cloudy
+  ---
+  duration_ms: 2.932173
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/cloudy/storm
+ok 341 - weather M4 clear/cloudy/storm
+  ---
+  duration_ms: 3.571298
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/cloudy/fog
+ok 342 - weather M4 clear/cloudy/fog
+  ---
+  duration_ms: 4.293397
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/storm/clear
+ok 343 - weather M4 clear/storm/clear
+  ---
+  duration_ms: 4.227167
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/storm/cloudy
+ok 344 - weather M4 clear/storm/cloudy
+  ---
+  duration_ms: 5.379556
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/storm/storm
+ok 345 - weather M4 clear/storm/storm
+  ---
+  duration_ms: 5.473878
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/storm/fog
+ok 346 - weather M4 clear/storm/fog
+  ---
+  duration_ms: 4.301278
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/fog/clear
+ok 347 - weather M4 clear/fog/clear
+  ---
+  duration_ms: 3.250974
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/fog/cloudy
+ok 348 - weather M4 clear/fog/cloudy
+  ---
+  duration_ms: 2.962078
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/fog/storm
+ok 349 - weather M4 clear/fog/storm
+  ---
+  duration_ms: 6.340315
+  type: 'test'
+  ...
+# Subtest: weather M4 clear/fog/fog
+ok 350 - weather M4 clear/fog/fog
+  ---
+  duration_ms: 2.837561
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/clear/clear
+ok 351 - weather M4 cloudy/clear/clear
+  ---
+  duration_ms: 3.308811
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/clear/cloudy
+ok 352 - weather M4 cloudy/clear/cloudy
+  ---
+  duration_ms: 3.134418
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/clear/storm
+ok 353 - weather M4 cloudy/clear/storm
+  ---
+  duration_ms: 3.01641
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/clear/fog
+ok 354 - weather M4 cloudy/clear/fog
+  ---
+  duration_ms: 2.746604
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/cloudy/clear
+ok 355 - weather M4 cloudy/cloudy/clear
+  ---
+  duration_ms: 3.645129
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/cloudy/cloudy
+ok 356 - weather M4 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 2.865963
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/cloudy/storm
+ok 357 - weather M4 cloudy/cloudy/storm
+  ---
+  duration_ms: 3.285817
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/cloudy/fog
+ok 358 - weather M4 cloudy/cloudy/fog
+  ---
+  duration_ms: 2.718721
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/storm/clear
+ok 359 - weather M4 cloudy/storm/clear
+  ---
+  duration_ms: 3.085515
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/storm/cloudy
+ok 360 - weather M4 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.44045
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/storm/storm
+ok 361 - weather M4 cloudy/storm/storm
+  ---
+  duration_ms: 3.609125
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/storm/fog
+ok 362 - weather M4 cloudy/storm/fog
+  ---
+  duration_ms: 4.474106
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/fog/clear
+ok 363 - weather M4 cloudy/fog/clear
+  ---
+  duration_ms: 4.022768
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/fog/cloudy
+ok 364 - weather M4 cloudy/fog/cloudy
+  ---
+  duration_ms: 3.534612
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/fog/storm
+ok 365 - weather M4 cloudy/fog/storm
+  ---
+  duration_ms: 3.83088
+  type: 'test'
+  ...
+# Subtest: weather M4 cloudy/fog/fog
+ok 366 - weather M4 cloudy/fog/fog
+  ---
+  duration_ms: 3.728755
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/clear/clear
+ok 367 - weather M4 storm/clear/clear
+  ---
+  duration_ms: 4.73341
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/clear/cloudy
+ok 368 - weather M4 storm/clear/cloudy
+  ---
+  duration_ms: 4.637396
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/clear/storm
+ok 369 - weather M4 storm/clear/storm
+  ---
+  duration_ms: 3.888476
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/clear/fog
+ok 370 - weather M4 storm/clear/fog
+  ---
+  duration_ms: 3.934254
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/cloudy/clear
+ok 371 - weather M4 storm/cloudy/clear
+  ---
+  duration_ms: 4.068097
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/cloudy/cloudy
+ok 372 - weather M4 storm/cloudy/cloudy
+  ---
+  duration_ms: 5.408579
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/cloudy/storm
+ok 373 - weather M4 storm/cloudy/storm
+  ---
+  duration_ms: 4.219114
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/cloudy/fog
+ok 374 - weather M4 storm/cloudy/fog
+  ---
+  duration_ms: 3.866373
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/storm/clear
+ok 375 - weather M4 storm/storm/clear
+  ---
+  duration_ms: 4.630546
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/storm/cloudy
+ok 376 - weather M4 storm/storm/cloudy
+  ---
+  duration_ms: 4.878119
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/storm/storm
+ok 377 - weather M4 storm/storm/storm
+  ---
+  duration_ms: 4.420218
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/storm/fog
+ok 378 - weather M4 storm/storm/fog
+  ---
+  duration_ms: 4.343352
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/fog/clear
+ok 379 - weather M4 storm/fog/clear
+  ---
+  duration_ms: 4.437143
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/fog/cloudy
+ok 380 - weather M4 storm/fog/cloudy
+  ---
+  duration_ms: 4.493348
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/fog/storm
+ok 381 - weather M4 storm/fog/storm
+  ---
+  duration_ms: 3.916117
+  type: 'test'
+  ...
+# Subtest: weather M4 storm/fog/fog
+ok 382 - weather M4 storm/fog/fog
+  ---
+  duration_ms: 3.437806
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/clear/clear
+ok 383 - weather M4 fog/clear/clear
+  ---
+  duration_ms: 3.037603
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/clear/cloudy
+ok 384 - weather M4 fog/clear/cloudy
+  ---
+  duration_ms: 2.932083
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/clear/storm
+ok 385 - weather M4 fog/clear/storm
+  ---
+  duration_ms: 2.889879
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/clear/fog
+ok 386 - weather M4 fog/clear/fog
+  ---
+  duration_ms: 3.229442
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/cloudy/clear
+ok 387 - weather M4 fog/cloudy/clear
+  ---
+  duration_ms: 3.196252
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/cloudy/cloudy
+ok 388 - weather M4 fog/cloudy/cloudy
+  ---
+  duration_ms: 3.363164
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/cloudy/storm
+ok 389 - weather M4 fog/cloudy/storm
+  ---
+  duration_ms: 2.974557
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/cloudy/fog
+ok 390 - weather M4 fog/cloudy/fog
+  ---
+  duration_ms: 2.886295
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/storm/clear
+ok 391 - weather M4 fog/storm/clear
+  ---
+  duration_ms: 3.555193
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/storm/cloudy
+ok 392 - weather M4 fog/storm/cloudy
+  ---
+  duration_ms: 5.151701
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/storm/storm
+ok 393 - weather M4 fog/storm/storm
+  ---
+  duration_ms: 4.018533
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/storm/fog
+ok 394 - weather M4 fog/storm/fog
+  ---
+  duration_ms: 3.660432
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/fog/clear
+ok 395 - weather M4 fog/fog/clear
+  ---
+  duration_ms: 2.806394
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/fog/cloudy
+ok 396 - weather M4 fog/fog/cloudy
+  ---
+  duration_ms: 2.868938
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/fog/storm
+ok 397 - weather M4 fog/fog/storm
+  ---
+  duration_ms: 3.074418
+  type: 'test'
+  ...
+# Subtest: weather M4 fog/fog/fog
+ok 398 - weather M4 fog/fog/fog
+  ---
+  duration_ms: 3.980755
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/clear/clear
+ok 399 - weather M5 clear/clear/clear
+  ---
+  duration_ms: 3.850107
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/clear/cloudy
+ok 400 - weather M5 clear/clear/cloudy
+  ---
+  duration_ms: 3.886373
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/clear/storm
+ok 401 - weather M5 clear/clear/storm
+  ---
+  duration_ms: 4.249591
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/clear/fog
+ok 402 - weather M5 clear/clear/fog
+  ---
+  duration_ms: 3.414841
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/cloudy/clear
+ok 403 - weather M5 clear/cloudy/clear
+  ---
+  duration_ms: 2.698922
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/cloudy/cloudy
+ok 404 - weather M5 clear/cloudy/cloudy
+  ---
+  duration_ms: 2.856649
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/cloudy/storm
+ok 405 - weather M5 clear/cloudy/storm
+  ---
+  duration_ms: 4.403974
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/cloudy/fog
+ok 406 - weather M5 clear/cloudy/fog
+  ---
+  duration_ms: 2.759162
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/storm/clear
+ok 407 - weather M5 clear/storm/clear
+  ---
+  duration_ms: 3.245265
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/storm/cloudy
+ok 408 - weather M5 clear/storm/cloudy
+  ---
+  duration_ms: 3.230874
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/storm/storm
+ok 409 - weather M5 clear/storm/storm
+  ---
+  duration_ms: 3.930569
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/storm/fog
+ok 410 - weather M5 clear/storm/fog
+  ---
+  duration_ms: 3.165956
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/fog/clear
+ok 411 - weather M5 clear/fog/clear
+  ---
+  duration_ms: 2.710118
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/fog/cloudy
+ok 412 - weather M5 clear/fog/cloudy
+  ---
+  duration_ms: 3.299338
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/fog/storm
+ok 413 - weather M5 clear/fog/storm
+  ---
+  duration_ms: 3.104814
+  type: 'test'
+  ...
+# Subtest: weather M5 clear/fog/fog
+ok 414 - weather M5 clear/fog/fog
+  ---
+  duration_ms: 2.86386
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/clear/clear
+ok 415 - weather M5 cloudy/clear/clear
+  ---
+  duration_ms: 2.732302
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/clear/cloudy
+ok 416 - weather M5 cloudy/clear/cloudy
+  ---
+  duration_ms: 2.9829
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/clear/storm
+ok 417 - weather M5 cloudy/clear/storm
+  ---
+  duration_ms: 3.670958
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/clear/fog
+ok 418 - weather M5 cloudy/clear/fog
+  ---
+  duration_ms: 5.06427
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/cloudy/clear
+ok 419 - weather M5 cloudy/cloudy/clear
+  ---
+  duration_ms: 2.839213
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/cloudy/cloudy
+ok 420 - weather M5 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 2.965774
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/cloudy/storm
+ok 421 - weather M5 cloudy/cloudy/storm
+  ---
+  duration_ms: 3.070732
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/cloudy/fog
+ok 422 - weather M5 cloudy/cloudy/fog
+  ---
+  duration_ms: 2.926024
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/storm/clear
+ok 423 - weather M5 cloudy/storm/clear
+  ---
+  duration_ms: 3.396664
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/storm/cloudy
+ok 424 - weather M5 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.230174
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/storm/storm
+ok 425 - weather M5 cloudy/storm/storm
+  ---
+  duration_ms: 3.974075
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/storm/fog
+ok 426 - weather M5 cloudy/storm/fog
+  ---
+  duration_ms: 3.643537
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/fog/clear
+ok 427 - weather M5 cloudy/fog/clear
+  ---
+  duration_ms: 2.71054
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/fog/cloudy
+ok 428 - weather M5 cloudy/fog/cloudy
+  ---
+  duration_ms: 2.942409
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/fog/storm
+ok 429 - weather M5 cloudy/fog/storm
+  ---
+  duration_ms: 3.19475
+  type: 'test'
+  ...
+# Subtest: weather M5 cloudy/fog/fog
+ok 430 - weather M5 cloudy/fog/fog
+  ---
+  duration_ms: 2.794576
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/clear/clear
+ok 431 - weather M5 storm/clear/clear
+  ---
+  duration_ms: 11.442411
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/clear/cloudy
+ok 432 - weather M5 storm/clear/cloudy
+  ---
+  duration_ms: 4.267458
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/clear/storm
+ok 433 - weather M5 storm/clear/storm
+  ---
+  duration_ms: 4.021957
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/clear/fog
+ok 434 - weather M5 storm/clear/fog
+  ---
+  duration_ms: 3.91807
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/cloudy/clear
+ok 435 - weather M5 storm/cloudy/clear
+  ---
+  duration_ms: 4.301719
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/cloudy/cloudy
+ok 436 - weather M5 storm/cloudy/cloudy
+  ---
+  duration_ms: 3.918862
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/cloudy/storm
+ok 437 - weather M5 storm/cloudy/storm
+  ---
+  duration_ms: 9.067809
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/cloudy/fog
+ok 438 - weather M5 storm/cloudy/fog
+  ---
+  duration_ms: 3.6989
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/storm/clear
+ok 439 - weather M5 storm/storm/clear
+  ---
+  duration_ms: 3.550786
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/storm/cloudy
+ok 440 - weather M5 storm/storm/cloudy
+  ---
+  duration_ms: 5.215197
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/storm/storm
+ok 441 - weather M5 storm/storm/storm
+  ---
+  duration_ms: 3.976359
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/storm/fog
+ok 442 - weather M5 storm/storm/fog
+  ---
+  duration_ms: 4.115798
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/fog/clear
+ok 443 - weather M5 storm/fog/clear
+  ---
+  duration_ms: 3.282963
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/fog/cloudy
+ok 444 - weather M5 storm/fog/cloudy
+  ---
+  duration_ms: 3.87789
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/fog/storm
+ok 445 - weather M5 storm/fog/storm
+  ---
+  duration_ms: 3.653481
+  type: 'test'
+  ...
+# Subtest: weather M5 storm/fog/fog
+ok 446 - weather M5 storm/fog/fog
+  ---
+  duration_ms: 3.482734
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/clear/clear
+ok 447 - weather M5 fog/clear/clear
+  ---
+  duration_ms: 3.139156
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/clear/cloudy
+ok 448 - weather M5 fog/clear/cloudy
+  ---
+  duration_ms: 3.425157
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/clear/storm
+ok 449 - weather M5 fog/clear/storm
+  ---
+  duration_ms: 2.971493
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/clear/fog
+ok 450 - weather M5 fog/clear/fog
+  ---
+  duration_ms: 2.635635
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/cloudy/clear
+ok 451 - weather M5 fog/cloudy/clear
+  ---
+  duration_ms: 2.597629
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/cloudy/cloudy
+ok 452 - weather M5 fog/cloudy/cloudy
+  ---
+  duration_ms: 2.768727
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/cloudy/storm
+ok 453 - weather M5 fog/cloudy/storm
+  ---
+  duration_ms: 2.893655
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/cloudy/fog
+ok 454 - weather M5 fog/cloudy/fog
+  ---
+  duration_ms: 2.658701
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/storm/clear
+ok 455 - weather M5 fog/storm/clear
+  ---
+  duration_ms: 3.755575
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/storm/cloudy
+ok 456 - weather M5 fog/storm/cloudy
+  ---
+  duration_ms: 3.197274
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/storm/storm
+ok 457 - weather M5 fog/storm/storm
+  ---
+  duration_ms: 3.376052
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/storm/fog
+ok 458 - weather M5 fog/storm/fog
+  ---
+  duration_ms: 3.62006
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/fog/clear
+ok 459 - weather M5 fog/fog/clear
+  ---
+  duration_ms: 3.078103
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/fog/cloudy
+ok 460 - weather M5 fog/fog/cloudy
+  ---
+  duration_ms: 3.653873
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/fog/storm
+ok 461 - weather M5 fog/fog/storm
+  ---
+  duration_ms: 3.827133
+  type: 'test'
+  ...
+# Subtest: weather M5 fog/fog/fog
+ok 462 - weather M5 fog/fog/fog
+  ---
+  duration_ms: 2.688505
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/clear/clear
+ok 463 - weather M6 clear/clear/clear
+  ---
+  duration_ms: 2.777229
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/clear/cloudy
+ok 464 - weather M6 clear/clear/cloudy
+  ---
+  duration_ms: 3.183172
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/clear/storm
+ok 465 - weather M6 clear/clear/storm
+  ---
+  duration_ms: 3.101258
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/clear/fog
+ok 466 - weather M6 clear/clear/fog
+  ---
+  duration_ms: 2.681044
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/cloudy/clear
+ok 467 - weather M6 clear/cloudy/clear
+  ---
+  duration_ms: 2.980987
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/cloudy/cloudy
+ok 468 - weather M6 clear/cloudy/cloudy
+  ---
+  duration_ms: 3.353479
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/cloudy/storm
+ok 469 - weather M6 clear/cloudy/storm
+  ---
+  duration_ms: 2.912464
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/cloudy/fog
+ok 470 - weather M6 clear/cloudy/fog
+  ---
+  duration_ms: 3.096171
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/storm/clear
+ok 471 - weather M6 clear/storm/clear
+  ---
+  duration_ms: 4.134497
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/storm/cloudy
+ok 472 - weather M6 clear/storm/cloudy
+  ---
+  duration_ms: 3.606982
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/storm/storm
+ok 473 - weather M6 clear/storm/storm
+  ---
+  duration_ms: 3.681403
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/storm/fog
+ok 474 - weather M6 clear/storm/fog
+  ---
+  duration_ms: 3.611939
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/fog/clear
+ok 475 - weather M6 clear/fog/clear
+  ---
+  duration_ms: 2.999305
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/fog/cloudy
+ok 476 - weather M6 clear/fog/cloudy
+  ---
+  duration_ms: 2.986445
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/fog/storm
+ok 477 - weather M6 clear/fog/storm
+  ---
+  duration_ms: 3.211675
+  type: 'test'
+  ...
+# Subtest: weather M6 clear/fog/fog
+ok 478 - weather M6 clear/fog/fog
+  ---
+  duration_ms: 2.733504
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/clear/clear
+ok 479 - weather M6 cloudy/clear/clear
+  ---
+  duration_ms: 2.582927
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/clear/cloudy
+ok 480 - weather M6 cloudy/clear/cloudy
+  ---
+  duration_ms: 2.73797
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/clear/storm
+ok 481 - weather M6 cloudy/clear/storm
+  ---
+  duration_ms: 3.385537
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/clear/fog
+ok 482 - weather M6 cloudy/clear/fog
+  ---
+  duration_ms: 2.714655
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/cloudy/clear
+ok 483 - weather M6 cloudy/cloudy/clear
+  ---
+  duration_ms: 2.666122
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/cloudy/cloudy
+ok 484 - weather M6 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 2.944562
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/cloudy/storm
+ok 485 - weather M6 cloudy/cloudy/storm
+  ---
+  duration_ms: 2.838892
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/cloudy/fog
+ok 486 - weather M6 cloudy/cloudy/fog
+  ---
+  duration_ms: 2.629167
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/storm/clear
+ok 487 - weather M6 cloudy/storm/clear
+  ---
+  duration_ms: 3.713922
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/storm/cloudy
+ok 488 - weather M6 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.555754
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/storm/storm
+ok 489 - weather M6 cloudy/storm/storm
+  ---
+  duration_ms: 3.694573
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/storm/fog
+ok 490 - weather M6 cloudy/storm/fog
+  ---
+  duration_ms: 3.384636
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/fog/clear
+ok 491 - weather M6 cloudy/fog/clear
+  ---
+  duration_ms: 2.723729
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/fog/cloudy
+ok 492 - weather M6 cloudy/fog/cloudy
+  ---
+  duration_ms: 3.104093
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/fog/storm
+ok 493 - weather M6 cloudy/fog/storm
+  ---
+  duration_ms: 3.594642
+  type: 'test'
+  ...
+# Subtest: weather M6 cloudy/fog/fog
+ok 494 - weather M6 cloudy/fog/fog
+  ---
+  duration_ms: 2.64478
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/clear/clear
+ok 495 - weather M6 storm/clear/clear
+  ---
+  duration_ms: 3.377084
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/clear/cloudy
+ok 496 - weather M6 storm/clear/cloudy
+  ---
+  duration_ms: 3.531627
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/clear/storm
+ok 497 - weather M6 storm/clear/storm
+  ---
+  duration_ms: 3.528292
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/clear/fog
+ok 498 - weather M6 storm/clear/fog
+  ---
+  duration_ms: 3.607292
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/cloudy/clear
+ok 499 - weather M6 storm/cloudy/clear
+  ---
+  duration_ms: 4.033034
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/cloudy/cloudy
+ok 500 - weather M6 storm/cloudy/cloudy
+  ---
+  duration_ms: 3.662104
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/cloudy/storm
+ok 501 - weather M6 storm/cloudy/storm
+  ---
+  duration_ms: 3.723216
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/cloudy/fog
+ok 502 - weather M6 storm/cloudy/fog
+  ---
+  duration_ms: 3.463815
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/storm/clear
+ok 503 - weather M6 storm/storm/clear
+  ---
+  duration_ms: 3.960204
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/storm/cloudy
+ok 504 - weather M6 storm/storm/cloudy
+  ---
+  duration_ms: 4.108358
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/storm/storm
+ok 505 - weather M6 storm/storm/storm
+  ---
+  duration_ms: 4.661733
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/storm/fog
+ok 506 - weather M6 storm/storm/fog
+  ---
+  duration_ms: 3.835877
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/fog/clear
+ok 507 - weather M6 storm/fog/clear
+  ---
+  duration_ms: 3.46694
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/fog/cloudy
+ok 508 - weather M6 storm/fog/cloudy
+  ---
+  duration_ms: 3.309503
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/fog/storm
+ok 509 - weather M6 storm/fog/storm
+  ---
+  duration_ms: 3.491147
+  type: 'test'
+  ...
+# Subtest: weather M6 storm/fog/fog
+ok 510 - weather M6 storm/fog/fog
+  ---
+  duration_ms: 3.853072
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/clear/clear
+ok 511 - weather M6 fog/clear/clear
+  ---
+  duration_ms: 2.584889
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/clear/cloudy
+ok 512 - weather M6 fog/clear/cloudy
+  ---
+  duration_ms: 2.728706
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/clear/storm
+ok 513 - weather M6 fog/clear/storm
+  ---
+  duration_ms: 2.758021
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/clear/fog
+ok 514 - weather M6 fog/clear/fog
+  ---
+  duration_ms: 2.707755
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/cloudy/clear
+ok 515 - weather M6 fog/cloudy/clear
+  ---
+  duration_ms: 2.550067
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/cloudy/cloudy
+ok 516 - weather M6 fog/cloudy/cloudy
+  ---
+  duration_ms: 2.785582
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/cloudy/storm
+ok 517 - weather M6 fog/cloudy/storm
+  ---
+  duration_ms: 3.25457
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/cloudy/fog
+ok 518 - weather M6 fog/cloudy/fog
+  ---
+  duration_ms: 3.073557
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/storm/clear
+ok 519 - weather M6 fog/storm/clear
+  ---
+  duration_ms: 3.159226
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/storm/cloudy
+ok 520 - weather M6 fog/storm/cloudy
+  ---
+  duration_ms: 3.323113
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/storm/storm
+ok 521 - weather M6 fog/storm/storm
+  ---
+  duration_ms: 3.964371
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/storm/fog
+ok 522 - weather M6 fog/storm/fog
+  ---
+  duration_ms: 3.037051
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/fog/clear
+ok 523 - weather M6 fog/fog/clear
+  ---
+  duration_ms: 2.493862
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/fog/cloudy
+ok 524 - weather M6 fog/fog/cloudy
+  ---
+  duration_ms: 3.123462
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/fog/storm
+ok 525 - weather M6 fog/fog/storm
+  ---
+  duration_ms: 3.069171
+  type: 'test'
+  ...
+# Subtest: weather M6 fog/fog/fog
+ok 526 - weather M6 fog/fog/fog
+  ---
+  duration_ms: 2.677389
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/clear/clear
+ok 527 - weather M7 clear/clear/clear
+  ---
+  duration_ms: 2.685852
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/clear/cloudy
+ok 528 - weather M7 clear/clear/cloudy
+  ---
+  duration_ms: 3.289883
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/clear/storm
+ok 529 - weather M7 clear/clear/storm
+  ---
+  duration_ms: 3.012365
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/clear/fog
+ok 530 - weather M7 clear/clear/fog
+  ---
+  duration_ms: 3.114839
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/cloudy/clear
+ok 531 - weather M7 clear/cloudy/clear
+  ---
+  duration_ms: 2.667403
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/cloudy/cloudy
+ok 532 - weather M7 clear/cloudy/cloudy
+  ---
+  duration_ms: 3.105675
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/cloudy/storm
+ok 533 - weather M7 clear/cloudy/storm
+  ---
+  duration_ms: 2.875127
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/cloudy/fog
+ok 534 - weather M7 clear/cloudy/fog
+  ---
+  duration_ms: 2.697549
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/storm/clear
+ok 535 - weather M7 clear/storm/clear
+  ---
+  duration_ms: 3.099656
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/storm/cloudy
+ok 536 - weather M7 clear/storm/cloudy
+  ---
+  duration_ms: 3.20169
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/storm/storm
+ok 537 - weather M7 clear/storm/storm
+  ---
+  duration_ms: 4.139344
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/storm/fog
+ok 538 - weather M7 clear/storm/fog
+  ---
+  duration_ms: 3.581753
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/fog/clear
+ok 539 - weather M7 clear/fog/clear
+  ---
+  duration_ms: 2.806965
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/fog/cloudy
+ok 540 - weather M7 clear/fog/cloudy
+  ---
+  duration_ms: 2.869578
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/fog/storm
+ok 541 - weather M7 clear/fog/storm
+  ---
+  duration_ms: 3.063552
+  type: 'test'
+  ...
+# Subtest: weather M7 clear/fog/fog
+ok 542 - weather M7 clear/fog/fog
+  ---
+  duration_ms: 2.748307
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/clear/clear
+ok 543 - weather M7 cloudy/clear/clear
+  ---
+  duration_ms: 3.55325
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/clear/cloudy
+ok 544 - weather M7 cloudy/clear/cloudy
+  ---
+  duration_ms: 3.04249
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/clear/storm
+ok 545 - weather M7 cloudy/clear/storm
+  ---
+  duration_ms: 3.127018
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/clear/fog
+ok 546 - weather M7 cloudy/clear/fog
+  ---
+  duration_ms: 2.996601
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/cloudy/clear
+ok 547 - weather M7 cloudy/cloudy/clear
+  ---
+  duration_ms: 2.814196
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/cloudy/cloudy
+ok 548 - weather M7 cloudy/cloudy/cloudy
+  ---
+  duration_ms: 2.951893
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/cloudy/storm
+ok 549 - weather M7 cloudy/cloudy/storm
+  ---
+  duration_ms: 3.657217
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/cloudy/fog
+ok 550 - weather M7 cloudy/cloudy/fog
+  ---
+  duration_ms: 3.352798
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/storm/clear
+ok 551 - weather M7 cloudy/storm/clear
+  ---
+  duration_ms: 3.870599
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/storm/cloudy
+ok 552 - weather M7 cloudy/storm/cloudy
+  ---
+  duration_ms: 3.791719
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/storm/storm
+ok 553 - weather M7 cloudy/storm/storm
+  ---
+  duration_ms: 4.008137
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/storm/fog
+ok 554 - weather M7 cloudy/storm/fog
+  ---
+  duration_ms: 3.636886
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/fog/clear
+ok 555 - weather M7 cloudy/fog/clear
+  ---
+  duration_ms: 3.372177
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/fog/cloudy
+ok 556 - weather M7 cloudy/fog/cloudy
+  ---
+  duration_ms: 2.972635
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/fog/storm
+ok 557 - weather M7 cloudy/fog/storm
+  ---
+  duration_ms: 3.43975
+  type: 'test'
+  ...
+# Subtest: weather M7 cloudy/fog/fog
+ok 558 - weather M7 cloudy/fog/fog
+  ---
+  duration_ms: 2.972444
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/clear/clear
+ok 559 - weather M7 storm/clear/clear
+  ---
+  duration_ms: 3.86481
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/clear/cloudy
+ok 560 - weather M7 storm/clear/cloudy
+  ---
+  duration_ms: 4.288941
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/clear/storm
+ok 561 - weather M7 storm/clear/storm
+  ---
+  duration_ms: 4.810117
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/clear/fog
+ok 562 - weather M7 storm/clear/fog
+  ---
+  duration_ms: 3.558357
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/cloudy/clear
+ok 563 - weather M7 storm/cloudy/clear
+  ---
+  duration_ms: 4.055969
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/cloudy/cloudy
+ok 564 - weather M7 storm/cloudy/cloudy
+  ---
+  duration_ms: 3.815576
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/cloudy/storm
+ok 565 - weather M7 storm/cloudy/storm
+  ---
+  duration_ms: 3.669565
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/cloudy/fog
+ok 566 - weather M7 storm/cloudy/fog
+  ---
+  duration_ms: 3.830328
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/storm/clear
+ok 567 - weather M7 storm/storm/clear
+  ---
+  duration_ms: 4.406878
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/storm/cloudy
+ok 568 - weather M7 storm/storm/cloudy
+  ---
+  duration_ms: 4.144302
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/storm/storm
+ok 569 - weather M7 storm/storm/storm
+  ---
+  duration_ms: 4.370844
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/storm/fog
+ok 570 - weather M7 storm/storm/fog
+  ---
+  duration_ms: 3.841234
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/fog/clear
+ok 571 - weather M7 storm/fog/clear
+  ---
+  duration_ms: 3.454121
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/fog/cloudy
+ok 572 - weather M7 storm/fog/cloudy
+  ---
+  duration_ms: 4.398616
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/fog/storm
+ok 573 - weather M7 storm/fog/storm
+  ---
+  duration_ms: 3.826131
+  type: 'test'
+  ...
+# Subtest: weather M7 storm/fog/fog
+ok 574 - weather M7 storm/fog/fog
+  ---
+  duration_ms: 3.65295
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/clear/clear
+ok 575 - weather M7 fog/clear/clear
+  ---
+  duration_ms: 2.830871
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/clear/cloudy
+ok 576 - weather M7 fog/clear/cloudy
+  ---
+  duration_ms: 2.899835
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/clear/storm
+ok 577 - weather M7 fog/clear/storm
+  ---
+  duration_ms: 2.986455
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/clear/fog
+ok 578 - weather M7 fog/clear/fog
+  ---
+  duration_ms: 3.361961
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/cloudy/clear
+ok 579 - weather M7 fog/cloudy/clear
+  ---
+  duration_ms: 2.702247
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/cloudy/cloudy
+ok 580 - weather M7 fog/cloudy/cloudy
+  ---
+  duration_ms: 2.906965
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/cloudy/storm
+ok 581 - weather M7 fog/cloudy/storm
+  ---
+  duration_ms: 3.255892
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/cloudy/fog
+ok 582 - weather M7 fog/cloudy/fog
+  ---
+  duration_ms: 2.923319
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/storm/clear
+ok 583 - weather M7 fog/storm/clear
+  ---
+  duration_ms: 3.315291
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/storm/cloudy
+ok 584 - weather M7 fog/storm/cloudy
+  ---
+  duration_ms: 3.357365
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/storm/storm
+ok 585 - weather M7 fog/storm/storm
+  ---
+  duration_ms: 3.932613
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/storm/fog
+ok 586 - weather M7 fog/storm/fog
+  ---
+  duration_ms: 3.399008
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/fog/clear
+ok 587 - weather M7 fog/fog/clear
+  ---
+  duration_ms: 3.522234
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/fog/cloudy
+ok 588 - weather M7 fog/fog/cloudy
+  ---
+  duration_ms: 4.171133
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/fog/storm
+ok 589 - weather M7 fog/fog/storm
+  ---
+  duration_ms: 3.186267
+  type: 'test'
+  ...
+# Subtest: weather M7 fog/fog/fog
+ok 590 - weather M7 fog/fog/fog
+  ---
+  duration_ms: 2.74508
+  type: 'test'
+  ...
+# Subtest: practice P01 full
+ok 591 - practice P01 full
+  ---
+  duration_ms: 3.150673
+  type: 'test'
+  ...
+# Subtest: practice P01 partial
+ok 592 - practice P01 partial
+  ---
+  duration_ms: 2.506822
+  type: 'test'
+  ...
+# Subtest: practice P01 no
+ok 593 - practice P01 no
+  ---
+  duration_ms: 2.381062
+  type: 'test'
+  ...
+# Subtest: practice P01 insufficient
+ok 594 - practice P01 insufficient
+  ---
+  duration_ms: 2.361432
+  type: 'test'
+  ...
+# Subtest: practice P01 missing
+ok 595 - practice P01 missing
+  ---
+  duration_ms: 2.68503
+  type: 'test'
+  ...
+# Subtest: practice P02 full
+ok 596 - practice P02 full
+  ---
+  duration_ms: 2.779373
+  type: 'test'
+  ...
+# Subtest: practice P02 partial
+ok 597 - practice P02 partial
+  ---
+  duration_ms: 2.43263
+  type: 'test'
+  ...
+# Subtest: practice P02 no
+ok 598 - practice P02 no
+  ---
+  duration_ms: 2.477167
+  type: 'test'
+  ...
+# Subtest: practice P02 insufficient
+ok 599 - practice P02 insufficient
+  ---
+  duration_ms: 2.833725
+  type: 'test'
+  ...
+# Subtest: practice P02 missing
+ok 600 - practice P02 missing
+  ---
+  duration_ms: 2.874015
+  type: 'test'
+  ...
+# Subtest: practice P03 full
+ok 601 - practice P03 full
+  ---
+  duration_ms: 3.11525
+  type: 'test'
+  ...
+# Subtest: practice P03 partial
+ok 602 - practice P03 partial
+  ---
+  duration_ms: 3.239888
+  type: 'test'
+  ...
+# Subtest: practice P03 no
+ok 603 - practice P03 no
+  ---
+  duration_ms: 3.316033
+  type: 'test'
+  ...
+# Subtest: practice P03 insufficient
+ok 604 - practice P03 insufficient
+  ---
+  duration_ms: 3.150052
+  type: 'test'
+  ...
+# Subtest: practice P03 missing
+ok 605 - practice P03 missing
+  ---
+  duration_ms: 2.794065
+  type: 'test'
+  ...
+# Subtest: practice P04 full
+ok 606 - practice P04 full
+  ---
+  duration_ms: 3.039035
+  type: 'test'
+  ...
+# Subtest: practice P04 partial
+ok 607 - practice P04 partial
+  ---
+  duration_ms: 2.760485
+  type: 'test'
+  ...
+# Subtest: practice P04 no
+ok 608 - practice P04 no
+  ---
+  duration_ms: 2.811211
+  type: 'test'
+  ...
+# Subtest: practice P04 insufficient
+ok 609 - practice P04 insufficient
+  ---
+  duration_ms: 2.369845
+  type: 'test'
+  ...
+# Subtest: practice P04 missing
+ok 610 - practice P04 missing
+  ---
+  duration_ms: 2.229794
+  type: 'test'
+  ...
+# Subtest: practice P05 full
+ok 611 - practice P05 full
+  ---
+  duration_ms: 2.339729
+  type: 'test'
+  ...
+# Subtest: practice P05 partial
+ok 612 - practice P05 partial
+  ---
+  duration_ms: 2.623868
+  type: 'test'
+  ...
+# Subtest: practice P05 no
+ok 613 - practice P05 no
+  ---
+  duration_ms: 3.185665
+  type: 'test'
+  ...
+# Subtest: practice P05 insufficient
+ok 614 - practice P05 insufficient
+  ---
+  duration_ms: 2.685441
+  type: 'test'
+  ...
+# Subtest: practice P05 missing
+ok 615 - practice P05 missing
+  ---
+  duration_ms: 2.374132
+  type: 'test'
+  ...
+# Subtest: practice P06 full
+ok 616 - practice P06 full
+  ---
+  duration_ms: 2.311647
+  type: 'test'
+  ...
+# Subtest: practice P06 partial
+ok 617 - practice P06 partial
+  ---
+  duration_ms: 2.397236
+  type: 'test'
+  ...
+# Subtest: practice P06 no
+ok 618 - practice P06 no
+  ---
+  duration_ms: 2.343856
+  type: 'test'
+  ...
+# Subtest: practice P06 insufficient
+ok 619 - practice P06 insufficient
+  ---
+  duration_ms: 2.343946
+  type: 'test'
+  ...
+# Subtest: practice P06 missing
+ok 620 - practice P06 missing
+  ---
+  duration_ms: 2.416476
+  type: 'test'
+  ...
+# Subtest: practice P07 full
+ok 621 - practice P07 full
+  ---
+  duration_ms: 2.633132
+  type: 'test'
+  ...
+# Subtest: practice P07 partial
+ok 622 - practice P07 partial
+  ---
+  duration_ms: 2.608335
+  type: 'test'
+  ...
+# Subtest: practice P07 no
+ok 623 - practice P07 no
+  ---
+  duration_ms: 2.509806
+  type: 'test'
+  ...
+# Subtest: practice P07 insufficient
+ok 624 - practice P07 insufficient
+  ---
+  duration_ms: 2.34648
+  type: 'test'
+  ...
+# Subtest: practice P07 missing
+ok 625 - practice P07 missing
+  ---
+  duration_ms: 2.27319
+  type: 'test'
+  ...
+# Subtest: practice P08 full
+ok 626 - practice P08 full
+  ---
+  duration_ms: 2.282183
+  type: 'test'
+  ...
+# Subtest: practice P08 partial
+ok 627 - practice P08 partial
+  ---
+  duration_ms: 2.501974
+  type: 'test'
+  ...
+# Subtest: practice P08 no
+ok 628 - practice P08 no
+  ---
+  duration_ms: 2.703488
+  type: 'test'
+  ...
+# Subtest: practice P08 insufficient
+ok 629 - practice P08 insufficient
+  ---
+  duration_ms: 2.35314
+  type: 'test'
+  ...
+# Subtest: practice P08 missing
+ok 630 - practice P08 missing
+  ---
+  duration_ms: 2.196073
+  type: 'test'
+  ...
+# Subtest: practice P09 full
+ok 631 - practice P09 full
+  ---
+  duration_ms: 2.245327
+  type: 'test'
+  ...
+# Subtest: practice P09 partial
+ok 632 - practice P09 partial
+  ---
+  duration_ms: 2.46608
+  type: 'test'
+  ...
+# Subtest: practice P09 no
+ok 633 - practice P09 no
+  ---
+  duration_ms: 2.653032
+  type: 'test'
+  ...
+# Subtest: practice P09 insufficient
+ok 634 - practice P09 insufficient
+  ---
+  duration_ms: 2.316084
+  type: 'test'
+  ...
+# Subtest: practice P09 missing
+ok 635 - practice P09 missing
+  ---
+  duration_ms: 2.729848
+  type: 'test'
+  ...
+# Subtest: practice P10 full
+ok 636 - practice P10 full
+  ---
+  duration_ms: 2.237175
+  type: 'test'
+  ...
+# Subtest: practice P10 partial
+ok 637 - practice P10 partial
+  ---
+  duration_ms: 2.49279
+  type: 'test'
+  ...
+# Subtest: practice P10 no
+ok 638 - practice P10 no
+  ---
+  duration_ms: 2.719682
+  type: 'test'
+  ...
+# Subtest: practice P10 insufficient
+ok 639 - practice P10 insufficient
+  ---
+  duration_ms: 2.35321
+  type: 'test'
+  ...
+# Subtest: practice P10 missing
+ok 640 - practice P10 missing
+  ---
+  duration_ms: 2.309894
+  type: 'test'
+  ...
+# Subtest: practice P11 full
+ok 641 - practice P11 full
+  ---
+  duration_ms: 2.641165
+  type: 'test'
+  ...
+# Subtest: practice P11 partial
+ok 642 - practice P11 partial
+  ---
+  duration_ms: 2.360591
+  type: 'test'
+  ...
+# Subtest: practice P11 no
+ok 643 - practice P11 no
+  ---
+  duration_ms: 2.986955
+  type: 'test'
+  ...
+# Subtest: practice P11 insufficient
+ok 644 - practice P11 insufficient
+  ---
+  duration_ms: 2.342384
+  type: 'test'
+  ...
+# Subtest: practice P11 missing
+ok 645 - practice P11 missing
+  ---
+  duration_ms: 2.258498
+  type: 'test'
+  ...
+# Subtest: practice P12 full
+ok 646 - practice P12 full
+  ---
+  duration_ms: 2.182553
+  type: 'test'
+  ...
+# Subtest: practice P12 partial
+ok 647 - practice P12 partial
+  ---
+  duration_ms: 2.68505
+  type: 'test'
+  ...
+# Subtest: practice P12 no
+ok 648 - practice P12 no
+  ---
+  duration_ms: 3.961026
+  type: 'test'
+  ...
+# Subtest: practice P12 insufficient
+ok 649 - practice P12 insufficient
+  ---
+  duration_ms: 3.023231
+  type: 'test'
+  ...
+# Subtest: practice P12 missing
+ok 650 - practice P12 missing
+  ---
+  duration_ms: 2.881147
+  type: 'test'
+  ...
+# Subtest: practice P13 full
+ok 651 - practice P13 full
+  ---
+  duration_ms: 2.260009
+  type: 'test'
+  ...
+# Subtest: practice P13 partial
+ok 652 - practice P13 partial
+  ---
+  duration_ms: 2.388564
+  type: 'test'
+  ...
+# Subtest: practice P13 no
+ok 653 - practice P13 no
+  ---
+  duration_ms: 2.562536
+  type: 'test'
+  ...
+# Subtest: practice P13 insufficient
+ok 654 - practice P13 insufficient
+  ---
+  duration_ms: 2.569947
+  type: 'test'
+  ...
+# Subtest: practice P13 missing
+ok 655 - practice P13 missing
+  ---
+  duration_ms: 2.422495
+  type: 'test'
+  ...
+# Subtest: practice P14 full
+ok 656 - practice P14 full
+  ---
+  duration_ms: 2.195783
+  type: 'test'
+  ...
+# Subtest: practice P14 partial
+ok 657 - practice P14 partial
+  ---
+  duration_ms: 2.866544
+  type: 'test'
+  ...
+# Subtest: practice P14 no
+ok 658 - practice P14 no
+  ---
+  duration_ms: 2.371918
+  type: 'test'
+  ...
+# Subtest: practice P14 insufficient
+ok 659 - practice P14 insufficient
+  ---
+  duration_ms: 2.245388
+  type: 'test'
+  ...
+# Subtest: practice P14 missing
+ok 660 - practice P14 missing
+  ---
+  duration_ms: 2.197805
+  type: 'test'
+  ...
+# Subtest: practice P15 full
+ok 661 - practice P15 full
+  ---
+  duration_ms: 2.12762
+  type: 'test'
+  ...
+# Subtest: practice P15 partial
+ok 662 - practice P15 partial
+  ---
+  duration_ms: 2.289314
+  type: 'test'
+  ...
+# Subtest: practice P15 no
+ok 663 - practice P15 no
+  ---
+  duration_ms: 2.264957
+  type: 'test'
+  ...
+# Subtest: practice P15 insufficient
+ok 664 - practice P15 insufficient
+  ---
+  duration_ms: 2.421413
+  type: 'test'
+  ...
+# Subtest: practice P15 missing
+ok 665 - practice P15 missing
+  ---
+  duration_ms: 2.747635
+  type: 'test'
+  ...
+# Subtest: practice P16 full
+ok 666 - practice P16 full
+  ---
+  duration_ms: 2.153388
+  type: 'test'
+  ...
+# Subtest: practice P16 partial
+ok 667 - practice P16 partial
+  ---
+  duration_ms: 2.371648
+  type: 'test'
+  ...
+# Subtest: practice P16 no
+ok 668 - practice P16 no
+  ---
+  duration_ms: 2.33347
+  type: 'test'
+  ...
+# Subtest: practice P16 insufficient
+ok 669 - practice P16 insufficient
+  ---
+  duration_ms: 2.204375
+  type: 'test'
+  ...
+# Subtest: practice P16 missing
+ok 670 - practice P16 missing
+  ---
+  duration_ms: 2.184906
+  type: 'test'
+  ...
+# Subtest: practice P17 full
+ok 671 - practice P17 full
+  ---
+  duration_ms: 2.169263
+  type: 'test'
+  ...
+# Subtest: practice P17 partial
+ok 672 - practice P17 partial
+  ---
+  duration_ms: 2.798752
+  type: 'test'
+  ...
+# Subtest: practice P17 no
+ok 673 - practice P17 no
+  ---
+  duration_ms: 2.30024
+  type: 'test'
+  ...
+# Subtest: practice P17 insufficient
+ok 674 - practice P17 insufficient
+  ---
+  duration_ms: 2.32008
+  type: 'test'
+  ...
+# Subtest: practice P17 missing
+ok 675 - practice P17 missing
+  ---
+  duration_ms: 2.265387
+  type: 'test'
+  ...
+# Subtest: practice P18 full
+ok 676 - practice P18 full
+  ---
+  duration_ms: 2.218868
+  type: 'test'
+  ...
+# Subtest: practice P18 partial
+ok 677 - practice P18 partial
+  ---
+  duration_ms: 2.746513
+  type: 'test'
+  ...
+# Subtest: practice P18 no
+ok 678 - practice P18 no
+  ---
+  duration_ms: 2.373019
+  type: 'test'
+  ...
+# Subtest: practice P18 insufficient
+ok 679 - practice P18 insufficient
+  ---
+  duration_ms: 2.965854
+  type: 'test'
+  ...
+# Subtest: practice P18 missing
+ok 680 - practice P18 missing
+  ---
+  duration_ms: 2.387642
+  type: 'test'
+  ...
+# Subtest: practice P19 full
+ok 681 - practice P19 full
+  ---
+  duration_ms: 2.197535
+  type: 'test'
+  ...
+# Subtest: practice P19 partial
+ok 682 - practice P19 partial
+  ---
+  duration_ms: 2.397366
+  type: 'test'
+  ...
+# Subtest: practice P19 no
+ok 683 - practice P19 no
+  ---
+  duration_ms: 2.406149
+  type: 'test'
+  ...
+# Subtest: practice P19 insufficient
+ok 684 - practice P19 insufficient
+  ---
+  duration_ms: 2.285698
+  type: 'test'
+  ...
+# Subtest: practice P19 missing
+ok 685 - practice P19 missing
+  ---
+  duration_ms: 2.265298
+  type: 'test'
+  ...
+# Subtest: practice P20 full
+ok 686 - practice P20 full
+  ---
+  duration_ms: 2.230395
+  type: 'test'
+  ...
+# Subtest: practice P20 partial
+ok 687 - practice P20 partial
+  ---
+  duration_ms: 2.848426
+  type: 'test'
+  ...
+# Subtest: practice P20 no
+ok 688 - practice P20 no
+  ---
+  duration_ms: 2.358418
+  type: 'test'
+  ...
+# Subtest: practice P20 insufficient
+ok 689 - practice P20 insufficient
+  ---
+  duration_ms: 2.444417
+  type: 'test'
+  ...
+# Subtest: practice P20 missing
+ok 690 - practice P20 missing
+  ---
+  duration_ms: 2.280621
+  type: 'test'
+  ...
+# Subtest: practice P21 full
+ok 691 - practice P21 full
+  ---
+  duration_ms: 2.335644
+  type: 'test'
+  ...
+# Subtest: practice P21 partial
+ok 692 - practice P21 partial
+  ---
+  duration_ms: 2.413832
+  type: 'test'
+  ...
+# Subtest: practice P21 no
+ok 693 - practice P21 no
+  ---
+  duration_ms: 2.412179
+  type: 'test'
+  ...
+# Subtest: practice P21 insufficient
+ok 694 - practice P21 insufficient
+  ---
+  duration_ms: 3.32772
+  type: 'test'
+  ...
+# Subtest: practice P21 missing
+ok 695 - practice P21 missing
+  ---
+  duration_ms: 2.383706
+  type: 'test'
+  ...
+# Subtest: practice P22 full
+ok 696 - practice P22 full
+  ---
+  duration_ms: 2.396205
+  type: 'test'
+  ...
+# Subtest: practice P22 partial
+ok 697 - practice P22 partial
+  ---
+  duration_ms: 2.668896
+  type: 'test'
+  ...
+# Subtest: practice P22 no
+ok 698 - practice P22 no
+  ---
+  duration_ms: 2.372148
+  type: 'test'
+  ...
+# Subtest: practice P22 insufficient
+ok 699 - practice P22 insufficient
+  ---
+  duration_ms: 2.429585
+  type: 'test'
+  ...
+# Subtest: practice P22 missing
+ok 700 - practice P22 missing
+  ---
+  duration_ms: 2.707885
+  type: 'test'
+  ...
+# Subtest: practice P23 full
+ok 701 - practice P23 full
+  ---
+  duration_ms: 2.348704
+  type: 'test'
+  ...
+# Subtest: practice P23 partial
+ok 702 - practice P23 partial
+  ---
+  duration_ms: 2.927075
+  type: 'test'
+  ...
+# Subtest: practice P23 no
+ok 703 - practice P23 no
+  ---
+  duration_ms: 2.671901
+  type: 'test'
+  ...
+# Subtest: practice P23 insufficient
+ok 704 - practice P23 insufficient
+  ---
+  duration_ms: 2.392549
+  type: 'test'
+  ...
+# Subtest: practice P23 missing
+ok 705 - practice P23 missing
+  ---
+  duration_ms: 2.402865
+  type: 'test'
+  ...
+# Subtest: practice P24 full
+ok 706 - practice P24 full
+  ---
+  duration_ms: 2.301753
+  type: 'test'
+  ...
+# Subtest: practice P24 partial
+ok 707 - practice P24 partial
+  ---
+  duration_ms: 2.431548
+  type: 'test'
+  ...
+# Subtest: practice P24 no
+ok 708 - practice P24 no
+  ---
+  duration_ms: 2.407772
+  type: 'test'
+  ...
+# Subtest: practice P24 insufficient
+ok 709 - practice P24 insufficient
+  ---
+  duration_ms: 3.428071
+  type: 'test'
+  ...
+# Subtest: practice P24 missing
+ok 710 - practice P24 missing
+  ---
+  duration_ms: 2.448564
+  type: 'test'
+  ...
+# Subtest: practice P25 full
+ok 711 - practice P25 full
+  ---
+  duration_ms: 2.441574
+  type: 'test'
+  ...
+# Subtest: practice P25 partial
+ok 712 - practice P25 partial
+  ---
+  duration_ms: 2.408863
+  type: 'test'
+  ...
+# Subtest: practice P25 no
+ok 713 - practice P25 no
+  ---
+  duration_ms: 2.946254
+  type: 'test'
+  ...
+# Subtest: practice P25 insufficient
+ok 714 - practice P25 insufficient
+  ---
+  duration_ms: 2.650969
+  type: 'test'
+  ...
+# Subtest: practice P25 missing
+ok 715 - practice P25 missing
+  ---
+  duration_ms: 2.374092
+  type: 'test'
+  ...
+# Subtest: practice P26 full
+ok 716 - practice P26 full
+  ---
+  duration_ms: 3.005194
+  type: 'test'
+  ...
+# Subtest: practice P26 partial
+ok 717 - practice P26 partial
+  ---
+  duration_ms: 2.674244
+  type: 'test'
+  ...
+# Subtest: practice P26 no
+ok 718 - practice P26 no
+  ---
+  duration_ms: 2.580163
+  type: 'test'
+  ...
+# Subtest: practice P26 insufficient
+ok 719 - practice P26 insufficient
+  ---
+  duration_ms: 2.477418
+  type: 'test'
+  ...
+# Subtest: practice P26 missing
+ok 720 - practice P26 missing
+  ---
+  duration_ms: 2.35303
+  type: 'test'
+  ...
+# Subtest: practice P27 full
+ok 721 - practice P27 full
+  ---
+  duration_ms: 2.528644
+  type: 'test'
+  ...
+# Subtest: practice P27 partial
+ok 722 - practice P27 partial
+  ---
+  duration_ms: 2.594013
+  type: 'test'
+  ...
+# Subtest: practice P27 no
+ok 723 - practice P27 no
+  ---
+  duration_ms: 3.118323
+  type: 'test'
+  ...
+# Subtest: practice P27 insufficient
+ok 724 - practice P27 insufficient
+  ---
+  duration_ms: 3.005865
+  type: 'test'
+  ...
+# Subtest: practice P27 missing
+ok 725 - practice P27 missing
+  ---
+  duration_ms: 2.641264
+  type: 'test'
+  ...
+# Subtest: practice P28 full
+ok 726 - practice P28 full
+  ---
+  duration_ms: 2.422034
+  type: 'test'
+  ...
+# Subtest: practice P28 partial
+ok 727 - practice P28 partial
+  ---
+  duration_ms: 2.867756
+  type: 'test'
+  ...
+# Subtest: practice P28 no
+ok 728 - practice P28 no
+  ---
+  duration_ms: 2.614223
+  type: 'test'
+  ...
+# Subtest: practice P28 insufficient
+ok 729 - practice P28 insufficient
+  ---
+  duration_ms: 2.47942
+  type: 'test'
+  ...
+# Subtest: practice P28 missing
+ok 730 - practice P28 missing
+  ---
+  duration_ms: 2.297436
+  type: 'test'
+  ...
+# Subtest: practice P29 full
+ok 731 - practice P29 full
+  ---
+  duration_ms: 2.810229
+  type: 'test'
+  ...
+# Subtest: practice P29 partial
+ok 732 - practice P29 partial
+  ---
+  duration_ms: 2.881888
+  type: 'test'
+  ...
+# Subtest: practice P29 no
+ok 733 - practice P29 no
+  ---
+  duration_ms: 2.849939
+  type: 'test'
+  ...
+# Subtest: practice P29 insufficient
+ok 734 - practice P29 insufficient
+  ---
+  duration_ms: 2.746814
+  type: 'test'
+  ...
+# Subtest: practice P29 missing
+ok 735 - practice P29 missing
+  ---
+  duration_ms: 2.368423
+  type: 'test'
+  ...
+# Subtest: practice P30 full
+ok 736 - practice P30 full
+  ---
+  duration_ms: 2.291767
+  type: 'test'
+  ...
+# Subtest: practice P30 partial
+ok 737 - practice P30 partial
+  ---
+  duration_ms: 2.4857
+  type: 'test'
+  ...
+# Subtest: practice P30 no
+ok 738 - practice P30 no
+  ---
+  duration_ms: 2.971092
+  type: 'test'
+  ...
+# Subtest: practice P30 insufficient
+ok 739 - practice P30 insufficient
+  ---
+  duration_ms: 2.726243
+  type: 'test'
+  ...
+# Subtest: practice P30 missing
+ok 740 - practice P30 missing
+  ---
+  duration_ms: 2.295202
+  type: 'test'
+  ...
+# Subtest: practice P31 full
+ok 741 - practice P31 full
+  ---
+  duration_ms: 2.570938
+  type: 'test'
+  ...
+# Subtest: practice P31 partial
+ok 742 - practice P31 partial
+  ---
+  duration_ms: 2.406861
+  type: 'test'
+  ...
+# Subtest: practice P31 no
+ok 743 - practice P31 no
+  ---
+  duration_ms: 2.747003
+  type: 'test'
+  ...
+# Subtest: practice P31 insufficient
+ok 744 - practice P31 insufficient
+  ---
+  duration_ms: 2.354552
+  type: 'test'
+  ...
+# Subtest: practice P31 missing
+ok 745 - practice P31 missing
+  ---
+  duration_ms: 2.774906
+  type: 'test'
+  ...
+# Subtest: practice P32 full
+ok 746 - practice P32 full
+  ---
+  duration_ms: 2.209633
+  type: 'test'
+  ...
+# Subtest: practice P32 partial
+ok 747 - practice P32 partial
+  ---
+  duration_ms: 2.592511
+  type: 'test'
+  ...
+# Subtest: practice P32 no
+ok 748 - practice P32 no
+  ---
+  duration_ms: 2.403626
+  type: 'test'
+  ...
+# Subtest: practice P32 insufficient
+ok 749 - practice P32 insufficient
+  ---
+  duration_ms: 2.629126
+  type: 'test'
+  ...
+# Subtest: practice P32 missing
+ok 750 - practice P32 missing
+  ---
+  duration_ms: 2.513401
+  type: 'test'
+  ...
+# Subtest: practice P33 full
+ok 751 - practice P33 full
+  ---
+  duration_ms: 2.356665
+  type: 'test'
+  ...
+# Subtest: practice P33 partial
+ok 752 - practice P33 partial
+  ---
+  duration_ms: 2.777821
+  type: 'test'
+  ...
+# Subtest: practice P33 no
+ok 753 - practice P33 no
+  ---
+  duration_ms: 3.054228
+  type: 'test'
+  ...
+# Subtest: practice P33 insufficient
+ok 754 - practice P33 insufficient
+  ---
+  duration_ms: 2.526802
+  type: 'test'
+  ...
+# Subtest: practice P33 missing
+ok 755 - practice P33 missing
+  ---
+  duration_ms: 2.377857
+  type: 'test'
+  ...
+# Subtest: practice P34 full
+ok 756 - practice P34 full
+  ---
+  duration_ms: 2.241992
+  type: 'test'
+  ...
+# Subtest: practice P34 partial
+ok 757 - practice P34 partial
+  ---
+  duration_ms: 2.359229
+  type: 'test'
+  ...
+# Subtest: practice P34 no
+ok 758 - practice P34 no
+  ---
+  duration_ms: 2.400031
+  type: 'test'
+  ...
+# Subtest: practice P34 insufficient
+ok 759 - practice P34 insufficient
+  ---
+  duration_ms: 2.325579
+  type: 'test'
+  ...
+# Subtest: practice P34 missing
+ok 760 - practice P34 missing
+  ---
+  duration_ms: 2.712662
+  type: 'test'
+  ...
+# Subtest: practice P35 full
+ok 761 - practice P35 full
+  ---
+  duration_ms: 2.247069
+  type: 'test'
+  ...
+# Subtest: practice P35 partial
+ok 762 - practice P35 partial
+  ---
+  duration_ms: 2.684599
+  type: 'test'
+  ...
+# Subtest: practice P35 no
+ok 763 - practice P35 no
+  ---
+  duration_ms: 2.330626
+  type: 'test'
+  ...
+# Subtest: practice P35 insufficient
+ok 764 - practice P35 insufficient
+  ---
+  duration_ms: 2.461313
+  type: 'test'
+  ...
+# Subtest: practice P35 missing
+ok 765 - practice P35 missing
+  ---
+  duration_ms: 2.461374
+  type: 'test'
+  ...
+# Subtest: practice P36 full
+ok 766 - practice P36 full
+  ---
+  duration_ms: 2.26696
+  type: 'test'
+  ...
+# Subtest: practice P36 partial
+ok 767 - practice P36 partial
+  ---
+  duration_ms: 2.766933
+  type: 'test'
+  ...
+# Subtest: practice P36 no
+ok 768 - practice P36 no
+  ---
+  duration_ms: 2.393521
+  type: 'test'
+  ...
+# Subtest: practice P36 insufficient
+ok 769 - practice P36 insufficient
+  ---
+  duration_ms: 2.475084
+  type: 'test'
+  ...
+# Subtest: practice P36 missing
+ok 770 - practice P36 missing
+  ---
+  duration_ms: 2.323956
+  type: 'test'
+  ...
+# Subtest: practice P37 full
+ok 771 - practice P37 full
+  ---
+  duration_ms: 2.193188
+  type: 'test'
+  ...
+# Subtest: practice P37 partial
+ok 772 - practice P37 partial
+  ---
+  duration_ms: 2.552029
+  type: 'test'
+  ...
+# Subtest: practice P37 no
+ok 773 - practice P37 no
+  ---
+  duration_ms: 2.875898
+  type: 'test'
+  ...
+# Subtest: practice P37 insufficient
+ok 774 - practice P37 insufficient
+  ---
+  duration_ms: 3.119957
+  type: 'test'
+  ...
+# Subtest: practice P37 missing
+ok 775 - practice P37 missing
+  ---
+  duration_ms: 2.423867
+  type: 'test'
+  ...
+# Subtest: practice P38 full
+ok 776 - practice P38 full
+  ---
+  duration_ms: 2.633943
+  type: 'test'
+  ...
+# Subtest: practice P38 partial
+ok 777 - practice P38 partial
+  ---
+  duration_ms: 2.531639
+  type: 'test'
+  ...
+# Subtest: practice P38 no
+ok 778 - practice P38 no
+  ---
+  duration_ms: 2.576346
+  type: 'test'
+  ...
+# Subtest: practice P38 insufficient
+ok 779 - practice P38 insufficient
+  ---
+  duration_ms: 2.34036
+  type: 'test'
+  ...
+# Subtest: practice P38 missing
+ok 780 - practice P38 missing
+  ---
+  duration_ms: 2.382514
+  type: 'test'
+  ...
+# Subtest: practice P39 full
+ok 781 - practice P39 full
+  ---
+  duration_ms: 2.691841
+  type: 'test'
+  ...
+# Subtest: practice P39 partial
+ok 782 - practice P39 partial
+  ---
+  duration_ms: 2.879483
+  type: 'test'
+  ...
+# Subtest: practice P39 no
+ok 783 - practice P39 no
+  ---
+  duration_ms: 2.364787
+  type: 'test'
+  ...
+# Subtest: practice P39 insufficient
+ok 784 - practice P39 insufficient
+  ---
+  duration_ms: 2.423186
+  type: 'test'
+  ...
+# Subtest: practice P39 missing
+ok 785 - practice P39 missing
+  ---
+  duration_ms: 2.323075
+  type: 'test'
+  ...
+# Subtest: practice P40 full
+ok 786 - practice P40 full
+  ---
+  duration_ms: 2.334632
+  type: 'test'
+  ...
+# Subtest: practice P40 partial
+ok 787 - practice P40 partial
+  ---
+  duration_ms: 2.660324
+  type: 'test'
+  ...
+# Subtest: practice P40 no
+ok 788 - practice P40 no
+  ---
+  duration_ms: 2.613943
+  type: 'test'
+  ...
+# Subtest: practice P40 insufficient
+ok 789 - practice P40 insufficient
+  ---
+  duration_ms: 3.130673
+  type: 'test'
+  ...
+# Subtest: practice P40 missing
+ok 790 - practice P40 missing
+  ---
+  duration_ms: 2.562065
+  type: 'test'
+  ...
+# Subtest: practice P41 full
+ok 791 - practice P41 full
+  ---
+  duration_ms: 2.68482
+  type: 'test'
+  ...
+# Subtest: practice P41 partial
+ok 792 - practice P41 partial
+  ---
+  duration_ms: 2.637609
+  type: 'test'
+  ...
+# Subtest: practice P41 no
+ok 793 - practice P41 no
+  ---
+  duration_ms: 2.817891
+  type: 'test'
+  ...
+# Subtest: practice P41 insufficient
+ok 794 - practice P41 insufficient
+  ---
+  duration_ms: 2.373621
+  type: 'test'
+  ...
+# Subtest: practice P41 missing
+ok 795 - practice P41 missing
+  ---
+  duration_ms: 2.862939
+  type: 'test'
+  ...
+# Subtest: practice P42 full
+ok 796 - practice P42 full
+  ---
+  duration_ms: 2.897451
+  type: 'test'
+  ...
+# Subtest: practice P42 partial
+ok 797 - practice P42 partial
+  ---
+  duration_ms: 2.670178
+  type: 'test'
+  ...
+# Subtest: practice P42 no
+ok 798 - practice P42 no
+  ---
+  duration_ms: 2.528865
+  type: 'test'
+  ...
+# Subtest: practice P42 insufficient
+ok 799 - practice P42 insufficient
+  ---
+  duration_ms: 2.306159
+  type: 'test'
+  ...
+# Subtest: practice P42 missing
+ok 800 - practice P42 missing
+  ---
+  duration_ms: 2.323946
+  type: 'test'
+  ...
+# Subtest: item E01 favorable
+ok 801 - item E01 favorable
+  ---
+  duration_ms: 2.405539
+  type: 'test'
+  ...
+# Subtest: item E01 mixed
+ok 802 - item E01 mixed
+  ---
+  duration_ms: 2.803299
+  type: 'test'
+  ...
+# Subtest: item E01 partial
+ok 803 - item E01 partial
+  ---
+  duration_ms: 3.584537
+  type: 'test'
+  ...
+# Subtest: item E01 negative
+ok 804 - item E01 negative
+  ---
+  duration_ms: 2.950661
+  type: 'test'
+  ...
+# Subtest: item E02 favorable
+ok 805 - item E02 favorable
+  ---
+  duration_ms: 2.471719
+  type: 'test'
+  ...
+# Subtest: item E02 mixed
+ok 806 - item E02 mixed
+  ---
+  duration_ms: 2.582366
+  type: 'test'
+  ...
+# Subtest: item E02 partial
+ok 807 - item E02 partial
+  ---
+  duration_ms: 2.769067
+  type: 'test'
+  ...
+# Subtest: item E02 negative
+ok 808 - item E02 negative
+  ---
+  duration_ms: 2.631329
+  type: 'test'
+  ...
+# Subtest: item E03 favorable
+ok 809 - item E03 favorable
+  ---
+  duration_ms: 2.534963
+  type: 'test'
+  ...
+# Subtest: item E03 mixed
+ok 810 - item E03 mixed
+  ---
+  duration_ms: 3.087067
+  type: 'test'
+  ...
+# Subtest: item E03 partial
+ok 811 - item E03 partial
+  ---
+  duration_ms: 2.742437
+  type: 'test'
+  ...
+# Subtest: item E03 negative
+ok 812 - item E03 negative
+  ---
+  duration_ms: 2.540582
+  type: 'test'
+  ...
+# Subtest: item E04 favorable
+ok 813 - item E04 favorable
+  ---
+  duration_ms: 3.173617
+  type: 'test'
+  ...
+# Subtest: item E04 mixed
+ok 814 - item E04 mixed
+  ---
+  duration_ms: 2.739482
+  type: 'test'
+  ...
+# Subtest: item E04 partial
+ok 815 - item E04 partial
+  ---
+  duration_ms: 2.853555
+  type: 'test'
+  ...
+# Subtest: item E04 negative
+ok 816 - item E04 negative
+  ---
+  duration_ms: 2.877982
+  type: 'test'
+  ...
+# Subtest: item E05 favorable
+ok 817 - item E05 favorable
+  ---
+  duration_ms: 3.388171
+  type: 'test'
+  ...
+# Subtest: item E05 mixed
+ok 818 - item E05 mixed
+  ---
+  duration_ms: 2.622105
+  type: 'test'
+  ...
+# Subtest: item E05 partial
+ok 819 - item E05 partial
+  ---
+  duration_ms: 2.577088
+  type: 'test'
+  ...
+# Subtest: item E05 negative
+ok 820 - item E05 negative
+  ---
+  duration_ms: 2.311097
+  type: 'test'
+  ...
+# Subtest: item E06 favorable
+ok 821 - item E06 favorable
+  ---
+  duration_ms: 2.328432
+  type: 'test'
+  ...
+# Subtest: item E06 mixed
+ok 822 - item E06 mixed
+  ---
+  duration_ms: 2.310746
+  type: 'test'
+  ...
+# Subtest: item E06 partial
+ok 823 - item E06 partial
+  ---
+  duration_ms: 2.84339
+  type: 'test'
+  ...
+# Subtest: item E06 negative
+ok 824 - item E06 negative
+  ---
+  duration_ms: 3.10921
+  type: 'test'
+  ...
+# Subtest: item E07 favorable
+ok 825 - item E07 favorable
+  ---
+  duration_ms: 2.482685
+  type: 'test'
+  ...
+# Subtest: item E07 mixed
+ok 826 - item E07 mixed
+  ---
+  duration_ms: 2.650278
+  type: 'test'
+  ...
+# Subtest: item E07 partial
+ok 827 - item E07 partial
+  ---
+  duration_ms: 2.700644
+  type: 'test'
+  ...
+# Subtest: item E07 negative
+ok 828 - item E07 negative
+  ---
+  duration_ms: 2.638149
+  type: 'test'
+  ...
+# Subtest: item E08 favorable
+ok 829 - item E08 favorable
+  ---
+  duration_ms: 2.615886
+  type: 'test'
+  ...
+# Subtest: item E08 mixed
+ok 830 - item E08 mixed
+  ---
+  duration_ms: 2.343876
+  type: 'test'
+  ...
+# Subtest: item E08 partial
+ok 831 - item E08 partial
+  ---
+  duration_ms: 3.130232
+  type: 'test'
+  ...
+# Subtest: item E08 negative
+ok 832 - item E08 negative
+  ---
+  duration_ms: 2.828437
+  type: 'test'
+  ...
+# Subtest: item E09 favorable
+ok 833 - item E09 favorable
+  ---
+  duration_ms: 2.482284
+  type: 'test'
+  ...
+# Subtest: item E09 mixed
+ok 834 - item E09 mixed
+  ---
+  duration_ms: 2.475464
+  type: 'test'
+  ...
+# Subtest: item E09 partial
+ok 835 - item E09 partial
+  ---
+  duration_ms: 2.654375
+  type: 'test'
+  ...
+# Subtest: item E09 negative
+ok 836 - item E09 negative
+  ---
+  duration_ms: 2.402214
+  type: 'test'
+  ...
+# Subtest: item E10 favorable
+ok 837 - item E10 favorable
+  ---
+  duration_ms: 2.563256
+  type: 'test'
+  ...
+# Subtest: item E10 mixed
+ok 838 - item E10 mixed
+  ---
+  duration_ms: 2.944391
+  type: 'test'
+  ...
+# Subtest: item E10 partial
+ok 839 - item E10 partial
+  ---
+  duration_ms: 2.406881
+  type: 'test'
+  ...
+# Subtest: item E10 negative
+ok 840 - item E10 negative
+  ---
+  duration_ms: 2.362374
+  type: 'test'
+  ...
+# Subtest: item E11 favorable
+ok 841 - item E11 favorable
+  ---
+  duration_ms: 2.619973
+  type: 'test'
+  ...
+# Subtest: item E11 mixed
+ok 842 - item E11 mixed
+  ---
+  duration_ms: 3.667793
+  type: 'test'
+  ...
+# Subtest: item E11 partial
+ok 843 - item E11 partial
+  ---
+  duration_ms: 3.882466
+  type: 'test'
+  ...
+# Subtest: item E11 negative
+ok 844 - item E11 negative
+  ---
+  duration_ms: 2.654314
+  type: 'test'
+  ...
+# Subtest: item E12 favorable
+ok 845 - item E12 favorable
+  ---
+  duration_ms: 2.67817
+  type: 'test'
+  ...
+# Subtest: item E12 mixed
+ok 846 - item E12 mixed
+  ---
+  duration_ms: 2.262373
+  type: 'test'
+  ...
+# Subtest: item E12 partial
+ok 847 - item E12 partial
+  ---
+  duration_ms: 2.298627
+  type: 'test'
+  ...
+# Subtest: item E12 negative
+ok 848 - item E12 negative
+  ---
+  duration_ms: 2.405729
+  type: 'test'
+  ...
+# Subtest: item E13 favorable
+ok 849 - item E13 favorable
+  ---
+  duration_ms: 2.242653
+  type: 'test'
+  ...
+# Subtest: item E13 mixed
+ok 850 - item E13 mixed
+  ---
+  duration_ms: 2.202873
+  type: 'test'
+  ...
+# Subtest: item E13 partial
+ok 851 - item E13 partial
+  ---
+  duration_ms: 2.353501
+  type: 'test'
+  ...
+# Subtest: item E13 negative
+ok 852 - item E13 negative
+  ---
+  duration_ms: 2.704229
+  type: 'test'
+  ...
+# Subtest: item E14 favorable
+ok 853 - item E14 favorable
+  ---
+  duration_ms: 2.263265
+  type: 'test'
+  ...
+# Subtest: item E14 mixed
+ok 854 - item E14 mixed
+  ---
+  duration_ms: 2.518089
+  type: 'test'
+  ...
+# Subtest: item E14 partial
+ok 855 - item E14 partial
+  ---
+  duration_ms: 2.391248
+  type: 'test'
+  ...
+# Subtest: item E14 negative
+ok 856 - item E14 negative
+  ---
+  duration_ms: 2.760394
+  type: 'test'
+  ...
+# Subtest: item E15 favorable
+ok 857 - item E15 favorable
+  ---
+  duration_ms: 2.271937
+  type: 'test'
+  ...
+# Subtest: item E15 mixed
+ok 858 - item E15 mixed
+  ---
+  duration_ms: 2.297706
+  type: 'test'
+  ...
+# Subtest: item E15 partial
+ok 859 - item E15 partial
+  ---
+  duration_ms: 2.341752
+  type: 'test'
+  ...
+# Subtest: item E15 negative
+ok 860 - item E15 negative
+  ---
+  duration_ms: 2.842178
+  type: 'test'
+  ...
+# Subtest: item E16 favorable
+ok 861 - item E16 favorable
+  ---
+  duration_ms: 2.242733
+  type: 'test'
+  ...
+# Subtest: item E16 mixed
+ok 862 - item E16 mixed
+  ---
+  duration_ms: 2.36721
+  type: 'test'
+  ...
+# Subtest: item E16 partial
+ok 863 - item E16 partial
+  ---
+  duration_ms: 2.431057
+  type: 'test'
+  ...
+# Subtest: item E16 negative
+ok 864 - item E16 negative
+  ---
+  duration_ms: 2.307711
+  type: 'test'
+  ...
+# Subtest: item E17 favorable
+ok 865 - item E17 favorable
+  ---
+  duration_ms: 2.155962
+  type: 'test'
+  ...
+# Subtest: item E17 mixed
+ok 866 - item E17 mixed
+  ---
+  duration_ms: 2.226398
+  type: 'test'
+  ...
+# Subtest: item E17 partial
+ok 867 - item E17 partial
+  ---
+  duration_ms: 2.967967
+  type: 'test'
+  ...
+# Subtest: item E17 negative
+ok 868 - item E17 negative
+  ---
+  duration_ms: 2.362765
+  type: 'test'
+  ...
+# Subtest: item E18 favorable
+ok 869 - item E18 favorable
+  ---
+  duration_ms: 2.252688
+  type: 'test'
+  ...
+# Subtest: item E18 mixed
+ok 870 - item E18 mixed
+  ---
+  duration_ms: 2.232098
+  type: 'test'
+  ...
+# Subtest: item E18 partial
+ok 871 - item E18 partial
+  ---
+  duration_ms: 2.284837
+  type: 'test'
+  ...
+# Subtest: item E18 negative
+ok 872 - item E18 negative
+  ---
+  duration_ms: 2.256594
+  type: 'test'
+  ...
+# Subtest: item E19 favorable
+ok 873 - item E19 favorable
+  ---
+  duration_ms: 2.179768
+  type: 'test'
+  ...
+# Subtest: item E19 mixed
+ok 874 - item E19 mixed
+  ---
+  duration_ms: 2.71758
+  type: 'test'
+  ...
+# Subtest: item E19 partial
+ok 875 - item E19 partial
+  ---
+  duration_ms: 2.355233
+  type: 'test'
+  ...
+# Subtest: item E19 negative
+ok 876 - item E19 negative
+  ---
+  duration_ms: 2.594364
+  type: 'test'
+  ...
+# Subtest: item E20 favorable
+ok 877 - item E20 favorable
+  ---
+  duration_ms: 2.279859
+  type: 'test'
+  ...
+# Subtest: item E20 mixed
+ok 878 - item E20 mixed
+  ---
+  duration_ms: 2.533191
+  type: 'test'
+  ...
+# Subtest: item E20 partial
+ok 879 - item E20 partial
+  ---
+  duration_ms: 3.02935
+  type: 'test'
+  ...
+# Subtest: item E20 negative
+ok 880 - item E20 negative
+  ---
+  duration_ms: 2.239018
+  type: 'test'
+  ...
+# Subtest: item E21 favorable
+ok 881 - item E21 favorable
+  ---
+  duration_ms: 2.666723
+  type: 'test'
+  ...
+# Subtest: item E21 mixed
+ok 882 - item E21 mixed
+  ---
+  duration_ms: 2.285608
+  type: 'test'
+  ...
+# Subtest: item E21 partial
+ok 883 - item E21 partial
+  ---
+  duration_ms: 2.354512
+  type: 'test'
+  ...
+# Subtest: item E21 negative
+ok 884 - item E21 negative
+  ---
+  duration_ms: 2.30053
+  type: 'test'
+  ...
+# Subtest: item E22 favorable
+ok 885 - item E22 favorable
+  ---
+  duration_ms: 2.182302
+  type: 'test'
+  ...
+# Subtest: item E22 mixed
+ok 886 - item E22 mixed
+  ---
+  duration_ms: 2.404167
+  type: 'test'
+  ...
+# Subtest: item E22 partial
+ok 887 - item E22 partial
+  ---
+  duration_ms: 2.335664
+  type: 'test'
+  ...
+# Subtest: item E22 negative
+ok 888 - item E22 negative
+  ---
+  duration_ms: 2.3734
+  type: 'test'
+  ...
+# Subtest: item E23 favorable
+ok 889 - item E23 favorable
+  ---
+  duration_ms: 2.742828
+  type: 'test'
+  ...
+# Subtest: item E23 mixed
+ok 890 - item E23 mixed
+  ---
+  duration_ms: 2.173809
+  type: 'test'
+  ...
+# Subtest: item E23 partial
+ok 891 - item E23 partial
+  ---
+  duration_ms: 2.349304
+  type: 'test'
+  ...
+# Subtest: item E23 negative
+ok 892 - item E23 negative
+  ---
+  duration_ms: 2.600463
+  type: 'test'
+  ...
+# Subtest: item E24 favorable
+ok 893 - item E24 favorable
+  ---
+  duration_ms: 2.436195
+  type: 'test'
+  ...
+# Subtest: item E24 mixed
+ok 894 - item E24 mixed
+  ---
+  duration_ms: 2.192417
+  type: 'test'
+  ...
+# Subtest: item E24 partial
+ok 895 - item E24 partial
+  ---
+  duration_ms: 2.299559
+  type: 'test'
+  ...
+# Subtest: item E24 negative
+ok 896 - item E24 negative
+  ---
+  duration_ms: 2.773454
+  type: 'test'
+  ...
+# Subtest: item E25 favorable
+ok 897 - item E25 favorable
+  ---
+  duration_ms: 2.472009
+  type: 'test'
+  ...
+# Subtest: item E25 mixed
+ok 898 - item E25 mixed
+  ---
+  duration_ms: 2.367782
+  type: 'test'
+  ...
+# Subtest: item E25 partial
+ok 899 - item E25 partial
+  ---
+  duration_ms: 2.302494
+  type: 'test'
+  ...
+# Subtest: item E25 negative
+ok 900 - item E25 negative
+  ---
+  duration_ms: 2.402835
+  type: 'test'
+  ...
+# Subtest: item E26 favorable
+ok 901 - item E26 favorable
+  ---
+  duration_ms: 2.151576
+  type: 'test'
+  ...
+# Subtest: item E26 mixed
+ok 902 - item E26 mixed
+  ---
+  duration_ms: 2.197816
+  type: 'test'
+  ...
+# Subtest: item E26 partial
+ok 903 - item E26 partial
+  ---
+  duration_ms: 4.970588
+  type: 'test'
+  ...
+# Subtest: item E26 negative
+ok 904 - item E26 negative
+  ---
+  duration_ms: 2.368363
+  type: 'test'
+  ...
+# Subtest: item E27 favorable
+ok 905 - item E27 favorable
+  ---
+  duration_ms: 2.271827
+  type: 'test'
+  ...
+# Subtest: item E27 mixed
+ok 906 - item E27 mixed
+  ---
+  duration_ms: 2.199338
+  type: 'test'
+  ...
+# Subtest: item E27 partial
+ok 907 - item E27 partial
+  ---
+  duration_ms: 2.295493
+  type: 'test'
+  ...
+# Subtest: item E27 negative
+ok 908 - item E27 negative
+  ---
+  duration_ms: 2.732162
+  type: 'test'
+  ...
+# Subtest: item E28 favorable
+ok 909 - item E28 favorable
+  ---
+  duration_ms: 2.173869
+  type: 'test'
+  ...
+# Subtest: item E28 mixed
+ok 910 - item E28 mixed
+  ---
+  duration_ms: 2.196874
+  type: 'test'
+  ...
+# Subtest: item E28 partial
+ok 911 - item E28 partial
+  ---
+  duration_ms: 2.869278
+  type: 'test'
+  ...
+# Subtest: item E28 negative
+ok 912 - item E28 negative
+  ---
+  duration_ms: 2.338648
+  type: 'test'
+  ...
+# Subtest: item E29 favorable
+ok 913 - item E29 favorable
+  ---
+  duration_ms: 2.191716
+  type: 'test'
+  ...
+# Subtest: item E29 mixed
+ok 914 - item E29 mixed
+  ---
+  duration_ms: 2.188822
+  type: 'test'
+  ...
+# Subtest: item E29 partial
+ok 915 - item E29 partial
+  ---
+  duration_ms: 2.308292
+  type: 'test'
+  ...
+# Subtest: item E29 negative
+ok 916 - item E29 negative
+  ---
+  duration_ms: 2.460232
+  type: 'test'
+  ...
+# Subtest: item E30 favorable
+ok 917 - item E30 favorable
+  ---
+  duration_ms: 2.22063
+  type: 'test'
+  ...
+# Subtest: item E30 mixed
+ok 918 - item E30 mixed
+  ---
+  duration_ms: 2.805712
+  type: 'test'
+  ...
+# Subtest: item E30 partial
+ok 919 - item E30 partial
+  ---
+  duration_ms: 3.878911
+  type: 'test'
+  ...
+# Subtest: item E30 negative
+ok 920 - item E30 negative
+  ---
+  duration_ms: 3.121208
+  type: 'test'
+  ...
+# Subtest: item E31 favorable
+ok 921 - item E31 favorable
+  ---
+  duration_ms: 2.526481
+  type: 'test'
+  ...
+# Subtest: item E31 mixed
+ok 922 - item E31 mixed
+  ---
+  duration_ms: 2.342073
+  type: 'test'
+  ...
+# Subtest: item E31 partial
+ok 923 - item E31 partial
+  ---
+  duration_ms: 2.50604
+  type: 'test'
+  ...
+# Subtest: item E31 negative
+ok 924 - item E31 negative
+  ---
+  duration_ms: 2.40633
+  type: 'test'
+  ...
+# Subtest: item E32 favorable
+ok 925 - item E32 favorable
+  ---
+  duration_ms: 2.984112
+  type: 'test'
+  ...
+# Subtest: item E32 mixed
+ok 926 - item E32 mixed
+  ---
+  duration_ms: 2.212298
+  type: 'test'
+  ...
+# Subtest: item E32 partial
+ok 927 - item E32 partial
+  ---
+  duration_ms: 2.371848
+  type: 'test'
+  ...
+# Subtest: item E32 negative
+ok 928 - item E32 negative
+  ---
+  duration_ms: 2.274661
+  type: 'test'
+  ...
+# Subtest: item E33 favorable
+ok 929 - item E33 favorable
+  ---
+  duration_ms: 2.169693
+  type: 'test'
+  ...
+# Subtest: item E33 mixed
+ok 930 - item E33 mixed
+  ---
+  duration_ms: 2.184605
+  type: 'test'
+  ...
+# Subtest: item E33 partial
+ok 931 - item E33 partial
+  ---
+  duration_ms: 2.292659
+  type: 'test'
+  ...
+# Subtest: item E33 negative
+ok 932 - item E33 negative
+  ---
+  duration_ms: 2.667324
+  type: 'test'
+  ...
+# Subtest: item E34 favorable
+ok 933 - item E34 favorable
+  ---
+  duration_ms: 2.30666
+  type: 'test'
+  ...
+# Subtest: item E34 mixed
+ok 934 - item E34 mixed
+  ---
+  duration_ms: 2.703287
+  type: 'test'
+  ...
+# Subtest: item E34 partial
+ok 935 - item E34 partial
+  ---
+  duration_ms: 2.474233
+  type: 'test'
+  ...
+# Subtest: item E34 negative
+ok 936 - item E34 negative
+  ---
+  duration_ms: 2.26029
+  type: 'test'
+  ...
+# Subtest: item E35 favorable
+ok 937 - item E35 favorable
+  ---
+  duration_ms: 2.4665
+  type: 'test'
+  ...
+# Subtest: item E35 mixed
+ok 938 - item E35 mixed
+  ---
+  duration_ms: 2.301521
+  type: 'test'
+  ...
+# Subtest: item E35 partial
+ok 939 - item E35 partial
+  ---
+  duration_ms: 2.689597
+  type: 'test'
+  ...
+# Subtest: item E35 negative
+ok 940 - item E35 negative
+  ---
+  duration_ms: 2.374833
+  type: 'test'
+  ...
+# Subtest: item L01 favorable
+ok 941 - item L01 favorable
+  ---
+  duration_ms: 2.264185
+  type: 'test'
+  ...
+# Subtest: item L01 mixed
+ok 942 - item L01 mixed
+  ---
+  duration_ms: 2.278888
+  type: 'test'
+  ...
+# Subtest: item L01 partial
+ok 943 - item L01 partial
+  ---
+  duration_ms: 2.616707
+  type: 'test'
+  ...
+# Subtest: item L01 negative
+ok 944 - item L01 negative
+  ---
+  duration_ms: 2.390806
+  type: 'test'
+  ...
+# Subtest: item L02 favorable
+ok 945 - item L02 favorable
+  ---
+  duration_ms: 2.200619
+  type: 'test'
+  ...
+# Subtest: item L02 mixed
+ok 946 - item L02 mixed
+  ---
+  duration_ms: 2.167019
+  type: 'test'
+  ...
+# Subtest: item L02 partial
+ok 947 - item L02 partial
+  ---
+  duration_ms: 2.965794
+  type: 'test'
+  ...
+# Subtest: item L02 negative
+ok 948 - item L02 negative
+  ---
+  duration_ms: 2.706182
+  type: 'test'
+  ...
+# Subtest: item L03 favorable
+ok 949 - item L03 favorable
+  ---
+  duration_ms: 2.181731
+  type: 'test'
+  ...
+# Subtest: item L03 mixed
+ok 950 - item L03 mixed
+  ---
+  duration_ms: 2.210415
+  type: 'test'
+  ...
+# Subtest: item L03 partial
+ok 951 - item L03 partial
+  ---
+  duration_ms: 2.301562
+  type: 'test'
+  ...
+# Subtest: item L03 negative
+ok 952 - item L03 negative
+  ---
+  duration_ms: 3.930119
+  type: 'test'
+  ...
+# Subtest: item L04 favorable
+ok 953 - item L04 favorable
+  ---
+  duration_ms: 2.462485
+  type: 'test'
+  ...
+# Subtest: item L04 mixed
+ok 954 - item L04 mixed
+  ---
+  duration_ms: 2.958903
+  type: 'test'
+  ...
+# Subtest: item L04 partial
+ok 955 - item L04 partial
+  ---
+  duration_ms: 2.488414
+  type: 'test'
+  ...
+# Subtest: item L04 negative
+ok 956 - item L04 negative
+  ---
+  duration_ms: 2.43243
+  type: 'test'
+  ...
+# Subtest: item L05 favorable
+ok 957 - item L05 favorable
+  ---
+  duration_ms: 2.235392
+  type: 'test'
+  ...
+# Subtest: item L05 mixed
+ok 958 - item L05 mixed
+  ---
+  duration_ms: 2.232548
+  type: 'test'
+  ...
+# Subtest: item L05 partial
+ok 959 - item L05 partial
+  ---
+  duration_ms: 2.444667
+  type: 'test'
+  ...
+# Subtest: item L05 negative
+ok 960 - item L05 negative
+  ---
+  duration_ms: 2.515995
+  type: 'test'
+  ...
+# Subtest: item L06 favorable
+ok 961 - item L06 favorable
+  ---
+  duration_ms: 3.834455
+  type: 'test'
+  ...
+# Subtest: item L06 mixed
+ok 962 - item L06 mixed
+  ---
+  duration_ms: 2.287651
+  type: 'test'
+  ...
+# Subtest: item L06 partial
+ok 963 - item L06 partial
+  ---
+  duration_ms: 2.579371
+  type: 'test'
+  ...
+# Subtest: item L06 negative
+ok 964 - item L06 negative
+  ---
+  duration_ms: 2.438188
+  type: 'test'
+  ...
+# Subtest: item L07 favorable
+ok 965 - item L07 favorable
+  ---
+  duration_ms: 2.350025
+  type: 'test'
+  ...
+# Subtest: item L07 mixed
+ok 966 - item L07 mixed
+  ---
+  duration_ms: 2.210054
+  type: 'test'
+  ...
+# Subtest: item L07 partial
+ok 967 - item L07 partial
+  ---
+  duration_ms: 2.52529
+  type: 'test'
+  ...
+# Subtest: item L07 negative
+ok 968 - item L07 negative
+  ---
+  duration_ms: 2.343275
+  type: 'test'
+  ...
+# Subtest: item L08 favorable
+ok 969 - item L08 favorable
+  ---
+  duration_ms: 2.882949
+  type: 'test'
+  ...
+# Subtest: item L08 mixed
+ok 970 - item L08 mixed
+  ---
+  duration_ms: 2.941287
+  type: 'test'
+  ...
+# Subtest: item L08 partial
+ok 971 - item L08 partial
+  ---
+  duration_ms: 3.055409
+  type: 'test'
+  ...
+# Subtest: item L08 negative
+ok 972 - item L08 negative
+  ---
+  duration_ms: 3.025544
+  type: 'test'
+  ...
+# Subtest: item L09 favorable
+ok 973 - item L09 favorable
+  ---
+  duration_ms: 2.875237
+  type: 'test'
+  ...
+# Subtest: item L09 mixed
+ok 974 - item L09 mixed
+  ---
+  duration_ms: 2.924872
+  type: 'test'
+  ...
+# Subtest: item L09 partial
+ok 975 - item L09 partial
+  ---
+  duration_ms: 3.288871
+  type: 'test'
+  ...
+# Subtest: item L09 negative
+ok 976 - item L09 negative
+  ---
+  duration_ms: 3.048289
+  type: 'test'
+  ...
+# Subtest: item L10 favorable
+ok 977 - item L10 favorable
+  ---
+  duration_ms: 2.405018
+  type: 'test'
+  ...
+# Subtest: item L10 mixed
+ok 978 - item L10 mixed
+  ---
+  duration_ms: 2.241351
+  type: 'test'
+  ...
+# Subtest: item L10 partial
+ok 979 - item L10 partial
+  ---
+  duration_ms: 2.388783
+  type: 'test'
+  ...
+# Subtest: item L10 negative
+ok 980 - item L10 negative
+  ---
+  duration_ms: 2.378959
+  type: 'test'
+  ...
+# Subtest: item L11 favorable
+ok 981 - item L11 favorable
+  ---
+  duration_ms: 2.383976
+  type: 'test'
+  ...
+# Subtest: item L11 mixed
+ok 982 - item L11 mixed
+  ---
+  duration_ms: 2.349234
+  type: 'test'
+  ...
+# Subtest: item L11 partial
+ok 983 - item L11 partial
+  ---
+  duration_ms: 2.686312
+  type: 'test'
+  ...
+# Subtest: item L11 negative
+ok 984 - item L11 negative
+  ---
+  duration_ms: 3.040216
+  type: 'test'
+  ...
+# Subtest: item L12 favorable
+ok 985 - item L12 favorable
+  ---
+  duration_ms: 3.352478
+  type: 'test'
+  ...
+# Subtest: item L12 mixed
+ok 986 - item L12 mixed
+  ---
+  duration_ms: 3.000376
+  type: 'test'
+  ...
+# Subtest: item L12 partial
+ok 987 - item L12 partial
+  ---
+  duration_ms: 3.120577
+  type: 'test'
+  ...
+# Subtest: item L12 negative
+ok 988 - item L12 negative
+  ---
+  duration_ms: 2.985204
+  type: 'test'
+  ...
+# Subtest: item L13 favorable
+ok 989 - item L13 favorable
+  ---
+  duration_ms: 3.335362
+  type: 'test'
+  ...
+# Subtest: item L13 mixed
+ok 990 - item L13 mixed
+  ---
+  duration_ms: 3.805039
+  type: 'test'
+  ...
+# Subtest: item L13 partial
+ok 991 - item L13 partial
+  ---
+  duration_ms: 3.624157
+  type: 'test'
+  ...
+# Subtest: item L13 negative
+ok 992 - item L13 negative
+  ---
+  duration_ms: 2.950611
+  type: 'test'
+  ...
+# Subtest: item L14 favorable
+ok 993 - item L14 favorable
+  ---
+  duration_ms: 2.456936
+  type: 'test'
+  ...
+# Subtest: item L14 mixed
+ok 994 - item L14 mixed
+  ---
+  duration_ms: 2.620904
+  type: 'test'
+  ...
+# Subtest: item L14 partial
+ok 995 - item L14 partial
+  ---
+  duration_ms: 2.72443
+  type: 'test'
+  ...
+# Subtest: item L14 negative
+ok 996 - item L14 negative
+  ---
+  duration_ms: 2.494433
+  type: 'test'
+  ...
+# Subtest: item L15 favorable
+ok 997 - item L15 favorable
+  ---
+  duration_ms: 2.66455
+  type: 'test'
+  ...
+# Subtest: item L15 mixed
+ok 998 - item L15 mixed
+  ---
+  duration_ms: 2.716047
+  type: 'test'
+  ...
+# Subtest: item L15 partial
+ok 999 - item L15 partial
+  ---
+  duration_ms: 2.609777
+  type: 'test'
+  ...
+# Subtest: item L15 negative
+ok 1000 - item L15 negative
+  ---
+  duration_ms: 2.673603
+  type: 'test'
+  ...
+# Subtest: item L16 favorable
+ok 1001 - item L16 favorable
+  ---
+  duration_ms: 2.348783
+  type: 'test'
+  ...
+# Subtest: item L16 mixed
+ok 1002 - item L16 mixed
+  ---
+  duration_ms: 2.341202
+  type: 'test'
+  ...
+# Subtest: item L16 partial
+ok 1003 - item L16 partial
+  ---
+  duration_ms: 2.689137
+  type: 'test'
+  ...
+# Subtest: item L16 negative
+ok 1004 - item L16 negative
+  ---
+  duration_ms: 2.495094
+  type: 'test'
+  ...
+# Subtest: item L17 favorable
+ok 1005 - item L17 favorable
+  ---
+  duration_ms: 3.000797
+  type: 'test'
+  ...
+# Subtest: item L17 mixed
+ok 1006 - item L17 mixed
+  ---
+  duration_ms: 2.518469
+  type: 'test'
+  ...
+# Subtest: item L17 partial
+ok 1007 - item L17 partial
+  ---
+  duration_ms: 3.079967
+  type: 'test'
+  ...
+# Subtest: item L17 negative
+ok 1008 - item L17 negative
+  ---
+  duration_ms: 2.734024
+  type: 'test'
+  ...
+# Subtest: item L18 favorable
+ok 1009 - item L18 favorable
+  ---
+  duration_ms: 2.560112
+  type: 'test'
+  ...
+# Subtest: item L18 mixed
+ok 1010 - item L18 mixed
+  ---
+  duration_ms: 2.343586
+  type: 'test'
+  ...
+# Subtest: item L18 partial
+ok 1011 - item L18 partial
+  ---
+  duration_ms: 2.508434
+  type: 'test'
+  ...
+# Subtest: item L18 negative
+ok 1012 - item L18 negative
+  ---
+  duration_ms: 2.73771
+  type: 'test'
+  ...
+# Subtest: item L19 favorable
+ok 1013 - item L19 favorable
+  ---
+  duration_ms: 3.182842
+  type: 'test'
+  ...
+# Subtest: item L19 mixed
+ok 1014 - item L19 mixed
+  ---
+  duration_ms: 2.467402
+  type: 'test'
+  ...
+# Subtest: item L19 partial
+ok 1015 - item L19 partial
+  ---
+  duration_ms: 2.908728
+  type: 'test'
+  ...
+# Subtest: item L19 negative
+ok 1016 - item L19 negative
+  ---
+  duration_ms: 2.926785
+  type: 'test'
+  ...
+# Subtest: item L20 favorable
+ok 1017 - item L20 favorable
+  ---
+  duration_ms: 2.636147
+  type: 'test'
+  ...
+# Subtest: item L20 mixed
+ok 1018 - item L20 mixed
+  ---
+  duration_ms: 2.410366
+  type: 'test'
+  ...
+# Subtest: item L20 partial
+ok 1019 - item L20 partial
+  ---
+  duration_ms: 3.448392
+  type: 'test'
+  ...
+# Subtest: item L20 negative
+ok 1020 - item L20 negative
+  ---
+  duration_ms: 3.188541
+  type: 'test'
+  ...
+# Subtest: item L21 favorable
+ok 1021 - item L21 favorable
+  ---
+  duration_ms: 2.604259
+  type: 'test'
+  ...
+# Subtest: item L21 mixed
+ok 1022 - item L21 mixed
+  ---
+  duration_ms: 2.72477
+  type: 'test'
+  ...
+# Subtest: item L21 partial
+ok 1023 - item L21 partial
+  ---
+  duration_ms: 2.705
+  type: 'test'
+  ...
+# Subtest: item L21 negative
+ok 1024 - item L21 negative
+  ---
+  duration_ms: 2.45962
+  type: 'test'
+  ...
+# Subtest: M2 sample raw calculator and all six practices
+ok 1025 - M2 sample raw calculator and all six practices
+  ---
+  duration_ms: 31.888846
+  type: 'test'
+  ...
+# Subtest: P12 no {"E07":[40,40],"L04":[40,40]}
+ok 1026 - P12 no {"E07":[40,40],"L04":[40,40]}
+  ---
+  duration_ms: 2.888547
+  type: 'test'
+  ...
+# Subtest: P12 partial {"E09":[40,40],"L06":[40,40]}
+ok 1027 - P12 partial {"E09":[40,40],"L06":[40,40]}
+  ---
+  duration_ms: 2.98992
+  type: 'test'
+  ...
+# Subtest: P12 full {"E07":[40,40]}
+ok 1028 - P12 full {"E07":[40,40]}
+  ---
+  duration_ms: 2.907847
+  type: 'test'
+  ...
+# Subtest: P12 partial {}
+ok 1029 - P12 partial {}
+  ---
+  duration_ms: 2.55207
+  type: 'test'
+  ...
+# Subtest: P12 no {}
+ok 1030 - P12 no {}
+  ---
+  duration_ms: 2.845152
+  type: 'test'
+  ...
+# Subtest: P12 partial {"E08":[40,0]}
+ok 1031 - P12 partial {"E08":[40,0]}
+  ---
+  duration_ms: 2.842307
+  type: 'test'
+  ...
+# Subtest: P12 full {"E08":[40,40]}
+ok 1032 - P12 full {"E08":[40,40]}
+  ---
+  duration_ms: 5.99903
+  type: 'test'
+  ...
+# Subtest: neutral safety E06
+ok 1033 - neutral safety E06
+  ---
+  duration_ms: 6.706536
+  type: 'test'
+  ...
+# Subtest: neutral safety E12
+ok 1034 - neutral safety E12
+  ---
+  duration_ms: 3.248681
+  type: 'test'
+  ...
+# Subtest: neutral safety E17
+ok 1035 - neutral safety E17
+  ---
+  duration_ms: 2.869308
+  type: 'test'
+  ...
+# Subtest: E20 explicit branch 1
+ok 1036 - E20 explicit branch 1
+  ---
+  duration_ms: 3.496204
+  type: 'test'
+  ...
+# Subtest: E20 explicit branch 2
+ok 1037 - E20 explicit branch 2
+  ---
+  duration_ms: 2.717519
+  type: 'test'
+  ...
+# Subtest: E20 explicit branch 3
+ok 1038 - E20 explicit branch 3
+  ---
+  duration_ms: 2.874947
+  type: 'test'
+  ...
+# Subtest: E20 explicit branch 4
+ok 1039 - E20 explicit branch 4
+  ---
+  duration_ms: 2.881927
+  type: 'test'
+  ...
+# Subtest: E30 explicit branch 1
+ok 1040 - E30 explicit branch 1
+  ---
+  duration_ms: 3.044363
+  type: 'test'
+  ...
+# Subtest: E30 explicit branch 2
+ok 1041 - E30 explicit branch 2
+  ---
+  duration_ms: 2.869278
+  type: 'test'
+  ...
+# Subtest: E30 explicit branch 3
+ok 1042 - E30 explicit branch 3
+  ---
+  duration_ms: 2.841526
+  type: 'test'
+  ...
+# Subtest: E30 explicit branch 4
+ok 1043 - E30 explicit branch 4
+  ---
+  duration_ms: 2.944142
+  type: 'test'
+  ...
+# Subtest: E31 C1
+ok 1044 - E31 C1
+  ---
+  duration_ms: 2.9229
+  type: 'test'
+  ...
+# Subtest: E31 C2
+ok 1045 - E31 C2
+  ---
+  duration_ms: 2.779984
+  type: 'test'
+  ...
+# Subtest: E31 C3
+ok 1046 - E31 C3
+  ---
+  duration_ms: 3.231845
+  type: 'test'
+  ...
+# Subtest: E31 C4
+ok 1047 - E31 C4
+  ---
+  duration_ms: 2.792803
+  type: 'test'
+  ...
+# Subtest: E31 C5 sample
+ok 1048 - E31 C5 sample
+  ---
+  duration_ms: 1.404298
+  type: 'test'
+  ...
+# Subtest: E31 C5 NA
+ok 1049 - E31 C5 NA
+  ---
+  duration_ms: 3.083011
+  type: 'test'
+  ...
+# Subtest: P40 no confirmed/confirmed
+ok 1050 - P40 no confirmed/confirmed
+  ---
+  duration_ms: 3.071693
+  type: 'test'
+  ...
+# Subtest: P40 no confirmed/not_confirmed
+ok 1051 - P40 no confirmed/not_confirmed
+  ---
+  duration_ms: 2.873454
+  type: 'test'
+  ...
+# Subtest: P40 no confirmed/needs_check
+ok 1052 - P40 no confirmed/needs_check
+  ---
+  duration_ms: 3.040798
+  type: 'test'
+  ...
+# Subtest: P40 no not_confirmed/confirmed
+ok 1053 - P40 no not_confirmed/confirmed
+  ---
+  duration_ms: 2.435343
+  type: 'test'
+  ...
+# Subtest: P40 no not_confirmed/not_confirmed
+ok 1054 - P40 no not_confirmed/not_confirmed
+  ---
+  duration_ms: 2.385038
+  type: 'test'
+  ...
+# Subtest: P40 no not_confirmed/needs_check
+ok 1055 - P40 no not_confirmed/needs_check
+  ---
+  duration_ms: 2.357876
+  type: 'test'
+  ...
+# Subtest: P40 no needs_check/confirmed
+ok 1056 - P40 no needs_check/confirmed
+  ---
+  duration_ms: 2.463396
+  type: 'test'
+  ...
+# Subtest: P40 no needs_check/not_confirmed
+ok 1057 - P40 no needs_check/not_confirmed
+  ---
+  duration_ms: 2.249113
+  type: 'test'
+  ...
+# Subtest: P40 no needs_check/needs_check
+ok 1058 - P40 no needs_check/needs_check
+  ---
+  duration_ms: 2.269194
+  type: 'test'
+  ...
+# Subtest: P40 partial confirmed/confirmed
+ok 1059 - P40 partial confirmed/confirmed
+  ---
+  duration_ms: 2.268502
+  type: 'test'
+  ...
+# Subtest: P40 partial confirmed/not_confirmed
+ok 1060 - P40 partial confirmed/not_confirmed
+  ---
+  duration_ms: 3.570296
+  type: 'test'
+  ...
+# Subtest: P40 partial confirmed/needs_check
+ok 1061 - P40 partial confirmed/needs_check
+  ---
+  duration_ms: 4.082764
+  type: 'test'
+  ...
+# Subtest: P40 partial not_confirmed/confirmed
+ok 1062 - P40 partial not_confirmed/confirmed
+  ---
+  duration_ms: 3.165765
+  type: 'test'
+  ...
+# Subtest: P40 partial not_confirmed/not_confirmed
+ok 1063 - P40 partial not_confirmed/not_confirmed
+  ---
+  duration_ms: 5.663914
+  type: 'test'
+  ...
+# Subtest: P40 partial not_confirmed/needs_check
+ok 1064 - P40 partial not_confirmed/needs_check
+  ---
+  duration_ms: 2.264526
+  type: 'test'
+  ...
+# Subtest: P40 partial needs_check/confirmed
+ok 1065 - P40 partial needs_check/confirmed
+  ---
+  duration_ms: 2.396465
+  type: 'test'
+  ...
+# Subtest: P40 partial needs_check/not_confirmed
+ok 1066 - P40 partial needs_check/not_confirmed
+  ---
+  duration_ms: 2.433551
+  type: 'test'
+  ...
+# Subtest: P40 partial needs_check/needs_check
+ok 1067 - P40 partial needs_check/needs_check
+  ---
+  duration_ms: 2.564979
+  type: 'test'
+  ...
+# Subtest: P40 full confirmed/confirmed
+ok 1068 - P40 full confirmed/confirmed
+  ---
+  duration_ms: 2.626472
+  type: 'test'
+  ...
+# Subtest: P40 full confirmed/not_confirmed
+ok 1069 - P40 full confirmed/not_confirmed
+  ---
+  duration_ms: 3.427761
+  type: 'test'
+  ...
+# Subtest: P40 full confirmed/needs_check
+ok 1070 - P40 full confirmed/needs_check
+  ---
+  duration_ms: 2.326029
+  type: 'test'
+  ...
+# Subtest: P40 full not_confirmed/confirmed
+ok 1071 - P40 full not_confirmed/confirmed
+  ---
+  duration_ms: 2.215913
+  type: 'test'
+  ...
+# Subtest: P40 full not_confirmed/not_confirmed
+ok 1072 - P40 full not_confirmed/not_confirmed
+  ---
+  duration_ms: 2.467162
+  type: 'test'
+  ...
+# Subtest: P40 full not_confirmed/needs_check
+ok 1073 - P40 full not_confirmed/needs_check
+  ---
+  duration_ms: 2.275162
+  type: 'test'
+  ...
+# Subtest: P40 full needs_check/confirmed
+ok 1074 - P40 full needs_check/confirmed
+  ---
+  duration_ms: 2.238747
+  type: 'test'
+  ...
+# Subtest: P40 full needs_check/not_confirmed
+ok 1075 - P40 full needs_check/not_confirmed
+  ---
+  duration_ms: 2.743068
+  type: 'test'
+  ...
+# Subtest: P40 full needs_check/needs_check
+ok 1076 - P40 full needs_check/needs_check
+  ---
+  duration_ms: 2.135181
+  type: 'test'
+  ...
+# Subtest: P40 insufficient confirmed/confirmed
+ok 1077 - P40 insufficient confirmed/confirmed
+  ---
+  duration_ms: 2.191386
+  type: 'test'
+  ...
+# Subtest: P40 insufficient confirmed/not_confirmed
+ok 1078 - P40 insufficient confirmed/not_confirmed
+  ---
+  duration_ms: 2.163073
+  type: 'test'
+  ...
+# Subtest: P40 insufficient confirmed/needs_check
+ok 1079 - P40 insufficient confirmed/needs_check
+  ---
+  duration_ms: 2.135271
+  type: 'test'
+  ...
+# Subtest: P40 insufficient not_confirmed/confirmed
+ok 1080 - P40 insufficient not_confirmed/confirmed
+  ---
+  duration_ms: 2.148121
+  type: 'test'
+  ...
+# Subtest: P40 insufficient not_confirmed/not_confirmed
+ok 1081 - P40 insufficient not_confirmed/not_confirmed
+  ---
+  duration_ms: 2.199548
+  type: 'test'
+  ...
+# Subtest: P40 insufficient not_confirmed/needs_check
+ok 1082 - P40 insufficient not_confirmed/needs_check
+  ---
+  duration_ms: 2.210564
+  type: 'test'
+  ...
+# Subtest: P40 insufficient needs_check/confirmed
+ok 1083 - P40 insufficient needs_check/confirmed
+  ---
+  duration_ms: 2.641285
+  type: 'test'
+  ...
+# Subtest: P40 insufficient needs_check/not_confirmed
+ok 1084 - P40 insufficient needs_check/not_confirmed
+  ---
+  duration_ms: 2.32684
+  type: 'test'
+  ...
+# Subtest: P40 insufficient needs_check/needs_check
+ok 1085 - P40 insufficient needs_check/needs_check
+  ---
+  duration_ms: 2.381523
+  type: 'test'
+  ...
+# Subtest: route isolated P18
+ok 1086 - route isolated P18
+  ---
+  duration_ms: 2.471148
+  type: 'test'
+  ...
+# Subtest: route isolated P24
+ok 1087 - route isolated P24
+  ---
+  duration_ms: 2.428924
+  type: 'test'
+  ...
+# Subtest: route isolated L04
+ok 1088 - route isolated L04
+  ---
+  duration_ms: 2.342524
+  type: 'test'
+  ...
+# Subtest: route isolated L06
+ok 1089 - route isolated L06
+  ---
+  duration_ms: 2.321813
+  type: 'test'
+  ...
+# Subtest: route isolated L17
+ok 1090 - route isolated L17
+  ---
+  duration_ms: 3.193408
+  type: 'test'
+  ...
+# Subtest: route isolated L18
+ok 1091 - route isolated L18
+  ---
+  duration_ms: 2.283635
+  type: 'test'
+  ...
+# Subtest: route isolated E09
+ok 1092 - route isolated E09
+  ---
+  duration_ms: 2.28059
+  type: 'test'
+  ...
+# Subtest: route isolated E10
+ok 1093 - route isolated E10
+  ---
+  duration_ms: 2.289624
+  type: 'test'
+  ...
+# Subtest: route isolated E14
+ok 1094 - route isolated E14
+  ---
+  duration_ms: 2.259609
+  type: 'test'
+  ...
+# Subtest: merge P18+E15
+ok 1095 - merge P18+E15
+  ---
+  duration_ms: 2.71765
+  type: 'test'
+  ...
+# Subtest: merge P24+E19
+ok 1096 - merge P24+E19
+  ---
+  duration_ms: 2.629707
+  type: 'test'
+  ...
+# Subtest: merge E05+E24
+ok 1097 - merge E05+E24
+  ---
+  duration_ms: 2.627995
+  type: 'test'
+  ...
+# Subtest: merge E09+E27
+ok 1098 - merge E09+E27
+  ---
+  duration_ms: 2.635676
+  type: 'test'
+  ...
+# Subtest: merge E22+E28
+ok 1099 - merge E22+E28
+  ---
+  duration_ms: 2.529556
+  type: 'test'
+  ...
+# Subtest: merge P28+P38
+ok 1100 - merge P28+P38
+  ---
+  duration_ms: 2.659752
+  type: 'test'
+  ...
+# Subtest: merge L17+L18+E29
+ok 1101 - merge L17+L18+E29
+  ---
+  duration_ms: 2.45935
+  type: 'test'
+  ...
+# Subtest: E05 plus E25 is not C01
+ok 1102 - E05 plus E25 is not C01
+  ---
+  duration_ms: 2.974707
+  type: 'test'
+  ...
+# Subtest: No truncation of five simultaneous actions in module 2
+ok 1103 - No truncation of five simultaneous actions in module 2
+  ---
+  duration_ms: 5.848592
+  type: 'test'
+  ...
+# Subtest: privacy 0/0
+ok 1104 - privacy 0/0
+  ---
+  duration_ms: 0.61689
+  type: 'test'
+  ...
+# Subtest: privacy 19/9
+ok 1105 - privacy 19/9
+  ---
+  duration_ms: 1.370908
+  type: 'test'
+  ...
+# Subtest: privacy 20/10
+ok 1106 - privacy 20/10
+  ---
+  duration_ms: 1.404149
+  type: 'test'
+  ...
+# Subtest: Incomplete checkup is not a completed gap
+ok 1107 - Incomplete checkup is not a completed gap
+  ---
+  duration_ms: 2.563367
+  type: 'test'
+  ...
+# Subtest: Same branch uses stable text across percentages
+ok 1108 - Same branch uses stable text across percentages
+  ---
+  duration_ms: 6.936995
+  type: 'test'
+  ...
+# Subtest: Same weather different item retains different content
+ok 1109 - Same weather different item retains different content
+  ---
+  duration_ms: 5.407708
+  type: 'test'
+  ...
+# Subtest: All six gaps in each module remain traceable
+ok 1110 - All six gaps in each module remain traceable
+  ---
+  duration_ms: 6.617022
+  type: 'test'
+  ...
+# Subtest: Original calculator and schema source invariants
+ok 1111 - Original calculator and schema source invariants
+  ---
+  duration_ms: 0.592214
+  type: 'test'
+  ...
+# Subtest: baseline equality {"items":{"E06":[40,40],"E07":[40,40],"E08":[40,40],"E09":[40,40],"L04":[40,40],"L06":[40,40],"E10":[80,0],"L05":[80,0]},"practices":{"P07":"partial","P08":"partial","P09":"partial","P10":"partial","P11":"partial","P12":"partial"}}
+ok 1112 - baseline equality {"items":{"E06":[40,40],"E07":[40,40],"E08":[40,40],"E09":[40,40],"L04":[40,40],"L06":[40,40],"E10":[80,0],"L05":[80,0]},"practices":{"P07":"partial","P08":"partial","P09":"partial","P10":"partial","P11":"partial","P12":"partial"}}
+  ---
+  duration_ms: 12.038691
+  type: 'test'
+  ...
+# Subtest: baseline equality {"nE":20,"nL":10}
+ok 1113 - baseline equality {"nE":20,"nL":10}
+  ---
+  duration_ms: 2.880515
+  type: 'test'
+  ...
+# Subtest: baseline equality {"nE":19,"nL":9}
+ok 1114 - baseline equality {"nE":19,"nL":9}
+  ---
+  duration_ms: 1.649588
+  type: 'test'
+  ...
+# Subtest: baseline equality {"items":{"E01":"NA","E02":[55,30],"E03":[75,15],"L01":[40,40]}}
+ok 1115 - baseline equality {"items":{"E01":"NA","E02":[55,30],"E03":[75,15],"L01":[40,40]}}
+  ---
+  duration_ms: 6.591242
+  type: 'test'
+  ...
+# Subtest: baseline equality {"defaultPattern":[40,0]}
+ok 1116 - baseline equality {"defaultPattern":[40,0]}
+  ---
+  duration_ms: 13.248516
+  type: 'test'
+  ...
+# Subtest: baseline equality {"defaultPattern":[60,20]}
+ok 1117 - baseline equality {"defaultPattern":[60,20]}
+  ---
+  duration_ms: 5.732948
+  type: 'test'
+  ...
+# Subtest: Catalogue contains no service module headings
+ok 1118 - Catalogue contains no service module headings
+  ---
+  duration_ms: 0.670822
+  type: 'test'
+  ...
+# Subtest: P26 E21 variant А
+ok 1119 - P26 E21 variant А
+  ---
+  duration_ms: 2.958513
+  type: 'test'
+  ...
+# Subtest: P26 E21 variant Б
+ok 1120 - P26 E21 variant Б
+  ---
+  duration_ms: 2.735647
+  type: 'test'
+  ...
+# Subtest: P26 E21 variant В
+ok 1121 - P26 E21 variant В
+  ---
+  duration_ms: 2.384417
+  type: 'test'
+  ...
+# Subtest: P26 E21 variant Г
+ok 1122 - P26 E21 variant Г
+  ---
+  duration_ms: 2.454002
+  type: 'test'
+  ...
+# Subtest: All-gap attention retains each practice
+ok 1123 - All-gap attention retains each practice
+  ---
+  duration_ms: 6.267435
+  type: 'test'
+  ...
+# Subtest: Shared risk-cycle steps retain both practice traces without assigned roles
+ok 1124 - Shared risk-cycle steps retain both practice traces without assigned roles
+  ---
+  duration_ms: 3.020086
+  type: 'test'
+  ...
+# Subtest: Editorial screenshot corrections in shared output
+ok 1125 - Editorial screenshot corrections in shared output
+  ---
+  duration_ms: 18.081442
+  type: 'test'
+  ...
+# Subtest: Editorial all-source strengths and missing applicable data
+ok 1126 - Editorial all-source strengths and missing applicable data
+  ---
+  duration_ms: 5.486206
+  type: 'test'
+  ...
+# Subtest: Editorial catalog uses impersonal action wording
+ok 1127 - Editorial catalog uses impersonal action wording
+  ---
+  duration_ms: 1.569037
+  type: 'test'
+  ...
+# Subtest: Editorial inline case preserves source labels and acronyms
+ok 1128 - Editorial inline case preserves source labels and acronyms
+  ---
+  duration_ms: 11.455571
+  type: 'test'
+  ...
+# Subtest: Interactive interpretation is collapsible while report stays expanded
+ok 1129 - Interactive interpretation is collapsible while report stays expanded
+  ---
+  duration_ms: 24.869596
+  type: 'test'
+  ...
+# Subtest: Screenshot M1: clarification identifies the actual work situation on screen and in report
+ok 1130 - Screenshot M1: clarification identifies the actual work situation on screen and in report
+  ---
+  duration_ms: 54.359934
+  type: 'test'
+  ...
+# Subtest: Below-threshold items are not narrated; problem aspects and strengths remain
+ok 1131 - Below-threshold items are not narrated; problem aspects and strengths remain
+  ---
+  duration_ms: 168.034702
+  type: 'test'
+  ...
+# Subtest: All questionnaire items and checkup variants retain concrete nonempty clarification text
+ok 1132 - All questionnaire items and checkup variants retain concrete nonempty clarification text
+  ---
+  duration_ms: 908.357927
+  type: 'test'
+  ...
+# Subtest: Generated recommendations and criteria omit assignee labels but retain meaningful role references
+ok 1133 - Generated recommendations and criteria omit assignee labels but retain meaningful role references
+  ---
+  duration_ms: 104.956831
+  type: 'test'
+  ...
+# Subtest: A new Plan card leaves the owner blank and preserves the owner entered by its user
+ok 1134 - A new Plan card leaves the owner blank and preserves the owner entered by its user
+  ---
+  duration_ms: 23.586701
+  type: 'test'
+  ...
+# Subtest: Mixed-only module has no filler conclusion; real practice gaps and special safety rules remain
+ok 1135 - Mixed-only module has no filler conclusion; real practice gaps and special safety rules remain
+  ---
+  duration_ms: 11.152493
+  type: 'test'
+  ...
+# Subtest: Every module explains what to do with insufficient applicable data without creating a corrective Plan action
+ok 1136 - Every module explains what to do with insufficient applicable data without creating a corrective Plan action
+  ---
+  duration_ms: 61.329288
+  type: 'test'
+  ...
+1..1136
+# tests 1136
+# suites 0
+# pass 1136
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3513.406269

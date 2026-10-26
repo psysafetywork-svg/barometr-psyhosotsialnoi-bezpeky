@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-26",
+  "tests": 1617,
+  "passed": 1617,
+  "files": {
+    "src/profile-v45/engine.js": "36752efc2ac4df5ca71f29342d2ea6925211ce8b336fa5f19c297fdd76457cc3",
+    "src/profile-v45/grounded-copy.json": "aef3a5219c87a56a9e0244be02d46f0ba0825d719951d66343cc77f13c5a0b65",
+    "src/profile-v45/approved-copy.json": "5b9f33cd9e5836b61027f0d21e238cd5a5fbb665184a776b8a848f4d7813b2e0",
+    "src/profile-v45/view.js": "55e61e1c63d83c01f3da70c95dd2530b5c10d3493ef1bb4abb7e80e72c2057a2",
+    "src/profile-v45/style.css": "66c05e0c3b7ad786793abdd2eb1450964ea83f57767b000a8eda006e9e0c84d7",
+    "src/profile-v45/plan-text.js": "c43f062b310494337ad925199b3237321feac6d983a5697ef63bde868443e8ee",
+    "scripts/build-profile-v45.py": "881e1bc8ca7eecb3aff0e31f7ee67cf9256192a5a69f78a55383c2718f87348d",
+    "local/index.html": "4e961c516596202b62d285790e5710cb3997e18eb444b8e021f8a1519a47eef8",
+    "index.html": "a9c313bd8021cb7ceb63a7ccd2965af74d76e7b1aec39ec34e677f1e705bb5f6",
+    "tests/profile-grounding.mjs": "1b9fba78a45927435877b75a8e2675e09a69c0969fd032e0ba9498cc87990673"
+  }
+}

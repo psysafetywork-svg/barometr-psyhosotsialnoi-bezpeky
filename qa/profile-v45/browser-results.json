@@ -1,0 +1,1360 @@
+[
+  {
+    "test": "UI import csv",
+    "result": "PASS"
+  },
+  {
+    "test": "UI import xlsx",
+    "result": "PASS"
+  },
+  {
+    "test": "UI mouse completes 42 practices and P40 transition",
+    "result": "PASS"
+  },
+  {
+    "test": "UI interpretation toggles all four sections in seven modules with mouse and keyboard",
+    "result": "PASS"
+  },
+  {
+    "test": "UI Plan add/edit/XLSX/report/backup/restore and no duplicate or overwrite",
+    "result": "PASS"
+  },
+  {
+    "test": "UI existing two-period study switching preserves source data",
+    "result": "PASS"
+  },
+  {
+    "test": "Visual matrix and PDF favorable",
+    "result": "PASS",
+    "scenario": "favorable",
+    "modules": [
+      {
+        "m": 1,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 1,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ],
+    "fonts": [
+      {
+        "tag": "report-title",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "summary-table",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ]
+  },
+  {
+    "test": "Visual matrix and PDF discrepancy",
+    "result": "PASS",
+    "scenario": "discrepancy",
+    "modules": [
+      {
+        "m": 1,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 1,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ],
+    "fonts": [
+      {
+        "tag": "report-title",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "summary-table",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ]
+  },
+  {
+    "test": "Visual matrix and PDF six_gaps",
+    "result": "PASS",
+    "scenario": "six_gaps",
+    "modules": [
+      {
+        "m": 1,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 1,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ],
+    "fonts": [
+      {
+        "tag": "report-title",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "summary-table",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ]
+  },
+  {
+    "test": "Visual matrix and PDF insufficient",
+    "result": "PASS",
+    "scenario": "insufficient",
+    "modules": [
+      {
+        "m": 1,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 1,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 3,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 4,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 5,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 6,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 7,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ],
+    "fonts": [
+      {
+        "tag": "report-title",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "summary-table",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ]
+  },
+  {
+    "test": "Visual matrix and PDF module2_sample",
+    "result": "PASS",
+    "scenario": "module2_sample",
+    "modules": [
+      {
+        "m": 2,
+        "width": 1129,
+        "scrollWidth": 1129,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "m": 2,
+        "width": 339,
+        "scrollWidth": 339,
+        "sections": 4,
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ],
+    "fonts": [
+      {
+        "tag": "report-title",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "meta-box",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "summary-table",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-a",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      },
+      {
+        "tag": "profile-v45-card tone-b",
+        "font": "\"DejaVu Sans\", sans-serif",
+        "color": "rgb(57, 70, 73)"
+      }
+    ]
+  }
+]

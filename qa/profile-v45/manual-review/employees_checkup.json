@@ -1,0 +1,922 @@
+{
+  "format": "barometr-backup",
+  "version": "r43",
+  "data": {
+    "company": "ДЕМОНСТРАЦІЙНІ ДАНІ. Умовна компанія",
+    "owner": "Демонстраційний запис",
+    "current": "period-review",
+    "periods": [
+      {
+        "id": "period-review",
+        "label": "Демонстраційний період",
+        "start": "2026-10-01",
+        "end": "2026-10-26",
+        "envs": [
+          {
+            "id": "env-review",
+            "name": "Демонстраційне робоче середовище",
+            "emp": 100,
+            "man": 0,
+            "invE": 100,
+            "invL": 0,
+            "survey": {
+              "ok": true,
+              "e": 100,
+              "l": 0,
+              "results": {
+                "e": {
+                  "source": "E",
+                  "totalResponses": 100,
+                  "minimumRequired": 20,
+                  "missingResponses": 0,
+                  "eligible": true,
+                  "itemMinimum": 50,
+                  "participationRate": null,
+                  "participationError": false,
+                  "detailAllowed": true,
+                  "items": {
+                    "E01": {
+                      "code": "E01",
+                      "module": 1,
+                      "text": "Мої робочі обов’язки визначені чітко.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E02": {
+                      "code": "E02",
+                      "module": 1,
+                      "text": "Я розумію, за якими критеріями оцінюють результати моєї роботи.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E03": {
+                      "code": "E03",
+                      "module": 1,
+                      "text": "Я чітко розумію, які з моїх робочих завдань є пріоритетними.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E04": {
+                      "code": "E04",
+                      "module": 1,
+                      "text": "Якщо виникає суперечність у робочих завданнях, безпосередній керівник допомагає мені визначити черговість їх виконання.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E05": {
+                      "code": "E05",
+                      "module": 1,
+                      "text": "Про зміни, які можуть суттєво вплинути на мою роботу, мене повідомляють завчасно, щоб я міг/могла до них підготуватися.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E06": {
+                      "code": "E06",
+                      "module": 2,
+                      "text": "Безпосередній керівник ставиться до мене з повагою.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E07": {
+                      "code": "E07",
+                      "module": 2,
+                      "text": "Я отримую від безпосереднього керівника зворотний зв’язок, який допомагає мені покращувати роботу.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 20,
+                      "unfavorable": 40,
+                      "adequate": true,
+                      "status": "Буря"
+                    },
+                    "E08": {
+                      "code": "E08",
+                      "module": 2,
+                      "text": "Безпосередній керівник допомагає усувати робочі перешкоди, які я не можу вирішити самостійно.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E09": {
+                      "code": "E09",
+                      "module": 2,
+                      "text": "Визначаючи завдання і строки, безпосередній керівник враховує моє поточне робоче навантаження.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 60,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Хмарно"
+                    },
+                    "E10": {
+                      "code": "E10",
+                      "module": 2,
+                      "text": "Безпека і здоров’я працівників є для керівництва компанії пріоритетом поряд із бізнес-результатами.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E11": {
+                      "code": "E11",
+                      "module": 3,
+                      "text": "Я можу відкрито говорити про робочі проблеми та висловлювати конструктивну незгоду з робочими рішеннями без страху негативних наслідків для себе.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E12": {
+                      "code": "E12",
+                      "module": 3,
+                      "text": "Я можу повідомити у своїй команді про власну робочу помилку без страху приниження або осуду.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E13": {
+                      "code": "E13",
+                      "module": 3,
+                      "text": "Коли мені потрібна допомога в роботі, я можу попросити про неї у своїй команді без страху негативної оцінки.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E14": {
+                      "code": "E14",
+                      "module": 3,
+                      "text": "У своїй команді я відчуваю, що можу бути собою та робити свій внесок у роботу без страху негативного ставлення.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E15": {
+                      "code": "E15",
+                      "module": 3,
+                      "text": "Я можу повідомити про неприйнятну поведінку (дискримінацію, домагання, мобінг, принизливе ставлення) без страху негативних наслідків для себе.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E16": {
+                      "code": "E16",
+                      "module": 4,
+                      "text": "Я вважаю свою оплату праці справедливою з огляду на мої обов’язки.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E17": {
+                      "code": "E17",
+                      "module": 4,
+                      "text": "Мій внесок у роботу помічають і визнають (наприклад, через подяку, позитивний зворотний зв’язок або відзначення результатів).",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E18": {
+                      "code": "E18",
+                      "module": 4,
+                      "text": "Я маю доступ до робочої інформації та ресурсів, необхідних для виконання моїх завдань, на рівних умовах з іншими працівниками у подібних ролях.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E19": {
+                      "code": "E19",
+                      "module": 4,
+                      "text": "Я маю рівний з іншими працівниками доступ до можливостей професійного розвитку.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E20": {
+                      "code": "E20",
+                      "module": 4,
+                      "text": "На роботі до мене ставляться справедливо незалежно від моїх особистих характеристик або життєвих обставин (наприклад, віку, статі, походження, стану здоров’я, інвалідності, сімейних обставин чи досвіду військової служби).",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E21": {
+                      "code": "E21",
+                      "module": 5,
+                      "text": "Там, де це дозволяє характер моєї роботи, я маю свободу обирати підходи, методи та інструменти для виконання своїх робочих завдань.",
+                      "applicable": 0,
+                      "na": 100,
+                      "naRate": 100,
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "adequate": false,
+                      "status": "Туман"
+                    },
+                    "E22": {
+                      "code": "E22",
+                      "module": 5,
+                      "text": "Там, де це дозволяє характер моєї роботи, я маю достатню гнучкість у керуванні власним робочим часом та темпом виконання завдань.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E23": {
+                      "code": "E23",
+                      "module": 5,
+                      "text": "У своїй роботі я маю можливість проявляти ініціативу та пропонувати ідеї.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E24": {
+                      "code": "E24",
+                      "module": 5,
+                      "text": "Перед ухваленням рішень про зміни, які впливають на мою роботу, я маю можливість висловити свою думку.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E25": {
+                      "code": "E25",
+                      "module": 5,
+                      "text": "Коли я повідомляю про робочу проблему, мене інформують про результат її розгляду та рішення щодо подальших дій.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E26": {
+                      "code": "E26",
+                      "module": 6,
+                      "text": "Звичайний обсяг моєї роботи можна виконати якісно в межах установленого робочого часу.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E27": {
+                      "code": "E27",
+                      "module": 6,
+                      "text": "Я маю можливість робити передбачені перерви протягом робочого дня.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E28": {
+                      "code": "E28",
+                      "module": 6,
+                      "text": "У неробочий час я можу не відповідати на робочі повідомлення чи дзвінки, крім кризових або екстрених ситуацій.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E29": {
+                      "code": "E29",
+                      "module": 6,
+                      "text": "За потреби я знаю, куди і як звернутися по психологічну допомогу, доступну працівникам компанії.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E30": {
+                      "code": "E30",
+                      "module": 6,
+                      "text": "Я впевнений/-а, що звернення по доступну в компанії психологічну допомогу залишиться конфіденційним і не матиме негативних наслідків для мене.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 20,
+                      "unfavorable": 40,
+                      "adequate": true,
+                      "status": "Буря"
+                    },
+                    "E31": {
+                      "code": "E31",
+                      "module": 7,
+                      "text": "На роботі до мене ставляться без дискримінації, приниження, залякування чи інших проявів неприйнятної поведінки.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E32": {
+                      "code": "E32",
+                      "module": 7,
+                      "text": "Моє робоче середовище враховує мої індивідуальні потреби, пов’язані з доступністю фізичного простору, цифрових інструментів і робочої інформації.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E33": {
+                      "code": "E33",
+                      "module": 7,
+                      "text": "Я знаю, яких правил безпеки маю дотримуватися під час виконання своєї роботи.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E34": {
+                      "code": "E34",
+                      "module": 7,
+                      "text": "Під час повітряної тривоги або іншої прямої загрози я знаю, куди маю перейти або де залишатися, щоб бути в безпеці.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    },
+                    "E35": {
+                      "code": "E35",
+                      "module": 7,
+                      "text": "Під час кризової події я знаю, де і як отримати офіційні рекомендації та вказівки компанії щодо подальших дій.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Ясно"
+                    }
+                  },
+                  "modules": {
+                    "1": {
+                      "status": "Ясно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "2": {
+                      "status": "Хмарно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 64,
+                      "neutral": 28,
+                      "unfavorable": 8,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "3": {
+                      "status": "Ясно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "4": {
+                      "status": "Ясно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "5": {
+                      "status": "Ясно",
+                      "quality": "З обмеженнями",
+                      "qualityReasons": [
+                        "не всі твердження модуля мають достатньо застосовних відповідей для окремого аналізу"
+                      ],
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "usableItems": 4,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "6": {
+                      "status": "Хмарно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 72,
+                      "neutral": 20,
+                      "unfavorable": 8,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "7": {
+                      "status": "Ясно",
+                      "quality": "Достатня",
+                      "qualityReasons": [],
+                      "favorable": 80,
+                      "neutral": 20,
+                      "unfavorable": 0,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    }
+                  },
+                  "problems": [
+                    {
+                      "code": "E07",
+                      "module": 2,
+                      "text": "Я отримую від безпосереднього керівника зворотний зв’язок, який допомагає мені покращувати роботу.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 20,
+                      "unfavorable": 40,
+                      "adequate": true,
+                      "status": "Буря",
+                      "source": "E"
+                    },
+                    {
+                      "code": "E09",
+                      "module": 2,
+                      "text": "Визначаючи завдання і строки, безпосередній керівник враховує моє поточне робоче навантаження.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 60,
+                      "unfavorable": 0,
+                      "adequate": true,
+                      "status": "Хмарно",
+                      "source": "E"
+                    },
+                    {
+                      "code": "E30",
+                      "module": 6,
+                      "text": "Я впевнений/-а, що звернення по доступну в компанії психологічну допомогу залишиться конфіденційним і не матиме негативних наслідків для мене.",
+                      "applicable": 100,
+                      "na": 0,
+                      "naRate": 0,
+                      "favorable": 40,
+                      "neutral": 20,
+                      "unfavorable": 40,
+                      "adequate": true,
+                      "status": "Буря",
+                      "source": "E"
+                    }
+                  ]
+                },
+                "l": {
+                  "source": "L",
+                  "totalResponses": 0,
+                  "minimumRequired": 10,
+                  "missingResponses": 10,
+                  "eligible": false,
+                  "itemMinimum": 5,
+                  "participationRate": null,
+                  "participationError": false,
+                  "detailAllowed": false,
+                  "items": null,
+                  "modules": {
+                    "1": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "2": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "3": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "4": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "5": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "6": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "7": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "немає відповідей для цього джерела"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 0,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    }
+                  },
+                  "problems": []
+                }
+              }
+            }
+          }
+        ],
+        "checkup": {
+          "answers": {
+            "P01": "full",
+            "P02": "full",
+            "P03": "full",
+            "P04": "full",
+            "P05": "full",
+            "P06": "full",
+            "P07": "full",
+            "P08": "partial",
+            "P09": "full",
+            "P10": "full",
+            "P11": "full",
+            "P12": "partial",
+            "P13": "full",
+            "P14": "full",
+            "P15": "full",
+            "P16": "full",
+            "P17": "full",
+            "P18": "full",
+            "P19": "full",
+            "P20": "full",
+            "P21": "full",
+            "P22": "full",
+            "P23": "full",
+            "P24": "full",
+            "P25": "full",
+            "P26": "no",
+            "P27": "full",
+            "P28": "full",
+            "P29": "full",
+            "P30": "full",
+            "P31": "full",
+            "P32": "full",
+            "P33": "full",
+            "P34": "insufficient",
+            "P35": "full",
+            "P36": "full",
+            "P37": "full",
+            "P38": "full",
+            "P39": "full",
+            "P40": "full",
+            "P41": "full",
+            "P42": "full"
+          },
+          "notes": {},
+          "done": true,
+          "asOfDate": "2026-10-26",
+          "schemaVersion": "checkup-2026-09-20-final",
+          "p40Risk": null,
+          "p40ApplicabilityByEnvironment": {},
+          "results": {
+            "modules": {
+              "1": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "2": {
+                "status": "Хмарно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 4,
+                "partial": 2,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "3": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "4": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "5": {
+                "status": "Хмарно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 5,
+                "partial": 0,
+                "notImplemented": 1,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "6": {
+                "status": "Хмарно",
+                "complete": true,
+                "quality": "З обмеженнями",
+                "qualityReasons": [
+                  "для 1 практики недостатньо підтверджених даних для оцінювання"
+                ],
+                "full": 5,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 1,
+                "insufficientCodes": [
+                  "P34"
+                ],
+                "criticalMissing": []
+              },
+              "7": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              }
+            },
+            "problems": [
+              {
+                "code": "P08",
+                "module": 2,
+                "text": "Компанія періодично перевіряє, чи мають керівники команд достатньо часу, інформації, повноважень і ресурсів для організації роботи та реагування на проблеми, і забезпечує своєчасне вирішення питань, що виходять за межі їхніх повноважень.",
+                "answer": "partial"
+              },
+              {
+                "code": "P12",
+                "module": 2,
+                "text": "Компанія регулярно перевіряє, як керівники команд застосовують визначені підходи до управління людьми, зокрема щодо підтримки працівників, надання зворотного зв’язку, розподілу навантаження, дій у складних робочих ситуаціях та реагування на неприйнятну поведінку, і вживає заходів у разі виявлення системних прогалин.",
+                "answer": "partial"
+              },
+              {
+                "code": "P26",
+                "module": 5,
+                "text": "Під час запровадження або перегляду способів контролю за роботою, зокрема цифрового чи автоматизованого моніторингу, компанія оцінює їхню доцільність, вплив на самостійність працівників і ризик надмірного психологічного тиску та за потреби змінює порядок їх застосування.",
+                "answer": "no"
+              }
+            ],
+            "uncertain": [
+              {
+                "code": "P34",
+                "module": 6,
+                "text": "Компанія періодично оцінює, наскільки працівники знають про доступні програми підтримки, можуть ними скористатися, які бар’єри ускладнюють доступ і чи відповідає наявна підтримка їхнім потребам.",
+                "answer": "insufficient"
+              }
+            ],
+            "p40Risk": null,
+            "p40Warning": null
+          }
+        }
+      }
+    ],
+    "plan": []
+  }
+}

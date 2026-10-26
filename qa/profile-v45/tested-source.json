@@ -1,0 +1,10 @@
+{
+  "baseline": "0306399f255d6269cc67f15aef162ef0d5352d1e",
+  "files": {
+    "local/index.html": "225449c8f8b9c72e484035405131ade31e1482a652a7efb111f7165e69f08710",
+    "index.html": "b28f83e5a89adc241a6fdb91eeb443fc08b7b389a848a11aeedba814f46928d3",
+    "src/profile-v45/engine.js": "137e7244390113eced97ceaaf389739ad3c0f9350ed539f5be96680a9a5b50bb",
+    "src/profile-v45/view.js": "2df376417684e011f0a82649d70b28d3ba336c8de7cdcc25cdee6532a6118f92",
+    "src/profile-v45/approved-copy.json": "09892e9dd627828a843b28465993b395c9f372c41a107ce9d10454cfe776877b"
+  }
+}
