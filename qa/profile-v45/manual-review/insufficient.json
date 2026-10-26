@@ -1,0 +1,405 @@
+{
+  "format": "barometr-backup",
+  "version": "r43",
+  "data": {
+    "company": "ДЕМОНСТРАЦІЙНІ ДАНІ. Умовна компанія",
+    "owner": "Демонстраційний запис",
+    "current": "period-review",
+    "periods": [
+      {
+        "id": "period-review",
+        "label": "Демонстраційний період",
+        "start": "2026-10-01",
+        "end": "2026-10-26",
+        "envs": [
+          {
+            "id": "env-review",
+            "name": "Демонстраційне робоче середовище",
+            "emp": 19,
+            "man": 9,
+            "invE": 19,
+            "invL": 9,
+            "survey": {
+              "ok": true,
+              "e": 19,
+              "l": 9,
+              "results": {
+                "e": {
+                  "source": "E",
+                  "totalResponses": 19,
+                  "minimumRequired": 20,
+                  "missingResponses": 1,
+                  "eligible": false,
+                  "itemMinimum": 10,
+                  "participationRate": null,
+                  "participationError": false,
+                  "detailAllowed": false,
+                  "items": null,
+                  "modules": {
+                    "1": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "2": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "3": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "4": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "5": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "6": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "7": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 20 валідних анкет; отримано 19"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 5,
+                      "totalItems": 5,
+                      "borderline": null,
+                      "masked": false
+                    }
+                  },
+                  "problems": []
+                },
+                "l": {
+                  "source": "L",
+                  "totalResponses": 9,
+                  "minimumRequired": 10,
+                  "missingResponses": 1,
+                  "eligible": false,
+                  "itemMinimum": 5,
+                  "participationRate": null,
+                  "participationError": false,
+                  "detailAllowed": false,
+                  "items": null,
+                  "modules": {
+                    "1": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "2": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "3": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "4": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "5": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "6": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    },
+                    "7": {
+                      "status": null,
+                      "quality": "Недостатня",
+                      "qualityReasons": [
+                        "для окремого аналізу потрібно щонайменше 10 валідних анкет; отримано 9"
+                      ],
+                      "favorable": null,
+                      "neutral": null,
+                      "unfavorable": null,
+                      "usableItems": 3,
+                      "totalItems": 3,
+                      "borderline": null,
+                      "masked": false
+                    }
+                  },
+                  "problems": []
+                }
+              }
+            }
+          }
+        ],
+        "checkup": {
+          "answers": {
+            "P01": "full",
+            "P02": "full",
+            "P03": "full",
+            "P04": "full",
+            "P05": "full",
+            "P06": "full",
+            "P07": "full",
+            "P08": "full",
+            "P09": "full",
+            "P10": "full",
+            "P11": "full",
+            "P12": "full",
+            "P13": "full",
+            "P14": "full",
+            "P15": "full",
+            "P16": "full",
+            "P17": "full",
+            "P18": "full",
+            "P19": "full",
+            "P20": "full",
+            "P21": "full",
+            "P22": "full",
+            "P23": "full",
+            "P24": "full",
+            "P25": "full",
+            "P26": "full",
+            "P27": "full",
+            "P28": "full",
+            "P29": "full",
+            "P30": "full",
+            "P31": "full",
+            "P32": "full",
+            "P33": "full",
+            "P34": "full",
+            "P35": "full",
+            "P36": "full",
+            "P37": "full",
+            "P38": "full",
+            "P39": "full",
+            "P40": "full",
+            "P41": "full",
+            "P42": "full"
+          },
+          "notes": {},
+          "done": true,
+          "asOfDate": "2026-10-26",
+          "schemaVersion": "checkup-2026-09-20-final",
+          "p40Risk": null,
+          "p40ApplicabilityByEnvironment": {},
+          "results": {
+            "modules": {
+              "1": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "2": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "3": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "4": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "5": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "6": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              },
+              "7": {
+                "status": "Ясно",
+                "complete": true,
+                "quality": "Достатня",
+                "qualityReasons": [],
+                "full": 6,
+                "partial": 0,
+                "notImplemented": 0,
+                "insufficient": 0,
+                "insufficientCodes": [],
+                "criticalMissing": []
+              }
+            },
+            "problems": [],
+            "uncertain": [],
+            "p40Risk": null,
+            "p40Warning": null
+          }
+        }
+      }
+    ],
+    "plan": []
+  }
+}

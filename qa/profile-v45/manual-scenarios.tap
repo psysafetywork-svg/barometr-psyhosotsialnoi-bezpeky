@@ -1,0 +1,2782 @@
+TAP version 13
+# Subtest: manual combination M1 Ясно/Ясно/Ясно
+ok 1 - manual combination M1 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 16.212774
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Ясно/Хмарно
+ok 2 - manual combination M1 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 9.192497
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Ясно/Буря
+ok 3 - manual combination M1 Ясно/Ясно/Буря
+  ---
+  duration_ms: 5.425156
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Ясно/Туман
+ok 4 - manual combination M1 Ясно/Ясно/Туман
+  ---
+  duration_ms: 5.20116
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Хмарно/Ясно
+ok 5 - manual combination M1 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 6.234677
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Хмарно/Хмарно
+ok 6 - manual combination M1 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 5.112909
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Хмарно/Буря
+ok 7 - manual combination M1 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 4.01778
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Хмарно/Туман
+ok 8 - manual combination M1 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 4.149929
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Буря/Ясно
+ok 9 - manual combination M1 Ясно/Буря/Ясно
+  ---
+  duration_ms: 4.263678
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Буря/Хмарно
+ok 10 - manual combination M1 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 4.589636
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Буря/Буря
+ok 11 - manual combination M1 Ясно/Буря/Буря
+  ---
+  duration_ms: 4.469016
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Буря/Туман
+ok 12 - manual combination M1 Ясно/Буря/Туман
+  ---
+  duration_ms: 4.152923
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Туман/Ясно
+ok 13 - manual combination M1 Ясно/Туман/Ясно
+  ---
+  duration_ms: 4.509857
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Туман/Хмарно
+ok 14 - manual combination M1 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 5.399678
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Туман/Буря
+ok 15 - manual combination M1 Ясно/Туман/Буря
+  ---
+  duration_ms: 4.635955
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Ясно/Туман/Туман
+ok 16 - manual combination M1 Ясно/Туман/Туман
+  ---
+  duration_ms: 3.425194
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Ясно/Ясно
+ok 17 - manual combination M1 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 3.096553
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Ясно/Хмарно
+ok 18 - manual combination M1 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.805102
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Ясно/Буря
+ok 19 - manual combination M1 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 4.319813
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Ясно/Туман
+ok 20 - manual combination M1 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 3.467878
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Хмарно/Ясно
+ok 21 - manual combination M1 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 3.065626
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Хмарно/Хмарно
+ok 22 - manual combination M1 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.960114
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Хмарно/Буря
+ok 23 - manual combination M1 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.327468
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Хмарно/Туман
+ok 24 - manual combination M1 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 3.544132
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Буря/Ясно
+ok 25 - manual combination M1 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 4.281364
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Буря/Хмарно
+ok 26 - manual combination M1 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 4.646892
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Буря/Буря
+ok 27 - manual combination M1 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.828047
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Буря/Туман
+ok 28 - manual combination M1 Хмарно/Буря/Туман
+  ---
+  duration_ms: 3.44217
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Туман/Ясно
+ok 29 - manual combination M1 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 4.000786
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Туман/Хмарно
+ok 30 - manual combination M1 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 3.404604
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Туман/Буря
+ok 31 - manual combination M1 Хмарно/Туман/Буря
+  ---
+  duration_ms: 3.426006
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Хмарно/Туман/Туман
+ok 32 - manual combination M1 Хмарно/Туман/Туман
+  ---
+  duration_ms: 3.521829
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Ясно/Ясно
+ok 33 - manual combination M1 Буря/Ясно/Ясно
+  ---
+  duration_ms: 4.326763
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Ясно/Хмарно
+ok 34 - manual combination M1 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.759073
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Ясно/Буря
+ok 35 - manual combination M1 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.736871
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Ясно/Туман
+ok 36 - manual combination M1 Буря/Ясно/Туман
+  ---
+  duration_ms: 4.311571
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Хмарно/Ясно
+ok 37 - manual combination M1 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.618713
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Хмарно/Хмарно
+ok 38 - manual combination M1 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 4.232902
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Хмарно/Буря
+ok 39 - manual combination M1 Буря/Хмарно/Буря
+  ---
+  duration_ms: 4.616276
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Хмарно/Туман
+ok 40 - manual combination M1 Буря/Хмарно/Туман
+  ---
+  duration_ms: 5.736241
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Буря/Ясно
+ok 41 - manual combination M1 Буря/Буря/Ясно
+  ---
+  duration_ms: 8.580166
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Буря/Хмарно
+ok 42 - manual combination M1 Буря/Буря/Хмарно
+  ---
+  duration_ms: 12.566439
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Буря/Буря
+ok 43 - manual combination M1 Буря/Буря/Буря
+  ---
+  duration_ms: 12.795297
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Буря/Туман
+ok 44 - manual combination M1 Буря/Буря/Туман
+  ---
+  duration_ms: 4.040083
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Туман/Ясно
+ok 45 - manual combination M1 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.759634
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Туман/Хмарно
+ok 46 - manual combination M1 Буря/Туман/Хмарно
+  ---
+  duration_ms: 4.203788
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Туман/Буря
+ok 47 - manual combination M1 Буря/Туман/Буря
+  ---
+  duration_ms: 3.590241
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Буря/Туман/Туман
+ok 48 - manual combination M1 Буря/Туман/Туман
+  ---
+  duration_ms: 3.700076
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Ясно/Ясно
+ok 49 - manual combination M1 Туман/Ясно/Ясно
+  ---
+  duration_ms: 3.975146
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Ясно/Хмарно
+ok 50 - manual combination M1 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 3.47596
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Ясно/Буря
+ok 51 - manual combination M1 Туман/Ясно/Буря
+  ---
+  duration_ms: 3.019427
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Ясно/Туман
+ok 52 - manual combination M1 Туман/Ясно/Туман
+  ---
+  duration_ms: 3.082191
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Хмарно/Ясно
+ok 53 - manual combination M1 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 3.358814
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Хмарно/Хмарно
+ok 54 - manual combination M1 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 4.255627
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Хмарно/Буря
+ok 55 - manual combination M1 Туман/Хмарно/Буря
+  ---
+  duration_ms: 3.059777
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Хмарно/Туман
+ok 56 - manual combination M1 Туман/Хмарно/Туман
+  ---
+  duration_ms: 3.515218
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Буря/Ясно
+ok 57 - manual combination M1 Туман/Буря/Ясно
+  ---
+  duration_ms: 3.726825
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Буря/Хмарно
+ok 58 - manual combination M1 Туман/Буря/Хмарно
+  ---
+  duration_ms: 3.450932
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Буря/Буря
+ok 59 - manual combination M1 Туман/Буря/Буря
+  ---
+  duration_ms: 3.768127
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Буря/Туман
+ok 60 - manual combination M1 Туман/Буря/Туман
+  ---
+  duration_ms: 3.680156
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Туман/Ясно
+ok 61 - manual combination M1 Туман/Туман/Ясно
+  ---
+  duration_ms: 3.04111
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Туман/Хмарно
+ok 62 - manual combination M1 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.890043
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Туман/Буря
+ok 63 - manual combination M1 Туман/Туман/Буря
+  ---
+  duration_ms: 2.948802
+  type: 'test'
+  ...
+# Subtest: manual combination M1 Туман/Туман/Туман
+ok 64 - manual combination M1 Туман/Туман/Туман
+  ---
+  duration_ms: 3.423682
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Ясно/Ясно
+ok 65 - manual combination M2 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 3.011906
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Ясно/Хмарно
+ok 66 - manual combination M2 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 3.201449
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Ясно/Буря
+ok 67 - manual combination M2 Ясно/Ясно/Буря
+  ---
+  duration_ms: 3.422511
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Ясно/Туман
+ok 68 - manual combination M2 Ясно/Ясно/Туман
+  ---
+  duration_ms: 3.581198
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Хмарно/Ясно
+ok 69 - manual combination M2 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 3.096432
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Хмарно/Хмарно
+ok 70 - manual combination M2 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.352626
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Хмарно/Буря
+ok 71 - manual combination M2 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 3.118285
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Хмарно/Туман
+ok 72 - manual combination M2 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 3.330332
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Буря/Ясно
+ok 73 - manual combination M2 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.988868
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Буря/Хмарно
+ok 74 - manual combination M2 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 3.706265
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Буря/Буря
+ok 75 - manual combination M2 Ясно/Буря/Буря
+  ---
+  duration_ms: 4.3854
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Буря/Туман
+ok 76 - manual combination M2 Ясно/Буря/Туман
+  ---
+  duration_ms: 3.620456
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Туман/Ясно
+ok 77 - manual combination M2 Ясно/Туман/Ясно
+  ---
+  duration_ms: 2.824476
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Туман/Хмарно
+ok 78 - manual combination M2 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 3.386036
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Туман/Буря
+ok 79 - manual combination M2 Ясно/Туман/Буря
+  ---
+  duration_ms: 3.929218
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Ясно/Туман/Туман
+ok 80 - manual combination M2 Ясно/Туман/Туман
+  ---
+  duration_ms: 4.26153
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Ясно/Ясно
+ok 81 - manual combination M2 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 2.826649
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Ясно/Хмарно
+ok 82 - manual combination M2 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 2.864796
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Ясно/Буря
+ok 83 - manual combination M2 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 3.660586
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Ясно/Туман
+ok 84 - manual combination M2 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 2.916864
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Хмарно/Ясно
+ok 85 - manual combination M2 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 2.850574
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Хмарно/Хмарно
+ok 86 - manual combination M2 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 2.855702
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Хмарно/Буря
+ok 87 - manual combination M2 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.259166
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Хмарно/Туман
+ok 88 - manual combination M2 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 3.254509
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Буря/Ясно
+ok 89 - manual combination M2 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 3.183262
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Буря/Хмарно
+ok 90 - manual combination M2 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 3.111765
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Буря/Буря
+ok 91 - manual combination M2 Хмарно/Буря/Буря
+  ---
+  duration_ms: 4.17072
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Буря/Туман
+ok 92 - manual combination M2 Хмарно/Буря/Туман
+  ---
+  duration_ms: 3.732895
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Туман/Ясно
+ok 93 - manual combination M2 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 2.970344
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Туман/Хмарно
+ok 94 - manual combination M2 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 2.972397
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Туман/Буря
+ok 95 - manual combination M2 Хмарно/Туман/Буря
+  ---
+  duration_ms: 3.881317
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Хмарно/Туман/Туман
+ok 96 - manual combination M2 Хмарно/Туман/Туман
+  ---
+  duration_ms: 2.843684
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Ясно/Ясно
+ok 97 - manual combination M2 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.64963
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Ясно/Хмарно
+ok 98 - manual combination M2 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.807536
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Ясно/Буря
+ok 99 - manual combination M2 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.555779
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Ясно/Туман
+ok 100 - manual combination M2 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.791963
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Хмарно/Ясно
+ok 101 - manual combination M2 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.567788
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Хмарно/Хмарно
+ok 102 - manual combination M2 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 4.501495
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Хмарно/Буря
+ok 103 - manual combination M2 Буря/Хмарно/Буря
+  ---
+  duration_ms: 3.724732
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Хмарно/Туман
+ok 104 - manual combination M2 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.847946
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Буря/Ясно
+ok 105 - manual combination M2 Буря/Буря/Ясно
+  ---
+  duration_ms: 4.196603
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Буря/Хмарно
+ok 106 - manual combination M2 Буря/Буря/Хмарно
+  ---
+  duration_ms: 3.993374
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Буря/Буря
+ok 107 - manual combination M2 Буря/Буря/Буря
+  ---
+  duration_ms: 6.426093
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Буря/Туман
+ok 108 - manual combination M2 Буря/Буря/Туман
+  ---
+  duration_ms: 5.060751
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Туман/Ясно
+ok 109 - manual combination M2 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.753936
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Туман/Хмарно
+ok 110 - manual combination M2 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.62309
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Туман/Буря
+ok 111 - manual combination M2 Буря/Туман/Буря
+  ---
+  duration_ms: 3.649249
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Буря/Туман/Туман
+ok 112 - manual combination M2 Буря/Туман/Туман
+  ---
+  duration_ms: 4.261365
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Ясно/Ясно
+ok 113 - manual combination M2 Туман/Ясно/Ясно
+  ---
+  duration_ms: 4.944818
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Ясно/Хмарно
+ok 114 - manual combination M2 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.750004
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Ясно/Буря
+ok 115 - manual combination M2 Туман/Ясно/Буря
+  ---
+  duration_ms: 3.956429
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Ясно/Туман
+ok 116 - manual combination M2 Туман/Ясно/Туман
+  ---
+  duration_ms: 3.419686
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Хмарно/Ясно
+ok 117 - manual combination M2 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 3.2088
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Хмарно/Хмарно
+ok 118 - manual combination M2 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 3.142381
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Хмарно/Буря
+ok 119 - manual combination M2 Туман/Хмарно/Буря
+  ---
+  duration_ms: 3.444232
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Хмарно/Туман
+ok 120 - manual combination M2 Туман/Хмарно/Туман
+  ---
+  duration_ms: 3.02811
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Буря/Ясно
+ok 121 - manual combination M2 Туман/Буря/Ясно
+  ---
+  duration_ms: 2.88105
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Буря/Хмарно
+ok 122 - manual combination M2 Туман/Буря/Хмарно
+  ---
+  duration_ms: 2.891215
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Буря/Буря
+ok 123 - manual combination M2 Туман/Буря/Буря
+  ---
+  duration_ms: 3.297332
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Буря/Туман
+ok 124 - manual combination M2 Туман/Буря/Туман
+  ---
+  duration_ms: 3.34226
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Туман/Ясно
+ok 125 - manual combination M2 Туман/Туман/Ясно
+  ---
+  duration_ms: 3.114015
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Туман/Хмарно
+ok 126 - manual combination M2 Туман/Туман/Хмарно
+  ---
+  duration_ms: 3.089519
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Туман/Буря
+ok 127 - manual combination M2 Туман/Туман/Буря
+  ---
+  duration_ms: 5.355029
+  type: 'test'
+  ...
+# Subtest: manual combination M2 Туман/Туман/Туман
+ok 128 - manual combination M2 Туман/Туман/Туман
+  ---
+  duration_ms: 3.351924
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Ясно/Ясно
+ok 129 - manual combination M3 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 3.259686
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Ясно/Хмарно
+ok 130 - manual combination M3 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 3.304513
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Ясно/Буря
+ok 131 - manual combination M3 Ясно/Ясно/Буря
+  ---
+  duration_ms: 3.846669
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Ясно/Туман
+ok 132 - manual combination M3 Ясно/Ясно/Туман
+  ---
+  duration_ms: 4.865753
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Хмарно/Ясно
+ok 133 - manual combination M3 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 3.138213
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Хмарно/Хмарно
+ok 134 - manual combination M3 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.399456
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Хмарно/Буря
+ok 135 - manual combination M3 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 4.143716
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Хмарно/Туман
+ok 136 - manual combination M3 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 3.370162
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Буря/Ясно
+ok 137 - manual combination M3 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.361048
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Буря/Хмарно
+ok 138 - manual combination M3 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 5.015548
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Буря/Буря
+ok 139 - manual combination M3 Ясно/Буря/Буря
+  ---
+  duration_ms: 4.434924
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Буря/Туман
+ok 140 - manual combination M3 Ясно/Буря/Туман
+  ---
+  duration_ms: 3.121327
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Туман/Ясно
+ok 141 - manual combination M3 Ясно/Туман/Ясно
+  ---
+  duration_ms: 2.742688
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Туман/Хмарно
+ok 142 - manual combination M3 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 3.296211
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Туман/Буря
+ok 143 - manual combination M3 Ясно/Туман/Буря
+  ---
+  duration_ms: 4.001201
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Ясно/Туман/Туман
+ok 144 - manual combination M3 Ясно/Туман/Туман
+  ---
+  duration_ms: 3.40233
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Ясно/Ясно
+ok 145 - manual combination M3 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 4.042744
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Ясно/Хмарно
+ok 146 - manual combination M3 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.768862
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Ясно/Буря
+ok 147 - manual combination M3 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 3.398314
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Ясно/Туман
+ok 148 - manual combination M3 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 3.093115
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Хмарно/Ясно
+ok 149 - manual combination M3 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 3.119355
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Хмарно/Хмарно
+ok 150 - manual combination M3 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 5.569557
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Хмарно/Буря
+ok 151 - manual combination M3 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.487058
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Хмарно/Туман
+ok 152 - manual combination M3 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 3.577503
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Буря/Ясно
+ok 153 - manual combination M3 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 3.228209
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Буря/Хмарно
+ok 154 - manual combination M3 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 3.740399
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Буря/Буря
+ok 155 - manual combination M3 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.511855
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Буря/Туман
+ok 156 - manual combination M3 Хмарно/Буря/Туман
+  ---
+  duration_ms: 3.401599
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Туман/Ясно
+ok 157 - manual combination M3 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 3.145414
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Туман/Хмарно
+ok 158 - manual combination M3 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 3.347118
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Туман/Буря
+ok 159 - manual combination M3 Хмарно/Туман/Буря
+  ---
+  duration_ms: 3.327137
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Хмарно/Туман/Туман
+ok 160 - manual combination M3 Хмарно/Туман/Туман
+  ---
+  duration_ms: 2.979554
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Ясно/Ясно
+ok 161 - manual combination M3 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.268449
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Ясно/Хмарно
+ok 162 - manual combination M3 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.825807
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Ясно/Буря
+ok 163 - manual combination M3 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.916253
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Ясно/Туман
+ok 164 - manual combination M3 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.442251
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Хмарно/Ясно
+ok 165 - manual combination M3 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.606157
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Хмарно/Хмарно
+ok 166 - manual combination M3 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 3.410042
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Хмарно/Буря
+ok 167 - manual combination M3 Буря/Хмарно/Буря
+  ---
+  duration_ms: 3.504995
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Хмарно/Туман
+ok 168 - manual combination M3 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.291353
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Буря/Ясно
+ok 169 - manual combination M3 Буря/Буря/Ясно
+  ---
+  duration_ms: 3.600809
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Буря/Хмарно
+ok 170 - manual combination M3 Буря/Буря/Хмарно
+  ---
+  duration_ms: 4.243787
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Буря/Буря
+ok 171 - manual combination M3 Буря/Буря/Буря
+  ---
+  duration_ms: 4.10006
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Буря/Туман
+ok 172 - manual combination M3 Буря/Буря/Туман
+  ---
+  duration_ms: 4.266631
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Туман/Ясно
+ok 173 - manual combination M3 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.364914
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Туман/Хмарно
+ok 174 - manual combination M3 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.451284
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Туман/Буря
+ok 175 - manual combination M3 Буря/Туман/Буря
+  ---
+  duration_ms: 4.22576
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Буря/Туман/Туман
+ok 176 - manual combination M3 Буря/Туман/Туман
+  ---
+  duration_ms: 3.447358
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Ясно/Ясно
+ok 177 - manual combination M3 Туман/Ясно/Ясно
+  ---
+  duration_ms: 2.971702
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Ясно/Хмарно
+ok 178 - manual combination M3 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.755286
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Ясно/Буря
+ok 179 - manual combination M3 Туман/Ясно/Буря
+  ---
+  duration_ms: 3.999489
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Ясно/Туман
+ok 180 - manual combination M3 Туман/Ясно/Туман
+  ---
+  duration_ms: 3.439585
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Хмарно/Ясно
+ok 181 - manual combination M3 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 3.086695
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Хмарно/Хмарно
+ok 182 - manual combination M3 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 2.847485
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Хмарно/Буря
+ok 183 - manual combination M3 Туман/Хмарно/Буря
+  ---
+  duration_ms: 3.614609
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Хмарно/Туман
+ok 184 - manual combination M3 Туман/Хмарно/Туман
+  ---
+  duration_ms: 3.268158
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Буря/Ясно
+ok 185 - manual combination M3 Туман/Буря/Ясно
+  ---
+  duration_ms: 3.061807
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Буря/Хмарно
+ok 186 - manual combination M3 Туман/Буря/Хмарно
+  ---
+  duration_ms: 3.274368
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Буря/Буря
+ok 187 - manual combination M3 Туман/Буря/Буря
+  ---
+  duration_ms: 3.812337
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Буря/Туман
+ok 188 - manual combination M3 Туман/Буря/Туман
+  ---
+  duration_ms: 2.894786
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Туман/Ясно
+ok 189 - manual combination M3 Туман/Туман/Ясно
+  ---
+  duration_ms: 2.839022
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Туман/Хмарно
+ok 190 - manual combination M3 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.86438
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Туман/Буря
+ok 191 - manual combination M3 Туман/Туман/Буря
+  ---
+  duration_ms: 3.142999
+  type: 'test'
+  ...
+# Subtest: manual combination M3 Туман/Туман/Туман
+ok 192 - manual combination M3 Туман/Туман/Туман
+  ---
+  duration_ms: 3.207297
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Ясно/Ясно
+ok 193 - manual combination M4 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 2.823218
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Ясно/Хмарно
+ok 194 - manual combination M4 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 4.347212
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Ясно/Буря
+ok 195 - manual combination M4 Ясно/Ясно/Буря
+  ---
+  duration_ms: 3.749683
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Ясно/Туман
+ok 196 - manual combination M4 Ясно/Ясно/Туман
+  ---
+  duration_ms: 2.789438
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Хмарно/Ясно
+ok 197 - manual combination M4 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 2.869409
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Хмарно/Хмарно
+ok 198 - manual combination M4 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.065985
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Хмарно/Буря
+ok 199 - manual combination M4 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 4.050776
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Хмарно/Туман
+ok 200 - manual combination M4 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 5.234317
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Буря/Ясно
+ok 201 - manual combination M4 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.257992
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Буря/Хмарно
+ok 202 - manual combination M4 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 3.633778
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Буря/Буря
+ok 203 - manual combination M4 Ясно/Буря/Буря
+  ---
+  duration_ms: 4.548335
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Буря/Туман
+ok 204 - manual combination M4 Ясно/Буря/Туман
+  ---
+  duration_ms: 3.220757
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Туман/Ясно
+ok 205 - manual combination M4 Ясно/Туман/Ясно
+  ---
+  duration_ms: 3.221137
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Туман/Хмарно
+ok 206 - manual combination M4 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 3.138102
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Туман/Буря
+ok 207 - manual combination M4 Ясно/Туман/Буря
+  ---
+  duration_ms: 3.557603
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Ясно/Туман/Туман
+ok 208 - manual combination M4 Ясно/Туман/Туман
+  ---
+  duration_ms: 3.682021
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Ясно/Ясно
+ok 209 - manual combination M4 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 3.589793
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Ясно/Хмарно
+ok 210 - manual combination M4 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.651485
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Ясно/Буря
+ok 211 - manual combination M4 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 3.706357
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Ясно/Туман
+ok 212 - manual combination M4 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 2.82411
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Хмарно/Ясно
+ok 213 - manual combination M4 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 2.839323
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Хмарно/Хмарно
+ok 214 - manual combination M4 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.22269
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Хмарно/Буря
+ok 215 - manual combination M4 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.839848
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Хмарно/Туман
+ok 216 - manual combination M4 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 3.391484
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Буря/Ясно
+ok 217 - manual combination M4 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 4.190457
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Буря/Хмарно
+ok 218 - manual combination M4 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 4.447483
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Буря/Буря
+ok 219 - manual combination M4 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.381138
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Буря/Туман
+ok 220 - manual combination M4 Хмарно/Буря/Туман
+  ---
+  duration_ms: 3.126465
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Туман/Ясно
+ok 221 - manual combination M4 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 2.949799
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Туман/Хмарно
+ok 222 - manual combination M4 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 2.852372
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Туман/Буря
+ok 223 - manual combination M4 Хмарно/Туман/Буря
+  ---
+  duration_ms: 2.819122
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Хмарно/Туман/Туман
+ok 224 - manual combination M4 Хмарно/Туман/Туман
+  ---
+  duration_ms: 2.943429
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Ясно/Ясно
+ok 225 - manual combination M4 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.028848
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Ясно/Хмарно
+ok 226 - manual combination M4 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.521349
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Ясно/Буря
+ok 227 - manual combination M4 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.558465
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Ясно/Туман
+ok 228 - manual combination M4 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.724796
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Хмарно/Ясно
+ok 229 - manual combination M4 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.332625
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Хмарно/Хмарно
+ok 230 - manual combination M4 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 3.430052
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Хмарно/Буря
+ok 231 - manual combination M4 Буря/Хмарно/Буря
+  ---
+  duration_ms: 4.082745
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Хмарно/Туман
+ok 232 - manual combination M4 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.502481
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Буря/Ясно
+ok 233 - manual combination M4 Буря/Буря/Ясно
+  ---
+  duration_ms: 3.835772
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Буря/Хмарно
+ok 234 - manual combination M4 Буря/Буря/Хмарно
+  ---
+  duration_ms: 3.729172
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Буря/Буря
+ok 235 - manual combination M4 Буря/Буря/Буря
+  ---
+  duration_ms: 3.430713
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Буря/Туман
+ok 236 - manual combination M4 Буря/Буря/Туман
+  ---
+  duration_ms: 3.436753
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Туман/Ясно
+ok 237 - manual combination M4 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.134027
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Туман/Хмарно
+ok 238 - manual combination M4 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.016159
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Туман/Буря
+ok 239 - manual combination M4 Буря/Туман/Буря
+  ---
+  duration_ms: 3.124312
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Буря/Туман/Туман
+ok 240 - manual combination M4 Буря/Туман/Туман
+  ---
+  duration_ms: 4.278649
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Ясно/Ясно
+ok 241 - manual combination M4 Туман/Ясно/Ясно
+  ---
+  duration_ms: 2.67142
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Ясно/Хмарно
+ok 242 - manual combination M4 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.647003
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Ясно/Буря
+ok 243 - manual combination M4 Туман/Ясно/Буря
+  ---
+  duration_ms: 3.115949
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Ясно/Туман
+ok 244 - manual combination M4 Туман/Ясно/Туман
+  ---
+  duration_ms: 3.296391
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Хмарно/Ясно
+ok 245 - manual combination M4 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 2.696438
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Хмарно/Хмарно
+ok 246 - manual combination M4 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 2.741356
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Хмарно/Буря
+ok 247 - manual combination M4 Туман/Хмарно/Буря
+  ---
+  duration_ms: 4.051277
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Хмарно/Туман
+ok 248 - manual combination M4 Туман/Хмарно/Туман
+  ---
+  duration_ms: 3.159575
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Буря/Ясно
+ok 249 - manual combination M4 Туман/Буря/Ясно
+  ---
+  duration_ms: 3.036079
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Буря/Хмарно
+ok 250 - manual combination M4 Туман/Буря/Хмарно
+  ---
+  duration_ms: 3.218584
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Буря/Буря
+ok 251 - manual combination M4 Туман/Буря/Буря
+  ---
+  duration_ms: 3.403081
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Буря/Туман
+ok 252 - manual combination M4 Туман/Буря/Туман
+  ---
+  duration_ms: 2.962268
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Туман/Ясно
+ok 253 - manual combination M4 Туман/Туман/Ясно
+  ---
+  duration_ms: 2.988387
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Туман/Хмарно
+ok 254 - manual combination M4 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.806153
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Туман/Буря
+ok 255 - manual combination M4 Туман/Туман/Буря
+  ---
+  duration_ms: 2.834746
+  type: 'test'
+  ...
+# Subtest: manual combination M4 Туман/Туман/Туман
+ok 256 - manual combination M4 Туман/Туман/Туман
+  ---
+  duration_ms: 3.532496
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Ясно/Ясно
+ok 257 - manual combination M5 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 3.159966
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Ясно/Хмарно
+ok 258 - manual combination M5 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 3.329901
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Ясно/Буря
+ok 259 - manual combination M5 Ясно/Ясно/Буря
+  ---
+  duration_ms: 3.037581
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Ясно/Туман
+ok 260 - manual combination M5 Ясно/Ясно/Туман
+  ---
+  duration_ms: 2.839082
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Хмарно/Ясно
+ok 261 - manual combination M5 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 3.075689
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Хмарно/Хмарно
+ok 262 - manual combination M5 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.079385
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Хмарно/Буря
+ok 263 - manual combination M5 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 3.313987
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Хмарно/Туман
+ok 264 - manual combination M5 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 3.541379
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Буря/Ясно
+ok 265 - manual combination M5 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.572486
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Буря/Хмарно
+ok 266 - manual combination M5 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 3.875622
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Буря/Буря
+ok 267 - manual combination M5 Ясно/Буря/Буря
+  ---
+  duration_ms: 3.583132
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Буря/Туман
+ok 268 - manual combination M5 Ясно/Буря/Туман
+  ---
+  duration_ms: 3.000216
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Туман/Ясно
+ok 269 - manual combination M5 Ясно/Туман/Ясно
+  ---
+  duration_ms: 2.747385
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Туман/Хмарно
+ok 270 - manual combination M5 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 2.849769
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Туман/Буря
+ok 271 - manual combination M5 Ясно/Туман/Буря
+  ---
+  duration_ms: 3.520488
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Ясно/Туман/Туман
+ok 272 - manual combination M5 Ясно/Туман/Туман
+  ---
+  duration_ms: 2.986054
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Ясно/Ясно
+ok 273 - manual combination M5 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 2.978302
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Ясно/Хмарно
+ok 274 - manual combination M5 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.378534
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Ясно/Буря
+ok 275 - manual combination M5 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 3.435359
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Ясно/Туман
+ok 276 - manual combination M5 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 2.985723
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Хмарно/Ясно
+ok 277 - manual combination M5 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 2.96405
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Хмарно/Хмарно
+ok 278 - manual combination M5 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.086454
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Хмарно/Буря
+ok 279 - manual combination M5 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.578566
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Хмарно/Туман
+ok 280 - manual combination M5 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 3.241448
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Буря/Ясно
+ok 281 - manual combination M5 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 3.34221
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Буря/Хмарно
+ok 282 - manual combination M5 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 3.03674
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Буря/Буря
+ok 283 - manual combination M5 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.241628
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Буря/Туман
+ok 284 - manual combination M5 Хмарно/Буря/Туман
+  ---
+  duration_ms: 2.931521
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Туман/Ясно
+ok 285 - manual combination M5 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 2.882428
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Туман/Хмарно
+ok 286 - manual combination M5 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 3.532606
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Туман/Буря
+ok 287 - manual combination M5 Хмарно/Туман/Буря
+  ---
+  duration_ms: 3.022759
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Хмарно/Туман/Туман
+ok 288 - manual combination M5 Хмарно/Туман/Туман
+  ---
+  duration_ms: 3.253607
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Ясно/Ясно
+ok 289 - manual combination M5 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.829493
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Ясно/Хмарно
+ok 290 - manual combination M5 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.407478
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Ясно/Буря
+ok 291 - manual combination M5 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.904657
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Ясно/Туман
+ok 292 - manual combination M5 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.878027
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Хмарно/Ясно
+ok 293 - manual combination M5 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.313997
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Хмарно/Хмарно
+ok 294 - manual combination M5 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 3.832628
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Хмарно/Буря
+ok 295 - manual combination M5 Буря/Хмарно/Буря
+  ---
+  duration_ms: 3.955393
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Хмарно/Туман
+ok 296 - manual combination M5 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.285294
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Буря/Ясно
+ok 297 - manual combination M5 Буря/Буря/Ясно
+  ---
+  duration_ms: 3.72168
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Буря/Хмарно
+ok 298 - manual combination M5 Буря/Буря/Хмарно
+  ---
+  duration_ms: 3.160196
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Буря/Буря
+ok 299 - manual combination M5 Буря/Буря/Буря
+  ---
+  duration_ms: 3.62819
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Буря/Туман
+ok 300 - manual combination M5 Буря/Буря/Туман
+  ---
+  duration_ms: 3.788702
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Туман/Ясно
+ok 301 - manual combination M5 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.454669
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Туман/Хмарно
+ok 302 - manual combination M5 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.051062
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Туман/Буря
+ok 303 - manual combination M5 Буря/Туман/Буря
+  ---
+  duration_ms: 3.105844
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Буря/Туман/Туман
+ok 304 - manual combination M5 Буря/Туман/Туман
+  ---
+  duration_ms: 3.555691
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Ясно/Ясно
+ok 305 - manual combination M5 Туман/Ясно/Ясно
+  ---
+  duration_ms: 2.99643
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Ясно/Хмарно
+ok 306 - manual combination M5 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.739653
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Ясно/Буря
+ok 307 - manual combination M5 Туман/Ясно/Буря
+  ---
+  duration_ms: 3.306205
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Ясно/Туман
+ok 308 - manual combination M5 Туман/Ясно/Туман
+  ---
+  duration_ms: 3.240446
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Хмарно/Ясно
+ok 309 - manual combination M5 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 2.805683
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Хмарно/Хмарно
+ok 310 - manual combination M5 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 2.819323
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Хмарно/Буря
+ok 311 - manual combination M5 Туман/Хмарно/Буря
+  ---
+  duration_ms: 3.719477
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Хмарно/Туман
+ok 312 - manual combination M5 Туман/Хмарно/Туман
+  ---
+  duration_ms: 2.656959
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Буря/Ясно
+ok 313 - manual combination M5 Туман/Буря/Ясно
+  ---
+  duration_ms: 2.880274
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Буря/Хмарно
+ok 314 - manual combination M5 Туман/Буря/Хмарно
+  ---
+  duration_ms: 2.829287
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Буря/Буря
+ok 315 - manual combination M5 Туман/Буря/Буря
+  ---
+  duration_ms: 2.889559
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Буря/Туман
+ok 316 - manual combination M5 Туман/Буря/Туман
+  ---
+  duration_ms: 3.415029
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Туман/Ясно
+ok 317 - manual combination M5 Туман/Туман/Ясно
+  ---
+  duration_ms: 2.780525
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Туман/Хмарно
+ok 318 - manual combination M5 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.763979
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Туман/Буря
+ok 319 - manual combination M5 Туман/Туман/Буря
+  ---
+  duration_ms: 3.667288
+  type: 'test'
+  ...
+# Subtest: manual combination M5 Туман/Туман/Туман
+ok 320 - manual combination M5 Туман/Туман/Туман
+  ---
+  duration_ms: 2.865082
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Ясно/Ясно
+ok 321 - manual combination M6 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 2.600333
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Ясно/Хмарно
+ok 322 - manual combination M6 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 3.614019
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Ясно/Буря
+ok 323 - manual combination M6 Ясно/Ясно/Буря
+  ---
+  duration_ms: 3.167137
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Ясно/Туман
+ok 324 - manual combination M6 Ясно/Ясно/Туман
+  ---
+  duration_ms: 3.46849
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Хмарно/Ясно
+ok 325 - manual combination M6 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 3.231273
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Хмарно/Хмарно
+ok 326 - manual combination M6 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 2.893955
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Хмарно/Буря
+ok 327 - manual combination M6 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 3.037972
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Хмарно/Туман
+ok 328 - manual combination M6 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 2.940766
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Буря/Ясно
+ok 329 - manual combination M6 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.271433
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Буря/Хмарно
+ok 330 - manual combination M6 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 3.093936
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Буря/Буря
+ok 331 - manual combination M6 Ясно/Буря/Буря
+  ---
+  duration_ms: 3.183821
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Буря/Туман
+ok 332 - manual combination M6 Ясно/Буря/Туман
+  ---
+  duration_ms: 3.494579
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Туман/Ясно
+ok 333 - manual combination M6 Ясно/Туман/Ясно
+  ---
+  duration_ms: 2.700093
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Туман/Хмарно
+ok 334 - manual combination M6 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 2.848407
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Туман/Буря
+ok 335 - manual combination M6 Ясно/Туман/Буря
+  ---
+  duration_ms: 2.803068
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Ясно/Туман/Туман
+ok 336 - manual combination M6 Ясно/Туман/Туман
+  ---
+  duration_ms: 2.655547
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Ясно/Ясно
+ok 337 - manual combination M6 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 2.668145
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Ясно/Хмарно
+ok 338 - manual combination M6 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.045173
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Ясно/Буря
+ok 339 - manual combination M6 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 2.90395
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Ясно/Туман
+ok 340 - manual combination M6 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 3.466427
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Хмарно/Ясно
+ok 341 - manual combination M6 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 2.701576
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Хмарно/Хмарно
+ok 342 - manual combination M6 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 2.91774
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Хмарно/Буря
+ok 343 - manual combination M6 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 2.774616
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Хмарно/Туман
+ok 344 - manual combination M6 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 2.701355
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Буря/Ясно
+ok 345 - manual combination M6 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 2.848577
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Буря/Хмарно
+ok 346 - manual combination M6 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 3.931627
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Буря/Буря
+ok 347 - manual combination M6 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.629052
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Буря/Туман
+ok 348 - manual combination M6 Хмарно/Буря/Туман
+  ---
+  duration_ms: 2.91038
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Туман/Ясно
+ok 349 - manual combination M6 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 2.901646
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Туман/Хмарно
+ok 350 - manual combination M6 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 2.851781
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Туман/Буря
+ok 351 - manual combination M6 Хмарно/Туман/Буря
+  ---
+  duration_ms: 2.727294
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Хмарно/Туман/Туман
+ok 352 - manual combination M6 Хмарно/Туман/Туман
+  ---
+  duration_ms: 3.489071
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Ясно/Ясно
+ok 353 - manual combination M6 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.168218
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Ясно/Хмарно
+ok 354 - manual combination M6 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.387267
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Ясно/Буря
+ok 355 - manual combination M6 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.826399
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Ясно/Туман
+ok 356 - manual combination M6 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.148969
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Хмарно/Ясно
+ok 357 - manual combination M6 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.163141
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Хмарно/Хмарно
+ok 358 - manual combination M6 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 3.50829
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Хмарно/Буря
+ok 359 - manual combination M6 Буря/Хмарно/Буря
+  ---
+  duration_ms: 3.265224
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Хмарно/Туман
+ok 360 - manual combination M6 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.112394
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Буря/Ясно
+ok 361 - manual combination M6 Буря/Буря/Ясно
+  ---
+  duration_ms: 3.140216
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Буря/Хмарно
+ok 362 - manual combination M6 Буря/Буря/Хмарно
+  ---
+  duration_ms: 3.712066
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Буря/Буря
+ok 363 - manual combination M6 Буря/Буря/Буря
+  ---
+  duration_ms: 3.24276
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Буря/Туман
+ok 364 - manual combination M6 Буря/Буря/Туман
+  ---
+  duration_ms: 3.41592
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Туман/Ясно
+ok 365 - manual combination M6 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.081748
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Туман/Хмарно
+ok 366 - manual combination M6 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.179896
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Туман/Буря
+ok 367 - manual combination M6 Буря/Туман/Буря
+  ---
+  duration_ms: 3.16951
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Буря/Туман/Туман
+ok 368 - manual combination M6 Буря/Туман/Туман
+  ---
+  duration_ms: 2.96967
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Ясно/Ясно
+ok 369 - manual combination M6 Туман/Ясно/Ясно
+  ---
+  duration_ms: 3.366076
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Ясно/Хмарно
+ok 370 - manual combination M6 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.728086
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Ясно/Буря
+ok 371 - manual combination M6 Туман/Ясно/Буря
+  ---
+  duration_ms: 2.913344
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Ясно/Туман
+ok 372 - manual combination M6 Туман/Ясно/Туман
+  ---
+  duration_ms: 2.661395
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Хмарно/Ясно
+ok 373 - manual combination M6 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 2.526082
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Хмарно/Хмарно
+ok 374 - manual combination M6 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 2.648897
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Хмарно/Буря
+ok 375 - manual combination M6 Туман/Хмарно/Буря
+  ---
+  duration_ms: 2.75717
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Хмарно/Туман
+ok 376 - manual combination M6 Туман/Хмарно/Туман
+  ---
+  duration_ms: 2.686402
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Буря/Ясно
+ok 377 - manual combination M6 Туман/Буря/Ясно
+  ---
+  duration_ms: 3.305695
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Буря/Хмарно
+ok 378 - manual combination M6 Туман/Буря/Хмарно
+  ---
+  duration_ms: 2.900495
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Буря/Буря
+ok 379 - manual combination M6 Туман/Буря/Буря
+  ---
+  duration_ms: 2.808056
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Буря/Туман
+ok 380 - manual combination M6 Туман/Буря/Туман
+  ---
+  duration_ms: 2.786644
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Туман/Ясно
+ok 381 - manual combination M6 Туман/Туман/Ясно
+  ---
+  duration_ms: 2.879443
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Туман/Хмарно
+ok 382 - manual combination M6 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.839943
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Туман/Буря
+ok 383 - manual combination M6 Туман/Туман/Буря
+  ---
+  duration_ms: 2.679112
+  type: 'test'
+  ...
+# Subtest: manual combination M6 Туман/Туман/Туман
+ok 384 - manual combination M6 Туман/Туман/Туман
+  ---
+  duration_ms: 3.015237
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Ясно/Ясно
+ok 385 - manual combination M7 Ясно/Ясно/Ясно
+  ---
+  duration_ms: 3.479055
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Ясно/Хмарно
+ok 386 - manual combination M7 Ясно/Ясно/Хмарно
+  ---
+  duration_ms: 3.099675
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Ясно/Буря
+ok 387 - manual combination M7 Ясно/Ясно/Буря
+  ---
+  duration_ms: 2.994797
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Ясно/Туман
+ok 388 - manual combination M7 Ясно/Ясно/Туман
+  ---
+  duration_ms: 3.028457
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Хмарно/Ясно
+ok 389 - manual combination M7 Ясно/Хмарно/Ясно
+  ---
+  duration_ms: 2.860505
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Хмарно/Хмарно
+ok 390 - manual combination M7 Ясно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.071853
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Хмарно/Буря
+ok 391 - manual combination M7 Ясно/Хмарно/Буря
+  ---
+  duration_ms: 2.821126
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Хмарно/Туман
+ok 392 - manual combination M7 Ясно/Хмарно/Туман
+  ---
+  duration_ms: 3.14312
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Буря/Ясно
+ok 393 - manual combination M7 Ясно/Буря/Ясно
+  ---
+  duration_ms: 3.791736
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Буря/Хмарно
+ok 394 - manual combination M7 Ясно/Буря/Хмарно
+  ---
+  duration_ms: 3.170531
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Буря/Буря
+ok 395 - manual combination M7 Ясно/Буря/Буря
+  ---
+  duration_ms: 3.139185
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Буря/Туман
+ok 396 - manual combination M7 Ясно/Буря/Туман
+  ---
+  duration_ms: 2.956339
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Туман/Ясно
+ok 397 - manual combination M7 Ясно/Туман/Ясно
+  ---
+  duration_ms: 2.70459
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Туман/Хмарно
+ok 398 - manual combination M7 Ясно/Туман/Хмарно
+  ---
+  duration_ms: 2.856158
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Туман/Буря
+ok 399 - manual combination M7 Ясно/Туман/Буря
+  ---
+  duration_ms: 2.998533
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Ясно/Туман/Туман
+ok 400 - manual combination M7 Ясно/Туман/Туман
+  ---
+  duration_ms: 2.748936
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Ясно/Ясно
+ok 401 - manual combination M7 Хмарно/Ясно/Ясно
+  ---
+  duration_ms: 3.585987
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Ясно/Хмарно
+ok 402 - manual combination M7 Хмарно/Ясно/Хмарно
+  ---
+  duration_ms: 3.0568
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Ясно/Буря
+ok 403 - manual combination M7 Хмарно/Ясно/Буря
+  ---
+  duration_ms: 3.306446
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Ясно/Туман
+ok 404 - manual combination M7 Хмарно/Ясно/Туман
+  ---
+  duration_ms: 2.8773
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Хмарно/Ясно
+ok 405 - manual combination M7 Хмарно/Хмарно/Ясно
+  ---
+  duration_ms: 2.857931
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Хмарно/Хмарно
+ok 406 - manual combination M7 Хмарно/Хмарно/Хмарно
+  ---
+  duration_ms: 3.210412
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Хмарно/Буря
+ok 407 - manual combination M7 Хмарно/Хмарно/Буря
+  ---
+  duration_ms: 3.097071
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Хмарно/Туман
+ok 408 - manual combination M7 Хмарно/Хмарно/Туман
+  ---
+  duration_ms: 2.866384
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Буря/Ясно
+ok 409 - manual combination M7 Хмарно/Буря/Ясно
+  ---
+  duration_ms: 3.709913
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Буря/Хмарно
+ok 410 - manual combination M7 Хмарно/Буря/Хмарно
+  ---
+  duration_ms: 3.132604
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Буря/Буря
+ok 411 - manual combination M7 Хмарно/Буря/Буря
+  ---
+  duration_ms: 3.290652
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Буря/Туман
+ok 412 - manual combination M7 Хмарно/Буря/Туман
+  ---
+  duration_ms: 3.186956
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Туман/Ясно
+ok 413 - manual combination M7 Хмарно/Туман/Ясно
+  ---
+  duration_ms: 2.823429
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Туман/Хмарно
+ok 414 - manual combination M7 Хмарно/Туман/Хмарно
+  ---
+  duration_ms: 3.305324
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Туман/Буря
+ok 415 - manual combination M7 Хмарно/Туман/Буря
+  ---
+  duration_ms: 2.980715
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Хмарно/Туман/Туман
+ok 416 - manual combination M7 Хмарно/Туман/Туман
+  ---
+  duration_ms: 3.735642
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Ясно/Ясно
+ok 417 - manual combination M7 Буря/Ясно/Ясно
+  ---
+  duration_ms: 3.264382
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Ясно/Хмарно
+ok 418 - manual combination M7 Буря/Ясно/Хмарно
+  ---
+  duration_ms: 3.105984
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Ясно/Буря
+ok 419 - manual combination M7 Буря/Ясно/Буря
+  ---
+  duration_ms: 3.154587
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Ясно/Туман
+ok 420 - manual combination M7 Буря/Ясно/Туман
+  ---
+  duration_ms: 3.519757
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Хмарно/Ясно
+ok 421 - manual combination M7 Буря/Хмарно/Ясно
+  ---
+  duration_ms: 3.425584
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Хмарно/Хмарно
+ok 422 - manual combination M7 Буря/Хмарно/Хмарно
+  ---
+  duration_ms: 3.29602
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Хмарно/Буря
+ok 423 - manual combination M7 Буря/Хмарно/Буря
+  ---
+  duration_ms: 3.790494
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Хмарно/Туман
+ok 424 - manual combination M7 Буря/Хмарно/Туман
+  ---
+  duration_ms: 3.491815
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Буря/Ясно
+ok 425 - manual combination M7 Буря/Буря/Ясно
+  ---
+  duration_ms: 3.570964
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Буря/Хмарно
+ok 426 - manual combination M7 Буря/Буря/Хмарно
+  ---
+  duration_ms: 3.466186
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Буря/Буря
+ok 427 - manual combination M7 Буря/Буря/Буря
+  ---
+  duration_ms: 3.506678
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Буря/Туман
+ok 428 - manual combination M7 Буря/Буря/Туман
+  ---
+  duration_ms: 3.316781
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Туман/Ясно
+ok 429 - manual combination M7 Буря/Туман/Ясно
+  ---
+  duration_ms: 3.789303
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Туман/Хмарно
+ok 430 - manual combination M7 Буря/Туман/Хмарно
+  ---
+  duration_ms: 3.756653
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Туман/Буря
+ok 431 - manual combination M7 Буря/Туман/Буря
+  ---
+  duration_ms: 3.5424
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Буря/Туман/Туман
+ok 432 - manual combination M7 Буря/Туман/Туман
+  ---
+  duration_ms: 3.229811
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Ясно/Ясно
+ok 433 - manual combination M7 Туман/Ясно/Ясно
+  ---
+  duration_ms: 3.017571
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Ясно/Хмарно
+ok 434 - manual combination M7 Туман/Ясно/Хмарно
+  ---
+  duration_ms: 2.995538
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Ясно/Буря
+ok 435 - manual combination M7 Туман/Ясно/Буря
+  ---
+  duration_ms: 2.734916
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Ясно/Туман
+ok 436 - manual combination M7 Туман/Ясно/Туман
+  ---
+  duration_ms: 2.629577
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Хмарно/Ясно
+ok 437 - manual combination M7 Туман/Хмарно/Ясно
+  ---
+  duration_ms: 3.148398
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Хмарно/Хмарно
+ok 438 - manual combination M7 Туман/Хмарно/Хмарно
+  ---
+  duration_ms: 3.490974
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Хмарно/Буря
+ok 439 - manual combination M7 Туман/Хмарно/Буря
+  ---
+  duration_ms: 2.741165
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Хмарно/Туман
+ok 440 - manual combination M7 Туман/Хмарно/Туман
+  ---
+  duration_ms: 2.655777
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Буря/Ясно
+ok 441 - manual combination M7 Туман/Буря/Ясно
+  ---
+  duration_ms: 2.811321
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Буря/Хмарно
+ok 442 - manual combination M7 Туман/Буря/Хмарно
+  ---
+  duration_ms: 2.926885
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Буря/Буря
+ok 443 - manual combination M7 Туман/Буря/Буря
+  ---
+  duration_ms: 2.921787
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Буря/Туман
+ok 444 - manual combination M7 Туман/Буря/Туман
+  ---
+  duration_ms: 2.855868
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Туман/Ясно
+ok 445 - manual combination M7 Туман/Туман/Ясно
+  ---
+  duration_ms: 3.271363
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Туман/Хмарно
+ok 446 - manual combination M7 Туман/Туман/Хмарно
+  ---
+  duration_ms: 2.659533
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Туман/Буря
+ok 447 - manual combination M7 Туман/Туман/Буря
+  ---
+  duration_ms: 2.894546
+  type: 'test'
+  ...
+# Subtest: manual combination M7 Туман/Туман/Туман
+ok 448 - manual combination M7 Туман/Туман/Туман
+  ---
+  duration_ms: 2.60493
+  type: 'test'
+  ...
+# Subtest: manual preset all_cloudy.json
+ok 449 - manual preset all_cloudy.json
+  ---
+  duration_ms: 1.230502
+  type: 'test'
+  ...
+# Subtest: manual preset all_storm.json
+ok 450 - manual preset all_storm.json
+  ---
+  duration_ms: 0.785382
+  type: 'test'
+  ...
+# Subtest: manual preset discrepancy.json
+ok 451 - manual preset discrepancy.json
+  ---
+  duration_ms: 0.516938
+  type: 'test'
+  ...
+# Subtest: manual preset employee_fog.json
+ok 452 - manual preset employee_fog.json
+  ---
+  duration_ms: 0.422255
+  type: 'test'
+  ...
+# Subtest: manual preset employee_storm.json
+ok 453 - manual preset employee_storm.json
+  ---
+  duration_ms: 0.555426
+  type: 'test'
+  ...
+# Subtest: manual preset favorable.json
+ok 454 - manual preset favorable.json
+  ---
+  duration_ms: 0.428084
+  type: 'test'
+  ...
+# Subtest: manual preset insufficient.json
+ok 455 - manual preset insufficient.json
+  ---
+  duration_ms: 0.267202
+  type: 'test'
+  ...
+# Subtest: manual preset manager_fog.json
+ok 456 - manual preset manager_fog.json
+  ---
+  duration_ms: 0.396476
+  type: 'test'
+  ...
+# Subtest: manual preset manager_storm.json
+ok 457 - manual preset manager_storm.json
+  ---
+  duration_ms: 0.472351
+  type: 'test'
+  ...
+# Subtest: manual preset mixed_modules.json
+ok 458 - manual preset mixed_modules.json
+  ---
+  duration_ms: 0.460944
+  type: 'test'
+  ...
+# Subtest: manual preset module2_sample.json
+ok 459 - manual preset module2_sample.json
+  ---
+  duration_ms: 11.641389
+  type: 'test'
+  ...
+# Subtest: manual preset practice_storm.json
+ok 460 - manual preset practice_storm.json
+  ---
+  duration_ms: 0.512291
+  type: 'test'
+  ...
+# Subtest: manual preset six_gaps.json
+ok 461 - manual preset six_gaps.json
+  ---
+  duration_ms: 0.415626
+  type: 'test'
+  ...
+# Subtest: manual preset two_fogs.json
+ok 462 - manual preset two_fogs.json
+  ---
+  duration_ms: 0.496558
+  type: 'test'
+  ...
+1..462
+# tests 462
+# suites 0
+# pass 462
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1797.694222
