@@ -165,7 +165,7 @@ test('a complete 2,400-response route produces seven results, a report, and an X
   const report=portal.api.buildReportHtml(environment);
   assert.match(report,/Ключові результати за модулями/);
   assert.doesNotMatch(report,/Що уточнити/);
-  assert.match(report,/За доступними даними виражених проблемних ознак у цьому модулі не виявлено/);
+  assert.match(report,/Сильна сторона:.*узгоджуються на сприятливому рівні/);
   assert.match(report,/<th>Організаційний чекап<\/th>/);
   assert.doesNotMatch(report,/<th>Організаційні практики<\/th>/);
   const xlsx=portal.api.planXlsxBytes(portal.api.planRows());
@@ -376,9 +376,10 @@ test('survey weather thresholds, badges and problem-item safeguard follow final 
   assert.doesNotMatch(map,/біля межі|неокругленими значеннями/);
   assert.match(map,/«Буря»: щонайменше 30% несприятливих/);
   assert.doesNotMatch(map,/«Буря»: менше 55% сприятливих/);
-  assert.match(map,/<th>Організаційний чекап<\/th>/);
+  assert.doesNotMatch(map,/<th>Організаційний чекап<\/th>/);
+  assert.match(map,/Організаційний чекап не завершено/);
   assert.doesNotMatch(map,/<th>Організаційні практики<\/th>/);
-  assert.match(map,/У дужках показано показник, який пояснює статус опитувального джерела/);
+  assert.match(map,/У дужках наведено частку відповідей, що пояснює статус/);
   assert.match(map,/«Хмарно»: змішаний профіль відповідей або наявність окремого проблемного аспекту/);
 });
 
@@ -948,9 +949,9 @@ test('study progress partial checkup counts actual complete modules',()=>{
   const html=portal.api.studyProgress();assert.match(progressStep(html,2),/У процесі, 3 із 7 модулів/);
   assert.match(html,/продовжте організаційний чекап. Завершено 3 із 7 модулів/);
 });
-test('study progress complete checkup recommends missing import',()=>{
+test('study progress complete checkup offers company results before survey import',()=>{
   const {html}=progressScenario({done:true});assert.match(progressStep(html,2),/✓ Завершено/);
-  assert.match(progressStep(html,3),/aria-current="step"/);assert.match(html,/«Середовище 1»/);
+  assert.match(progressStep(html,4),/aria-current="step"/);assert.match(html,/результати чекапу компанії готові/);
 });
 test('study progress survey import before P does not claim results ready',()=>{
   const {html}=progressScenario({imported:1});assert.match(progressStep(html,3),/✓ Завершено/);
@@ -981,7 +982,7 @@ test('study progress obeys production canDashboard even for insufficient sample'
   assert.equal(portal.api.canDashboard(p.envs[0]),true);
   const html=portal.api.studyProgress();progressButton(html,'dash','progress-0');
   assert.equal((progressStep(html,4).match(/data-a="dash"/g)||[]).length,1);
-  assert.match(progressStep(html,4),/Результати ще недоступні/);
+  assert.match(progressStep(html,4),/Для зіставлення джерел додати опитування та завершити чекап/);
 });
 test('study progress dashboard buttons select the requested environment',async()=>{
   const {html}=progressScenario({envCount:3,imported:3,done:true});

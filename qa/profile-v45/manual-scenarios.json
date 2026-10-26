@@ -6354,6 +6354,134 @@
     "result": "PASS"
   },
   {
+    "preset": "checkup_only_evidence.json",
+    "actual": [
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ],
+      [
+        null,
+        null,
+        "Туман"
+      ]
+    ],
+    "result": "PASS"
+  },
+  {
+    "preset": "checkup_only_full.json",
+    "actual": [
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ],
+      [
+        null,
+        null,
+        "Ясно"
+      ]
+    ],
+    "result": "PASS"
+  },
+  {
+    "preset": "checkup_only_gaps.json",
+    "actual": [
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ],
+      [
+        null,
+        null,
+        "Буря"
+      ]
+    ],
+    "result": "PASS"
+  },
+  {
+    "preset": "checkup_unfinished.json",
+    "actual": [],
+    "result": "PASS"
+  },
+  {
     "preset": "discrepancy.json",
     "actual": [
       [
@@ -6471,6 +6599,47 @@
       [
         "Буря",
         "Ясно",
+        "Ясно"
+      ]
+    ],
+    "result": "PASS"
+  },
+  {
+    "preset": "employees_checkup.json",
+    "actual": [
+      [
+        "Ясно",
+        null,
+        "Ясно"
+      ],
+      [
+        "Хмарно",
+        null,
+        "Хмарно"
+      ],
+      [
+        "Ясно",
+        null,
+        "Ясно"
+      ],
+      [
+        "Ясно",
+        null,
+        "Ясно"
+      ],
+      [
+        "Ясно",
+        null,
+        "Хмарно"
+      ],
+      [
+        "Хмарно",
+        null,
+        "Хмарно"
+      ],
+      [
+        "Ясно",
+        null,
         "Ясно"
       ]
     ],
@@ -6635,6 +6804,47 @@
       [
         "Ясно",
         "Буря",
+        "Ясно"
+      ]
+    ],
+    "result": "PASS"
+  },
+  {
+    "preset": "managers_small.json",
+    "actual": [
+      [
+        "Ясно",
+        "Недостатня вибірка",
+        "Ясно"
+      ],
+      [
+        "Хмарно",
+        "Недостатня вибірка",
+        "Хмарно"
+      ],
+      [
+        "Ясно",
+        "Недостатня вибірка",
+        "Ясно"
+      ],
+      [
+        "Ясно",
+        "Недостатня вибірка",
+        "Ясно"
+      ],
+      [
+        "Ясно",
+        "Недостатня вибірка",
+        "Хмарно"
+      ],
+      [
+        "Хмарно",
+        "Недостатня вибірка",
+        "Хмарно"
+      ],
+      [
+        "Ясно",
+        "Недостатня вибірка",
         "Ясно"
       ]
     ],

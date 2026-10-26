@@ -3,17 +3,25 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {loadPortal} from '../tests/profile-harness.mjs';
+import {makeScenario} from '../tests/profile-fixtures.mjs';
 const root=path.resolve(import.meta.dirname,'..'),out=process.argv[2];
 if(!out||!path.isAbsolute(out))throw new Error('Provide an absolute static output directory');
 fs.mkdirSync(path.join(out,'fixtures'),{recursive:true});
 const review=path.join(root,'qa/profile-v45/review'),cases={};
-const weatherSource=fs.readFileSync(path.join(root,'scripts/manual-weather.js'),'utf8'),{context}=loadPortal();vm.runInContext(weatherSource,context);
+const weatherSource=fs.readFileSync(path.join(root,'scripts/manual-weather.js'),'utf8'),{context,api}=loadPortal();vm.runInContext(weatherSource,context);
 const labels={mixed_modules:'Різні статуси в усіх 7 модулях',employee_storm:'Буря / Ясно / Ясно',manager_storm:'Ясно / Буря / Ясно',practice_storm:'Ясно / Ясно / Буря',all_storm:'Буря / Буря / Буря',all_cloudy:'Хмарно / Хмарно / Хмарно',employee_fog:'Туман / Ясно / Хмарно',manager_fog:'Ясно / Туман / Хмарно',two_fogs:'Буря / Туман / Туман',module2_sample:'Модуль 2: погоджений приклад',six_gaps:'Прогалини практик у всіх 7 модулях',discrepancy:'Несприятливі оцінки й підтверджені практики',favorable:'Сприятливі результати',insufficient:'Недостатньо відповідей'};
 cases.mixed_modules=vm.runInContext('manualWeatherResearch(MANUAL_MIXED_WEATHER)',context);
 for(const [name,statuses] of Object.entries({employee_storm:['Буря','Ясно','Ясно'],manager_storm:['Ясно','Буря','Ясно'],practice_storm:['Ясно','Ясно','Буря'],all_storm:['Буря','Буря','Буря'],all_cloudy:['Хмарно','Хмарно','Хмарно'],employee_fog:['Туман','Ясно','Хмарно'],manager_fog:['Ясно','Туман','Хмарно'],two_fogs:['Буря','Туман','Туман']}))cases[name]=vm.runInContext('manualWeatherResearch('+JSON.stringify(Array.from({length:7},()=>statuses))+')',context);
 for(const name of ['module2_sample','six_gaps','discrepancy','favorable','insufficient']){
  cases[name]=JSON.parse(fs.readFileSync(path.join(review,name+'.json')));
 }
+Object.assign(labels,{checkup_only_gaps:'Лише чекап: різні прогалини практик',checkup_only_full:'Лише чекап: усі практики реалізовано',checkup_only_evidence:'Лише чекап: бракує підтверджень',employees_checkup:'Працівники + чекап: без даних керівників',managers_small:'Працівники + чекап: лише 5 анкет керівників',checkup_unfinished:'Чекап не завершено: перевірка доступу'});
+for(const name of ['checkup_only_gaps','checkup_only_full','checkup_only_evidence','checkup_unfinished']){
+ const practices=name==='checkup_only_full'?{}:Object.fromEntries(api.P_LIST.map((p,i)=>[p.code,name==='checkup_only_evidence'?'insufficient':i%3===0?'no':i%3===1?'partial':'full']));
+ const r=makeScenario(api,{practices,done:name!=='checkup_unfinished',p40Risk:'confirmed'}).r;
+ r.periods[0].envs=[];cases[name]=r;
+}
+for(const [name,nL] of [['employees_checkup',0],['managers_small',5]])cases[name]=makeScenario(api,{nL,items:{E07:[40,40],E09:[40,0],E21:'NA',E30:[40,40],L04:[0,100]},practices:{P08:'partial',P12:'partial',P26:'no',P34:'insufficient'}}).r;
 for(const [name,r] of Object.entries(cases))fs.writeFileSync(path.join(out,'fixtures',name+'.json'),JSON.stringify({format:'barometr-backup',version:'r43',data:r},null,2));
 for(const ext of ['csv','xlsx'])fs.copyFileSync(path.join(review,'survey.'+ext),path.join(out,'fixtures','survey.'+ext));
 let html=fs.readFileSync(path.join(root,'local/index.html'),'utf8');
@@ -28,7 +36,7 @@ const js=`<script>
 const MANUAL_PREVIEW_CASES=${JSON.stringify(cases).replaceAll('<','\\u003c')};
 const MANUAL_CASE_LABELS=${JSON.stringify(labels)};
 ${weatherSource}
-function manualInstallResearch(r,selection){r.manualScenario=selection;S={screen:'dash',r,env:r.periods[0].envs[0].id,module:1,modal:null,demo:false,returnResearch:null};save();render();document.getElementById('manual-current').textContent='Відкрито: '+selection.label;window.scrollTo(0,0)}
+function manualInstallResearch(r,selection){r.manualScenario=selection;S={screen:r.periods[0].checkup.done?'dash':'home',r,env:r.periods[0].envs[0]?.id||null,module:1,modal:null,demo:false,returnResearch:null};save();render();document.getElementById('manual-current').textContent='Відкрито: '+selection.label;window.scrollTo(0,0)}
 function manualOpenCase(name){manualInstallResearch(JSON.parse(JSON.stringify(MANUAL_PREVIEW_CASES[name])),{key:name,label:MANUAL_CASE_LABELS[name]})}
 document.getElementById('manual-load').addEventListener('click',()=>{if(confirm('Відкрити обраний приклад? Він замінить поточне тестове дослідження. За потреби спочатку завантажте його резервну копію.'))manualOpenCase(document.getElementById('manual-case').value)});
 document.getElementById('manual-new').addEventListener('click',()=>{S.screen='start';S.modal=null;render();document.querySelector('[data-a="new"]').click();window.scrollTo(0,0)});

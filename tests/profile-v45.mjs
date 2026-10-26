@@ -43,7 +43,7 @@ for(const practice of api.P_LIST)for(const answer of ['full','partial','no','ins
  if(['no','partial'].includes(answer)){assert.ok(units.some(u=>u.steps.length));assert.ok(units.some(u=>u.checks.length));assert.ok(s.analysis.actions.some(a=>a.basis_codes.includes(practice.code)))}
  else assert.ok(!s.analysis.actions.some(a=>a.basis_codes.includes(practice.code)));
  if(answer==='insufficient'){assert.ok(units.some(u=>u.profileOnly));assert.match(text(m),/підтвердж/)}
- if(answer===null)assert.match(text(m),/немає відповіді/);
+ if(answer===null)assert.match(text(m),/Немає відповідей щодо таких практик/);
  return {units:units.map(u=>u.id),actions:s.analysis.actions.map(a=>a.id)};
 });
 for(const item of api.SURVEY_ITEMS)for(const [branch,values] of Object.entries({favorable:[80,0],mixed:[60,20],partial:[40,0],negative:[40,40]}))check(`item ${item.code} ${branch}`,`${branch}; item retained in selection without changing weather rules`,()=>{
