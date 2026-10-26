@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 import {loadPortal} from '../tests/profile-harness.mjs';
 const root=path.resolve(import.meta.dirname,'..'),out=process.argv[2];
 if(!out||!path.isAbsolute(out))throw new Error('Provide an absolute static output directory');
@@ -44,7 +45,7 @@ let scriptIndex=0;
 html=html.replace(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g,(tag,source)=>{
  if(/type="application\/octet-stream"/.test(tag))return tag;
  const filename=scriptIndex++===0?'portal.js':'manual-preview.js';
- fs.writeFileSync(path.join(out,filename),source);return '<script src="'+filename+'"></script>';
+ fs.writeFileSync(path.join(out,filename),source);return '<script src="'+filename+'?v='+createHash('sha256').update(source).digest('hex').slice(0,12)+'"></script>';
 });
 if(scriptIndex!==2)throw new Error('Unexpected portal script layout');
 fs.writeFileSync(path.join(out,'index.html'),html);

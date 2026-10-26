@@ -18,11 +18,10 @@ const PROFILE_V45_PNAMES={
  P31:'відстеження навантаження й реагування на системне перевантаження',P32:'перевірка можливості відпочивати й усунення перешкод',P33:'доступ до підтримки та умови звернення',P34:'оцінювання обізнаності й доступності підтримки',P35:'повернення до роботи після тривалої відсутності',P36:'реагування після потенційно травматичних подій',
  P37:'управління психосоціальними ризиками',P38:'оцінювання психосоціальних ризиків і перевірка заходів',P39:'вибір організаційних заходів за джерелами ризику',P40:'захист від агресії, насильства та домагань з боку третіх осіб',P41:'усунення недоліків фізичного середовища',P42:'готовність до надзвичайних ситуацій'
 };
-const PROFILE_V45_OWNERS={1:'HR і керівники команд',2:'HR і керівники команд',3:'HR і керівники команд',4:'HR і власники відповідних процесів',5:'керівники команд',6:'HR і керівники команд',7:'БЗР і керівники команд',P09:'HR і L&D',P10:'HR із залученням відповідних фахівців',P13:'власник політики поважної взаємодії',P15:'відповідальний за розгляд звернень',P16:'відповідальний за розгляд звернень',P17:'керівники команд і власники відповідних процесів',P18:'HR і відповідальний за розгляд звернень',P24:'HR-аналітика',P33:'власник програм підтримки',P34:'власник програм підтримки разом із HR',P35:'HR і керівники команд',P36:'HR і БЗР',P37:'керівництво компанії і БЗР',P38:'БЗР із залученням працівників',P39:'керівництво компанії і БЗР',P40:'відповідальний за безпеку',P41:'БЗР і відповідальні за робоче середовище',P42:'відповідальний за кризове реагування'};
 function profileV45Copy(id,field){return [...(PROFILE_V45_COPY[id]?.fields[field]||[])]}
-function profileV45Text(text){return String(text||'').replace(/[—–]/g,'-').replace(/керівниками(?! команд| компанії)/g,'керівниками команд').replace(/керівників(?! команд| компанії)/g,'керівників команд').replace(/керівники(?! команд| компанії)/g,'керівники команд').replace(/\(керівник\)/g,'(керівники команд)').replace(/\(HR і керівник\)/g,'(HR і керівники команд)').replace(/HR разом із керівником і працівниками/g,'HR разом із керівниками команд і працівниками').replace(/HR разом із керівником\)/g,'HR разом із керівниками команд)').replace(/за локаціями, змінами та форматами роботи/g,'з урахуванням місця та формату роботи працівників')}
-function profileV45Owner(code){return PROFILE_V45_OWNERS[code]||PROFILE_V45_OWNERS[BAROMETER_ALGORITHM_SPEC.signals[code]?.module]||'визначені відповідальні'}
-function profileV45Step(text,code){let t=profileV45Text(text);if(!/\([^)]*\)[.!?]?$/.test(t))t=t.replace(/\.$/,'')+' ('+profileV45Owner(code)+').';return t}
+function profileV45WithoutOwners(text){return String(text||'').replace(/\s*\((?:HR|L&D|БЗР|ОП|керівник|керівництв|визначені відповідальні|відповідальн|власник)[^()]*\)/gu,'')}
+function profileV45Text(text){return profileV45WithoutOwners(text).replace(/[—–]/g,'-').replace(/керівниками(?! команд| компанії)/g,'керівниками команд').replace(/керівників(?! команд| компанії)/g,'керівників команд').replace(/керівники(?! команд| компанії)/g,'керівники команд').replace(/\(керівник\)/g,'(керівники команд)').replace(/\(HR і керівник\)/g,'(HR і керівники команд)').replace(/HR разом із керівником і працівниками/g,'HR разом із керівниками команд і працівниками').replace(/HR разом із керівником\)/g,'HR разом із керівниками команд)').replace(/за локаціями, змінами та форматами роботи/g,'з урахуванням місця та формату роботи працівників')}
+function profileV45Step(text,code){return profileV45Text(text).replace(/^Керівникам ([а-яіїєґ])/u,(_,c)=>c.toLocaleUpperCase('uk'))}
 function profileV45Branch(input,code){
  const src=input[code[0]];if(!src?.total)return 'absent';if(!src.eligible)return 'sample';
  const m=src.metrics?.[code];if(!m||m.applicable<Math.max(code[0]==='E'?10:5,Math.ceil(src.total/2)))return 'applicability';
@@ -41,6 +40,52 @@ function profileV45Label(code){return (code==='L05'?'знання, до кого
 // Apply only to generated labels, never to survey wording or user-edited Plan fields.
 function profileV45InlineText(text){return String(text||'').replace(/^[А-ЯІЇЄҐ](?=[а-яіїєґ])/u,c=>c.toLocaleLowerCase('uk'))}
 function profileV45InlineLabel(code){return profileV45InlineText(profileV45Label(code))}
+// Clarify the work situation, not the meaning of an abstract score or topic label.
+const PROFILE_V45_CLARIFICATIONS={
+ E01:'З’ясувати, які обов’язки або межі відповідальності залишаються для працівників нечіткими.',
+ E02:'З’ясувати, які критерії оцінювання результатів роботи працівникам незрозумілі або не пояснені.',
+ E03:'З’ясувати, у яких ситуаціях працівникам складно визначити, які завдання виконувати насамперед.',
+ E04:'З’ясувати, як працівники отримують допомогу керівника у визначенні черговості завдань, коли робочі вимоги суперечать одна одній.',
+ E05:'З’ясувати, якої інформації про майбутні організаційні зміни бракує працівникам і чи достатньо часу вони мають для підготовки.',
+ E07:'З’ясувати, яких пояснень працівникам бракує, щоб розуміти, що в роботі вдається добре та що і як можна покращити.',
+ E08:'З’ясувати, які робочі перешкоди працівники не можуть усунути самостійно та якої допомоги потребують від керівника.',
+ E09:'З’ясувати, як керівники враховують уже заплановану роботу працівників, коли додають нові завдання або визначають строки.',
+ E10:'З’ясувати, як у конкретних управлінських рішеннях враховують здоров’я й безпеку працівників поряд із бізнес-результатами.',
+ E11:'Конфіденційно з’ясувати, що може заважати працівникам відкрито говорити про робочі проблеми та висловлювати конструктивну незгоду.',
+ E13:'Конфіденційно з’ясувати, що може заважати працівникам просити про допомогу в команді без страху негативної оцінки.',
+ E14:'Конфіденційно з’ясувати, у яких робочих ситуаціях працівникам складно бути собою та робити свій внесок без побоювання негативного ставлення.',
+ E15:'Конфіденційно з’ясувати, що може заважати працівникам повідомляти про неприйнятну поведінку та яких негативних наслідків вони побоюються, не встановлюючи авторів відповідей.',
+ E16:'З’ясувати, з якими обов’язками, відмінностями між порівнюваними ролями або правилами оплати працівники пов’язують сумніви щодо справедливості своєї оплати.',
+ E18:'З’ясувати, чи мають працівники у подібних ролях рівний доступ до потрібної робочої інформації та ресурсів і що може обмежувати цей доступ.',
+ E19:'З’ясувати, що може обмежувати рівний доступ працівників до навчання та інших можливостей професійного розвитку.',
+ E21:'З’ясувати, які способи, методи та інструменти роботи працівники можуть обирати самостійно і які обмеження потребують перегляду з урахуванням безпеки та якості.',
+ E23:'З’ясувати, які можливості працівники мають для висловлення робочих ідей та що може заважати їхній ініціативі.',
+ E24:'З’ясувати, чи мають працівники достатньо інформації та реальну можливість висловити свою думку до ухвалення рішень про зміни в їхній роботі.',
+ E26:'З’ясувати, які завдання, строки або організаційні перешкоди ускладнюють якісне виконання звичайного обсягу роботи в межах робочого часу.',
+ E27:'З’ясувати, що в організації роботи може заважати працівникам користуватися передбаченими перервами.',
+ E28:'З’ясувати, чи очікують від працівників відповідей на робочі повідомлення та дзвінки в неробочий час поза кризовими або екстреними ситуаціями.',
+ E29:'З’ясувати, чи зрозуміло працівникам, яка психологічна допомога їм доступна та як до неї звернутися.',
+ E32:'З’ясувати, які перешкоди у фізичному просторі, цифрових інструментах або доступі до робочої інформації потребують усунення з огляду на індивідуальні потреби працівників.',
+ E33:'З’ясувати, які правила безпеки потрібно додатково пояснити працівникам або відпрацювати на практиці для виконання їхньої роботи.',
+ E34:'З’ясувати, чи знають працівники, куди перейти або де залишатися під час повітряної тривоги чи іншої прямої загрози, та які ситуації потребують додаткового пояснення.',
+ L01:'З’ясувати, які межі відповідальності та повноважень керівників команд потребують уточнення і які рішення вони можуть ухвалювати самостійно.',
+ L02:'З’ясувати, якої актуальної інформації керівникам команд бракує, щоб пояснювати працівникам завдання, відповідальність та очікувані результати.',
+ L03:'З’ясувати, чи знають керівники команд, до кого звернутися за нечітких або суперечливих вимог, і що може затримувати отримання уточнень.',
+ L04:'З’ясувати, що заважає керівникам команд знаходити час для регулярних індивідуальних розмов із працівниками.',
+ L05:'З’ясувати, чи знають керівники команд, кому передавати робочі питання за межами своїх повноважень і як отримати допомогу в їх вирішенні.',
+ L06:'З’ясувати, яких ресурсів керівникам команд бракує для організації повсякденної роботи та які завдання це ускладнює.',
+ L07:'З’ясувати, яких пояснень або практичних орієнтирів керівникам команд бракує для конструктивного обговорення помилок, з’ясування їх причин і запобігання повторенню.',
+ L08:'З’ясувати, які перші дії, правила конфіденційності або способи передавання повідомлення про неприйнятну поведінку керівникам команд незрозумілі.',
+ L09:'З’ясувати, чи зрозуміло працівникам, як повідомляти про робочі проблеми, ставити запитання, висловлювати незгоду та просити про допомогу в команді.',
+ L11:'З’ясувати, які кроки або повноваження керівників команд потребують уточнення, коли працівникові потрібна адаптація умов роботи через індивідуальні потреби, без збирання зайвих відомостей про здоров’я.',
+ L13:'З’ясувати, які рішення керівники команд можуть делегувати працівникам і які правила або межі повноважень це обмежують.',
+ L14:'З’ясувати, чи достатньо завчасно керівники команд отримують інформацію про організаційні зміни, щоб обговорити їх із працівниками до остаточного рішення.',
+ L15:'З’ясувати, що може заважати керівникам команд вчасно представляти потреби та пропозиції працівників на вищих рівнях управління.',
+ L16:'З’ясувати, які зміни навантаження, темпу або графіка керівники команд можуть ініціювати самостійно і як отримати рішення за межами своїх повноважень.',
+ L19:'З’ясувати, чи зрозуміло керівникам команд, як організувати усунення небезпеки або передати питання відповідальним особам і що може затримувати реагування.',
+ L20:'З’ясувати, які дії та повноваження керівників команд потребують уточнення в разі безпосередньої загрози життю чи здоров’ю працівника.',
+ L21:'З’ясувати, коли й у який спосіб керівників команд залучають до оцінювання ризиків перед змінами в обладнанні, робочих процесах або умовах роботи.'
+};
 function profileV45Repeat(input,code){
  const b=input.branches[code],label=profileV45InlineLabel(code);
  if(b==='favorable')return `У повторному опитуванні зберігається сприятливий результат за твердженням «${label}».`;
@@ -108,9 +153,9 @@ function profileV45Fallback(code,id,input){
  if(['P07','P08','P09','P10','P11'].includes(code))check=PROFILE_V45_SAMPLE.checks[{P07:0,P08:3,P09:4,P10:5,P11:1}[code]];
  if(practice&&answer==='no')steps.unshift(`Визначити, що потрібно запровадити або відновити у практиці «${profileV45Label(code)}».`);
  // Answer 3 establishes an assessment needing clarification, never an incident.
- if(!practice&&b==='partial')steps.unshift(code[0]==='E'?profileV45Copy('G-CLARIFY',PROFILE_V45_FIELDS.steps)[0]:`Уточнити з керівниками команд зміст часткових оцінок щодо питання «${profileV45InlineLabel(code)}» (HR).`);
+ if(!practice&&b==='partial')steps.unshift(code[0]==='E'?profileV45Copy('G-CLARIFY',PROFILE_V45_FIELDS.steps)[0]:`У добровільних конфіденційних розмовах із керівниками команд ${PROFILE_V45_CLARIFICATIONS[code].replace(/^З’ясувати/u,'з’ясувати').replace(/\.$/,'')} (HR).`);
  const attention=[];
- if(!practice&&['negative','partial'].includes(b))attention.push(`Уточнити оцінки щодо питання «${profileV45InlineLabel(code)}».`);
+ if(!practice&&['negative','partial'].includes(b))attention.push(PROFILE_V45_CLARIFICATIONS[code]);
  return profileV45Unit(code,steps,check?[check]:[],attention,'legacy:'+code);
 }
 function profileV45BuildUnits(input,routes){
@@ -177,7 +222,7 @@ function profileV45BuildUnits(input,routes){
  if(profileV45Problem(input,'L17')&&profileV45Problem(input,'L18')){
   const a=units.find(u=>u.codes.includes('L17')),b=units.find(u=>u.codes.includes('L18'));
   if(a&&b){
-   a.checks=a.checks.filter(t=>t.startsWith('HR у коротких')||t.startsWith('У повторному'));b.checks=b.checks.filter(t=>t.startsWith('У повторному'));
+   a.checks=a.checks.filter(t=>t.startsWith('У коротких')||t.startsWith('У повторному'));b.checks=b.checks.filter(t=>t.startsWith('У повторному'));
    const shared=profileV45Unit('L17',[],profileV45Copy('L17-L18',checksField).filter(t=>!t.startsWith('У повторному')),[],'L17-L18');shared.codes=['L17','L18'];shared.route=a.route;add(shared);
    b.steps=b.steps.filter(t=>!t.startsWith('Уточнити з керівниками'));
   }
@@ -196,7 +241,7 @@ function profileV45BuildUnits(input,routes){
    for(const t of profileV45Copy('E31-ACTION','Заходи за встановленими ризиками'))u.steps.push(profileV45Step(t,'E31'));
    const conditional=profileV45Copy('E31-ACTION',checksField);
    u.checks.push(...conditional.slice(0,3));
-   u.checks.push('Після погодження заходів: '+conditional[3][0].toLocaleLowerCase('uk')+conditional[3].slice(1));
+   u.checks.push(conditional[3]);
   }
   u.checks.push(...profileV45Copy(['negative','partial'].includes(e31)?'E31-R1':'E31-R2',checksField));u.profileOnly=true;add(u);
  }else if(['sample','applicability'].includes(e31)){
@@ -257,19 +302,16 @@ function profileV45Title(id,codes,input){
  }
  return BAROMETER_V2_ACTION_META[id]?.[0]||profileV45Label(codes[0]);
 }
-function profileV45Dedupe(entries,mergeOwners=false){
+function profileV45Dedupe(entries){
  const seen=new Map();
  for(const entry of entries){const text=profileV45Text(entry.text);if(!text)continue;
-  const match=mergeOwners?text.match(/^(.*) \(([^()]*)\)\.$/):null;
-  const key=(match?match[1]:text).replace(/\s+/g,' ').trim(),owners=match?[match[2]]:[];
-  if(seen.has(key)){const x=seen.get(key);x.codes=barometerUnique([...x.codes,...entry.codes]);x.units=barometerUnique([...x.units,...entry.units]);
-   x.owners=barometerUnique([...(x.owners||[]),...owners]);
-   if(x.owners.length){const role=x.owners.length===2&&x.owners.includes('керівництво компанії і БЗР')&&x.owners.includes('БЗР із залученням працівників')?'керівництво компанії і БЗР із залученням працівників':x.owners.join('; ');x.text=key+' ('+role+').'}
-  }else seen.set(key,{...entry,text,codes:[...entry.codes],units:[...entry.units],...(mergeOwners?{owners}: {})});
+  const key=text.replace(/\s+/g,' ').trim();
+  if(seen.has(key)){const x=seen.get(key);x.codes=barometerUnique([...x.codes,...entry.codes]);x.units=barometerUnique([...x.units,...entry.units]);}
+  else seen.set(key,{...entry,text,codes:[...entry.codes],units:[...entry.units]});
  }
  return [...seen.values()];
 }
-function profileV45Entries(units,field){return profileV45Dedupe(units.flatMap(u=>(u[field]||[]).map(text=>({text,codes:u.codes,units:[u.id],route:u.route||null}))),field==='steps')}
+function profileV45Entries(units,field){return profileV45Dedupe(units.flatMap(u=>(u[field]||[]).map(text=>({text,codes:u.codes,units:[u.id],route:u.route||null}))))}
 function profileV45Module(input,mid,units,actions,p12Scenario){
  const survey=SURVEY_ITEMS.filter(x=>x.module===mid),practices=P_LIST.filter(x=>x.module===mid),ownUnits=units.filter(u=>u.codes.some(c=>BAROMETER_ALGORITHM_SPEC.signals[c]?.module===mid));
  const align=[],attention=[],notes=[],explained=new Set();
@@ -279,11 +321,11 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
  if(mid===6&&input.branches.E29==='favorable'&&input.branches.E30==='partial'){addAlign(profileV45Copy('G-ALIGN','Фрагмент E29 та E30')[0]);explained.add('E29');explained.add('E30')}
  for(const code of ['E20','E30'])if(survey.some(x=>x.code===code)){
   const branch=input.branches[code],i={favorable:1,mixed:2,partial:3,negative:4}[branch];
-  if(i){if(!explained.has(code))for(const t of profileV45Copy(code+'-'+i,'Пояснення відповідей').length?profileV45Copy(code+'-'+i,'Пояснення відповідей'):profileV45Copy(code+'-'+i,'Висновок'))addAlign(t);attention.push(...profileV45Copy(code+'-'+i,PROFILE_V45_FIELDS.attention));explained.add(code)}
+  if(i&&branch!=='mixed'){if(!explained.has(code))for(const t of profileV45Copy(code+'-'+i,'Пояснення відповідей').length?profileV45Copy(code+'-'+i,'Пояснення відповідей'):profileV45Copy(code+'-'+i,'Висновок'))addAlign(t);attention.push(...profileV45Copy(code+'-'+i,PROFILE_V45_FIELDS.attention));explained.add(code)}
  }
  if(mid===5){
   const b=input.branches.E21,ans=input.P.answers.P26;
-  if(ans==='partial'&&input.branches.E22==='favorable'&&input.branches.L13==='favorable'&&['favorable','mixed','partial','negative'].includes(b)){
+  if(ans==='partial'&&input.branches.E22==='favorable'&&input.branches.L13==='favorable'&&['favorable','partial','negative'].includes(b)){
    addAlign(profileV45Copy('E21-P26-CONCLUSIONS','Висновок '+({favorable:'А',negative:'Б',partial:'В',mixed:'Г'}[b]))[0]);['E21','E22','L13','P26'].forEach(c=>explained.add(c));
   }else if(ans==='no'){addAlign(profileV45Copy('E21-P26-CONCLUSIONS','Висновок Д')[0]);explained.add('P26')}
  }
@@ -297,10 +339,10 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
  else {
   for(const source of ['E','L']){
    const words=source==='E'?'працівників':'керівників';
-   for(const branch of ['negative','partial','mixed']){
+   for(const branch of ['negative','partial']){
     const codes=survey.filter(x=>x.source===source&&input.branches[x.code]===branch&&!explained.has(x.code)).map(x=>x.code);
     if(codes.length){
-     const intro=branch==='negative'?`Несприятливі відповіді ${words} стосуються таких питань`:branch==='partial'?`Часткове погодження без несприятливих відповідей ${words} потребує уточнення щодо таких питань`:`Змішані оцінки ${words} без проблемного результату за твердженнями`;
+     const intro=branch==='negative'?`Несприятливі відповіді ${words} стосуються таких питань`:`Часткове погодження без несприятливих відповідей ${words} потребує уточнення щодо таких питань`;
      addAlign(intro+': '+codes.map(profileV45InlineLabel).join('; ')+'.');
     }
    }
@@ -324,6 +366,7 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
   else if(!input[source].eligible)notes.push(`${source==='E'?'Працівники':'Керівники'}: отримано ${input[source].total} валідних анкет; недостатня вибірка. Деталі тверджень цього джерела не інтерпретуються.`);
   else {const missing=survey.filter(x=>x.source===source&&input.branches[x.code]==='applicability');if(missing.length)notes.push(`За цими питаннями недостатньо застосовних даних для оцінювання: ${missing.map(x=>profileV45InlineLabel(x.code)).join('; ')}.`)}
  }
+ if(survey.some(x=>input.branches[x.code]==='applicability'))notes.push('Перевірити, чи ці питання стосуються роботи цього середовища та чи зрозумілі їхні формулювання. Якщо питання застосовні, з’ясувати причину нестачі відповідей і за потреби повторити анонімне опитування. Висновки за цими питаннями робити лише після отримання достатніх даних. Якщо питання не стосуються роботи середовища, не робити за ними висновків.');
  if(input.P.done){
   const focus=practices.filter(p=>['no','partial'].includes(input.P.answers[p.code])&&!ownUnits.some(u=>u.codes.includes(p.code)&&u.attention.length));
   const partial=focus.filter(p=>input.P.answers[p.code]==='partial'),missing=focus.filter(p=>input.P.answers[p.code]==='no');
@@ -338,7 +381,7 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
  }
  if(mid===7&&['favorable','mixed'].includes(input.branches.E31)&&input.E.metrics.E31.unfavorable===0)sections.checks.push({text:profileV45Copy('E31-R3',PROFILE_V45_FIELDS.checks)[0],codes:['E31'],units:['E31-R3'],route:null});
  if(input.P.done&&input.P.answers.P13==='no'&&mid===3)sections.attention.push('Відсутність правил поважної взаємодії є критичною прогалиною практики; ця оцінка сама по собі не встановлює конкретного випадку неприйнятної поведінки.');
- if(!sections.alignment.length)sections.alignment=['За доступними даними змістовий висновок щодо цього модуля не формується.'];
+ if(!sections.alignment.length&&notes.length)sections.alignment=['За доступними даними змістовий висновок щодо цього модуля не формується.'];
  return {module:mid,sections,actions:actions.filter(x=>x.module===mid),lead:sections.alignment.join(' '),dataNotes:barometerUnique(notes),aspects:[],clusters:[],crossRefs:barometerUnique(ownUnits.filter(u=>u.route&&BAROMETER_V2_ACTION_MODULE[u.route]!==mid).map(u=>u.route)).map(id=>({id,final_action_id:id,module:BAROMETER_V2_ACTION_MODULE[id]})),problemCodes:[...survey.filter(x=>profileV45Problem(input,x.code)).map(x=>x.code),...practices.filter(p=>input.P.done&&['no','partial'].includes(input.P.answers[p.code])).map(p=>p.code)],practiceAudit:practices.map(p=>({code:p.code,answer:input.P.answers[p.code]||null,done:input.P.done,related:(PROFILE_V45_LINKS[p.code]||[]).map(c=>({code:c,branch:input.branches[c]})),units:units.filter(u=>u.codes.includes(p.code)).map(u=>u.id)}))};
 }
 function profileV45Analysis(raw){
