@@ -8,7 +8,11 @@
     "result": "PASS"
   },
   {
-    "test": "UI complete 42 practices and P40 transition",
+    "test": "UI mouse completes 42 practices and P40 transition",
+    "result": "PASS"
+  },
+  {
+    "test": "UI interpretation toggles all four sections in seven modules with mouse and keyboard",
     "result": "PASS"
   },
   {

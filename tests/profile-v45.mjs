@@ -123,3 +123,8 @@ check('Editorial inline case preserves source labels and acronyms','Inline conve
  const {context}=loadPortal();const values=plain(vm.runInContext("['Пріоритет здоров’я і безпеки','HR і БЗР','БЗР із залученням HR','Підтримка HR'].map(profileV45InlineText)",context));
  assert.deepEqual(values,['пріоритет здоров’я і безпеки','HR і БЗР','БЗР із залученням HR','підтримка HR']);assert.equal(api.FINE_ITEMS.E10.topic,'Пріоритет здоров’я і безпеки');return values;
 });
+check('Interactive interpretation is collapsible while report stays expanded','One accessible toggle per module; four sections inside controlled panel; no report toggle',()=>{
+ const s=makeScenario(api,SIX_PRACTICES);
+ for(const row of api.actualResultModel()){const html=api.barometerSemanticModuleMarkup(row);assert.equal((html.match(/data-a="toggle-detail"/g)||[]).length,1);assert.ok(html.includes('aria-expanded="false" aria-controls="matrix-detail-'+row.m+'"'));assert.ok(html.includes('id="matrix-detail-'+row.m+'"'));for(const heading of ['Як узгоджуються джерела','На що звернути увагу','Рекомендовані організаційні дії','Як перевірити результат'])assert.ok(html.indexOf('<h4>'+heading+'</h4>')>html.indexOf('id="matrix-detail-'+row.m+'"'));}
+ const report=api.buildReportHtml(s.environment);assert.doesNotMatch(report,/data-a="toggle-detail"|class="matrix-detail profile-interpretation"/);return 'Seven controlled panels; full report';
+});

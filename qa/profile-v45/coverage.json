@@ -7015,5 +7015,11 @@
       "підтримка HR"
     ],
     "result": "PASS"
+  },
+  {
+    "test": "Interactive interpretation is collapsible while report stays expanded",
+    "expected": "One accessible toggle per module; four sections inside controlled panel; no report toggle",
+    "actual": "Seven controlled panels; full report",
+    "result": "PASS"
   }
 ]
