@@ -1,0 +1,313 @@
+{
+  "tests": 179,
+  "passed": 118,
+  "failed": 61,
+  "changes": "Only document.addEventListener mock changed to preserve multiple listeners. No assertions removed or skipped.",
+  "failures": [
+    {
+      "test": "a complete 2,400-response route produces seven results, a report, and an XLSX plan",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /За доступними даними виражених проблемних ознак у цьому модулі не виявлено/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:168:10)"
+    },
+    {
+      "test": "report uses final semantic action wording when E and P support an action",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /<b>Що зробити<\\/b>/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:261:10)"
+    },
+    {
+      "test": "survey weather thresholds, badges and problem-item safeguard follow final E/L rules",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /<th>Організаційний чекап<\\/th>/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:378:10)"
+    },
+    {
+      "test": "E16 routes primarily to the new pay-equity thematic recommendation",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:491:10)"
+    },
+    {
+      "test": "E22 routes primarily to the new time-and-pace flexibility recommendation",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:504:10)"
+    },
+    {
+      "test": "E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:518:10)"
+    },
+    {
+      "test": "E=19 is excluded from final comparison while valid L and P still produce analysis",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'e')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:625:24)"
+    },
+    {
+      "test": "L=9 is excluded from final comparison while valid E and P still produce analysis",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'l')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:647:24)"
+    },
+    {
+      "test": "public portal documents the previously hidden rules and four checkup answers",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Організаційний чекап показує сприятливий стан практик/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:723:10)"
+    },
+    {
+      "test": "semantic v2 defines all 27 aspects and approved positive conclusion",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:731:158)"
+    },
+    {
+      "test": "semantic v2 E-only problem is aspect-specific",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:732:196)"
+    },
+    {
+      "test": "semantic v2 alignment names concrete evidence from each available source",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:733:247)"
+    },
+    {
+      "test": "semantic v2 visible interpretation avoids banned technical wording",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /порядок передавання питання на відповідний рівень/i. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:734:392)"
+    },
+    {
+      "test": "semantic v2 L-only problem is retained",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:735:189)"
+    },
+    {
+      "test": "semantic v2 P-only gap is preventive",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:736:187)"
+    },
+    {
+      "test": "semantic v2 E problem plus favorable P describes discrepancy",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'alignment')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:737:234)"
+    },
+    {
+      "test": "P gap A: problematic E remains actionable with favorable L and corporate P",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:743:10)"
+    },
+    {
+      "test": "P gap B: problematic L is retained and manager access is checked despite favorable E and P",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:753:10)"
+    },
+    {
+      "test": "P gap C: problematic E and L give a stronger local signal without claiming a proved cause",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:762:10)"
+    },
+    {
+      "test": "P gap D: one checkup serves two environments and only the weaker environment shows a local gap",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'alignment')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:787:64)"
+    },
+    {
+      "test": "P gap at module level: diffuse cloudy E and L remain visible even without a problem item",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /сильний сигнал можливого розриву/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:801:10)"
+    },
+    {
+      "test": "P gap across different aspects: E and L together warrant a module check, not an assumed shared cause",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:816:10)"
+    },
+    {
+      "test": "semantic v2 fog does not close active issue",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:822:206)"
+    },
+    {
+      "test": "fog-only module gives one data-limitation conclusion and no aspect cards or actions",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Недостатньо даних, щоб надійно оцінити/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:829:10)"
+    },
+    {
+      "test": "a real problem or P gap remains visible beside fog",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:838:10)"
+    },
+    {
+      "test": "semantic v2 insufficient E sample is excluded, not fog",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'e')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:842:346)"
+    },
+    {
+      "test": "semantic v2 source not measured is not favorable",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:844:199)"
+    },
+    {
+      "test": "semantic v2 E20 alone does not trigger M4-A3",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:845:148)"
+    },
+    {
+      "test": "semantic v2 E31 alone requests pulse study and no routed action",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:846:214)"
+    },
+    {
+      "test": "semantic v2 L16 alone produces narrow manager action",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:847:192)"
+    },
+    {
+      "test": "semantic v2 L21 alone produces narrow change-risk action",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:848:196)"
+    },
+    {
+      "test": "semantic v2 P40 requires confirmed applicability",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:849:220)"
+    },
+    {
+      "test": "one corporate P40 result yields local action only where applicability is confirmed",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /на рівні компанії.*цього робочого середовища/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:869:10)"
+    },
+    {
+      "test": "semantic v2 keeps five active aspects in one module",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:881:191)"
+    },
+    {
+      "test": "semantic v2 C01 replaces duplicate change actions",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:882:161)"
+    },
+    {
+      "test": "H01 C01 preserves independent emergency action M7-A3",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:883:205)"
+    },
+    {
+      "test": "H01 C01 preserves other independent actions as well",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:884:212)"
+    },
+    {
+      "test": "semantic v2 adaptive M4-A1 shows only relevant E17 steps",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:885:196)"
+    },
+    {
+      "test": "semantic v2 P35 and P36 keep their action subsets separate",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:886:196)"
+    },
+    {
+      "test": "semantic v2 E28 does not add overload steps",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:887:179)"
+    },
+    {
+      "test": "semantic v2 E31 and confirmed P40 stay separate",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:888:280)"
+    },
+    {
+      "test": "semantic v2 action cards use bullets and omit legacy sections",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Що зробити/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:889:212)"
+    },
+    {
+      "test": "semantic UX renders independent accordion cards for 1, 2 and 5 active aspects",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:894:10)"
+    },
+    {
+      "test": "semantic v2 dynamic signal wording is grammatically integrated",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:898:245)"
+    },
+    {
+      "test": "public example shows only a conclusion for clear and fog-only combinations",
+      "failure": "ReferenceError: window is not defined",
+      "location": "at renderPublicExample (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:61:6)"
+    },
+    {
+      "test": "F02 measured evidence is scoped: N+NA",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:953:10)"
+    },
+    {
+      "test": "F02 measured evidence is scoped: S+NA",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:953:10)"
+    },
+    {
+      "test": "F02 measured evidence is scoped: N+S",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:953:10)"
+    },
+    {
+      "test": "F02 measured evidence is scoped: NA+NA",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:953:10)"
+    },
+    {
+      "test": "F02 measured evidence is scoped: direct measured/additional NA",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:953:10)"
+    },
+    {
+      "test": "F02 partial NA remains visible even with no adverse signals",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:968:10)"
+    },
+    {
+      "test": "F03 isolated E14 has a concrete plan-ready diagnostic action",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /висловлювати свою позицію/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:983:34)"
+    },
+    {
+      "test": "F03 isolated L17 has a concrete plan-ready diagnostic action",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /порядок консультації/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:983:34)"
+    },
+    {
+      "test": "F03 isolated L18 has a concrete plan-ready diagnostic action",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /перенаправити/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:983:34)"
+    },
+    {
+      "test": "F04 E33 with favorable E32/L19/P41",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'attention')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1008:182)"
+    },
+    {
+      "test": "F04 E33 with E32",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /небезпечну умову/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1007:23)"
+    },
+    {
+      "test": "F02 L partial NA retains measured L17=5 and missing L18",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1052:52)"
+    },
+    {
+      "test": "F02 L partial NA retains measured L17=1 and missing L18",
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1052:52)"
+    },
+    {
+      "test": "existing study load and JSON restore preserve cached status but use current interpretation",
+      "failure": "TypeError [Error]: Cannot read properties of undefined (reading 'alignment')",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1076:105)"
+    },
+    {
+      "test": "study progress complete checkup recommends missing import",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /aria-current=\"step\"/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1130:10)"
+    },
+    {
+      "test": "study progress obeys production canDashboard even for insufficient sample",
+      "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Результати ще недоступні/. Input:",
+      "location": "at TestContext.<anonymous> (file:///workspace/sites/barometer-production-release/tests/portal-regression.mjs:1161:10)"
+    }
+  ]
+}

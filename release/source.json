@@ -1,0 +1,15 @@
+{
+  "siteProject": "appgprj_6adf10b5210c8191896f2f9c4ba02aa2",
+  "sourceCommit": "508e5f92c810692eb20baae130335e638509e04b",
+  "productionBase": "0306399f255d6269cc67f15aef162ef0d5352d1e",
+  "engineHash": "6efa969a9eab49cd3a9ac0897da8dff8aa5c26ed22588938dac1dfc18cece090",
+  "localHash": "b64aae821fd5af3bca51bc70da2b6ea9c4a799084f6ce055e256c9a46acd96a5",
+  "publicHash": "8ff8d427cb92654d45f553eef74ae0cb218085182cda188734654538e1fc90b5",
+  "storage": "const STORE='barometer_v2_final';const LEGACY_STORES=['barometer_v2_final_r26','barometer_v2_final_r25','barometer_v2_final_r24','barometer_v2_final_r23','barometer_v2_prod_r21','barometer_v2_calc_r20','barometer_v2_calc_r19','barometer_v2_calc_r18'];",
+  "allowedDifferences": [
+    "production storage keys",
+    "production title",
+    "removed test banners",
+    "synchronized embedded local HTML"
+  ]
+}
