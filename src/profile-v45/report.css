@@ -1,0 +1,7 @@
+body,#report-content{font-family:'DejaVu Sans',sans-serif;color:#394649;font-size:14px;line-height:1.48}
+.report-title,h1,h2{font-family:'DejaVu Sans',sans-serif;color:#394649}button{font-family:'DejaVu Sans',sans-serif!important}
+.report-subtitle,.meta-box span,.small-note,.muted,.quality-note,.boundary-flag,.pdf-toolbar-note{color:#667174}
+.summary-table{table-layout:fixed;width:100%;min-width:0}.summary-table th,.summary-table td{overflow-wrap:anywhere}
+.summary-table th:first-child{width:28%}.summary-table th:not(:first-child){width:24%}
+.summary-table .weather-badge{white-space:normal;max-width:100%}.summary-card{overflow:visible}
+@media print{body,#report-content{font-size:10.5pt}.summary-table{min-width:0!important;font-size:9px}.summary-table .weather-badge{font-size:9px;white-space:normal}.meta-grid{display:grid;grid-template-columns:repeat(3,1fr)}.summary-card{overflow:visible;break-inside:auto}.summary-table tr{break-inside:avoid}.summary-table thead{display:table-header-group}}

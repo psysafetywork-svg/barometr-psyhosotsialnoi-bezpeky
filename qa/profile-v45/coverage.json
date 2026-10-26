@@ -1,0 +1,6984 @@
+[
+  {
+    "test": "weather M1 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M1 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M2 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M3 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M4 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M5 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M6 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/clear/clear",
+    "expected": "Ясно / Ясно / Ясно",
+    "actual": "Ясно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/clear/cloudy",
+    "expected": "Ясно / Ясно / Хмарно",
+    "actual": "Ясно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/clear/storm",
+    "expected": "Ясно / Ясно / Буря",
+    "actual": "Ясно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/clear/fog",
+    "expected": "Ясно / Ясно / Туман",
+    "actual": "Ясно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/cloudy/clear",
+    "expected": "Ясно / Хмарно / Ясно",
+    "actual": "Ясно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/cloudy/cloudy",
+    "expected": "Ясно / Хмарно / Хмарно",
+    "actual": "Ясно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/cloudy/storm",
+    "expected": "Ясно / Хмарно / Буря",
+    "actual": "Ясно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/cloudy/fog",
+    "expected": "Ясно / Хмарно / Туман",
+    "actual": "Ясно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/storm/clear",
+    "expected": "Ясно / Буря / Ясно",
+    "actual": "Ясно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/storm/cloudy",
+    "expected": "Ясно / Буря / Хмарно",
+    "actual": "Ясно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/storm/storm",
+    "expected": "Ясно / Буря / Буря",
+    "actual": "Ясно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/storm/fog",
+    "expected": "Ясно / Буря / Туман",
+    "actual": "Ясно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/fog/clear",
+    "expected": "Ясно / Туман / Ясно",
+    "actual": "Ясно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/fog/cloudy",
+    "expected": "Ясно / Туман / Хмарно",
+    "actual": "Ясно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/fog/storm",
+    "expected": "Ясно / Туман / Буря",
+    "actual": "Ясно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 clear/fog/fog",
+    "expected": "Ясно / Туман / Туман",
+    "actual": "Ясно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/clear/clear",
+    "expected": "Хмарно / Ясно / Ясно",
+    "actual": "Хмарно / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/clear/cloudy",
+    "expected": "Хмарно / Ясно / Хмарно",
+    "actual": "Хмарно / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/clear/storm",
+    "expected": "Хмарно / Ясно / Буря",
+    "actual": "Хмарно / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/clear/fog",
+    "expected": "Хмарно / Ясно / Туман",
+    "actual": "Хмарно / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/cloudy/clear",
+    "expected": "Хмарно / Хмарно / Ясно",
+    "actual": "Хмарно / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/cloudy/cloudy",
+    "expected": "Хмарно / Хмарно / Хмарно",
+    "actual": "Хмарно / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/cloudy/storm",
+    "expected": "Хмарно / Хмарно / Буря",
+    "actual": "Хмарно / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/cloudy/fog",
+    "expected": "Хмарно / Хмарно / Туман",
+    "actual": "Хмарно / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/storm/clear",
+    "expected": "Хмарно / Буря / Ясно",
+    "actual": "Хмарно / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/storm/cloudy",
+    "expected": "Хмарно / Буря / Хмарно",
+    "actual": "Хмарно / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/storm/storm",
+    "expected": "Хмарно / Буря / Буря",
+    "actual": "Хмарно / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/storm/fog",
+    "expected": "Хмарно / Буря / Туман",
+    "actual": "Хмарно / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/fog/clear",
+    "expected": "Хмарно / Туман / Ясно",
+    "actual": "Хмарно / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/fog/cloudy",
+    "expected": "Хмарно / Туман / Хмарно",
+    "actual": "Хмарно / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/fog/storm",
+    "expected": "Хмарно / Туман / Буря",
+    "actual": "Хмарно / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 cloudy/fog/fog",
+    "expected": "Хмарно / Туман / Туман",
+    "actual": "Хмарно / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/clear/clear",
+    "expected": "Буря / Ясно / Ясно",
+    "actual": "Буря / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/clear/cloudy",
+    "expected": "Буря / Ясно / Хмарно",
+    "actual": "Буря / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/clear/storm",
+    "expected": "Буря / Ясно / Буря",
+    "actual": "Буря / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/clear/fog",
+    "expected": "Буря / Ясно / Туман",
+    "actual": "Буря / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/cloudy/clear",
+    "expected": "Буря / Хмарно / Ясно",
+    "actual": "Буря / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/cloudy/cloudy",
+    "expected": "Буря / Хмарно / Хмарно",
+    "actual": "Буря / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/cloudy/storm",
+    "expected": "Буря / Хмарно / Буря",
+    "actual": "Буря / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/cloudy/fog",
+    "expected": "Буря / Хмарно / Туман",
+    "actual": "Буря / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/storm/clear",
+    "expected": "Буря / Буря / Ясно",
+    "actual": "Буря / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/storm/cloudy",
+    "expected": "Буря / Буря / Хмарно",
+    "actual": "Буря / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/storm/storm",
+    "expected": "Буря / Буря / Буря",
+    "actual": "Буря / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/storm/fog",
+    "expected": "Буря / Буря / Туман",
+    "actual": "Буря / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/fog/clear",
+    "expected": "Буря / Туман / Ясно",
+    "actual": "Буря / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/fog/cloudy",
+    "expected": "Буря / Туман / Хмарно",
+    "actual": "Буря / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/fog/storm",
+    "expected": "Буря / Туман / Буря",
+    "actual": "Буря / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 storm/fog/fog",
+    "expected": "Буря / Туман / Туман",
+    "actual": "Буря / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/clear/clear",
+    "expected": "Туман / Ясно / Ясно",
+    "actual": "Туман / Ясно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/clear/cloudy",
+    "expected": "Туман / Ясно / Хмарно",
+    "actual": "Туман / Ясно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/clear/storm",
+    "expected": "Туман / Ясно / Буря",
+    "actual": "Туман / Ясно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/clear/fog",
+    "expected": "Туман / Ясно / Туман",
+    "actual": "Туман / Ясно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/cloudy/clear",
+    "expected": "Туман / Хмарно / Ясно",
+    "actual": "Туман / Хмарно / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/cloudy/cloudy",
+    "expected": "Туман / Хмарно / Хмарно",
+    "actual": "Туман / Хмарно / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/cloudy/storm",
+    "expected": "Туман / Хмарно / Буря",
+    "actual": "Туман / Хмарно / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/cloudy/fog",
+    "expected": "Туман / Хмарно / Туман",
+    "actual": "Туман / Хмарно / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/storm/clear",
+    "expected": "Туман / Буря / Ясно",
+    "actual": "Туман / Буря / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/storm/cloudy",
+    "expected": "Туман / Буря / Хмарно",
+    "actual": "Туман / Буря / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/storm/storm",
+    "expected": "Туман / Буря / Буря",
+    "actual": "Туман / Буря / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/storm/fog",
+    "expected": "Туман / Буря / Туман",
+    "actual": "Туман / Буря / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/fog/clear",
+    "expected": "Туман / Туман / Ясно",
+    "actual": "Туман / Туман / Ясно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/fog/cloudy",
+    "expected": "Туман / Туман / Хмарно",
+    "actual": "Туман / Туман / Хмарно",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/fog/storm",
+    "expected": "Туман / Туман / Буря",
+    "actual": "Туман / Туман / Буря",
+    "result": "PASS"
+  },
+  {
+    "test": "weather M7 fog/fog/fog",
+    "expected": "Туман / Туман / Туман",
+    "actual": "Туман / Туман / Туман",
+    "result": "PASS"
+  },
+  {
+    "test": "practice P01 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P01 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P01"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P01 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P01"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P01 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P01"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P01 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P02 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P02 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P02"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P02 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P02"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P02 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P02"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P02 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P03 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P03 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P03"
+      ],
+      "actions": [
+        "M1-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P03 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P03"
+      ],
+      "actions": [
+        "M1-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P03 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P03"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P03 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P04 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P04 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P04"
+      ],
+      "actions": [
+        "M1-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P04 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P04"
+      ],
+      "actions": [
+        "M1-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P04 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P04"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P04 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P05 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P05 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P05"
+      ],
+      "actions": [
+        "M1-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P05 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P05"
+      ],
+      "actions": [
+        "M1-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P05 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P05"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P05 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P06 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P06 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P06"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P06 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P06"
+      ],
+      "actions": [
+        "M1-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P06 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P06"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P06 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P07 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P07 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P07"
+      ],
+      "actions": [
+        "M2-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P07 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P07"
+      ],
+      "actions": [
+        "M2-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P07 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P07"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P07 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P08 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P08 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P08"
+      ],
+      "actions": [
+        "M2-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P08 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P08"
+      ],
+      "actions": [
+        "M2-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P08 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P08"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P08 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P09 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P09 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P09"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P09 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P09"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P09 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P09"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P09 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P10 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P10 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P10"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P10 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P10"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P10 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P10"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P10 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P11 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P11 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P11"
+      ],
+      "actions": [
+        "M2-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P11 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P11"
+      ],
+      "actions": [
+        "M2-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P11 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P11"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P11 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P12 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P12 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P12-S4"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P12 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P12-S4"
+      ],
+      "actions": [
+        "M2-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P12 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P12"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P12 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P13 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P13 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P13"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P13 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P13"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P13 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P13"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P13 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P14 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P14 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P14"
+      ],
+      "actions": [
+        "M3-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P14 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P14"
+      ],
+      "actions": [
+        "M3-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P14 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P14"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P14 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P15 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P15 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P15"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P15 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P15"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P15 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P15"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P15 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P16 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P16 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P16"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P16 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P16"
+      ],
+      "actions": [
+        "M3-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P16 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P16"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P16 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P17 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P17 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P17"
+      ],
+      "actions": [
+        "M3-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P17 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P17"
+      ],
+      "actions": [
+        "M3-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P17 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P17"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P17 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P18 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P18 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P18"
+      ],
+      "actions": [
+        "M3-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P18 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P18"
+      ],
+      "actions": [
+        "M3-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P18 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P18"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P18 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P19 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P19 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P19"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P19 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P19"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P19 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P19"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P19 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P20 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P20 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P20"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P20 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P20"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P20 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P20"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P20 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P21 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P21 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P21"
+      ],
+      "actions": [
+        "M4-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P21 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P21"
+      ],
+      "actions": [
+        "M4-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P21 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P21"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P21 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P22 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P22 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P22"
+      ],
+      "actions": [
+        "M4-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P22 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P22"
+      ],
+      "actions": [
+        "M4-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P22 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P22"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P22 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P23 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P23 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P23"
+      ],
+      "actions": [
+        "M4-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P23 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P23"
+      ],
+      "actions": [
+        "M4-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P23 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P23"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P23 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P24 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P24 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P24"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P24 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P24"
+      ],
+      "actions": [
+        "M4-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P24 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P24"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P24 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P25 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P25 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P25"
+      ],
+      "actions": [
+        "M5-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P25 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P25"
+      ],
+      "actions": [
+        "M5-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P25 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P25"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P25 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P26 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P26 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P26"
+      ],
+      "actions": [
+        "M5-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P26 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P26"
+      ],
+      "actions": [
+        "M5-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P26 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P26"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P26 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P27 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P27 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P27"
+      ],
+      "actions": [
+        "M5-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P27 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P27"
+      ],
+      "actions": [
+        "M5-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P27 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P27"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P27 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P28 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P28 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P28"
+      ],
+      "actions": [
+        "M5-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P28 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P28"
+      ],
+      "actions": [
+        "M5-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P28 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P28"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P28 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P29 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P29 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P29"
+      ],
+      "actions": [
+        "M5-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P29 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P29"
+      ],
+      "actions": [
+        "M5-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P29 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P29"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P29 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P30 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P30 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P30"
+      ],
+      "actions": [
+        "M5-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P30 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P30"
+      ],
+      "actions": [
+        "M5-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P30 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P30"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P30 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P31 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P31 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P31"
+      ],
+      "actions": [
+        "M6-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P31 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P31"
+      ],
+      "actions": [
+        "M6-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P31 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P31"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P31 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P32 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P32 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P32"
+      ],
+      "actions": [
+        "M6-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P32 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P32"
+      ],
+      "actions": [
+        "M6-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P32 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P32"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P32 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P33 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P33 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P33"
+      ],
+      "actions": [
+        "M6-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P33 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P33"
+      ],
+      "actions": [
+        "M6-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P33 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P33"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P33 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P34 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P34 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P34"
+      ],
+      "actions": [
+        "M6-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P34 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P34"
+      ],
+      "actions": [
+        "M6-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P34 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P34"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P34 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P35 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P35 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P35"
+      ],
+      "actions": [
+        "M6-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P35 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P35"
+      ],
+      "actions": [
+        "M6-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P35 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P35"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P35 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P36 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P36 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P36"
+      ],
+      "actions": [
+        "M6-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P36 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P36"
+      ],
+      "actions": [
+        "M6-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P36 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P36"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P36 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P37 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P37 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P37"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P37 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P37"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P37 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P37"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P37 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P38 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P38 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P38"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P38 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P38"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P38 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P38"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P38 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P39 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P39 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P39"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P39 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P39"
+      ],
+      "actions": [
+        "M7-A2"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P39 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P39"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P39 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P40 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P40 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P40"
+      ],
+      "actions": [
+        "M7-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P40 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "P40"
+      ],
+      "actions": [
+        "M7-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P40 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P40"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P40 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P41 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P41 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P41"
+      ],
+      "actions": [
+        "M7-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P41 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P41"
+      ],
+      "actions": [
+        "M7-A1"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P41 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P41"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P41 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P42 full",
+    "expected": "Distinct full state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P42 partial",
+    "expected": "Distinct partial state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P42"
+      ],
+      "actions": [
+        "M7-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P42 no",
+    "expected": "Distinct no state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "legacy:P42"
+      ],
+      "actions": [
+        "M7-A3"
+      ]
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P42 insufficient",
+    "expected": "Distinct insufficient state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [
+        "verify:P42"
+      ],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "practice P42 missing",
+    "expected": "Distinct missing state; correction only no/partial; verification only insufficient",
+    "actual": {
+      "units": [],
+      "actions": []
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "item E01 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E01 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E01 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E01 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E02 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E02 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E02 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E02 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E03 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E03 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E03 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E03 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E04 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E04 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E04 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E04 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E05 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E05 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E05 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E05 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E06 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E06 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E06 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E06 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E07 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E07 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E07 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E07 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E08 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E08 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E08 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E08 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E09 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E09 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E09 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E09 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E10 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E10 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E10 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E10 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E11 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E11 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E11 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E11 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E12 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E12 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E12 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E12 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E13 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E13 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E13 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E13 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E14 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E14 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E14 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E14 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E15 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E15 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E15 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E15 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E16 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E16 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E16 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E16 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E17 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E17 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E17 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E17 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E18 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E18 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E18 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E18 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E19 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E19 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E19 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E19 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E20 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E20 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E20 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E20 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E21 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E21 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E21 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E21 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E22 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E22 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E22 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E22 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E23 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E23 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E23 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E23 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E24 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E24 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E24 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E24 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E25 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E25 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E25 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E25 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E26 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E26 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E26 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E26 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E27 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E27 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E27 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E27 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E28 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E28 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E28 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E28 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E29 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E29 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E29 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E29 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E30 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E30 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E30 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E30 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E31 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E31 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E31 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E31 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E32 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E32 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E32 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E32 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E33 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E33 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E33 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E33 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E34 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E34 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E34 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E34 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item E35 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item E35 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item E35 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item E35 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L01 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L01 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L01 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L01 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L02 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L02 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L02 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L02 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L03 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L03 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L03 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L03 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L04 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L04 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L04 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L04 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L05 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L05 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L05 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L05 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L06 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L06 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L06 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L06 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L07 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L07 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L07 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L07 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L08 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L08 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L08 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L08 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L09 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L09 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L09 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L09 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L10 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L10 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L10 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L10 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L11 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L11 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L11 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L11 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L12 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L12 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L12 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L12 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L13 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L13 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L13 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L13 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L14 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L14 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L14 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L14 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L15 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L15 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L15 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L15 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L16 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L16 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L16 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L16 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L17 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L17 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L17 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L17 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L18 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L18 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L18 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L18 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L19 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L19 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L19 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L19 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L20 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L20 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L20 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L20 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "item L21 favorable",
+    "expected": "favorable; item retained in selection without changing weather rules",
+    "actual": "favorable",
+    "result": "PASS"
+  },
+  {
+    "test": "item L21 mixed",
+    "expected": "mixed; item retained in selection without changing weather rules",
+    "actual": "mixed",
+    "result": "PASS"
+  },
+  {
+    "test": "item L21 partial",
+    "expected": "partial; item retained in selection without changing weather rules",
+    "actual": "partial",
+    "result": "PASS"
+  },
+  {
+    "test": "item L21 negative",
+    "expected": "negative; item retained in selection without changing weather rules",
+    "actual": "negative",
+    "result": "PASS"
+  },
+  {
+    "test": "M2 sample raw calculator and all six practices",
+    "expected": "E storm; L cloudy; P cloudy; S2; 11 steps; six auditable practices",
+    "actual": {
+      "weather": [
+        "Буря",
+        "Хмарно",
+        "Хмарно"
+      ],
+      "steps": 11,
+      "checks": 16
+    },
+    "result": "PASS"
+  },
+  {
+    "test": "P12 no {\"E07\":[40,40],\"L04\":[40,40]}",
+    "expected": "P12-S1",
+    "actual": [
+      "P12-S1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 partial {\"E09\":[40,40],\"L06\":[40,40]}",
+    "expected": "P12-S2",
+    "actual": [
+      "P12-S2"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 full {\"E07\":[40,40]}",
+    "expected": "P12-S3",
+    "actual": [
+      "P12-S3"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 partial {}",
+    "expected": "P12-S4",
+    "actual": [
+      "P12-S4"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 no {}",
+    "expected": "P12-S4",
+    "actual": [
+      "P12-S4"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 partial {\"E08\":[40,0]}",
+    "expected": "P12-BASE without duplicate scenario",
+    "actual": [
+      "P12-BASE"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "P12 full {\"E08\":[40,40]}",
+    "expected": "P12-BASE without duplicate scenario",
+    "actual": [
+      "P12-BASE"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "neutral safety E06",
+    "expected": "Partial agreement uses neutral clarification and zero unfavorable criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "neutral safety E12",
+    "expected": "Partial agreement uses neutral clarification and zero unfavorable criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "neutral safety E17",
+    "expected": "Partial agreement uses neutral clarification and zero unfavorable criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E20 explicit branch 1",
+    "expected": "Approved E20-1 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E20 explicit branch 2",
+    "expected": "Approved E20-2 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E20 explicit branch 3",
+    "expected": "Approved E20-3 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E20 explicit branch 4",
+    "expected": "Approved E20-4 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E30 explicit branch 1",
+    "expected": "Approved E30-1 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E30 explicit branch 2",
+    "expected": "Approved E30-2 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E30 explicit branch 3",
+    "expected": "Approved E30-3 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E30 explicit branch 4",
+    "expected": "Approved E30-4 conclusion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C1",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C2",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C3",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C4",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C5 sample",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E31 C5 NA",
+    "expected": "No automatic incident card; correct focus and result criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Зменшити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no not_confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no not_confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no not_confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no needs_check/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no needs_check/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 no needs_check/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Зменшити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial not_confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial not_confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial not_confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial needs_check/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial needs_check/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 partial needs_check/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "Уточнити ризик агресії, насильства та домагань з боку третіх осіб",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full not_confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full not_confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full not_confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full needs_check/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full needs_check/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 full needs_check/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient not_confirmed/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient not_confirmed/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient not_confirmed/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient needs_check/confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient needs_check/not_confirmed",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "P40 insufficient needs_check/needs_check",
+    "expected": "Local confirmed risk gates correction; unknown gets verification; full/insufficient no correction",
+    "actual": "No P40 action",
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated P18",
+    "expected": "M3-A2",
+    "actual": [
+      "M3-A2"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated P24",
+    "expected": "M4-A1",
+    "actual": [
+      "M4-A1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated L04",
+    "expected": "M2-D3",
+    "actual": [
+      "M2-D3"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated L06",
+    "expected": "M2-D4",
+    "actual": [
+      "M2-D4"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated L17",
+    "expected": "M6-D1",
+    "actual": [
+      "M6-D1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated L18",
+    "expected": "M6-D1",
+    "actual": [
+      "M6-D1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated E09",
+    "expected": "M2-D1",
+    "actual": [
+      "M2-D1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated E10",
+    "expected": "M2-D2",
+    "actual": [
+      "M2-D2"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "route isolated E14",
+    "expected": "M3-D1",
+    "actual": [
+      "M3-D1"
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "merge P18+E15",
+    "expected": "M3-A3; preserve each step and criterion; remove M3-A2",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge P24+E19",
+    "expected": "M4-A2; preserve each step and criterion; remove M4-A1",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge E05+E24",
+    "expected": "C01; preserve each step and criterion; remove M1-A3",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge E09+E27",
+    "expected": "M6-A1; preserve each step and criterion; remove M2-D1",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge E22+E28",
+    "expected": "M6-A1; preserve each step and criterion; remove M5-A1",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge P28+P38",
+    "expected": "M7-A2; preserve each step and criterion; remove M5-A2",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "merge L17+L18+E29",
+    "expected": "M6-A2; preserve each step and criterion; remove M6-D1",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "E05 plus E25 is not C01",
+    "expected": "Independent work-problem response preserved",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "No truncation of five simultaneous actions in module 2",
+    "expected": "A1 A2 A3 D1 D2 all visible",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "privacy 0/0",
+    "expected": "absent/absent; no interpretation below minimum",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "privacy 19/9",
+    "expected": "sample/sample; no interpretation below minimum",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "privacy 20/10",
+    "expected": "negative/negative; no interpretation below minimum",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Incomplete checkup is not a completed gap",
+    "expected": "No corrective practice route from unfinished answers",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Same branch uses stable text across percentages",
+    "expected": "40/40 and 45/35 select same M2 scenario",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Same weather different item retains different content",
+    "expected": "E06 and E07 do not share an unrelated action",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "All six gaps in each module remain traceable",
+    "expected": "42 practices retained in steps and checks",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Original calculator and schema source invariants",
+    "expected": "Calculator implementations, item text and scales identical",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"items\":{\"E06\":[40,40],\"E07\":[40,40],\"E08\":[40,40],\"E09\":[40,40],\"L04\":[40,40],\"L06\":[40,40],\"E10\":[80,0],\"L05\":[80,0]},\"practices\":{\"P07\":\"partial\",\"P08\":\"partial\",\"P09\":\"partial\",\"P10\":\"partial\",\"P11\":\"partial\",\"P12\":\"partial\"}}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"nE\":20,\"nL\":10}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"nE\":19,\"nL\":9}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"items\":{\"E01\":\"NA\",\"E02\":[55,30],\"E03\":[75,15],\"L01\":[40,40]}}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"defaultPattern\":[40,0]}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "baseline equality {\"defaultPattern\":[60,20]}",
+    "expected": "Identical numerical results and statuses",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Catalogue contains no service module headings",
+    "expected": "Only approved user text in fields",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "P26 E21 variant А",
+    "expected": "Four explicit conclusions; no assumed excess monitoring; retain base criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "P26 E21 variant Б",
+    "expected": "Four explicit conclusions; no assumed excess monitoring; retain base criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "P26 E21 variant В",
+    "expected": "Four explicit conclusions; no assumed excess monitoring; retain base criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "P26 E21 variant Г",
+    "expected": "Four explicit conclusions; no assumed excess monitoring; retain base criterion",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "All-gap attention retains each practice",
+    "expected": "Partial practice scope is surfaced, including no direct survey counterpart",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Shared risk-cycle steps retain both practice traces and responsible roles",
+    "expected": "P37/P38 identical steps merge once",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  }
+]

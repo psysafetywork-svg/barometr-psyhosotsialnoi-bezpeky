@@ -1,0 +1,52 @@
+[
+  {
+    "file": "discrepancy.pdf",
+    "pages": 19,
+    "fonts": [
+      "AAAAAA+DejaVuSans-Bold",
+      "BAAAAA+DejaVuSans"
+    ],
+    "all_fonts_embedded": true,
+    "out_of_page_spans": []
+  },
+  {
+    "file": "favorable.pdf",
+    "pages": 6,
+    "fonts": [
+      "AAAAAA+DejaVuSans-Bold",
+      "BAAAAA+DejaVuSans"
+    ],
+    "all_fonts_embedded": true,
+    "out_of_page_spans": []
+  },
+  {
+    "file": "insufficient.pdf",
+    "pages": 6,
+    "fonts": [
+      "AAAAAA+DejaVuSans-Bold",
+      "BAAAAA+DejaVuSans"
+    ],
+    "all_fonts_embedded": true,
+    "out_of_page_spans": []
+  },
+  {
+    "file": "module2_sample.pdf",
+    "pages": 8,
+    "fonts": [
+      "AAAAAA+DejaVuSans-Bold",
+      "BAAAAA+DejaVuSans"
+    ],
+    "all_fonts_embedded": true,
+    "out_of_page_spans": []
+  },
+  {
+    "file": "six_gaps.pdf",
+    "pages": 19,
+    "fonts": [
+      "AAAAAA+DejaVuSans-Bold",
+      "BAAAAA+DejaVuSans"
+    ],
+    "all_fonts_embedded": true,
+    "out_of_page_spans": []
+  }
+]
