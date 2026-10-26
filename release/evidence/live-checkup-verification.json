@@ -1,0 +1,370 @@
+{
+  "productionSHA": "de502e72b08468e01a0351561a33bbecd08f1d70",
+  "url": "https://psysafetywork-svg.github.io/barometr-psyhosotsialnoi-bezpeky/local/index.html",
+  "method": "Created through previous production UI, same browser/profile/origin, reload after actual Pages deploy, no JSON import",
+  "expected": {
+    "P01": {
+      "answer": "partial",
+      "note": "Production QA P01 зберегти автоматично"
+    },
+    "P02": {
+      "answer": "no",
+      "note": "Production QA P02 зберегти автоматично"
+    },
+    "P03": {
+      "answer": "insufficient",
+      "note": "Production QA P03 зберегти автоматично"
+    },
+    "P04": {
+      "answer": "full",
+      "note": "Production QA P04 зберегти автоматично"
+    },
+    "P05": {
+      "answer": "partial",
+      "note": "Production QA P05 зберегти автоматично"
+    },
+    "P06": {
+      "answer": "no",
+      "note": "Production QA P06 зберегти автоматично"
+    },
+    "P07": {
+      "answer": "insufficient",
+      "note": "Production QA P07 зберегти автоматично"
+    },
+    "P08": {
+      "answer": "full",
+      "note": "Production QA P08 зберегти автоматично"
+    },
+    "P09": {
+      "answer": "partial",
+      "note": "Production QA P09 зберегти автоматично"
+    },
+    "P10": {
+      "answer": "no",
+      "note": "Production QA P10 зберегти автоматично"
+    },
+    "P11": {
+      "answer": "insufficient",
+      "note": "Production QA P11 зберегти автоматично"
+    },
+    "P12": {
+      "answer": "full",
+      "note": "Production QA P12 зберегти автоматично"
+    },
+    "P13": {
+      "answer": "partial",
+      "note": "Production QA P13 зберегти автоматично"
+    },
+    "P14": {
+      "answer": "no",
+      "note": "Production QA P14 зберегти автоматично"
+    },
+    "P15": {
+      "answer": "insufficient",
+      "note": "Production QA P15 зберегти автоматично"
+    },
+    "P16": {
+      "answer": "full",
+      "note": "Production QA P16 зберегти автоматично"
+    },
+    "P17": {
+      "answer": "partial",
+      "note": "Production QA P17 зберегти автоматично"
+    },
+    "P18": {
+      "answer": "no",
+      "note": "Production QA P18 зберегти автоматично"
+    },
+    "P19": {
+      "answer": "insufficient",
+      "note": "Production QA P19 зберегти автоматично"
+    },
+    "P20": {
+      "answer": "full",
+      "note": "Production QA P20 зберегти автоматично"
+    },
+    "P21": {
+      "answer": "partial",
+      "note": "Production QA P21 зберегти автоматично"
+    },
+    "P22": {
+      "answer": "no",
+      "note": "Production QA P22 зберегти автоматично"
+    },
+    "P23": {
+      "answer": "insufficient",
+      "note": "Production QA P23 зберегти автоматично"
+    },
+    "P24": {
+      "answer": "full",
+      "note": "Production QA P24 зберегти автоматично"
+    },
+    "P25": {
+      "answer": "partial",
+      "note": "Production QA P25 зберегти автоматично"
+    },
+    "P26": {
+      "answer": "no",
+      "note": "Production QA P26 зберегти автоматично"
+    },
+    "P27": {
+      "answer": "insufficient",
+      "note": "Production QA P27 зберегти автоматично"
+    },
+    "P28": {
+      "answer": "full",
+      "note": "Production QA P28 зберегти автоматично"
+    },
+    "P29": {
+      "answer": "partial",
+      "note": "Production QA P29 зберегти автоматично"
+    },
+    "P30": {
+      "answer": "no",
+      "note": "Production QA P30 зберегти автоматично"
+    },
+    "P31": {
+      "answer": "insufficient",
+      "note": "Production QA P31 зберегти автоматично"
+    },
+    "P32": {
+      "answer": "full",
+      "note": "Production QA P32 зберегти автоматично"
+    },
+    "P33": {
+      "answer": "partial",
+      "note": "Production QA P33 зберегти автоматично"
+    },
+    "P34": {
+      "answer": "no",
+      "note": "Production QA P34 зберегти автоматично"
+    },
+    "P35": {
+      "answer": "insufficient",
+      "note": "Production QA P35 зберегти автоматично"
+    },
+    "P36": {
+      "answer": "full",
+      "note": "Production QA P36 зберегти автоматично"
+    },
+    "P37": {
+      "answer": "partial",
+      "note": "Production QA P37 зберегти автоматично"
+    },
+    "P38": {
+      "answer": "no",
+      "note": "Production QA P38 зберегти автоматично"
+    },
+    "P39": {
+      "answer": "insufficient",
+      "note": "Production QA P39 зберегти автоматично"
+    },
+    "P40": {
+      "answer": "no",
+      "note": "Production QA P40 зберегти автоматично"
+    },
+    "P41": {
+      "answer": "partial",
+      "note": "Production QA P41 зберегти автоматично"
+    },
+    "P42": {
+      "answer": "no",
+      "note": "Production QA P42 зберегти автоматично"
+    }
+  },
+  "actual": {
+    "P01": {
+      "answer": "partial",
+      "note": "Production QA P01 зберегти автоматично"
+    },
+    "P02": {
+      "answer": "no",
+      "note": "Production QA P02 зберегти автоматично"
+    },
+    "P03": {
+      "answer": "insufficient",
+      "note": "Production QA P03 зберегти автоматично"
+    },
+    "P04": {
+      "answer": "full",
+      "note": "Production QA P04 зберегти автоматично"
+    },
+    "P05": {
+      "answer": "partial",
+      "note": "Production QA P05 зберегти автоматично"
+    },
+    "P06": {
+      "answer": "no",
+      "note": "Production QA P06 зберегти автоматично"
+    },
+    "P07": {
+      "answer": "insufficient",
+      "note": "Production QA P07 зберегти автоматично"
+    },
+    "P08": {
+      "answer": "full",
+      "note": "Production QA P08 зберегти автоматично"
+    },
+    "P09": {
+      "answer": "partial",
+      "note": "Production QA P09 зберегти автоматично"
+    },
+    "P10": {
+      "answer": "no",
+      "note": "Production QA P10 зберегти автоматично"
+    },
+    "P11": {
+      "answer": "insufficient",
+      "note": "Production QA P11 зберегти автоматично"
+    },
+    "P12": {
+      "answer": "full",
+      "note": "Production QA P12 зберегти автоматично"
+    },
+    "P13": {
+      "answer": "partial",
+      "note": "Production QA P13 зберегти автоматично"
+    },
+    "P14": {
+      "answer": "no",
+      "note": "Production QA P14 зберегти автоматично"
+    },
+    "P15": {
+      "answer": "insufficient",
+      "note": "Production QA P15 зберегти автоматично"
+    },
+    "P16": {
+      "answer": "full",
+      "note": "Production QA P16 зберегти автоматично"
+    },
+    "P17": {
+      "answer": "partial",
+      "note": "Production QA P17 зберегти автоматично"
+    },
+    "P18": {
+      "answer": "no",
+      "note": "Production QA P18 зберегти автоматично"
+    },
+    "P19": {
+      "answer": "insufficient",
+      "note": "Production QA P19 зберегти автоматично"
+    },
+    "P20": {
+      "answer": "full",
+      "note": "Production QA P20 зберегти автоматично"
+    },
+    "P21": {
+      "answer": "partial",
+      "note": "Production QA P21 зберегти автоматично"
+    },
+    "P22": {
+      "answer": "no",
+      "note": "Production QA P22 зберегти автоматично"
+    },
+    "P23": {
+      "answer": "insufficient",
+      "note": "Production QA P23 зберегти автоматично"
+    },
+    "P24": {
+      "answer": "full",
+      "note": "Production QA P24 зберегти автоматично"
+    },
+    "P25": {
+      "answer": "partial",
+      "note": "Production QA P25 зберегти автоматично"
+    },
+    "P26": {
+      "answer": "no",
+      "note": "Production QA P26 зберегти автоматично"
+    },
+    "P27": {
+      "answer": "insufficient",
+      "note": "Production QA P27 зберегти автоматично"
+    },
+    "P28": {
+      "answer": "full",
+      "note": "Production QA P28 зберегти автоматично"
+    },
+    "P29": {
+      "answer": "partial",
+      "note": "Production QA P29 зберегти автоматично"
+    },
+    "P30": {
+      "answer": "no",
+      "note": "Production QA P30 зберегти автоматично"
+    },
+    "P31": {
+      "answer": "insufficient",
+      "note": "Production QA P31 зберегти автоматично"
+    },
+    "P32": {
+      "answer": "full",
+      "note": "Production QA P32 зберегти автоматично"
+    },
+    "P33": {
+      "answer": "partial",
+      "note": "Production QA P33 зберегти автоматично"
+    },
+    "P34": {
+      "answer": "no",
+      "note": "Production QA P34 зберегти автоматично"
+    },
+    "P35": {
+      "answer": "insufficient",
+      "note": "Production QA P35 зберегти автоматично"
+    },
+    "P36": {
+      "answer": "full",
+      "note": "Production QA P36 зберегти автоматично"
+    },
+    "P37": {
+      "answer": "partial",
+      "note": "Production QA P37 зберегти автоматично"
+    },
+    "P38": {
+      "answer": "no",
+      "note": "Production QA P38 зберегти автоматично"
+    },
+    "P39": {
+      "answer": "insufficient",
+      "note": "Production QA P39 зберегти автоматично"
+    },
+    "P40": {
+      "answer": "no",
+      "note": "Production QA P40 зберегти автоматично"
+    },
+    "P41": {
+      "answer": "partial",
+      "note": "Production QA P41 зберегти автоматично"
+    },
+    "P42": {
+      "answer": "no",
+      "note": "Production QA P42 зберегти автоматично"
+    }
+  },
+  "date": "2026-10-23",
+  "mismatches": [],
+  "completedStateObserved": true,
+  "completedOpensModule": 1,
+  "p40Risk": "confirmed",
+  "p40Environment": "confirmed",
+  "unfinished": {
+    "answers": 7,
+    "notes": 7,
+    "date": "2026-10-24",
+    "resumeModule": 2
+  },
+  "publishedEngineHash": "89a991a71c0f948071602e542caff5df7f45d141956b5e434b8ddb1cd73c82a4",
+  "publicCodeHashes": {
+    "script": [
+      "d64f78f6a650d1e46fe44cd7a3a6762c461f3bc27b3d7a716e9384adca8a27c2",
+      "48cad41e51b05f0fd4e1fd275552cd2a7515c504f25acfa3437fdcdb769c6c6f",
+      "a4060bc63afae6392b6d7e0b47e73c9df55ec1c6faf4319f60c538dd97e7af3a",
+      "f95c32d383c1d5c2664c5c16fd3d8ae7529db386061ce866a4ea74f502aced52"
+    ],
+    "style": [
+      "310167a393afffa7f098f5caf9acd3137fd8b2f96a78404432c7f8dd3f3e2e39",
+      "20d352e475ed9af93a784eb0aa898f875209f234f0ab9046a01c5396569e1ff7"
+    ]
+  }
+}
