@@ -39,6 +39,11 @@ test('Sensitive topics select anonymous clarification; ordinary work issues sele
   const s=makeScenario(api,{items:{[code]:[40,40]}}),u=s.analysis.units.find(u=>u.method&&u.codes.includes(code));
   assert.equal(u.method,'confidential-conversation',code);assert.match(u.steps.join(' '),/добровільні конфіденційні/);
  }
+ const combined=makeScenario(api,SIX_PRACTICES).analysis;
+ for(const action of combined.actions)for(const entry of action.trace.steps.filter(x=>x.units.some(id=>id.startsWith('clarify:')))){
+  const display=combined.modules[action.module].sections.steps.find(x=>x.units.some(id=>id.startsWith('clarify:'))&&entry.codes.every(c=>x.codes.includes(c)));
+  assert.ok(display);assert.equal(display.text.startsWith('Організувати анонімне'),entry.text.startsWith('Організувати анонімне'));
+ }
 });
 
 test('Trust concerns change employee clarification across modules; lack of data never becomes a problem diagnosis',()=>{

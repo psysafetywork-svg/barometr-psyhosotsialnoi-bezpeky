@@ -3055,8 +3055,9 @@ function profileV45ClarificationUnits(input,routes,onlyModule=null){
  for(let mid=1;mid<=7;mid++)for(const source of ['E','L']){
   if(onlyModule&&mid!==onlyModule)continue;
   const codes=SURVEY_ITEMS.filter(x=>x.module===mid&&x.source===source&&profileV45NeedsClarification(input,x.code)).map(x=>x.code);
-  for(const route of barometerUnique(codes.map(c=>routes[c]||'profile'))){
-   const own=codes.filter(c=>(routes[c]||'profile')===route),topics=own.map(c=>c==='E31'?'неприйнятне ставлення':profileV45InlineLabel(c)).join('; ');
+  const group=c=>(onlyModule?'profile':routes[c]||'profile')+'|'+(source==='E'&&(trustConcern||PROFILE_V45_SENSITIVE.includes(c))?'pulse':'conversation');
+  for(const key of barometerUnique(codes.map(group))){
+   const route=key.split('|')[0],own=codes.filter(c=>group(c)===key),topics=own.map(c=>c==='E31'?'неприйнятне ставлення':profileV45InlineLabel(c)).join('; ');
    const sensitive=source==='E'&&(trustConcern||own.some(c=>PROFILE_V45_SENSITIVE.includes(c)));
    let text;
    if(sensitive){
@@ -3066,8 +3067,8 @@ function profileV45ClarificationUnits(input,routes,onlyModule=null){
     text=`Запропонувати короткі добровільні конфіденційні розмови ${source==='E'?'з працівниками':'з керівниками команд'} щодо таких питань: ${topics}. Цей спосіб допоможе з’ясувати конкретні робочі перешкоди та потрібні зміни. Заздалегідь пояснити, хто матиме доступ до інформації; у висновках не називати учасників і не з’ясовувати, хто як відповів в анкеті.`;
     if(source==='E')text+=' Якщо після розмов незрозуміло, наскільки поширена перешкода, провести анонімне пульс-опитування за умови захисту анонімності.';
    }
-   const u=profileV45Unit(own[0],[text],[],[],'clarify:'+mid+':'+source+':'+(route||'profile'));
-   u.codes=own;u.route=route==='profile'?null:route;u.profileOnly=route==='profile';u.method=sensitive?'anonymous-pulse':'confidential-conversation';out.push(u);
+   const u=profileV45Unit(own[0],[text],[],[],'clarify:'+mid+':'+source+':'+key);
+   u.codes=own;u.route=onlyModule||route==='profile'?null:route;u.profileOnly=!u.route;u.method=sensitive?'anonymous-pulse':'confidential-conversation';out.push(u);
   }
  }
  return out;
