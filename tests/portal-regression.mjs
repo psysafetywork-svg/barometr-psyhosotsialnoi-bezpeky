@@ -794,7 +794,7 @@ test('F02 partial NA remains visible even with no adverse signals',()=>{
 for(const [code,id,terms] of [
   ['E09','M2-D1',[/поточне навантаження/,/строк, пріоритет, обсяг або розподіл/]],
   ['E10','M2-D2',[/управлінських рішень/,/ризики/]],
-  ['E14','M3-D1',[/висловлювати свою позицію/,/взаємодії чи організації/]],
+  ['E14','M3-D1',[/бути собою або робити внесок без побоювання негативного ставлення/,/взаємодії чи організації/]],
   ['L04','M2-D3',[/кількість прямих підлеглих/,/інші робочі обов’язки/]],
   ['L06','M2-D4',[/бюджету, обладнання/,/рішення іншого рівня/]],
   ['L17','M6-D1',[/за виявленими потребами/,/межами їхньої ролі/]],
@@ -826,7 +826,8 @@ for(const companion of [null,'E32','P41','L19'])test(`F04 E33 with ${companion||
   setRuntimeScenario({eOverrides:{E33:1,...(companion==='E32'?{E32:1}:{})},lOverrides:companion==='L19'?{L19:1}:{},pOverrides:companion==='P41'?{P41:'partial'}:{}});
   const a=portal.api.barometerSemanticInterpretation(),x=a.actions.find(x=>x.id==='M7-A1');
   assert.ok(x);assert.match(x.action,/правила безпеки/);assert.match(x.action,/інструктаж/);assert.match(x.action,/застосувати правила/);
-  if(companion)assert.match(x.action,/небезпечну умову/);
+  if(companion==='E32'){assert.match(x.action,/перешкоди у фізичному просторі, цифрових інструментах або доступі до інформації/);assert.doesNotMatch(x.action,/небезпечну умову/)}
+  else if(companion)assert.match(x.action,/небезпечну умову/);
   else{assert.doesNotMatch(x.action,/небезпечну умову|Оцінити її практичне значення/);assert.match(x.title,/знання правил/);assert.ok(a.modules[7].problemCodes.includes('E33'))}
 });
 for(let i=0;i<6;i++)test(`F06 current category ${i+1} and numeric equivalent import`,()=>{
