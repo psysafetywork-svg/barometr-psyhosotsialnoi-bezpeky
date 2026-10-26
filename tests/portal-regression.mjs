@@ -18,7 +18,7 @@ function loadLocalPortal(){
     querySelector(selector){return selector==='#app'?app:null},
     querySelectorAll(){return []},
     getElementById(){return null},
-    addEventListener(type,handler){listeners.set(type,handler)},
+    addEventListener(type,handler){const previous=listeners.get(type);listeners.set(type,previous?(...args)=>{previous(...args);return handler(...args)}:handler)},
     createElement(){return {click(){},remove(){},setAttribute(){},style:{}}},
     body:{appendChild(){}},
   };

@@ -1,0 +1,32 @@
+✔ production storage identity and embedded standalone HTML are unchanged/synchronized (3.922544ms)
+✔ online: exact old-version data survives load, repeated save and separate JSON restore (42.652354ms)
+✔ downloaded embedded HTML: exact old-version data survives load, repeated save and separate JSON restore (29.57689ms)
+✔ every legacy key reads automatically without changing answers or user edits (91.831409ms)
+✔ exact approved/candidate parity: all_cloudy.json (131.484974ms)
+✔ exact approved/candidate parity: all_storm.json (231.454906ms)
+✔ exact approved/candidate parity: checkup_only_evidence.json (36.363545ms)
+✔ exact approved/candidate parity: checkup_only_full.json (19.357029ms)
+✔ exact approved/candidate parity: checkup_only_gaps.json (60.695854ms)
+✔ exact approved/candidate parity: checkup_unfinished.json (13.082392ms)
+✔ exact approved/candidate parity: discrepancy.json (168.965663ms)
+✔ exact approved/candidate parity: employee_fog.json (71.408603ms)
+✔ exact approved/candidate parity: employee_storm.json (130.965879ms)
+✔ exact approved/candidate parity: employees_checkup.json (60.647896ms)
+✔ exact approved/candidate parity: favorable.json (35.502437ms)
+✔ exact approved/candidate parity: insufficient.json (35.640164ms)
+✔ exact approved/candidate parity: manager_fog.json (58.757164ms)
+✔ exact approved/candidate parity: manager_storm.json (88.77094ms)
+✔ exact approved/candidate parity: managers_small.json (54.544668ms)
+✔ exact approved/candidate parity: mixed_modules.json (104.781365ms)
+✔ exact approved/candidate parity: module2_sample.json (89.826442ms)
+✔ exact approved/candidate parity: practice_storm.json (76.117477ms)
+✔ exact approved/candidate parity: six_gaps.json (150.952188ms)
+✔ exact approved/candidate parity: two_fogs.json (128.684222ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2090.336093
