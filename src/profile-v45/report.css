@@ -5,3 +5,4 @@ body,#report-content{font-family:'DejaVu Sans',sans-serif;color:#394649;font-siz
 .summary-table th:first-child{width:28%}.summary-table th:not(:first-child){width:24%}
 .summary-table .weather-badge{white-space:normal;max-width:100%}.summary-card{overflow:visible}
 @media print{body,#report-content{font-size:10.5pt}.summary-table{min-width:0!important;font-size:9px}.summary-table .weather-badge{font-size:9px;white-space:normal}.meta-grid{display:grid;grid-template-columns:repeat(3,1fr)}.summary-card{overflow:visible;break-inside:auto}.summary-table tr{break-inside:avoid}.summary-table thead{display:table-header-group}}
+@media print{body,#report-content{font-size:10pt}#report-content>p.muted{break-after:avoid}}

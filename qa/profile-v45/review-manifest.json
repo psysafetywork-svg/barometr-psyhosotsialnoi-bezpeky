@@ -52,8 +52,8 @@
     "sha256": "391d2a6e2cf0059bdb35be4a70ecf711335c661c24384fd72c4f4cc559725876"
   },
   "discrepancy.pdf": {
-    "bytes": 279824,
-    "sha256": "0227250cbaf57eed5ea97eb57e002ab5e006417f1303436c17aa98de53c8c8ef"
+    "bytes": 276669,
+    "sha256": "fb80bacc6acd5939d2f74dfc721bb4e71607cb37048dcd6ca01f42f1d018ae61"
   },
   "insufficient-m2-1440.png": {
     "bytes": 48370,
@@ -93,7 +93,7 @@
   },
   "edited-plan.xlsx": {
     "bytes": 10918,
-    "sha256": "e46f623673ff66600ccdccaee90bdd3d9244a4494dd91783beed59af2e4f1b89"
+    "sha256": "ea2331c47e89ed4a756d980ea368e9a10b243309f4f35305158cbbd3cd8591f6"
   },
   "six_gaps-m7-390.png": {
     "bytes": 306212,
@@ -140,8 +140,8 @@
     "sha256": "9d4fe6e21c8c04b0a0cb46ead7c9ffc0f69643d2be4e0d3381110ed748457a50"
   },
   "six_gaps.pdf": {
-    "bytes": 265603,
-    "sha256": "73705b6923d92f4c139755f4cb3b047b79eb5428e8ecdf6250f1462e3e220b4b"
+    "bytes": 264188,
+    "sha256": "c8d78f74a2c41433519184818c6050dce85f1766896e67f98e883c4ed671a440"
   },
   "favorable-m5-390.png": {
     "bytes": 48577,
@@ -156,16 +156,16 @@
     "sha256": "3ca5a38ed81e0dc2520eb6bca90af77c953c82e8669673256d26ad36ebe89740"
   },
   "insufficient.pdf": {
-    "bytes": 155098,
-    "sha256": "e46584fcd55e3724501961d27e2e21b4a8923688be7c4967fd5f41f79ef1589d"
+    "bytes": 155335,
+    "sha256": "05902bc10bf1379457379f6bb917052a7eace6bce9dc8561e26b6189c6fde730"
   },
   "module2_sample-m2-390.png": {
     "bytes": 363438,
     "sha256": "25d49ce0e8489b58e7c850f1cc6b00c424ba3677aa1321382e7721b806e0b39b"
   },
   "module2_sample.pdf": {
-    "bytes": 194362,
-    "sha256": "1e514992478561a8a1a230cf73d2c16715a14bbff575d2cb865703ef1c9233ab"
+    "bytes": 193512,
+    "sha256": "bff751ae0bd2e8c32aa6f7097609a19d2e2017b00d97310213e5474cc0cc7acf"
   },
   "six_gaps-m6-1440.png": {
     "bytes": 256792,
@@ -248,8 +248,8 @@
     "sha256": "fd458bdb422f4352f9544811016960eb7c385a84d07cc92cac8aa6d31872386f"
   },
   "favorable.pdf": {
-    "bytes": 155956,
-    "sha256": "5c922edcdc0c77d7534ec5d0a4cc8361f94fd5d96a6540ad02685466ddb2ef54"
+    "bytes": 156268,
+    "sha256": "caccecbe1b1a9ef860444566d524b49c153ae3e95a3e18bbc19146141be4d455"
   },
   "insufficient-m1-390.png": {
     "bytes": 47148,

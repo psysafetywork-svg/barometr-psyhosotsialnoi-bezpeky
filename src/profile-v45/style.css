@@ -16,3 +16,4 @@
 @media print{.profile-plan-controls{display:none}.profile-v45-module{font-size:10.5pt;padding:10px;margin-top:16px;break-inside:auto}.profile-v45-heading h3{font-size:15pt}.profile-v45-card h4{font-size:11.5pt}.profile-v45-card{padding:10px 12px}.profile-data-notes{font-size:9pt}}
 
 @media print{.profile-v45-module{padding:8px;margin-top:12px;line-height:1.42}.profile-v45-card{padding:8px 12px;margin:8px 0}.profile-v45-heading{padding:10px 14px}.profile-v45-card p{margin:6px 0}}
+@media print{.profile-v45-module{font-size:10pt}.profile-v45-module:last-of-type{break-after:avoid}.profile-v45-module:last-of-type .profile-v45-card:last-child{break-after:avoid}}
