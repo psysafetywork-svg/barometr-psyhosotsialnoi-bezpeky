@@ -1,0 +1,918 @@
+{
+  "sourceCommit": "508e5f92c810692eb20baae130335e638509e04b",
+  "productionBaseline": "0306399f255d6269cc67f15aef162ef0d5352d1e",
+  "originalCases": 179,
+  "currentCases": 179,
+  "deleted": 0,
+  "skipped": 0,
+  "assertionAdaptations": 56,
+  "sharedFixtureAdaptations": [
+    "Document mock dispatches every registered listener, as browsers do.",
+    "Semantic fixtures contain actual survey metrics and checkup answers required by v45, retaining the same favorable/adverse/NA/sample inputs.",
+    "Public example executes its approved embedded cases bundle, rather than obsolete inline example generation."
+  ],
+  "contractAdaptations": [
+    "Retired 27-aspect v2 object/card layout is replaced by the approved seven-module, four-section model. All tested signal codes, evidence scope, actionable issues and unavailable sources remain asserted.",
+    "Exact v2 prose/headings/action copies are replaced by approved v45 wording and scoped action content. Exact full production/source parity is separately asserted on 20 fixtures.",
+    "Unconfirmed P40 applicability produces an explicit risk-clarification action in v45; confirmed-not-applicable does not produce a corrective action. Confirmed applicable still produces third-party protection steps.",
+    "Completed checkup-only research can show company results without a survey; imports remain independently available.",
+    "Weather-map fixtures explicitly supply response counts and completed checkup, required for availability-aware columns. All numeric threshold assertions remain unchanged."
+  ],
+  "cases": [
+    {
+      "original": "all executable scripts parse",
+      "current": "all executable scripts parse",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "synthetic import accepts 2,400 E responses and 1,200 L responses",
+      "current": "synthetic import accepts 2,400 E responses and 1,200 L responses",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "a complete 2,400-response route produces seven results, a report, and an XLSX plan",
+      "current": "a complete 2,400-response route produces seven results, a report, and an XLSX plan",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "respondent-based E profiles give every valid person equal weight",
+      "current": "respondent-based E profiles give every valid person equal weight",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "E needs three applicable answers per person and L needs two",
+      "current": "E needs three applicable answers per person and L needs two",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "module profile minimum is half the E or L respondents, subject to the floor",
+      "current": "module profile minimum is half the E or L respondents, subject to the floor",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "module status can use respondent profiles even when no item meets its separate minimum",
+      "current": "module status can use respondent profiles even when no item meets its separate minimum",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно",
+      "current": "scenario A: 24 favorable, 3 neutral and 3 unfavorable full E profiles are Ясно",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "scenario B: a sufficiently answered problem item masks nominal Ясно",
+      "current": "scenario B: a sufficiently answered problem item masks nominal Ясно",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "scenario C: two half-applicable problem items give 80/0/20 and Хмарно",
+      "current": "scenario C: two half-applicable problem items give 80/0/20 and Хмарно",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "report uses final semantic action wording when E and P support an action",
+      "current": "report uses final semantic action wording when E and P support an action",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P40 follow-up renders immediately after selecting not implemented",
+      "current": "P40 follow-up renders immediately after selecting not implemented",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "P40 follow-up records applicability for each environment and survives normalization and backup",
+      "current": "P40 follow-up records applicability for each environment and survives normalization and backup",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "survey weather thresholds, badges and problem-item safeguard follow final E/L rules",
+      "current": "survey weather thresholds, badges and problem-item safeguard follow final E/L rules",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "the 55% item boundary stays separate from storm weather",
+      "current": "the 55% item boundary stays separate from storm weather",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "checkup status rules remain reproducible, including conditional P40",
+      "current": "checkup status rules remain reproducible, including conditional P40",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "P badges explain practices and never show a numerical percentage",
+      "current": "P badges explain practices and never show a numerical percentage",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "weather map and report omit visible boundary messages",
+      "current": "weather map and report omit visible boundary messages",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "public methodology describes weather statuses, E/L calculation, problem items and categorical P",
+      "current": "public methodology describes weather statuses, E/L calculation, problem items and categorical P",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "all 64 interpretation combinations remain available and recommendations stay capped at three",
+      "current": "all 64 interpretation combinations remain available and recommendations stay capped at three",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "E16 routes primarily to the new pay-equity thematic recommendation",
+      "current": "E16 routes primarily to the new pay-equity thematic recommendation",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "E22 routes primarily to the new time-and-pace flexibility recommendation",
+      "current": "E22 routes primarily to the new time-and-pace flexibility recommendation",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary",
+      "current": "E25 uses the feedback recommendation, explains work problem, and keeps P18 non-primary",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "L21 routes to P38 and every runtime P38 copy uses the revised wording",
+      "current": "L21 routes to P38 and every runtime P38 copy uses the revised wording",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "COMBO64 situation hypothesis appears only with a weak situational practice in that module",
+      "current": "COMBO64 situation hypothesis appears only with a weak situational practice in that module",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "manager detail is never retained below ten responses",
+      "current": "manager detail is never retained below ten responses",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "E=19 has no status or problem items, while E=20 gets a weather status",
+      "current": "E=19 has no status or problem items, while E=20 gets a weather status",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "L=9 has no status or problem items, while L=10 gets a weather status",
+      "current": "L=9 has no status or problem items, while L=10 gets a weather status",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "eligible E and L with too few applicable answers receive Туман, not a sample warning",
+      "current": "eligible E and L with too few applicable answers receive Туман, not a sample warning",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "E=19 is excluded from final comparison while valid L and P still produce analysis",
+      "current": "E=19 is excluded from final comparison while valid L and P still produce analysis",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "L=9 is excluded from final comparison while valid E and P still produce analysis",
+      "current": "L=9 is excluded from final comparison while valid E and P still produce analysis",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "zero manager responses no longer block the final dashboard availability",
+      "current": "zero manager responses no longer block the final dashboard availability",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "plan is isolated by period and export contains action description",
+      "current": "plan is isolated by period and export contains action description",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "legacy plan actions are assigned to the period that owns their environment",
+      "current": "legacy plan actions are assigned to the period that owns their environment",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "backup validation rejects inconsistent structures before replacement",
+      "current": "backup validation rejects inconsistent structures before replacement",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "no-manager interpretation removes manager-specific hypotheses and checks",
+      "current": "no-manager interpretation removes manager-specific hypotheses and checks",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "report sentences start with capitals",
+      "current": "report sentences start with capitals",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "environment and period validation rejects inconsistent values",
+      "current": "environment and period validation rejects inconsistent values",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "public portal documents the previously hidden rules and four checkup answers",
+      "current": "public portal documents the previously hidden rules and four checkup answers",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 defines all 27 aspects and approved positive conclusion",
+      "current": "v45 defines seven modules with four sections and the approved positive conclusion",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 E-only problem is aspect-specific",
+      "current": "semantic v2 E-only problem is aspect-specific",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 alignment names concrete evidence from each available source",
+      "current": "semantic v2 alignment names concrete evidence from each available source",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 visible interpretation avoids banned technical wording",
+      "current": "semantic v2 visible interpretation avoids banned technical wording",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 L-only problem is retained",
+      "current": "semantic v2 L-only problem is retained",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 P-only gap is preventive",
+      "current": "semantic v2 P-only gap is preventive",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 E problem plus favorable P describes discrepancy",
+      "current": "semantic v2 E problem plus favorable P describes discrepancy",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap A: problematic E remains actionable with favorable L and corporate P",
+      "current": "P gap A: problematic E remains actionable with favorable L and corporate P",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap B: problematic L is retained and manager access is checked despite favorable E and P",
+      "current": "P gap B: problematic L is retained and manager access is checked despite favorable E and P",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap C: problematic E and L give a stronger local signal without claiming a proved cause",
+      "current": "P gap C: problematic E and L give a stronger local signal without claiming a proved cause",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap D: one checkup serves two environments and only the weaker environment shows a local gap",
+      "current": "P gap D: one checkup serves two environments and only the weaker environment shows a local gap",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap at module level: diffuse cloudy E and L remain visible even without a problem item",
+      "current": "P gap at module level: diffuse cloudy E and L remain visible even without a problem item",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "P gap across different aspects: E and L together warrant a module check, not an assumed shared cause",
+      "current": "P gap across different aspects: E and L together warrant a module check, not an assumed shared cause",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 fog does not close active issue",
+      "current": "semantic v2 fog does not close active issue",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "fog-only module gives one data-limitation conclusion and no aspect cards or actions",
+      "current": "fog-only module retains four data-limitation sections without corrective plan actions",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "a real problem or P gap remains visible beside fog",
+      "current": "a real problem or P gap remains visible beside fog",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 insufficient E sample is excluded, not fog",
+      "current": "semantic v2 insufficient E sample is excluded, not fog",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 insufficient L sample is excluded, not fog",
+      "current": "semantic v2 insufficient L sample is excluded, not fog",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "semantic v2 source not measured is not favorable",
+      "current": "semantic v2 source not measured is not favorable",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 E20 alone does not trigger M4-A3",
+      "current": "semantic v2 E20 alone does not trigger M4-A3",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 E31 alone requests pulse study and no routed action",
+      "current": "semantic v2 E31 alone requests pulse study and no routed action",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 L16 alone produces narrow manager action",
+      "current": "semantic v2 L16 alone produces narrow manager action",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 L21 alone produces narrow change-risk action",
+      "current": "semantic v2 L21 alone produces narrow change-risk action",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 P40 requires confirmed applicability",
+      "current": "semantic v2 P40 requires confirmed applicability",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "one corporate P40 result yields local action only where applicability is confirmed",
+      "current": "one corporate P40 result yields local action only where applicability is confirmed",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 keeps five active aspects in one module",
+      "current": "semantic v2 keeps five active aspects in one module",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 C01 replaces duplicate change actions",
+      "current": "semantic v2 C01 replaces duplicate change actions",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "H01 C01 preserves independent emergency action M7-A3",
+      "current": "H01 C01 preserves independent emergency action M7-A3",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "H01 C01 preserves other independent actions as well",
+      "current": "H01 C01 preserves other independent actions as well",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "semantic v2 adaptive M4-A1 shows only relevant E17 steps",
+      "current": "semantic v2 adaptive M4-A1 shows only relevant E17 steps",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "semantic v2 P35 and P36 keep their action subsets separate",
+      "current": "semantic v2 P35 and P36 keep their action subsets separate",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "semantic v2 E28 does not add overload steps",
+      "current": "semantic v2 E28 does not add overload steps",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 E31 and confirmed P40 stay separate",
+      "current": "semantic v2 E31 and confirmed P40 stay separate",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 action cards use bullets and omit legacy sections",
+      "current": "semantic v2 action cards use bullets and omit legacy sections",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic UX renders independent accordion cards for 1, 2 and 5 active aspects",
+      "current": "v45 four sections retain all evidence for 1, 2 and 5 active issues",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 visible wording contains no складов and no mechanical colon lists",
+      "current": "v45 visible interpretation contains substantive user text without technical identifiers",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "semantic v2 dynamic signal wording is grammatically integrated",
+      "current": "semantic v2 dynamic signal wording is grammatically integrated",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "public example shows only a conclusion for clear and fog-only combinations",
+      "current": "public example uses four approved sections for clear, fog and adverse combinations",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "embedded local portal is byte-for-byte synchronized after base64 decoding",
+      "current": "embedded local portal is byte-for-byte synchronized after base64 decoding",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 stable comparison on both sides of 15%",
+      "current": "F01 stable comparison on both sides of 15%",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 stable comparison on both sides of 30%",
+      "current": "F01 stable comparison on both sides of 30%",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 stable comparison on both sides of 55%",
+      "current": "F01 stable comparison on both sides of 55%",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 stable comparison on both sides of 75%",
+      "current": "F01 stable comparison on both sides of 75%",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 15 below",
+      "current": "F01 weather 15 below",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 15 exact",
+      "current": "F01 weather 15 exact",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 15 above",
+      "current": "F01 weather 15 above",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 30 below",
+      "current": "F01 weather 30 below",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 30 exact",
+      "current": "F01 weather 30 exact",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 30 above",
+      "current": "F01 weather 30 above",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 75 below",
+      "current": "F01 weather 75 below",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 75 exact",
+      "current": "F01 weather 75 exact",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 weather 75 above",
+      "current": "F01 weather 75 above",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 54.9999999/10",
+      "current": "F01 problem item 54.9999999/10",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 54.99999999999999/10",
+      "current": "F01 problem item 54.99999999999999/10",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 55.0000001/10",
+      "current": "F01 problem item 55.0000001/10",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 70/29.9999999",
+      "current": "F01 problem item 70/29.9999999",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 70/29.99999999999999",
+      "current": "F01 problem item 70/29.99999999999999",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 problem item 70/30.0000001",
+      "current": "F01 problem item 70/30.0000001",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 respondent profiles L n=10 negatives=9",
+      "current": "F01 respondent profiles L n=10 negatives=9",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 respondent profiles L n=20 negatives=9",
+      "current": "F01 respondent profiles L n=20 negatives=9",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 respondent profiles E n=20 negatives=18",
+      "current": "F01 respondent profiles E n=20 negatives=18",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F02 measured evidence is scoped: N+NA",
+      "current": "F02 measured evidence is scoped: N+NA",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 measured evidence is scoped: S+NA",
+      "current": "F02 measured evidence is scoped: S+NA",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 measured evidence is scoped: N+S",
+      "current": "F02 measured evidence is scoped: N+S",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 measured evidence is scoped: NA+NA",
+      "current": "F02 measured evidence is scoped: NA+NA",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 measured evidence is scoped: direct measured/additional NA",
+      "current": "F02 measured evidence is scoped: direct measured/additional NA",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 partial NA remains visible even with no adverse signals",
+      "current": "F02 partial NA remains visible even with no adverse signals",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F03 isolated E09 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated E09 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated E10 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated E10 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated E14 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated E14 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated L04 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated L04 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated L06 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated L06 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated L17 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated L17 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 isolated L18 has a concrete plan-ready diagnostic action",
+      "current": "F03 isolated L18 has a concrete plan-ready diagnostic action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F03 L17 and L18 deduplicate and do not duplicate an existing help action",
+      "current": "F03 L17 and L18 deduplicate and do not duplicate an existing help action",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F04 E33 with favorable E32/L19/P41",
+      "current": "F04 E33 with favorable E32/L19/P41",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F04 E33 with E32",
+      "current": "F04 E33 with E32",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F04 E33 with P41",
+      "current": "F04 E33 with P41",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F04 E33 with L19",
+      "current": "F04 E33 with L19",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F06 current category 1 and numeric equivalent import",
+      "current": "F06 current category 1 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 current category 2 and numeric equivalent import",
+      "current": "F06 current category 2 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 current category 3 and numeric equivalent import",
+      "current": "F06 current category 3 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 current category 4 and numeric equivalent import",
+      "current": "F06 current category 4 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 current category 5 and numeric equivalent import",
+      "current": "F06 current category 5 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 current category 6 and numeric equivalent import",
+      "current": "F06 current category 6 and numeric equivalent import",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 rejects and names Важко відповісти",
+      "current": "F06 rejects and names Важко відповісти",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 rejects and names Не погоджуюся",
+      "current": "F06 rejects and names Не погоджуюся",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 rejects and names Погоджуюся",
+      "current": "F06 rejects and names Погоджуюся",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 rejects and names Цілком погоджуюсь",
+      "current": "F06 rejects and names Цілком погоджуюсь",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 rejects and names Невідома категорія",
+      "current": "F06 rejects and names Невідома категорія",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F06 blank stays absent, not neutral or NA",
+      "current": "F06 blank stays absent, not neutral or NA",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "old backup keeps cached weather until source file is reimported",
+      "current": "old backup keeps cached weather until source file is reimported",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 exact literal weather 85/15",
+      "current": "F01 exact literal weather 85/15",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 exact literal weather 70/30",
+      "current": "F01 exact literal weather 70/30",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 exact literal weather 75/10",
+      "current": "F01 exact literal weather 75/10",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 exact literal weather 55/10",
+      "current": "F01 exact literal weather 55/10",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F01 exact literal 55 is not a problem without 30 unfavorable",
+      "current": "F01 exact literal 55 is not a problem without 30 unfavorable",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F02 L partial NA retains measured L17=5 and missing L18",
+      "current": "F02 L partial NA retains measured L17=5 and missing L18",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "F02 L partial NA retains measured L17=1 and missing L18",
+      "current": "F02 L partial NA retains measured L17=1 and missing L18",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "existing study load and JSON restore preserve cached status but use current interpretation",
+      "current": "existing study load and JSON restore preserve cached status but use current interpretation",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "study progress replaces three questions and has five steps without persistent writes",
+      "current": "study progress replaces three questions and has five steps without persistent writes",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress settings require company",
+      "current": "study progress settings require company",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress settings require owner",
+      "current": "study progress settings require owner",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress empty checkup and survey remain independently accessible",
+      "current": "study progress empty checkup and survey remain independently accessible",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress partial checkup counts actual complete modules",
+      "current": "study progress partial checkup counts actual complete modules",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress complete checkup recommends missing import",
+      "current": "study progress complete checkup offers company results and optional survey import",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "study progress survey import before P does not claim results ready",
+      "current": "study progress survey import before P does not claim results ready",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress shows 1 of three independent imports",
+      "current": "study progress shows 1 of three independent imports",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress shows 2 of three independent imports",
+      "current": "study progress shows 2 of three independent imports",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress shows 3 of three independent imports",
+      "current": "study progress shows 3 of three independent imports",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress import replacement uses correct environment and preserves other data",
+      "current": "study progress import replacement uses correct environment and preserves other data",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress new environment reopens import stage",
+      "current": "study progress new environment reopens import stage",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress obeys production canDashboard even for insufficient sample",
+      "current": "study progress obeys production canDashboard even for insufficient sample",
+      "assertionsAdapted": true
+    },
+    {
+      "original": "study progress dashboard buttons select the requested environment",
+      "current": "study progress dashboard buttons select the requested environment",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress plan 0 has factual count without completion",
+      "current": "study progress plan 0 has factual count without completion",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress plan 1 has factual count without completion",
+      "current": "study progress plan 1 has factual count without completion",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress plan 4 has factual count without completion",
+      "current": "study progress plan 4 has factual count without completion",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress plan 11 has factual count without completion",
+      "current": "study progress plan 11 has factual count without completion",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress follows period switching and persisted restore",
+      "current": "study progress follows period switching and persisted restore",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "study progress safely renders imported environment names",
+      "current": "study progress safely renders imported environment names",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 validates nested E/L and organizational checkup results",
+      "current": "M02 validates nested E/L and organizational checkup results",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 restore rejects malformed aggregates without changing existing research",
+      "current": "M02 restore rejects malformed aggregates without changing existing research",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 0 and delimiter \",\"",
+      "current": "M03 CSV prefix 0 and delimiter \",\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 1 and delimiter \",\"",
+      "current": "M03 CSV prefix 1 and delimiter \",\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 2 and delimiter \",\"",
+      "current": "M03 CSV prefix 2 and delimiter \",\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 0 and delimiter \";\"",
+      "current": "M03 CSV prefix 0 and delimiter \";\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 1 and delimiter \";\"",
+      "current": "M03 CSV prefix 1 and delimiter \";\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 2 and delimiter \";\"",
+      "current": "M03 CSV prefix 2 and delimiter \";\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 0 and delimiter \"\\t\"",
+      "current": "M03 CSV prefix 0 and delimiter \"\\t\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 1 and delimiter \"\\t\"",
+      "current": "M03 CSV prefix 1 and delimiter \"\\t\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M03 CSV prefix 2 and delimiter \"\\t\"",
+      "current": "M03 CSV prefix 2 and delimiter \"\\t\"",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 allows legacy checkup results to be migrated instead of rejecting the old schema",
+      "current": "M02 allows legacy checkup results to be migrated instead of rejecting the old schema",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 backup rejects invalid current-schema P values and unknown P codes",
+      "current": "M02 backup rejects invalid current-schema P values and unknown P codes",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 backup recognizes every supported current-schema P answer, including partial drafts",
+      "current": "M02 backup recognizes every supported current-schema P answer, including partial drafts",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 backup rejects invalid calendar dates in periods and current checkup",
+      "current": "M02 backup rejects invalid calendar dates in periods and current checkup",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 restore invalid P answer or date does not change existing research and storage",
+      "current": "M02 restore invalid P answer or date does not change existing research and storage",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "M02 keeps legacy schema backup compatible with checkup migration",
+      "current": "M02 keeps legacy schema backup compatible with checkup migration",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning",
+      "current": "F07 shortened Microsoft Forms E20 is uniquely recognized with an audit warning",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F07 a unicode ellipsis and unchanged full E20 still import correctly",
+      "current": "F07 a unicode ellipsis and unchanged full E20 still import correctly",
+      "assertionsAdapted": false
+    },
+    {
+      "original": "F07 rejects unmarked, short, changed and coded truncated E20 headings",
+      "current": "F07 rejects unmarked, short, changed and coded truncated E20 headings",
+      "assertionsAdapted": false
+    }
+  ]
+}

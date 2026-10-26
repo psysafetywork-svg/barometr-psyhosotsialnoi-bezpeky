@@ -1,6 +1,6 @@
 # Production release candidate: verification record
 
-Status: **not approved for merge or publication yet**. Main and GitHub Pages remain unchanged.
+Status: **release candidate verified for publication**, with the explicit browser-tool limitations listed below. No functional or storage incompatibility was found. Post-deployment verification is recorded separately after release.
 
 ## Pinned source and production base
 
@@ -28,9 +28,9 @@ File hashes are recorded in `source.json`. `verified/` is generated test scaffol
 - Additional compatibility/parity suite: 24/24 passed (`compatibility-24.txt`).
 - Exact comparisons on all 20 supplied synthetic research fixtures cover statuses, complete interpretation models, four-section report HTML, action plans, XLSX bytes with a fixed clock, and comparison maps for E and L.
 - Old-production save -> new load -> new save retains the complete research object exactly, including surveys, environments, both checkup states, all answers, notes, dates, P40 flags and user-edited plan fields. Tested for separate local HTML and embedded downloaded payload. All eight legacy storage keys were also checked. JSON validation/restoration was tested separately.
-- Existing production regression suite: **118/179 passed, 61 failed**. The event listener mock was corrected to retain multiple listeners (as browsers do); this fixed two P40 tests. No test assertion was removed or skipped. Full failure names and locations are in `legacy-regression-results.json`.
+- Existing production regression suite adapted to the approved v45 contract: **179/179 passed** (`production-regression-179.txt`). All 179 original scenarios remain, with zero skipped/deleted cases. `regression-reconciliation.json` maps every original case to its current case and records 56 assertion adaptations plus shared fixture/mock changes. The initial v2 run is retained in `legacy-regression-results.json` as historical evidence.
 
-The remaining failures mostly assert semantic-v2 texts, aspect IDs/shape, report headings, old public-example DOM, and the old requirement to import surveys before presenting results. Examples: an all-clear report must contain the old conclusion; the report must have `<b>Що зробити</b>`; the interpretation must expose the old 27 aspects; the home screen must say results are unavailable for a completed checkup without surveys. The approved v45 behavior intentionally differs. These assertions have not been rewritten to make the run appear successful. They must be reconciled explicitly with the v45 contract before the required release gate can be called green. The source-parity suite proves these differences were not introduced by production adaptation.
+The old suite expected the retired semantic-v2 27-aspect object/card layout, old prose, the old standalone public example, and mandatory survey import before results. Its fixtures also omitted v45 item metrics and checkup answers. The updated tests preserve signal scope, missing-data safeguards, calculations, action routing, all original scenario counts and interaction checks while asserting the approved v45 contract. The source/candidate parity suite independently protects the complete approved text and output, rather than accepting arbitrary replacements. No portal runtime was changed to satisfy these tests. Whitespace/CRLF warnings from `git diff --check` are inherited from the byte-preserved approved HTML and intentionally not reformatted.
 
 ## Observed browser upgrade, without JSON restoration
 
@@ -53,11 +53,20 @@ Browser URL stayed `http://terminal.local:4173/migration-check/index.html` in th
 - Actually downloaded a JSON backup and parsed the downloaded file. It contains both periods with 42 and 7 answers.
 - Public navigation, public example E=clear/L=cloudy/P=clear, local-portal opening in a new tab and Continue worked. The public example displayed mixed-manager interpretation.
 
-## Unconfirmed checks and publication gate
+## Additional browser observations before publication
 
-- Actual HTML report and Excel downloads were **not confirmed**: the browser download event timed out after activation. Report also did not produce an observable download in a fresh portal tab; Excel activation by keyboard had the same result. JSON download succeeded. No portal JavaScript exception was observed, and generated report/XLSX contents pass automated tests. This does not prove either success or a user-facing export defect. The cause must be resolved before claiming the required browser export check passed.
-- Actual report print/PDF dialog, newly downloaded local HTML running with network disabled, UI JSON restoration, survey replacement isolation and all small-sample/profile browser scenarios remain unconfirmed. Automated checks are not labeled as browser observations.
-- No merge, Pages deployment, or post-deployment verification has been performed.
+- Restored the actually downloaded JSON through the production candidate UI. Both periods, the completed/partial checkup and imported environments reappeared. This separate restore check did not replace the automatic-upgrade check above.
+- Replaced only Office QA with a 19-employee / 9-manager CSV. The other environment retained 100/20 responses. Both comparison source views display insufficient sample only for Office QA. The original environment retains its cloudy/storm module-2 results.
+- Switched the comparison to November: only that period's environment appears, with no survey data and unfinished checkup. No previous-period results leak into the map.
+- Added a checkup-only action, edited title/owner/due/status, switched to a profile filter with zero actions and observed disabled Excel. Reloaded, continued the research and reopened Plan: all edited fields remained.
+- On the **actual old GitHub Pages URL**, created another synthetic research through the unmodified UI: `QA Production Upgrade 2026-10-26`, environment `Контрольний майданчик`, October completed 42-answer/42-note checkup dated 2026-10-23, P40=no and both risk/applicability confirmed. Created November with P01-P06=full, P07=partial and seven notes, date 2026-10-24. No JSON was imported on that origin. This browser context is retained for post-deployment automatic-preservation verification. The old new-period/module-7 opening defect was observed on actual production as well.
+
+## Browser-tool limitations (not claimed as successful checks)
+
+- Direct HTML report and Excel download event capture timed out in the cloud browser. JSON download succeeded. A QA-only observer established that the real report button generated a 1,040,189-byte HTML Blob with the correct company-scope filename and invoked the browser download handoff without a JavaScript exception. Diagnostic code is outside the repository and is not deployed.
+- Opening the generated report Blob was explicitly blocked by the cloud browser URL policy (only HTTP/HTTPS allowed). No bypass was attempted. The generated local report, print/PDF dialog, actual report/Excel file capture and newly downloaded standalone HTML running offline therefore remain unconfirmed browser checks. Self-contained HTML/assets, report text and XLSX bytes are verified automatically against the exact approved engine.
+- Browser scenarios cover completed/partial checkup, E+L+P and P-only profiles, cloudy interpretation, insufficient sample, imports, replacement isolation, comparison and Plan. The full 448-combination/profile matrix is automated rather than individually clicked in the browser.
+- The supplied approved Site's external URL presents a sign-in page to this browser. Source/version/hash were verified through Sites and its source checkout; source functionality was exercised through its local preview.
 
 Previously downloaded local HTML files cannot update themselves. Users need a new copy for new features. Moving a study between different browser contexts may require a JSON backup; the same-origin online upgrade test above did not.
 
