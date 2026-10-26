@@ -13,7 +13,7 @@ for(let m=1;m<=7;m++)for(const e of names)for(const l of names)for(const p of na
  const r=scenario(weather);assert.equal(api.validateBackupResearch(r),true);install(r);
  const row=api.actualResultModel()[m-1],actual=[row.e,row.l,row.p];assert.deepEqual(plain(actual),[e,l,p]);
  assert.equal(r.periods[0].envs[0].survey.results.e.totalResponses,100);assert.equal(r.periods[0].envs[0].survey.results.l.totalResponses,20);
- const html=api.barometerSemanticModuleMarkup(row);for(const heading of ['Як узгоджуються джерела','На що звернути увагу','Рекомендовані організаційні дії','Як перевірити результат'])assert.equal(html.split('<h4>'+heading+'</h4>').length-1,1);
+ const html=api.barometerSemanticModuleMarkup(row);for(const heading of ['Як узгоджуються джерела','На що звернути увагу','Рекомендовані організаційні дії','Як перевірити результат'])assert.equal(html.split('<h4>'+heading+'</h4>').length-1,heading==='Як узгоджуються джерела'&&!api.barometerSemanticInterpretation().modules[m].sections.alignment.length?0:1);
  evidence.push({module:m,expected:[e,l,p],actual:plain(actual),result:'PASS'});
 });
 const directory=new URL('../qa/profile-v45/manual-review/',import.meta.url);

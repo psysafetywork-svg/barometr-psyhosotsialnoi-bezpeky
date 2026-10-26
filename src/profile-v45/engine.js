@@ -19,7 +19,7 @@ const PROFILE_V45_PNAMES={
  P37:'управління психосоціальними ризиками',P38:'оцінювання психосоціальних ризиків і перевірка заходів',P39:'вибір організаційних заходів за джерелами ризику',P40:'захист від агресії, насильства та домагань з боку третіх осіб',P41:'усунення недоліків фізичного середовища',P42:'готовність до надзвичайних ситуацій'
 };
 function profileV45Copy(id,field){return [...(PROFILE_V45_COPY[id]?.fields[field]||[])]}
-function profileV45WithoutOwners(text){return String(text||'').replace(/\s*\((?:HR|L&D|БЗР|ОП|керівник|керівництв|визначені відповідальні|відповідальн|власник)[^()]*\)/gu,'')}
+function profileV45WithoutOwners(text){return String(text||'').replace(/\s*\((?:HR|L&D|БЗР|ОП|керівник|керівництв|визначені відповідальні|відповідальн|власник|уповноважена особа)[^()]*\)/gu,'')}
 function profileV45Text(text){return profileV45WithoutOwners(text).replace(/[—–]/g,'-').replace(/керівниками(?! команд| компанії)/g,'керівниками команд').replace(/керівників(?! команд| компанії)/g,'керівників команд').replace(/керівники(?! команд| компанії)/g,'керівники команд').replace(/\(керівник\)/g,'(керівники команд)').replace(/\(HR і керівник\)/g,'(HR і керівники команд)').replace(/HR разом із керівником і працівниками/g,'HR разом із керівниками команд і працівниками').replace(/HR разом із керівником\)/g,'HR разом із керівниками команд)').replace(/за локаціями, змінами та форматами роботи/g,'з урахуванням місця та формату роботи працівників')}
 function profileV45Step(text,code){return profileV45Text(text).replace(/^Керівникам ([а-яіїєґ])/u,(_,c)=>c.toLocaleUpperCase('uk'))}
 function profileV45Branch(input,code){
@@ -35,6 +35,31 @@ function profileV45Input(raw){
  return input;
 }
 function profileV45Problem(input,code){return ['negative','partial'].includes(input.branches[code])}
+// Method selection uses item meaning and available signals, never the weather alone.
+const PROFILE_V45_SENSITIVE=['E06','E11','E12','E13','E14','E15','E20','E30','E31'];
+function profileV45NeedsClarification(input,code){return profileV45Problem(input,code)||(code==='E31'&&['favorable','mixed'].includes(input.branches.E31)&&input.E.metrics?.E31?.unfavorable>0)}
+function profileV45ClarificationUnits(input,routes,onlyModule=null){
+ const out=[],trustConcern=['E11','E15','E30','E31'].some(c=>profileV45NeedsClarification(input,c));
+ for(let mid=1;mid<=7;mid++)for(const source of ['E','L']){
+  if(onlyModule&&mid!==onlyModule)continue;
+  const codes=SURVEY_ITEMS.filter(x=>x.module===mid&&x.source===source&&profileV45NeedsClarification(input,x.code)).map(x=>x.code);
+  for(const route of barometerUnique(codes.map(c=>routes[c]||'profile'))){
+   const own=codes.filter(c=>(routes[c]||'profile')===route),topics=own.map(c=>c==='E31'?'неприйнятне ставлення':profileV45InlineLabel(c)).join('; ');
+   const sensitive=source==='E'&&(trustConcern||own.some(c=>PROFILE_V45_SENSITIVE.includes(c)));
+   let text;
+   if(sensitive){
+    const why=own.some(c=>PROFILE_V45_SENSITIVE.includes(c))?'питання стосуються ставлення, безпеки висловлювання або довіри до конфіденційності':'потребують уточнення також '+['E11','E15','E30','E31'].filter(c=>profileV45NeedsClarification(input,c)).map(c=>({E11:'сумніви в безпеці відкритого обговорення робочих проблем',E15:'побоювання наслідків повідомлення про неприйнятну поведінку',E30:'сумніви в конфіденційності та безпеці звернення по допомогу',E31:'сигнали про неприйнятне ставлення'}[c])).join('; ');
+    text=`Організувати анонімне пульс-опитування щодо таких питань: ${topics}. Обрати цей спосіб, оскільки ${why}. Збирати лише узагальнені відповіді без імен та впізнаваних деталей. Якщо анонімність забезпечити неможливо, не збирати відповіді в малій групі; запропонувати добровільне індивідуальне звернення через безпечний канал із поясненням меж конфіденційності.`;
+   }else{
+    text=`Запропонувати короткі добровільні конфіденційні розмови ${source==='E'?'з працівниками':'з керівниками команд'} щодо таких питань: ${topics}. Цей спосіб допоможе з’ясувати конкретні робочі перешкоди та потрібні зміни. Заздалегідь пояснити, хто матиме доступ до інформації; у висновках не називати учасників і не з’ясовувати, хто як відповів в анкеті.`;
+    if(source==='E')text+=' Якщо після розмов незрозуміло, наскільки поширена перешкода, провести анонімне пульс-опитування за умови захисту анонімності.';
+   }
+   const u=profileV45Unit(own[0],[text],[],[],'clarify:'+mid+':'+source+':'+(route||'profile'));
+   u.codes=own;u.route=route==='profile'?null:route;u.profileOnly=route==='profile';u.method=sensitive?'anonymous-pulse':'confidential-conversation';out.push(u);
+  }
+ }
+ return out;
+}
 function profileV45Label(code){return (code==='L05'?'знання, до кого звернутися з питанням за межами повноважень':PROFILE_V45_PNAMES[code])||FINE_ITEMS[code]?.topic||BAROMETER_ALGORITHM_SPEC.signals[code]?.label||''}
 // Catalogue labels inside a sentence use sentence case; initials and acronyms stay intact.
 // Apply only to generated labels, never to survey wording or user-edited Plan fields.
@@ -171,18 +196,23 @@ function profileV45BuildUnits(input,routes){
  const covered=new Set();
  if(p12Scenario){
   const related=p12Scenario==='P12-S1'?['E07','L04']:p12Scenario==='P12-S2'?['E09','L06']:p12Scenario==='P12-S3'?['E07']:[];
-  const target=routes.P12||routes.E07;
-  for(const c of related){routes[c]=target;covered.add(c)}covered.add('P12');
-  let steps=profileV45Copy(p12Scenario,PROFILE_V45_FIELDS.steps);
-  if(p12Scenario==='P12-S4')steps=[...profileV45Copy(p12Scenario,'Перший пункт рекомендованих дій '+(p12==='no'?'А':'Б')),...profileV45Copy(p12Scenario,'Спільні наступні рекомендовані дії')];
-  // The S1 starter is already the P12 base. Thematic steps and criteria remain separate.
-  const u=profileV45Unit('P12',steps,profileV45Copy(p12Scenario,checksField),profileV45Copy(p12Scenario,'Що треба уточнити'),p12Scenario);
-  u.codes=p12Scenario==='P12-S3'?related:['P12',...related];u.route=target;
-  u.alignment=profileV45Copy(p12Scenario,'Висновок');
-  u.checks=u.checks.filter(t=>!/^У повторному/.test(t));
-  for(const c of related){const repeat=profileV45Repeat(input,c);if(repeat)u.checks.push(repeat)}
-  if(related.includes('E07'))u.checks.push(...profileV45Copy('E07',checksField));
-  add(u);
+  related.forEach(c=>covered.add(c));covered.add('P12');
+  const parts=PROFILE_V45_COPY[p12Scenario].planParts;
+  if(parts){
+   for(const [name,part] of Object.entries(parts)){
+    const u=profileV45Unit(part.codes[0],part.steps,part.checks,[],p12Scenario+':'+name);
+    u.codes=[...part.codes];u.route=part.route||routes[part.routeCode];
+    for(const c of part.codes){if(c[0]!=='P')routes[c]=u.route;const repeat=profileV45Repeat(input,c);if(repeat)u.checks.push(repeat)}
+    if(name==='useful-feedback')u.checks.push(...profileV45Copy('E07',checksField));
+    add(u);
+   }
+   const focus=profileV45Unit('P12',[],[],profileV45Copy(p12Scenario,'Що треба уточнити'),p12Scenario+':focus');
+   focus.codes=p12Scenario==='P12-S3'?['E07']:['P12',...related];focus.profileOnly=true;add(focus);
+  }else{
+   const steps=[...profileV45Copy(p12Scenario,'Перший пункт рекомендованих дій '+(p12==='no'?'А':'Б')),...profileV45Copy(p12Scenario,'Спільні наступні рекомендовані дії')];
+   const u=profileV45Unit('P12',steps,profileV45Copy(p12Scenario,checksField),[],p12Scenario);
+   u.route=routes.P12;add(u);
+  }
  }
  for(const [code,id] of Object.entries(routes)){
   if(covered.has(code))continue;
@@ -217,7 +247,11 @@ function profileV45BuildUnits(input,routes){
  // P12 full with an employee issue: add verification within the existing final action only.
  if(input.P.done&&p12==='full'&&!p12Scenario){
   const problematic=p12codes.filter(c=>profileV45Problem(input,c));
-  if(problematic.length){const u=profileV45CatalogueUnit('P12','P12-BASE','Рекомендовані дії В');u.codes=problematic;u.route=routes[problematic[0]];add(u)}
+  for(const route of barometerUnique(problematic.map(c=>routes[c]))){
+   const codes=problematic.filter(c=>routes[c]===route),topics=codes.map(profileV45InlineLabel).join('; ');
+   const u=profileV45Unit(codes[0],[`Перевірити, чи наявна перевірка роботи керівників охоплює такі питання: ${topics}. За підтвердженими недоліками виконати потрібні зміни та повторно перевірити їх результат.`],[`За такими питаннями, як ${topics}, зафіксовано результати перевірки, виконані зміни та їхній вплив на роботу команди.`],[],'P12-BASE:'+route);
+   u.codes=codes;u.route=route;add(u);
+  }
  }
  if(profileV45Problem(input,'L17')&&profileV45Problem(input,'L18')){
   const a=units.find(u=>u.codes.includes('L17')),b=units.find(u=>u.codes.includes('L18'));
@@ -253,6 +287,7 @@ function profileV45BuildUnits(input,routes){
   const u=profileV45Unit(p.code,check,[],[],'verify:'+p.code);u.profileOnly=true;add(u);
  }
  profileV45ConsolidateM2(units,input,p12Scenario);
+ units.push(...profileV45ClarificationUnits(input,routes));
  return {units,p12Scenario};
 }
 // Clause-level merging uses the approved sample wording. Conditions are semantic branches,
@@ -274,7 +309,7 @@ function profileV45ConsolidateM2(units,input,scenario){
  }
  if(active('L04')&&partial('P11'))combine(['L04','P11'],[PROFILE_V45_SAMPLE.steps[2]],[PROFILE_V45_SAMPLE.checks[1]]);
  if(active('E08')&&partial('P08'))combine(['E08','P08'],[PROFILE_V45_SAMPLE.steps[4],PROFILE_V45_SAMPLE.steps[5]],[PROFILE_V45_SAMPLE.checks[3]]);
- if(scenario==='P12-S2'&&['E06','E07','E08'].every(active))find('P12').steps[0]=profileV45Step(PROFILE_V45_SAMPLE.steps[8],'P12');
+ // Scenario review, workload and resource clauses keep their explicit semantic routes.
  // Ordering follows the task flow without limiting the number of clauses.
  const order=['E06','P07','L04','P11','E07','E08','P08','P09','P10','P12'];
  units.sort((a,b)=>{const rank=u=>Math.min(...u.codes.map(c=>order.includes(c)?order.indexOf(c):99));return rank(a)-rank(b)});
@@ -311,7 +346,12 @@ function profileV45Dedupe(entries){
  }
  return [...seen.values()];
 }
-function profileV45Entries(units,field){return profileV45Dedupe(units.flatMap(u=>(u[field]||[]).map(text=>({text,codes:u.codes,units:[u.id],route:u.route||null}))))}
+function profileV45Entries(units,field){
+ const ordered=field==='steps'?[...units.filter(u=>u.method),...units.filter(u=>!u.method)]:units;
+ const entries=profileV45Dedupe(ordered.flatMap(u=>(u[field]||[]).map(text=>({text,codes:u.codes,units:[u.id],route:u.route||null}))));
+ // A possible immediate threat must not be made to wait for clarification.
+ return field==='steps'?[...entries.filter(x=>x.text.startsWith('Забезпечити негайний захист')),...entries.filter(x=>!x.text.startsWith('Забезпечити негайний захист'))]:entries;
+}
 function profileV45Module(input,mid,units,actions,p12Scenario){
  const survey=SURVEY_ITEMS.filter(x=>x.module===mid),practices=P_LIST.filter(x=>x.module===mid),ownUnits=units.filter(u=>u.codes.some(c=>BAROMETER_ALGORITHM_SPEC.signals[c]?.module===mid));
  const align=[],attention=[],notes=[],explained=new Set();
@@ -333,6 +373,7 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
   const b=input.branches.E31,m=input.E.metrics?.E31;
   const variant=b==='partial'?1:b==='negative'?2:['mixed','favorable'].includes(b)?(m.unfavorable>0?3:4):['sample','applicability'].includes(b)?5:null;
   if(variant){addAlign(profileV45Copy('E31-C'+variant,'Висновок')[0]);explained.add('E31')}
+  if(profileV45NeedsClarification(input,'E31')&&input.branches.E15==='favorable')addAlign('Сприятлива оцінка можливості повідомити про неприйнятну поведінку в модулі 3 не скасовує сигналу про саме неприйнятне ставлення в цьому модулі. Це різні питання: можливість звернутися та досвід поводження з людиною.');
  }
  const allFavorable=survey.every(x=>['favorable','absent'].includes(input.branches[x.code]))&&survey.some(x=>input.branches[x.code]==='favorable')&&practices.every(x=>input.P.answers[x.code]==='full')&&input.P.done&&!ownUnits.length;
  if(allFavorable){align.length=0;addAlign(profileV45Copy('G-CLEAR','Висновок '+(input.E.eligible&&input.L.eligible?'А':'Б'))[0])}
@@ -374,7 +415,9 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
   if(missing.length)attention.push('Визначити, що потрібно запровадити або відновити у практиках: '+missing.map(p=>profileV45InlineLabel(p.code)).join('; ')+'.');
  }
  if(!input.P.done)notes.push(profileV45Copy('G-PSTATE','Організаційний чекап не завершено')[0]);
- const sections={alignment:barometerUnique(align),attention:barometerUnique([...attention,...profileV45Entries(ownUnits,'attention').map(x=>x.text)]),steps:profileV45Entries(ownUnits,'steps'),checks:profileV45Entries(ownUnits,'checks')};
+ // Explain the method once per source in a module; Plan cards retain their own topics.
+ const displayUnits=[...ownUnits.filter(u=>!u.method),...profileV45ClarificationUnits(input,{},mid)];
+ const sections={alignment:barometerUnique(align),attention:barometerUnique([...attention,...profileV45Entries(ownUnits,'attention').map(x=>x.text)]),steps:profileV45Entries(displayUnits,'steps'),checks:profileV45Entries(ownUnits,'checks')};
  if(allFavorable){sections.attention=['Перевіряти стійкість наявних практик під час змін у роботі.'];sections.checks=[{text:profileV45Copy('G-REPEAT','Критерій В')[0],codes:survey.map(x=>x.code),units:['G-REPEAT'],route:null}]}
  if(input.P.done&&practices.every(p=>['no','partial'].includes(input.P.answers[p.code]))){
   sections.checks.push({text:'У повторному організаційному чекапі перевірено реалізацію погоджених змін за всіма шістьма практиками та їх фактичне застосування в цьому робочому середовищі.',codes:practices.map(p=>p.code),units:['practice-review'],route:null});
@@ -386,10 +429,10 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
 }
 function profileV45Analysis(raw){
  const input=profileV45Input(raw),routes=profileV45Routes(input),{units,p12Scenario}=profileV45BuildUnits(input,routes),actions=[];
- for(const id of barometerUnique(units.map(u=>u.route))){
+ for(const id of barometerUnique(units.map(u=>u.route).filter(Boolean))){
   const own=units.filter(u=>u.route===id),codes=barometerUnique(own.flatMap(u=>u.codes)),steps=profileV45Entries(own,'steps'),checks=profileV45Entries(own,'checks'),module=BAROMETER_V2_ACTION_MODULE[id];
   if(!steps.length)continue;
-  actions.push({id,target:id,final_action_id:id,module,title:profileV45Title(id,codes,input),steps:steps.map(x=>x.text),check:checks.map(x=>x.text).join('\n'),action:steps.map(x=>'• '+x.text).join('\n'),basis_codes:codes,primary_codes:codes,variant:id.includes('-D')?'diagnostic':'standard',classification:'DATA_BASED',support_count:new Set(codes.map(c=>c[0])).size,sources:barometerUnique(codes.map(c=>c[0])),issues:codes.map(c=>({source:'',topic:profileV45Label(c)})),clarifications:[],planEligible:true,trace:{steps,checks}});
+  actions.push({id,target:id,final_action_id:id,module,title:profileV45Title(id,codes,input),steps:steps.map(x=>x.text),check:checks.map(x=>'• '+x.text).join('\n'),action:steps.map(x=>'• '+x.text).join('\n'),basis_codes:codes,primary_codes:codes,variant:id.includes('-D')?'diagnostic':'standard',classification:'DATA_BASED',support_count:new Set(codes.map(c=>c[0])).size,sources:barometerUnique(codes.map(c=>c[0])),issues:codes.map(c=>({source:'',topic:profileV45Label(c)})),clarifications:[],planEligible:true,trace:{steps,checks}});
  }
  const modules=Object.fromEntries(M.map((_,i)=>[i+1,profileV45Module(input,i+1,units,actions,p12Scenario)]));
  return {version:'profile-v45-2026-10-26',input,modules,actions,units,routes,p12Scenario,aspects:[]};
