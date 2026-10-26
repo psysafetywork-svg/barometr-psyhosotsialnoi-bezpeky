@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import {loadPortal,makeScenario,SIX_PRACTICES} from './profile-fixtures.mjs';
 const {api}=loadPortal();
 const plain=x=>JSON.parse(JSON.stringify(x));
@@ -9,6 +10,15 @@ const text=m=>JSON.stringify(m.sections);
 const pattern={clear:[80,0],cloudy:[60,20],storm:[40,40],fog:'NA'};
 const weather={clear:'Ясно',cloudy:'Хмарно',storm:'Буря',fog:'Туман'};
 const evidence=[];
+const directCommands=/(?<!\p{L})(?:уточніть|перевірте|зіставте|з[’']ясуйте|визначте|перегляньте|забезпечте|поясніть|запропонуйте|погодьте|врахуйте|усуньте|доповніть|змініть|організуйте|обговоріть)(?!\p{L})/iu;
+function assertEditorial(analysis){
+ for(const m of Object.values(analysis.modules)){
+  const values=[...m.sections.alignment,...m.sections.attention,...m.sections.steps.map(x=>x.text),...m.sections.checks.map(x=>x.text),...m.dataNotes];
+  for(const value of values){assert.doesNotMatch(value,directCommands);assert.doesNotMatch(value,/[:;,]\s+[А-ЯІЇЄҐ][а-яіїєґ]/u);}
+  for(const value of m.sections.attention)assert.doesNotMatch(value,/^(?:Які|Яких|Як |Що потрібно|Важливо)|\?/u);
+  for(const value of m.sections.alignment)assert.doesNotMatch(value,/сприятливо оцінюють такі питання:|\. керівники/u);
+ }
+}
 function check(name,expected,fn){test(name,()=>{try{const actual=fn();evidence.push({test:name,expected,actual:actual??'Assertions passed',result:'PASS'})}catch(e){evidence.push({test:name,expected,actual:e.message,result:'FAIL'});throw e}})}
 process.on('exit',()=>{if(process.env.BAROMETER_QA_OUT){fs.mkdirSync(process.env.BAROMETER_QA_OUT,{recursive:true});fs.writeFileSync(path.join(process.env.BAROMETER_QA_OUT,'coverage.json'),JSON.stringify(evidence,null,2)+'\n')}});
 for(let mid=1;mid<=7;mid++)for(const e of Object.keys(pattern))for(const l of Object.keys(pattern))for(const p of Object.keys(pattern)){
@@ -17,6 +27,7 @@ for(let mid=1;mid<=7;mid++)for(const e of Object.keys(pattern))for(const l of Ob
  check(`weather M${mid} ${e}/${l}/${p}`,`${weather[e]} / ${weather[l]} / ${weather[p]}`,()=>{
   const items=Object.fromEntries(api.SURVEY_ITEMS.filter(x=>x.module===mid).map(x=>[x.code,pattern[x.source==='E'?e:l]]));
   const s=makeScenario(api,{items,practices}),row=api.actualResultModel()[mid-1];
+  assertEditorial(s.analysis);
   assert.deepEqual([row.e,row.l,row.p],[weather[e],weather[l],weather[p]]);
   assert.equal(s.analysis.modules[mid].practiceAudit.length,6);
   const html=api.barometerSemanticModuleMarkup(row);
@@ -26,6 +37,7 @@ for(let mid=1;mid<=7;mid++)for(const e of Object.keys(pattern))for(const l of Ob
 }
 for(const practice of api.P_LIST)for(const answer of ['full','partial','no','insufficient',null])check(`practice ${practice.code} ${answer??'missing'}`,`Distinct ${answer??'missing'} state; correction only no/partial; verification only insufficient`,()=>{
  const s=makeScenario(api,{practices:{[practice.code]:answer},p40Risk:'confirmed',localRisk:'confirmed'}),m=s.analysis.modules[practice.module];
+ assertEditorial(s.analysis);
  assert.equal(m.practiceAudit.find(p=>p.code===practice.code).answer,answer);
  const units=s.analysis.units.filter(u=>u.codes.includes(practice.code));
  if(['no','partial'].includes(answer)){assert.ok(units.some(u=>u.steps.length));assert.ok(units.some(u=>u.checks.length));assert.ok(s.analysis.actions.some(a=>a.basis_codes.includes(practice.code)))}
@@ -36,6 +48,7 @@ for(const practice of api.P_LIST)for(const answer of ['full','partial','no','ins
 });
 for(const item of api.SURVEY_ITEMS)for(const [branch,values] of Object.entries({favorable:[80,0],mixed:[60,20],partial:[40,0],negative:[40,40]}))check(`item ${item.code} ${branch}`,`${branch}; item retained in selection without changing weather rules`,()=>{
  const s=makeScenario(api,{items:{[item.code]:values}});assert.equal(s.analysis.input.branches[item.code],branch);
+ assertEditorial(s.analysis);
  if(['partial','negative'].includes(branch)){assert.ok(s.analysis.modules[item.module].problemCodes.includes(item.code));assert.ok(s.analysis.units.some(u=>u.codes.includes(item.code)&&u.steps.length&&u.checks.length))}
  if(branch==='favorable')assert.equal(s.analysis.actions.length,0);
  return s.analysis.input.branches[item.code];
@@ -93,3 +106,20 @@ for(const [branch,values,letter] of [['favorable',[80,0],'А'],['negative',[40,4
 check('All-gap attention retains each practice','Partial practice scope is surfaced, including no direct survey counterpart',()=>{const s=makeScenario(api,{practices:Object.fromEntries(api.P_LIST.map(p=>[p.code,'partial'])),p40Risk:'confirmed',localRisk:'confirmed'});for(let mid=1;mid<=7;mid++)assert.ok(s.analysis.modules[mid].sections.attention.length>0)});
 
 check('Shared risk-cycle steps retain both practice traces and responsible roles','P37/P38 identical steps merge once',()=>{const s=makeScenario(api,{practices:{P37:'partial',P38:'partial'}}),entries=s.analysis.modules[7].sections.steps;for(const prefix of ['Регулярно виявляти','Для кожного заходу визначати','Залучати працівників до визначення']){const matching=entries.filter(x=>x.text.startsWith(prefix));assert.equal(matching.length,1);assert.ok(matching[0].codes.includes('P37')&&matching[0].codes.includes('P38'));assert.match(matching[0].text,/керівництво компанії і БЗР із залученням працівників/)}});
+
+check('Editorial screenshot corrections in shared output','Lowercase inline labels, such-as construction, infinitive clarification',()=>{
+ const s=makeScenario(api,SIX_PRACTICES),m=s.analysis.modules[2],report=api.buildReportHtml(s.environment),screen=api.barometerSemanticModuleMarkup(api.actualResultModel()[1]);
+ const expected=['Несприятливі відповіді працівників стосуються таких питань: повага керівника; корисний зворотний зв’язок.','Несприятливі відповіді керівників команд стосуються таких питань: час для регулярних індивідуальних розмов.','Сильна сторона: працівники сприятливо оцінюють такі питання, як пріоритет здоров’я і безпеки.','Конфіденційно уточнити, що саме працівники сприймають як неповагу у взаємодії з безпосереднім керівником.','Уточнити оцінки щодо питання «час для регулярних індивідуальних розмов».'];
+ for(const value of expected){assert.ok([...m.sections.alignment,...m.sections.attention].includes(value),value);assert.ok(screen.includes(value),value);assert.ok(report.includes(value),value);}
+ assertEditorial(s.analysis);return expected;
+});
+check('Editorial all-source strengths and missing applicable data','Same sentence for both sources; lowercase labels in data notes',()=>{
+ for(const opts of [{practices:{P01:'partial'}},{items:{E01:'NA',L01:'NA'}}]){const s=makeScenario(api,opts);assertEditorial(s.analysis);const m=s.analysis.modules[1];if(opts.practices)assert.match(m.sections.alignment.join(' '),/, а керівники команд сприятливо оцінюють такі питання, як межі управлінської ролі/u);else assert.match(m.dataNotes.join(' '),/оцінювання: ясність обов’язків/u);}
+});
+check('Editorial catalog uses impersonal action wording','No second-person commands in any approved catalog or sample field',()=>{
+ for(const name of ['approved-copy.json','sample-copy.json']){const copy=JSON.parse(fs.readFileSync(new URL('../src/profile-v45/'+name,import.meta.url)));const visit=value=>{if(typeof value==='string')assert.doesNotMatch(value,directCommands);else if(value&&typeof value==='object')Object.values(value).forEach(visit)};visit(copy);}
+});
+check('Editorial inline case preserves source labels and acronyms','Inline conversion changes only the leading ordinary capital',()=>{
+ const {context}=loadPortal();const values=plain(vm.runInContext("['Пріоритет здоров’я і безпеки','HR і БЗР','БЗР із залученням HR','Підтримка HR'].map(profileV45InlineText)",context));
+ assert.deepEqual(values,['пріоритет здоров’я і безпеки','HR і БЗР','БЗР із залученням HR','підтримка HR']);assert.equal(api.FINE_ITEMS.E10.topic,'Пріоритет здоров’я і безпеки');return values;
+});

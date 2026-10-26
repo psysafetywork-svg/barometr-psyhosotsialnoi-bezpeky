@@ -37,8 +37,12 @@ function profileV45Input(raw){
 }
 function profileV45Problem(input,code){return ['negative','partial'].includes(input.branches[code])}
 function profileV45Label(code){return (code==='L05'?'знання, до кого звернутися з питанням за межами повноважень':PROFILE_V45_PNAMES[code])||FINE_ITEMS[code]?.topic||BAROMETER_ALGORITHM_SPEC.signals[code]?.label||''}
+// Catalogue labels inside a sentence use sentence case; initials and acronyms stay intact.
+// Apply only to generated labels, never to survey wording or user-edited Plan fields.
+function profileV45InlineText(text){return String(text||'').replace(/^[А-ЯІЇЄҐ](?=[а-яіїєґ])/u,c=>c.toLocaleLowerCase('uk'))}
+function profileV45InlineLabel(code){return profileV45InlineText(profileV45Label(code))}
 function profileV45Repeat(input,code){
- const b=input.branches[code],label=profileV45Label(code).toLocaleLowerCase('uk');
+ const b=input.branches[code],label=profileV45InlineLabel(code);
  if(b==='favorable')return `У повторному опитуванні зберігається сприятливий результат за твердженням «${label}».`;
  if(!['negative','partial'].includes(b))return '';
  if(code==='E31')return profileV45Copy('E31-R1',PROFILE_V45_FIELDS.checks)[0];
@@ -104,9 +108,9 @@ function profileV45Fallback(code,id,input){
  if(['P07','P08','P09','P10','P11'].includes(code))check=PROFILE_V45_SAMPLE.checks[{P07:0,P08:3,P09:4,P10:5,P11:1}[code]];
  if(practice&&answer==='no')steps.unshift(`Визначити, що потрібно запровадити або відновити у практиці «${profileV45Label(code)}».`);
  // Answer 3 establishes an assessment needing clarification, never an incident.
- if(!practice&&b==='partial')steps.unshift(code[0]==='E'?profileV45Copy('G-CLARIFY',PROFILE_V45_FIELDS.steps)[0]:`Уточнити з керівниками команд зміст часткових оцінок щодо питання «${profileV45Label(code)}» (HR).`);
+ if(!practice&&b==='partial')steps.unshift(code[0]==='E'?profileV45Copy('G-CLARIFY',PROFILE_V45_FIELDS.steps)[0]:`Уточнити з керівниками команд зміст часткових оцінок щодо питання «${profileV45InlineLabel(code)}» (HR).`);
  const attention=[];
- if(!practice&&['negative','partial'].includes(b))attention.push(`Уточніть оцінки щодо питання «${profileV45Label(code).toLocaleLowerCase('uk')}».`);
+ if(!practice&&['negative','partial'].includes(b))attention.push(`Уточнити оцінки щодо питання «${profileV45InlineLabel(code)}».`);
  return profileV45Unit(code,steps,check?[check]:[],attention,'legacy:'+code);
 }
 function profileV45BuildUnits(input,routes){
@@ -147,7 +151,7 @@ function profileV45BuildUnits(input,routes){
    if(b==='partial'){
     const specific=u.steps.slice(code==='E06'||code==='E17'?1:0);
     u.steps=[...profileV45Copy('G-CLARIFY',PROFILE_V45_FIELDS.steps),...specific].map(t=>profileV45Step(t,code));
-    u.attention=[`Уточніть, що заважає однозначно підтвердити твердження про ${profileV45Label(code).toLocaleLowerCase('uk')}.`];
+    u.attention=[`Уточнити, що заважає однозначно підтвердити твердження про ${profileV45InlineLabel(code)}.`];
    }
   }else if(code==='E30')u=profileV45CatalogueUnit(code,'E30-ACTION');
   else if(PROFILE_V45_COPY[code]?.fields[PROFILE_V45_FIELDS.steps])u=profileV45CatalogueUnit(code);
@@ -297,34 +301,34 @@ function profileV45Module(input,mid,units,actions,p12Scenario){
     const codes=survey.filter(x=>x.source===source&&input.branches[x.code]===branch&&!explained.has(x.code)).map(x=>x.code);
     if(codes.length){
      const intro=branch==='negative'?`Несприятливі відповіді ${words} стосуються таких питань`:branch==='partial'?`Часткове погодження без несприятливих відповідей ${words} потребує уточнення щодо таких питань`:`Змішані оцінки ${words} без проблемного результату за твердженнями`;
-     addAlign(intro+': '+codes.map(profileV45Label).join('; ')+'.');
+     addAlign(intro+': '+codes.map(profileV45InlineLabel).join('; ')+'.');
     }
    }
   }
   const pfields={full:'Повністю реалізовано',partial:'Частково або нерівномірно',no:'Не реалізовано або не працює',insufficient:'Недостатньо підтверджень',missing:'Немає відповіді'};
   for(const state of ['no','partial','insufficient','missing','full']){
    const codes=practices.filter(p=>!explained.has(p.code)&&(input.P.answers[p.code]||'missing')===state&&(state!=='full'||(PROFILE_V45_LINKS[p.code]||[]).some(c=>profileV45Problem(input,c)))).map(x=>x.code);
-   if(codes.length){addAlign(profileV45Copy('G-PSTATE',pfields[state])[0].replace('{назва практики}',codes.map(profileV45Label).join('; ')));}
+   if(codes.length){addAlign(profileV45Copy('G-PSTATE',pfields[state])[0].replace('{назва практики}',codes.map(profileV45InlineLabel).join('; ')));}
   }
   const conflicts=practices.filter(p=>input.P.answers[p.code]==='full'&&(PROFILE_V45_LINKS[p.code]||[]).some(c=>profileV45Problem(input,c)));
   if(conflicts.length||(mid===7&&profileV45Problem(input,'E31')&&['P37','P38','P39'].every(c=>input.P.answers[c]==='full')))addAlign(profileV45Copy('G-ALIGN','Загальний фрагмент')[0]);
   const strong=[];
   for(const source of ['E','L']){
    const codes=survey.filter(x=>x.source===source&&input.branches[x.code]==='favorable'&&!explained.has(x.code)).map(x=>x.code);
-   if(codes.length)strong.push((source==='E'?'працівники':'керівники')+' сприятливо оцінюють такі питання: '+codes.map(profileV45Label).join('; '));
+   if(codes.length)strong.push((source==='E'?'працівники':'керівники')+' сприятливо оцінюють такі питання, як '+codes.map(profileV45InlineLabel).join('; '));
   }
-  if(strong.length)addAlign('Сильна сторона: '+strong.join('. ')+'.');
+  if(strong.length)addAlign('Сильна сторона: '+strong.join(', а ')+'.');
  }
  for(const source of ['E','L']){
   if(!input[source].total)notes.push(source==='E'?'Немає відповідей працівників.':'Немає відповідей керівників.');
   else if(!input[source].eligible)notes.push(`${source==='E'?'Працівники':'Керівники'}: отримано ${input[source].total} валідних анкет; недостатня вибірка. Деталі тверджень цього джерела не інтерпретуються.`);
-  else {const missing=survey.filter(x=>x.source===source&&input.branches[x.code]==='applicability');if(missing.length)notes.push(`За цими питаннями недостатньо застосовних даних для оцінювання: ${missing.map(x=>profileV45Label(x.code)).join('; ')}.`)}
+  else {const missing=survey.filter(x=>x.source===source&&input.branches[x.code]==='applicability');if(missing.length)notes.push(`За цими питаннями недостатньо застосовних даних для оцінювання: ${missing.map(x=>profileV45InlineLabel(x.code)).join('; ')}.`)}
  }
  if(input.P.done){
   const focus=practices.filter(p=>['no','partial'].includes(input.P.answers[p.code])&&!ownUnits.some(u=>u.codes.includes(p.code)&&u.attention.length));
   const partial=focus.filter(p=>input.P.answers[p.code]==='partial'),missing=focus.filter(p=>input.P.answers[p.code]==='no');
-  if(partial.length)attention.push('Які складові або охоплення потребують доповнення у практиках: '+partial.map(p=>profileV45Label(p.code)).join('; ')+'.');
-  if(missing.length)attention.push('Що потрібно запровадити або відновити у практиках: '+missing.map(p=>profileV45Label(p.code)).join('; ')+'.');
+  if(partial.length)attention.push('Уточнити, які складові або охоплення потребують доповнення у практиках: '+partial.map(p=>profileV45InlineLabel(p.code)).join('; ')+'.');
+  if(missing.length)attention.push('Визначити, що потрібно запровадити або відновити у практиках: '+missing.map(p=>profileV45InlineLabel(p.code)).join('; ')+'.');
  }
  if(!input.P.done)notes.push(profileV45Copy('G-PSTATE','Організаційний чекап не завершено')[0]);
  const sections={alignment:barometerUnique(align),attention:barometerUnique([...attention,...profileV45Entries(ownUnits,'attention').map(x=>x.text)]),steps:profileV45Entries(ownUnits,'steps'),checks:profileV45Entries(ownUnits,'checks')};

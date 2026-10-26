@@ -6980,5 +6980,40 @@
     "expected": "P37/P38 identical steps merge once",
     "actual": "Assertions passed",
     "result": "PASS"
+  },
+  {
+    "test": "Editorial screenshot corrections in shared output",
+    "expected": "Lowercase inline labels, such-as construction, infinitive clarification",
+    "actual": [
+      "Несприятливі відповіді працівників стосуються таких питань: повага керівника; корисний зворотний зв’язок.",
+      "Несприятливі відповіді керівників команд стосуються таких питань: час для регулярних індивідуальних розмов.",
+      "Сильна сторона: працівники сприятливо оцінюють такі питання, як пріоритет здоров’я і безпеки.",
+      "Конфіденційно уточнити, що саме працівники сприймають як неповагу у взаємодії з безпосереднім керівником.",
+      "Уточнити оцінки щодо питання «час для регулярних індивідуальних розмов»."
+    ],
+    "result": "PASS"
+  },
+  {
+    "test": "Editorial all-source strengths and missing applicable data",
+    "expected": "Same sentence for both sources; lowercase labels in data notes",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Editorial catalog uses impersonal action wording",
+    "expected": "No second-person commands in any approved catalog or sample field",
+    "actual": "Assertions passed",
+    "result": "PASS"
+  },
+  {
+    "test": "Editorial inline case preserves source labels and acronyms",
+    "expected": "Inline conversion changes only the leading ordinary capital",
+    "actual": [
+      "пріоритет здоров’я і безпеки",
+      "HR і БЗР",
+      "БЗР із залученням HR",
+      "підтримка HR"
+    ],
+    "result": "PASS"
   }
 ]

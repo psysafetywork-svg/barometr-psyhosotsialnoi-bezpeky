@@ -12,7 +12,7 @@ function profileV45ModuleHtml(row,mod,interactive=false){
  const controls=interactive?'<div class="profile-plan-controls">'+mod.actions.map(a=>{
   const existing=planAction(row.m,a.final_action_id);
   return '<div><span>'+h(a.title)+'</span>'+(existing?'<button class="btn ghost small" data-a="open-plan-action" data-id="'+h(existing.id)+'">Відкрити в Плані</button>':'<button class="btn primary small" data-a="add-routed-action" data-m="'+row.m+'" data-target="'+h(a.final_action_id)+'">Додати до Плану</button>')+'</div>';
- }).join('')+mod.crossRefs.map(ref=>'<p>Пов’язана дія: '+h(BAROMETER_V2_ACTION_META[ref.id]?.[0]||'')+' (модуль '+ref.module+').</p>').join('')+'</div>':'';
+ }).join('')+mod.crossRefs.map(ref=>'<p>Пов’язана дія: '+h(profileV45InlineText(BAROMETER_V2_ACTION_META[ref.id]?.[0]||''))+' (модуль '+ref.module+').</p>').join('')+'</div>':'';
  return '<section class="profile-v45-module module-card matrix" id="matrix-'+row.m+'"><div class="profile-v45-heading"><h3>'+row.m+'. '+h(M[row.m-1])+'</h3></div><div class="profile-status-row">'+profileV45Icons(chip(row.e,'Працівники')+chip(row.l,'Керівники')+chip(row.p,'Організаційний чекап'))+'</div>'+cards.map(([title,html,color])=>'<section class="profile-v45-card tone-'+color+'"><h4>'+title+'</h4>'+html+'</section>').join('')+(mod.dataNotes.length?'<div class="profile-data-notes">'+mod.dataNotes.map(t=>'<p>'+h(t)+'</p>').join('')+'</div>':'')+controls+'</section>';
 }
 barometerSemanticModuleMarkup=function(row){return profileV45ModuleHtml(row,profileV45Analysis().modules[row.m],true)};
