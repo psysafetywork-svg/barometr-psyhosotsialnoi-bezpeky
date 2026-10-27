@@ -138,6 +138,9 @@
     .btn.primary:hover{background:#294866}
     .btn.teal{background:var(--teal);border-color:var(--teal);color:#fff}
     .btn-row{display:flex;flex-wrap:wrap;gap:11px;margin-top:20px}
+    #xlsxButton{grid-column:1 / -1;justify-self:start;max-width:100%;flex-direction:column;align-items:flex-start;gap:7px;text-align:left}
+    #xlsxButton .xlsx-title{display:block}
+    #xlsxButton .xlsx-help{display:block;font-size:14px;line-height:1.5;font-weight:400;font-style:italic}
     .source-card{position:relative;overflow:hidden;padding-top:72px}
     .source-code{position:absolute;left:27px;top:24px;font-size:31px;font-weight:800;color:var(--gold)}
     .source-card:nth-child(2) .source-code{color:var(--teal)}
@@ -540,13 +543,16 @@ window.BAROMETER_PUBLIC_EXAMPLE_CASES={"Ясно|Ясно|Ясно":{"html":"\u0
 <p>Для кожного робочого середовища створіть окрему копію тієї самої анкети. Не додавайте до неї питання про регіон, підрозділ або робоче середовище.</p>
 <div class="btn-row">
 <a class="btn primary" href="https://docs.google.com/forms/d/1z-yVSBk-gv1XdMd15ArN4iBc_jte1Upp0YxH5WJrPDk/copy" rel="noopener noreferrer" target="_blank">Створити копію Google Форми</a>
-<button class="btn" id="xlsxButton" type="button">Завантажити інструкцію XLSX</button>
 </div>
 </div>
 <div class="rule-box">
 <strong>Не змінюйте:</strong>
 <p>тексти тверджень, коди, шкалу відповідей, порядок запитань, рольове запитання, обов’язковість і логіку переходів між блоками.</p>
 </div>
+<button class="btn" id="xlsxButton" type="button" aria-labelledby="xlsxButtonTitle" aria-describedby="xlsxButtonHelp">
+<span class="xlsx-title" id="xlsxButtonTitle">Інструкція зі створення форми в Microsoft Forms або іншому сервісі опитувань</span>
+<em class="xlsx-help" id="xlsxButtonHelp">Відповіді експортуйте у форматі XLSX або CSV, а потім завантажте в Барометр.</em>
+</button>
 <div class="scale-panel" aria-label="Шкала анкети">
 <h4>Шкала анкети</h4>
 <div class="scale-list">
